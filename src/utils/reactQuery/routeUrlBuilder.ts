@@ -1,4 +1,4 @@
-import { genQueryString, isObjectEmpty } from './misc';
+import { genQueryString, isObjectEmpty } from '../misc';
 
 export const urlBuilder = (url: string, params?: object) => {
   if (!url) throw 'no url in urlBuilder';

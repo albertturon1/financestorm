@@ -10,11 +10,11 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <head>
         <title>{'Projekt inżynierski'}</title>
       </head>
-      <body className="overflow-y-scroll bg-primaryBlack">
+      <body className="flex flex-1 bg-primaryBlack">
         <ReactQueryWrapper>
-          <div className="w-full h-full">
+          <div className="h-full w-full">
             <GlobalNav />
-            {children}
+            <div className="pt-5">{children}</div>
           </div>
         </ReactQueryWrapper>
       </body>

@@ -1,6 +1,7 @@
 import {
   CurrencyRatePairRequest,
-  CurrencyRatePairResponse,
+  CurrentCurrencyRatePairResponse,
+  DailyCurrencyRateResponse,
 } from '@interfaces/api/ICurrenctyRateApi';
 import keysBuilder from '@utils/reactQuery/keysBuilder';
 import useFetch from '@utils/reactQuery/useFetch';
@@ -10,7 +11,11 @@ const baseKey = 'currencyRate';
 
 const keys = keysBuilder(
   {
-    currencyRatePair: (baseCurrency: string, quoteCurrency: string) => [
+    currentCurrencyRatePair: (baseCurrency: string, quoteCurrency: string) => [
+      baseCurrency,
+      quoteCurrency,
+    ],
+    dailyCurrencyRatePair: (baseCurrency: string, quoteCurrency: string) => [
       baseCurrency,
       quoteCurrency,
     ],
@@ -20,18 +25,35 @@ const keys = keysBuilder(
 
 export default keys;
 
-export const useCurrencyRatePairQuery = ({
+const staleTime = 600000;
+
+export const useCurrentCurrencyRatePairQuery = ({
   baseCurrency,
   quoteCurrency,
 }: CurrencyRatePairRequest) =>
-  useFetch<CurrencyRatePairResponse>({
+  useFetch<CurrentCurrencyRatePairResponse>({
     url: `/`,
-    key: keys.currencyRatePair(baseCurrency, quoteCurrency),
+    key: keys.currentCurrencyRatePair(baseCurrency, quoteCurrency),
     params: {
       from_currency: baseCurrency,
       to_currency: quoteCurrency,
-      //apikey: 'HVNKI51T3XL21JI9',
       function: 'CURRENCY_EXCHANGE_RATE',
     },
-    config: { staleTime: 60000000 },
+    config: { staleTime }, //10min
+  });
+
+export const useDailyCurrencyRatePairQuery = ({
+  baseCurrency,
+  quoteCurrency,
+}: CurrencyRatePairRequest) =>
+  useFetch<DailyCurrencyRateResponse>({
+    url: `/`,
+    key: keys.dailyCurrencyRatePair(baseCurrency, quoteCurrency),
+    params: {
+      from_symbol: baseCurrency,
+      to_symbol: quoteCurrency,
+      function: 'FX_DAILY',
+      outputsize: 'full',
+    },
+    config: { staleTime },
   });
