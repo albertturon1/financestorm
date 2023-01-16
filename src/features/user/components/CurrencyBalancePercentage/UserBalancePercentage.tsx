@@ -7,21 +7,21 @@ import SegmentedControl, {
 } from '@components/SegmentedControl';
 import useCurrentCurrencyRatesData from '@features/main/hooks/useCurrentCurrencyRatesData';
 import useGetWalletValue from '@hooks/useGetWalletValue';
-import { RechartsData } from '@interfaces/api/ICharts';
+import { RechartsData } from '@interfaces/ICharts';
 import { roundNumber } from '@utils/misc';
 import { User } from 'app/user/[id]/page';
 
-import UserBalancePercentageBarChart from './UserBalancepercentageBarChart';
-import UserBalancePercentagePieChart from './UserBalancepercentagePieChart';
+import UserBalancePercentageBarChart from './UserBalancePercentageBarChart';
+import UserBalancePercentagePieChart from './UserBalancePercentagePieChart';
 
 type Chart = 'bar' | 'pie';
 
 export const BALANCE_PERCENTAGE_COLORS = [
-  '#095477',
-  '#bc5090',
-  '#ff6361',
-  '#58508d',
-  '#ffa600',
+  '#ea5545',
+  '#ef9b20',
+  '#ede15b',
+  '#27aeef',
+  '#b33dc6',
 ];
 
 const UserBalancePercentage = ({ user }: { user: User }) => {
@@ -69,7 +69,7 @@ const UserBalancePercentage = ({ user }: { user: User }) => {
         {'Procentowy udział walut w portfelu'}
       </p>
       <SegmentedControl options={controlOptions} />
-      <div className="mt-5 h-96 w-144 rounded bg-secondaryBlack px-3 py-2">
+      <div className="px-3 py-2 mt-5 rounded h-96 w-144 bg-secondaryBlack">
         {chartType === 'bar' ? (
           <UserBalancePercentageBarChart data={chartData} />
         ) : (

@@ -9,7 +9,7 @@ import {
 } from 'recharts';
 
 import FlagCountryCode from '@components/FlagCountryCode';
-import { RechartsData } from '@interfaces/api/ICharts';
+import { RechartsData } from '@interfaces/ICharts';
 
 import { BALANCE_PERCENTAGE_COLORS } from './UserBalancePercentage';
 

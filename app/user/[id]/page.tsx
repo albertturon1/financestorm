@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 import PageTitle from '@components/PageTitle';
 import UserPhoto from '@components/UserPhoto';
 import { PADDING_TAILWIND } from '@constants/Globals';
@@ -38,11 +40,19 @@ const User = async ({ params }: { params: UserParams }) => {
   const user = await getUser(params.id);
   return (
     <div className={`${PADDING_TAILWIND} h-full w-full pb-10`}>
+      {/*Header */}
       <div className="flex items-center">
         <PageTitle className="mr-3">{`Witaj, ${user.name}`}</PageTitle>
         {user.photo && <UserPhoto photo={user.photo} alt={user.name} />}
+        <Link
+          href={`/user/${user.id}/wallet-history`}
+          className="ml-40 font-bold bg-red-300"
+        >
+          <p>{'Portfel w czasie'}</p>
+        </Link>
       </div>
-      <div className="mt-5 mb-10 flex flex-col lg:flex-row">
+      {/*User balance*/}
+      <div className="flex flex-col mt-5 mb-10 lg:flex-row">
         <div className="lg:mr-16">
           <UserBalance user={user} />
         </div>
@@ -50,10 +60,10 @@ const User = async ({ params }: { params: UserParams }) => {
           <UserBalancePercentage user={user} />
         </div>
       </div>
-      <div className="mt-10 flex w-full">
+      <div className="flex w-full mt-10">
         <UserLastTransactions user={user} />
       </div>
-      <div className="mt-10 flex w-full grow">
+      <div className="flex w-full mt-10 grow">
         <UserCurrencyPairSummary user={user} />
       </div>
     </div>

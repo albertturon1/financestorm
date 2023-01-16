@@ -29,7 +29,6 @@ export const getUserCurrencyTransactions = async (
   });
 
   const url = `http://127.0.0.1:8090/api/collections/transaction/records?${args}`;
-  //console.log(url);
   const res = await fetch(url);
   return (await res.json()) as Promise<PocketBaseDataResponse<Transaction>>;
 };

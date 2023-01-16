@@ -2,6 +2,7 @@ import {
   CurrencyRatePairRequest,
   CurrentCurrencyRatePairResponse,
   DailyCurrencyRateResponse,
+  MonthlyCurrencyRateResponse,
 } from '@interfaces/api/ICurrenctyRateApi';
 import keysBuilder from '@utils/reactQuery/keysBuilder';
 import useFetch from '@utils/reactQuery/useFetch';
@@ -56,4 +57,19 @@ export const useDailyCurrencyRatePairQuery = ({
       outputsize: 'full',
     },
     config: { staleTime },
+  });
+export const useMonthlyCurrencyRatePairQuery = ({
+  baseCurrency,
+  quoteCurrency,
+}: CurrencyRatePairRequest) =>
+  useFetch<MonthlyCurrencyRateResponse>({
+    url: `/`,
+    key: keys.dailyCurrencyRatePair(baseCurrency, quoteCurrency),
+    params: {
+      from_symbol: baseCurrency,
+      to_symbol: quoteCurrency,
+      function: 'FX_MONTHLY',
+      outputsize: 'full',
+    },
+    config: { staleTime: staleTime * 10 },
   });

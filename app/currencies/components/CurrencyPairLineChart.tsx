@@ -4,12 +4,11 @@ import {
   XAxis,
   YAxis,
   Tooltip,
-  Legend,
   Line,
   ResponsiveContainer,
 } from 'recharts';
 
-import { RechartsData } from '@interfaces/api/ICharts';
+import { RechartsData } from '@interfaces/ICharts';
 
 const CurrencyPairLineChart = ({ data }: { data: RechartsData[] }) => (
   <ResponsiveContainer>

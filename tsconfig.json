@@ -23,7 +23,8 @@
       "@interfaces/*": ["./src/interfaces/*"],
       "@utils/*": ["./src/utils/*"],
       "@styles/*": ["./styles/*"],
-      "@app/*": ["./app/*"]
+      "@app/*": ["./app/*"],
+      "@src/*": ["./src/*"]
     },
     "plugins": [
       {

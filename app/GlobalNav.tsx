@@ -20,7 +20,7 @@ export default async function GlobalNav() {
       <Link href={`/user/${USER_ID}`}>
         <div className={`${linkStyle} flex items-center`}>
           <h1 className="mr-3 font-semibold">{'Profil'}</h1>
-          <UserPhoto photo={user.photo} alt={user.name} />
+          {user.photo && <UserPhoto photo={user.photo} alt={user.name} />}
         </div>
       </Link>
     </div>

@@ -39,7 +39,7 @@ interface DailyCurrencyRateMeta {
   '5. Last Refreshed': string;
   '6. Time Zone': string;
 }
-export interface DailyCurrencyRateMetaModified {
+export interface CurrencyRateMetaModified {
   information: string;
   from_symbol: string;
   to_symbol: string;
@@ -54,25 +54,32 @@ interface DailyCurrencyRateTimeSeries {
   '4. close': string;
 }
 
-export interface DailyCurrencyRateTimeSeriesModified {
+export interface CurrencyRateTimeSeriesModified {
   label: string;
   open: number;
   high: number;
   low: number;
   close: number;
 }
-export interface DailyCurrencyRateData
-  extends DailyCurrencyRateTimeSeriesModified {
+export interface CurrencyRateData extends CurrencyRateTimeSeriesModified {
   label: string;
 }
 
-export interface DailyCurrencyRateResponse {
-  'Meta Data': DailyCurrencyRateMeta;
-  'Time Series FX (Daily)': DailyCurrencyRateTimeSeries;
+interface CurrencyRateResponseCommon {
+  'Meta Data'?: DailyCurrencyRateMeta;
+  Note?: string;
 }
 
-export interface DailyCurrencyRateResponseModified {
-  meta: DailyCurrencyRateMetaModified;
-  time_series: DailyCurrencyRateTimeSeriesModified;
-  data: DailyCurrencyRateData[];
+export interface DailyCurrencyRateResponse extends CurrencyRateResponseCommon {
+  'Time Series FX (Daily)'?: DailyCurrencyRateTimeSeries;
+}
+export interface MonthlyCurrencyRateResponse
+  extends CurrencyRateResponseCommon {
+  'Time Series FX (Monthly)'?: DailyCurrencyRateTimeSeries;
+}
+
+export interface CurrencyRateResponseModified {
+  meta: CurrencyRateMetaModified;
+  time_series: CurrencyRateTimeSeriesModified;
+  data: CurrencyRateData[];
 }

@@ -19,7 +19,7 @@ const CurrencyBalance = ({
   current_currency: CurrencyCodes;
 }) => (
   <Link
-    href={`/user/${userID}/history/${currencyCode}`}
+    href={`/user/${userID}/transactions/${currencyCode}`}
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
     className={`${className} lg flex w-full flex-col px-2 pt-4 pb-3 text-sm
 		  ${currencyCode !== current_currency ? 'cursor-pointer' : ''}`}

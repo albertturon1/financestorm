@@ -10,7 +10,7 @@ import {
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 
-import { RechartData } from '@interfaces/api/ICharts';
+import { RechartsData } from '@interfaces/ICharts';
 
 ChartJS.register(
   CategoryScale,
@@ -22,7 +22,7 @@ ChartJS.register(
   Legend,
 );
 
-const LineChart = ({ data, title }: { data: RechartData; title?: string }) => (
+const LineChart = ({ data, title }: { data: RechartsData; title?: string }) => (
   <Line
     options={{
       responsive: true,
