@@ -17,7 +17,7 @@ const RealTimeTransactions = () => {
 
   useCreateTransaction(currencyRatesData);
   const realTimeTransactions = useRealTimeTransactions(transactions);
-
+  console.log(realTimeTransactions);
   const unique = [
     ...new Map(realTimeTransactions.map((item) => [item.id, item])).values(),
   ];

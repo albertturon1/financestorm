@@ -16,11 +16,15 @@ const FlagCountryCode = ({
   className,
   flagClassName,
   reverse,
+  boldName = true,
+  flagStyle,
 }: {
   code: string;
   className?: string;
   flagClassName?: string;
   reverse?: boolean;
+  boldName?: boolean;
+  flagStyle?: React.CSSProperties;
 }) => (
   <div
     className={`flex items-center gap-x-1 ${className} ${
@@ -32,9 +36,12 @@ const FlagCountryCode = ({
         name={code.toUpperCase()}
         alt={`${code.toUpperCase()} flag`}
         code={FLAGS[code as CurrencyCodes]}
+        style={flagStyle}
       />
     </div>
-    <p className="font-semibold">{`${code.toUpperCase()}`}&nbsp;</p>
+    <p className={boldName ? 'font-semibold' : ''}>
+      {`${code.toUpperCase()}`}&nbsp;
+    </p>
   </div>
 );
 

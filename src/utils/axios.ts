@@ -1,12 +1,14 @@
 import axios, { AxiosError } from 'axios';
+import _ from 'lodash';
+
+export const API_KEYS = [
+  'HVNKI51T3XL21JI9',
+  '3Z8LLAPQXEMXG5V9',
+  'B7YJY049GG24COPG',
+];
 
 export const axiosClient = axios.create({
   baseURL: 'http://www.alphavantage.co/query',
-  params: {
-    apikey: 'HVNKI51T3XL21JI9',
-    //apikey: '3Z8LLAPQXEMXG5V9',
-    //apikey: 'B7YJY049GG24COPG',
-  },
 });
 
 axiosClient.interceptors.response.use(

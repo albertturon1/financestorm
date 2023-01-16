@@ -8,7 +8,6 @@ import {
   ResponsiveContainer,
   ReferenceLine,
   TooltipProps,
-  ComposedChart,
 } from 'recharts';
 
 import FlagCountryCode from '@components/FlagCountryCode';
@@ -17,21 +16,56 @@ import { MonthlyWalletValue } from '@hooks/useGetWalletValueOverTime';
 import { roundNumber } from '@utils/misc';
 
 const CustomTooltip = ({ active, payload }: TooltipProps<number, string>) => {
-  if (!active) return null;
+  if (!active || !payload) return null;
+  const values = payload[0].payload;
+  const row = 'flex gap-x-2 items-center w-full';
+  const flag = 'mb-1';
   return (
-    <div className="gap-y-3 rounded border border-slate-50 bg-secondaryBlack p-4">
-      <div className="flex gap-x-2">
-        <p className="font-semibold">{payload[0].payload.quantity}</p>
+    <div className="rounded border border-slate-50 bg-secondaryBlack p-4">
+      <p className="pb-3">{`Data: ${values.label}`}</p>
+      {['eur', 'usd', 'gbp', 'chf'].map((currency, index) => {
+        const name = currency.toUpperCase();
+        return (
+          // eslint-disable-next-line react/no-array-index-key
+          <div key={index} className="mb-5 gap-y-2">
+            <div className={`${row} ${flag}`}>
+              <p>{values[currency]}</p>
+              <FlagCountryCode
+                reverse
+                code={currency}
+                flagStyle={{ width: currency === 'chf' ? 17 : 24 }}
+                boldName={false}
+              />
+            </div>
+            <div className={row}>
+              <p>{`Kurs ${name}/PLN: `}</p>
+              <p>{values[`${currency}_rate`]}</p>
+            </div>
+            <div className={row}>
+              <p>{`Wartość ${name} (w PLN)`}</p>
+              <p>{values[`${currency}_value`]}</p>
+            </div>
+            <p>{`${roundNumber(
+              (values[`${currency}_value`] / values.value) * 100,
+              2,
+            )}% portfela`}</p>
+          </div>
+        );
+      })}
+      <div className={`${row} ${flag}`}>
+        <p>{`${values.pln}`}</p>
         <FlagCountryCode
-          reversez
-          code={payload[0].payload.name?.toLowerCase() as string}
-          flagClassName="w-4"
+          reverse
+          code={'pln'}
+          flagStyle={{ width: 24 }}
+          boldName={false}
         />
       </div>
-      {payload[0].payload.name !== 'PLN' && (
-        <p className="font-semibold">{`${payload[0].payload.baseValue} PLN`}</p>
-      )}
-      <p className="font-semibold">{`${payload[0].value}% portfela`}</p>
+      <p>{`${roundNumber((values.pln / values.value) * 100, 2)}% portfela`}</p>
+      <div className={`${row} pt-5`}>
+        <p>{`Łączna wartość portfela: `}</p>
+        <p>{`${values.value} PLN`}</p>
+      </div>
     </div>
   );
 };
@@ -58,7 +92,6 @@ const DailyWalletLineChart = ({ data }: { data: MonthlyWalletValue[] }) => {
           tickCount={10}
           allowDecimals={false}
         />
-        <Tooltip />
         <ReferenceLine
           y={maxValue}
           label="Max"

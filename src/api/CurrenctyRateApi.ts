@@ -1,13 +1,15 @@
+import _ from 'lodash';
+
 import {
   CurrencyRatePairRequest,
   CurrentCurrencyRatePairResponse,
   DailyCurrencyRateResponse,
   MonthlyCurrencyRateResponse,
 } from '@interfaces/api/ICurrenctyRateApi';
+import { API_KEYS } from '@utils/axios';
 import keysBuilder from '@utils/reactQuery/keysBuilder';
 import useFetch from '@utils/reactQuery/useFetch';
 
-//3Z8LLAPQXEMXG5V9
 const baseKey = 'currencyRate';
 
 const keys = keysBuilder(
@@ -17,6 +19,12 @@ const keys = keysBuilder(
       quoteCurrency,
     ],
     dailyCurrencyRatePair: (baseCurrency: string, quoteCurrency: string) => [
+      'daily',
+      baseCurrency,
+      quoteCurrency,
+    ],
+    montlyCurrencyRatePair: (baseCurrency: string, quoteCurrency: string) => [
+      'monthly',
       baseCurrency,
       quoteCurrency,
     ],
@@ -25,8 +33,6 @@ const keys = keysBuilder(
 );
 
 export default keys;
-
-const staleTime = 600000;
 
 export const useCurrentCurrencyRatePairQuery = ({
   baseCurrency,
@@ -40,7 +46,6 @@ export const useCurrentCurrencyRatePairQuery = ({
       to_currency: quoteCurrency,
       function: 'CURRENCY_EXCHANGE_RATE',
     },
-    config: { staleTime }, //10min
   });
 
 export const useDailyCurrencyRatePairQuery = ({
@@ -55,21 +60,21 @@ export const useDailyCurrencyRatePairQuery = ({
       to_symbol: quoteCurrency,
       function: 'FX_DAILY',
       outputsize: 'full',
+      apikey: _.sample(API_KEYS),
     },
-    config: { staleTime },
   });
+
 export const useMonthlyCurrencyRatePairQuery = ({
   baseCurrency,
   quoteCurrency,
 }: CurrencyRatePairRequest) =>
   useFetch<MonthlyCurrencyRateResponse>({
     url: `/`,
-    key: keys.dailyCurrencyRatePair(baseCurrency, quoteCurrency),
+    key: keys.montlyCurrencyRatePair(baseCurrency, quoteCurrency),
     params: {
       from_symbol: baseCurrency,
       to_symbol: quoteCurrency,
       function: 'FX_MONTHLY',
       outputsize: 'full',
     },
-    config: { staleTime: staleTime * 10 },
   });

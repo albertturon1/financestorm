@@ -56,8 +56,7 @@ const useGetWalletValueOverTime = ({
   eur: MonthlyCurrency;
   monthlyInflationNormalized: MonthlyWalletValue[];
 }) => {
-  const monthlyWalletValue: MonthlyWalletValue[] = [];
-
+  const walletValue: MonthlyWalletValue[] = [];
   if (
     !user ||
     !gbp ||
@@ -66,7 +65,7 @@ const useGetWalletValueOverTime = ({
     !chf ||
     !monthlyInflationNormalized.length
   )
-    return monthlyWalletValue;
+    return walletValue;
 
   const startMonths = [
     gbp[0].label,
@@ -110,14 +109,14 @@ const useGetWalletValueOverTime = ({
     const eur_rate = eur_filter[i].close;
     const chf_rate = chf_filter[i].close;
 
-    const gbp_value = gbp_filter[i].close * user.gbp;
-    const usd_value = usd_filter[i].close * user.usd;
-    const eur_value = eur_rate * user.eur;
-    const chf_value = chf_rate * user.chf;
+    const gbp_value = roundNumber(gbp_filter[i].close * user.gbp, 2);
+    const usd_value = roundNumber(usd_filter[i].close * user.usd, 2);
+    const eur_value = roundNumber(eur_rate * user.eur, 2);
+    const chf_value = roundNumber(chf_rate * user.chf, 2);
     const sum = gbp_value + usd_value + eur_value + chf_value + user.pln;
     monthSum = roundNumber(sum, 2);
 
-    monthlyWalletValue.push({
+    walletValue.push({
       label: gbp_filter[i].label,
       value: monthSum,
       eur_value,
@@ -129,11 +128,11 @@ const useGetWalletValueOverTime = ({
       usd_rate,
       chf_rate,
       pln_value: user.pln,
+      ...user,
     });
   }
-  console.log(monthlyWalletValue);
 
-  return monthlyWalletValue.reverse();
+  return walletValue.reverse();
 };
 
 export default useGetWalletValueOverTime;
