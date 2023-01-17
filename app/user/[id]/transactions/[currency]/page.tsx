@@ -2,13 +2,13 @@ import FlagCountryCode from '@components/FlagCountryCode';
 import PageTitle from '@components/PageTitle';
 import { PADDING_TAILWIND } from '@constants/Globals';
 import Transactions from '@features/user/history/components/Transactions';
-import { CurrencyCodes } from '@interfaces/ICurrency';
+import { Currencies } from '@interfaces/ICurrency';
 import { getUserCurrencyTransactions } from 'src/api/UserApi';
 
 import { UserParams } from '../../page';
 
 type CurrencyHistoryProps = {
-  currency: CurrencyCodes;
+  currency: Currencies;
 } & UserParams;
 
 const CurrencyHistory = async ({

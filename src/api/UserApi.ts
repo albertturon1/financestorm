@@ -1,5 +1,5 @@
 import { Transaction } from '@features/user/history/components/Transactions';
-import { CurrencyCodes } from '@interfaces/ICurrency';
+import { Currencies } from '@interfaces/ICurrency';
 import { PocketBaseDataResponse } from '@interfaces/IPocketBase';
 import { genQueryString } from '@utils/misc';
 import { User } from 'app/user/[id]/page';
@@ -12,7 +12,7 @@ export const getUser = async (id: string): Promise<User> => {
 };
 
 export const getUserCurrencyTransactions = async (
-  currency?: CurrencyCodes,
+  currency?: Currencies,
   user_id?: string,
 ): Promise<PocketBaseDataResponse<Transaction>> => {
   const filterCurrency = currency

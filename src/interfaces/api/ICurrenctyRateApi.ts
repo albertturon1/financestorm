@@ -1,6 +1,8 @@
+import { CurrenciesWithPLN } from '@interfaces/ICurrency';
+
 export interface CurrencyRatePairRequest {
-  baseCurrency: string;
-  quoteCurrency: string;
+  baseCurrency: CurrenciesWithPLN;
+  quoteCurrency: CurrenciesWithPLN;
 }
 
 export interface RealtimeCurrencyExchangeRate {
@@ -47,7 +49,7 @@ export interface CurrencyRateMetaModified {
   last_refreshed: string;
   time_zone: string;
 }
-interface DailyCurrencyRateTimeSeries {
+export interface DailyCurrencyRateTimeSeries {
   '1. open': string;
   '2. high': string;
   '3. low': string;
@@ -65,7 +67,7 @@ export interface CurrencyRateData extends CurrencyRateTimeSeriesModified {
   label: string;
 }
 
-interface CurrencyRateResponseCommon {
+export interface CurrencyRateResponseCommon {
   'Meta Data'?: DailyCurrencyRateMeta;
   Note?: string;
 }

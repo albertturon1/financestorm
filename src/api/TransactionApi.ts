@@ -1,5 +1,5 @@
 import { Transaction } from '@features/user/history/components/Transactions';
-import { CurrencyCodes } from '@interfaces/ICurrency';
+import { Currencies } from '@interfaces/ICurrency';
 import { PocketBaseDataResponse } from '@interfaces/IPocketBase';
 import useFetch from '@utils/reactQuery/useFetch';
 
@@ -8,7 +8,7 @@ export const useUserCurrencyTransactionsQuery = ({
   currency,
   user_id,
 }: {
-  currency?: CurrencyCodes;
+  currency?: Currencies;
   user_id?: string;
 }) => {
   const filterCurrency = currency

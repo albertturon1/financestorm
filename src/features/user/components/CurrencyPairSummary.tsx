@@ -8,7 +8,7 @@ const CurrencyPairSummary = ({ summary }: { summary: PairSummary[] }) => (
     <div className="mb-3 flex px-1">
       <HeaderText wide>{'Waluta sprzedawana'}</HeaderText>
       <HeaderText>{'Waluta kupowana'}</HeaderText>
-      <HeaderText>{'Ilość'}</HeaderText>
+      <HeaderText>{'Liczba transakcji'}</HeaderText>
 
       <HeaderText wide>{'Śr. kwota sprzedawana'}</HeaderText>
       <HeaderText wide>{'Min kwota sprzedawana'}</HeaderText>

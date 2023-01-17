@@ -4,6 +4,7 @@ import Loader from '@components/Loader';
 import PageTitle from '@components/PageTitle';
 import { PADDING_TAILWIND } from '@constants/Globals';
 import useDailyCurrencyRatesData from '@features/currencies/hooks/useDailyCurrencyRatesData';
+import { CurrenciesWithPLN } from '@interfaces/ICurrency';
 
 import CurrencyPairLineChart from '../components/CurrencyPairLineChart';
 
@@ -16,8 +17,8 @@ export default function Page({ params }: { params: CurrenciesProps }) {
   const [baseCurrency, quoteCurrency] = pair.split('-');
 
   const [dailyCurrencyData, { isLoading }] = useDailyCurrencyRatesData({
-    baseCurrency,
-    quoteCurrency,
+    baseCurrency: baseCurrency as CurrenciesWithPLN,
+    quoteCurrency: quoteCurrency as CurrenciesWithPLN,
   });
 
   return (

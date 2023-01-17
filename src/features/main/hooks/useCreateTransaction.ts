@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { CURRENCIES } from '@constants/currencies';
 import { CurrenciesPairs } from '@features/main/hooks/useCurrentCurrencyRatesData';
 import { Transaction } from '@features/user/history/components/Transactions';
-import { CurrencyCodes } from '@interfaces/ICurrency';
+import { Currencies } from '@interfaces/ICurrency';
 import { getFloatBetweenRange, roundNumber } from '@utils/misc';
 import pb from 'src/api/PocketBase';
 
@@ -25,11 +25,11 @@ export const createTransaction = async (currencies: CurrenciesPairs) => {
 
   const [foreignCurrency] = getMultipleRandom(foreignCurrencies, 1);
 
-  const base_currency: CurrencyCodes =
-    plnIndex === 0 ? 'pln' : (foreignCurrency as CurrencyCodes);
+  const base_currency: Currencies =
+    plnIndex === 0 ? 'pln' : (foreignCurrency as Currencies);
 
-  const quote_currency: CurrencyCodes =
-    plnIndex === 0 ? (foreignCurrency as CurrencyCodes) : 'pln';
+  const quote_currency: Currencies =
+    plnIndex === 0 ? (foreignCurrency as Currencies) : 'pln';
 
   const plnForeignKey = `pln_${foreignCurrency}`;
 

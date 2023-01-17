@@ -1,17 +1,15 @@
-'use client';
-
 import {
   BsFillArrowLeftSquareFill,
   BsFillArrowRightSquareFill,
 } from 'react-icons/bs';
 
-import { CurrencyCodes } from '@interfaces/ICurrency';
+import { Currencies } from '@interfaces/ICurrency';
 
 const typeColumnWidth = 'w-12';
 
 export interface Transaction {
-  base_currency: CurrencyCodes;
-  quote_currency: CurrencyCodes;
+  base_currency: Currencies;
+  quote_currency: Currencies;
   base_currency_value: number;
   quote_currency_value: number;
   exchange_rate: number;
@@ -28,7 +26,7 @@ const Transactions = ({
   transactions,
   arrows,
 }: {
-  baseCurrency: CurrencyCodes;
+  baseCurrency: Currencies;
   transactions: Transaction[] | undefined;
   arrows?: boolean;
   // eslint-disable-next-line arrow-body-style

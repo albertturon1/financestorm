@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 import Flag from 'react-world-flags';
 
-import { CurrencyCodes } from '@interfaces/ICurrency';
+import { Currencies } from '@interfaces/ICurrency';
 
-const FLAGS: Record<CurrencyCodes, string> = {
+const FLAGS: Record<Currencies, string> = {
   pln: 'pl',
   eur: 'EU',
   usd: 'usa',
@@ -35,7 +35,7 @@ const FlagCountryCode = ({
       <Flag
         name={code.toUpperCase()}
         alt={`${code.toUpperCase()} flag`}
-        code={FLAGS[code as CurrencyCodes]}
+        code={FLAGS[code as Currencies]}
         style={flagStyle}
       />
     </div>

@@ -7,7 +7,7 @@ import UserBalancePercentage from '@features/user/components/CurrencyBalancePerc
 import UserBalance from '@features/user/components/UserBalance';
 import UserCurrencyPairSummary from '@features/user/components/UserCurrencyPairSummary';
 import UserLastTransactions from '@features/user/components/UserLastTransactions';
-import { CurrencyCodes } from '@interfaces/ICurrency';
+import { Currencies } from '@interfaces/ICurrency';
 import { getUser } from 'src/api/UserApi';
 
 export interface User {
@@ -26,7 +26,7 @@ export interface User {
   eur_id: string;
   usd_id: string;
   gbp_id: string;
-  current_currency: CurrencyCodes;
+  current_currency: Currencies;
   verified?: boolean;
   avatar?: string;
   photo?: string;

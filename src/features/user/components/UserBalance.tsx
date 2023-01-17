@@ -2,7 +2,7 @@
 
 import useCurrentCurrencyRatesData from '@features/main/hooks/useCurrentCurrencyRatesData';
 import useGetWalletValue from '@hooks/useGetWalletValue';
-import { CurrencyCodes } from '@interfaces/ICurrency';
+import { Currencies } from '@interfaces/ICurrency';
 import { User } from 'app/user/[id]/page';
 
 import CurrencyBalance from './CurrencyBalance';
@@ -24,9 +24,9 @@ const UserBalance = ({ user }: { user: User }) => {
         <CurrencyBalance
           userID={user.id}
           key={currencyCode}
-          currencyCode={currencyCode as CurrencyCodes}
-          value={user[currencyCode as CurrencyCodes]}
-          accountID={user[`${currencyCode as CurrencyCodes}_id`]}
+          currencyCode={currencyCode as Currencies}
+          value={user[currencyCode as Currencies]}
+          accountID={user[`${currencyCode as Currencies}_id`]}
           className={index % 2 === 0 ? 'bg-secondaryBlack' : ''}
           current_currency={user.current_currency}
         />

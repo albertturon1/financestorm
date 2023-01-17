@@ -2,7 +2,6 @@ import '@styles/global.css';
 import { ReactNode } from 'react';
 
 import GlobalNav from './GlobalNav';
-import ReactQueryWrapper from './ReactQueryWrapper';
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
@@ -10,13 +9,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <head>
         <title>{'Projekt inżynierski'}</title>
       </head>
-      <body className="w-full h-screen bg-primaryBlack">
-        <ReactQueryWrapper>
-          <div>
-            <GlobalNav />
-            {children}
-          </div>
-        </ReactQueryWrapper>
+      <body className="h-screen w-full bg-primaryBlack">
+        <div>
+          {/* @ts-expect-error Server Component */}
+          <GlobalNav />
+          {children}
+        </div>
       </body>
     </html>
   );

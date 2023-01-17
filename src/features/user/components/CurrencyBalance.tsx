@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 import FlagCountryCode from '@components/FlagCountryCode';
-import { CurrencyCodes } from '@interfaces/ICurrency';
+import { Currencies } from '@interfaces/ICurrency';
 
 const CurrencyBalance = ({
   userID,
@@ -12,11 +12,11 @@ const CurrencyBalance = ({
   current_currency,
 }: {
   userID: string;
-  currencyCode: CurrencyCodes;
+  currencyCode: Currencies;
   value: number;
   accountID: string;
   className?: string;
-  current_currency: CurrencyCodes;
+  current_currency: Currencies;
 }) => (
   <Link
     href={`/user/${userID}/transactions/${currencyCode}`}
