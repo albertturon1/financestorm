@@ -1,55 +1,58 @@
 import MultiCurrenciesLineChart from '@components/MultiCurrenciesLineChart';
-import { CURRENCIES } from '@constants/currencies';
 import { PADDING_TAILWIND } from '@constants/Globals';
-import normalizeAphaVantageResponse from '@features/currencies/tools/normalizeAphaVantageResponse';
-import { CurrencyRateResponseModified } from '@interfaces/api/ICurrenctyRateApi';
-import { getDailyCurrencyRatePair, testApi } from '@src/api/CurrenctyRateApiV2';
+import { Currencies } from '@interfaces/ICurrency';
+import { LabeledRates } from '@interfaces/models/IExchangerate';
+import { getDailyCurrencyTimeseries } from '@src/api/CurrenctyRateApiV2';
 
 //export const revalidate = 3600; // revalidate every hour
 
-const getMultiLineChartData = async () => {
-  const quoteCurrency = 'pln';
-
-  const baseCurrencyPairs = CURRENCIES.map((currency) =>
-    getDailyCurrencyRatePair({
-      baseCurrency: currency,
-      quoteCurrency,
-    }),
-  );
-  const currencies = await Promise.all(baseCurrencyPairs);
-
-  const normalizedCurrencies = currencies.map((currencyData) =>
-    normalizeAphaVantageResponse(currencyData),
-  );
-
-  const startMonths = normalizedCurrencies.map(
-    (currency) => currency?.data[0].label,
-  );
-  const endMonths = normalizedCurrencies.map(
-    (currency) => currency?.data.slice(-1)[0].label,
-  );
-
-  const [startMonth] = startMonths.sort().reverse();
-  const [endMonth] = endMonths.sort();
-
-  const filterDates = (currency: CurrencyRateResponseModified | undefined) =>
-    currency?.data
-      .filter(({ label }) => label > startMonth! && label < endMonth!)
-      .reverse();
-
-  return normalizedCurrencies.filter(filterDates);
+const getPreviousYearDate = (date: string) => {
+  const previousYear = Number(date.split('-')[0]) - 1;
+  const currentMonthDay = date.split('-').slice(1, 3).join('-');
+  return [previousYear, currentMonthDay].join('-');
 };
 
-const HomePage = async () => {
-  //const normalizedCurrencies = await getMultiLineChartData();
-  const data = await testApi();
-  console.log(data);
+const getMultiLineChartData = async () =>
+  await Promise.all(
+    ['EUR', 'GBP', 'USD', 'CHF'].map(async (currency) => {
+      let previousStartDate = '';
 
-  return (
-    <div className={`h-screen w-full ${PADDING_TAILWIND}`}>
-      {/*<MultiCurrenciesLineChart data={normalizedCurrencies} />*/}
-    </div>
+      const responses: LabeledRates[] = [];
+      for (let i = 0; i < 1; i++) {
+        const end_date = !previousStartDate
+          ? new Date().toISOString().split('T')[0]
+          : previousStartDate;
+        const start_date = getPreviousYearDate(end_date);
+
+        previousStartDate = start_date;
+
+        const response = await getDailyCurrencyTimeseries({
+          base: currency as Currencies,
+          start_date,
+          end_date,
+          symbols: ['PLN'],
+        });
+
+        const normalizedRates: { value: number; lable: string }[] = [];
+        for (const [key, value] of Object.entries(response.rates)) {
+          if (value.PLN)
+            normalizedRates.push({
+              value: value.PLN,
+              label: key,
+              from: currency,
+              to: 'PLN',
+            });
+        }
+        responses.unshift(...normalizedRates);
+      }
+      return { data: responses, name: currency };
+    }),
   );
+
+const HomePage = async () => {
+  const data = await getMultiLineChartData();
+
+  return <MultiCurrenciesLineChart data={data} />;
 };
 
 const SectionTitle = ({ children }: { children: string }) => (

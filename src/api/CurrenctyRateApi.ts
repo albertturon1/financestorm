@@ -5,7 +5,7 @@ import {
   CurrentCurrencyRatePairResponse,
   DailyCurrencyRateResponse,
   MonthlyCurrencyRateResponse,
-} from '@interfaces/api/ICurrenctyRateApi';
+} from '@src/api/interfaces/ICurrenctyRateApi';
 import { API_KEYS } from '@utils/axios';
 import keysBuilder from '@utils/reactQuery/keysBuilder';
 import useFetch from '@utils/reactQuery/useFetch';

@@ -6,7 +6,7 @@ import {
   DailyCurrencyRateResponse,
   DailyCurrencyRateTimeSeries,
   MonthlyCurrencyRateResponse,
-} from '@interfaces/api/ICurrenctyRateApi';
+} from '@src/api/interfaces/ICurrenctyRateApi';
 import { removeNumberFromKey, sortObjectByKey } from '@utils/misc';
 
 //const isDailyCurrencyRateResponse = (

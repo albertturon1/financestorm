@@ -2,7 +2,7 @@ import {
   CurrenciesPairs,
   CurrencyResponse,
 } from '@features/main/hooks/useCurrentCurrencyRatesData';
-import { CurrencyRateData } from '@interfaces/api/ICurrenctyRateApi';
+import { CurrencyRateData } from '@src/api/interfaces/ICurrenctyRateApi';
 import { roundNumber } from '@utils/misc';
 import { User } from 'app/user/[id]/page';
 

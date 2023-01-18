@@ -1,5 +1,5 @@
 import { MonthlyWalletValue } from '@hooks/useGetWalletValueOverTime';
-import { CountryMonthlyInflationRateResponse } from '@interfaces/api/IOECDApi';
+import { CountryMonthlyInflationRateResponse } from '@src/api/interfaces/IOECDApi';
 
 const useMonthlyInflationData = (
   data: CountryMonthlyInflationRateResponse | undefined,

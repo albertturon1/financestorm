@@ -1,7 +1,7 @@
 import {
   CurrentCurrencyRatePairResponse,
   RealtimeCurrencyExchangeRateModified,
-} from '@interfaces/api/ICurrenctyRateApi';
+} from '@src/api/interfaces/ICurrenctyRateApi';
 import { getFloatBetweenRange, removeNumberFromKey } from '@utils/misc';
 import { useCurrentCurrencyRatePairQuery } from 'src/api/CurrenctyRateApi';
 

@@ -1,4 +1,4 @@
-import { CountryMonthlyInflationRateResponse } from '@interfaces/api/IOECDApi';
+import { CountryMonthlyInflationRateResponse } from '@src/api/interfaces/IOECDApi';
 import useFetch from '@utils/reactQuery/useFetch';
 
 export const useMonthlyInflationRatesQuery = ({

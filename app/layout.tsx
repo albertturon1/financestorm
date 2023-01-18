@@ -9,10 +9,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <head>
         <title>{'Projekt inżynierski'}</title>
       </head>
-      <body className="h-screen w-full bg-primaryBlack">
-        <div>
-          {/* @ts-expect-error Server Component */}
-          <GlobalNav />
+      <body className="flex h-screen w-screen flex-col">
+        {/* @ts-expect-error Server Component */}
+        <GlobalNav />
+        <div className="flex h-full w-full flex-col bg-primaryBlack pt-5">
           {children}
         </div>
       </body>
