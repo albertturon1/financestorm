@@ -12,13 +12,14 @@ const getPreviousYearDate = (date: string) => {
   return [previousYear, currentMonthDay].join('-');
 };
 
-const getMultiLineChartData = async () =>
-  await Promise.all(
-    ['EUR', 'GBP', 'USD', 'CHF'].map(async (currency) => {
+const getMultiLineChartData = async (years = 2) => {
+  const start = Date.now();
+  const data = await Promise.all(
+    ['EUR', 'USD', 'GBP', 'CHF'].map(async (currency) => {
       let previousStartDate = '';
 
       const responses: LabeledRates[] = [];
-      for (let i = 0; i < 1; i++) {
+      for (let i = 0; i < years; i++) {
         const end_date = !previousStartDate
           ? new Date().toISOString().split('T')[0]
           : previousStartDate;
@@ -48,15 +49,25 @@ const getMultiLineChartData = async () =>
       return { data: responses, name: currency };
     }),
   );
+  const end = Date.now();
+  console.log(`Execution time: ${end - start} ms`);
+
+  return data;
+};
 
 const HomePage = async () => {
-  const data = await getMultiLineChartData();
+  const data = await getMultiLineChartData(18);
 
-  return <MultiCurrenciesLineChart data={data} />;
+  return (
+    <div className="flex min-h-0 flex-1 flex-col pb-1 pt-2">
+      <SectionTitle>{'Kursy walut w stosunku do PLN'}</SectionTitle>
+      <MultiCurrenciesLineChart data={data} />;
+    </div>
+  );
 };
 
 const SectionTitle = ({ children }: { children: string }) => (
-  <h1 className="pb-4 text-lg font-bold">{children}</h1>
+  <h1 className="px-5 pb-4 text-lg  font-bold">{children}</h1>
 );
 
 export default HomePage;
