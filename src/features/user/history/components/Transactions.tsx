@@ -1,3 +1,4 @@
+import { Record } from 'pocketbase';
 import {
   BsFillArrowLeftSquareFill,
   BsFillArrowRightSquareFill,
@@ -7,7 +8,7 @@ import { Currencies } from '@interfaces/ICurrency';
 
 const typeColumnWidth = 'w-12';
 
-export interface Transaction {
+export interface Transaction extends Record {
   base_currency: Currencies;
   quote_currency: Currencies;
   base_currency_value: number;

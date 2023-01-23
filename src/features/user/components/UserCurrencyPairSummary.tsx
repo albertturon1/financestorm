@@ -1,19 +1,20 @@
-import { User } from '@interfaces/models/IUser';
-import { getUserCurrencyTransactions } from 'src/api/UserApi';
+import { Record } from 'pocketbase';
 
 import { useCurrencyPairSummary } from '../hooks/useCurrencyPairSummary';
 import CurrencyPairSummary from './CurrencyPairSummary';
 
-const UserCurrencyPairSummary = async ({ user }: { user: User }) => {
-  const transactions = await getUserCurrencyTransactions(undefined, user.id);
-
+const UserCurrencyPairSummary = ({
+  transactions,
+}: {
+  transactions: Record[];
+}) => {
   const currrencyPairSummary = useCurrencyPairSummary(transactions);
 
   if (!currrencyPairSummary.length) return null;
   return (
     <div className="flex w-full flex-col">
-      <p className="mb-3 font-bold underline">
-        {'Podusmowanie transferów walutowych'}
+      <p className="mb-4 font-semibold underline">
+        {'Podsumowanie transferów walutowych'}
       </p>
       <CurrencyPairSummary
         summary={currrencyPairSummary.sort((a, b) =>

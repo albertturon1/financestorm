@@ -29,19 +29,21 @@ const UserBalancePercentageBarChart = ({
       }}
     >
       <Bar dataKey="percentage">
-        {data.map((_entry, index) => (
-          <Cell
-            // eslint-disable-next-line react/no-array-index-key
-            key={`cell-${index}`}
-            fill={CHART_THEME[index]}
-          />
-        ))}
+        {data
+          .sort((a, b) => (a.percentage > b.percentage ? -1 : 1))
+          .map((_entry, index) => (
+            <Cell
+              // eslint-disable-next-line react/no-array-index-key
+              key={`cell-${index}`}
+              fill={CHART_THEME[index]}
+            />
+          ))}
       </Bar>
       <Legend
         payload={data.map((item, index) => ({
           id: item.currency,
           type: 'square',
-          value: `${item.currency} (${item.value}%)`,
+          value: `${item.currency} (${item.percentage}%)`,
           color: CHART_THEME[index],
         }))}
         layout="vertical"

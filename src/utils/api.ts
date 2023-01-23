@@ -3,7 +3,12 @@ export const request = async <T>(
   config?: RequestInit,
 ): Promise<T> => {
   const response = await fetch(url, config);
-  return (await response.json()) as T;
+  if (!response.ok) {
+    const message = `An error has occured: ${response.status}`;
+    throw new Error(message);
+  }
+
+  return response.json() as Promise<T>;
 };
 
 const api = {

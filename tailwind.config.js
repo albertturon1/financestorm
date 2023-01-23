@@ -10,6 +10,7 @@ module.exports = {
       colors: {
         primaryBlack: '#161616',
         secondaryBlack: '#242424',
+        tertiaryBlack: '#323232',
       },
       width: {
         128: '32rem',

@@ -12,7 +12,7 @@ export default async function GlobalNav() {
 
   return (
     <div
-      className={`flex h-24 w-full items-center justify-between ${PADDING_TAILWIND} bg-secondaryBlack`}
+      className={`flex h-20 w-full items-center justify-between ${PADDING_TAILWIND} bg-tertiaryBlack fixed z-50`}
     >
       <Link href="/">
         <h1 className={`${linkStyle} text-3xl font-bold `}>{'FinanceStorm'}</h1>

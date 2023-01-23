@@ -42,9 +42,9 @@ const WalletValueOverTimeLineChart = ({
       <LineChart
         margin={{
           top: 5,
-          right: 30,
+          right: 35,
           left: 20,
-          bottom: 5,
+          bottom: 0,
         }}
         syncId="anyId"
       >

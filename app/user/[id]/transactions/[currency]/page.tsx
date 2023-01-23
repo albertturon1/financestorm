@@ -17,21 +17,17 @@ const CurrencyHistory = async ({
   params: CurrencyHistoryProps;
 }) => {
   const { currency, id } = params;
-  const history = await getUserCurrencyTransactions(currency, id);
+  const history = await getUserCurrencyTransactions({ currency, user_id: id });
 
   return (
-    <div className={`${PADDING_TAILWIND} h-full w-full`}>
+    <div className={`${PADDING_TAILWIND} h-full w-full bg-primaryBlack`}>
       <div className="flex gap-x-2">
         <PageTitle>{'Historia transakcji'}</PageTitle>
-        <FlagCountryCode code={currency} reverse className='text-2xl'/>
+        <FlagCountryCode code={currency} reverse className="text-2xl" />
       </div>
       <div className="mt-5 flex flex-col">
-        {history.items.length ? (
-          <Transactions
-            transactions={history.items}
-            baseCurrency={currency}
-            arrows
-          />
+        {history.length ? (
+          <Transactions transactions={history} baseCurrency={currency} arrows />
         ) : (
           <p>{'Nie masz żadnych transakcji w wybranej walucie'}</p>
         )}

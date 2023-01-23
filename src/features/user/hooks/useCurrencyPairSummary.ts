@@ -1,7 +1,6 @@
-import { PocketBaseDataResponse } from '@interfaces/IPocketBase';
-import { cutNumber } from '@utils/misc';
+import { Record } from 'pocketbase';
 
-import { Transaction } from '../history/components/Transactions';
+import { cutNumber } from '@utils/misc';
 
 export interface PairSummary {
   base_currency: string;
@@ -18,11 +17,9 @@ export interface PairSummary {
   appearance: number;
 }
 
-export const useCurrencyPairSummary = (
-  transactions: PocketBaseDataResponse<Transaction>,
-) => {
-  if (!transactions.items) return [];
-  return transactions.items.reduce((acc, t, index) => {
+export const useCurrencyPairSummary = (transactions: Record[]) => {
+  if (!transactions.length) return [];
+  return transactions.reduce((acc, t, index) => {
     const accIndex = acc.findIndex(
       (x) =>
         x.base_currency === t.base_currency &&

@@ -1,32 +1,31 @@
-import { Transaction } from '@features/user/history/components/Transactions';
+/* eslint-disable sonarjs/no-nested-template-literals */
+import PocketBase from 'pocketbase';
+
 import { Currencies } from '@interfaces/ICurrency';
-import { PocketBaseDataResponse } from '@interfaces/IPocketBase';
 import { User } from '@interfaces/models/IUser';
 import api from '@utils/api';
-import { genQueryString } from '@utils/misc';
+
+const pb = new PocketBase('http://127.0.0.1:8090');
 
 export const getUser = async (id: string) => {
   const url = `http://127.0.0.1:8090/api/collections/user/records/${id}`;
   return await api.get<User>(url);
 };
 
-export const getUserCurrencyTransactions = async (
-  currency?: Currencies,
-  user_id?: string,
-): Promise<PocketBaseDataResponse<Transaction>> => {
-  const filterCurrency = currency
-    ? `(base_currency="${currency}"||quote_currency="${currency}")`
+export const getUserCurrencyTransactions = async ({
+  currency,
+  user_id,
+}: {
+  currency?: Currencies;
+  user_id?: string;
+}) => {
+  const user_filter = user_id ? `user_id = "lxiry2v1ochapzp"` : '';
+  const currency_filter = currency
+    ? `(base_currency = "${currency.toLocaleLowerCase()}" || quote_currency = "${currency.toLocaleLowerCase()}")`
     : '';
-  const filterUser = user_id ? `user_id="${user_id}"` : '';
-  const filterArray = [filterUser, filterCurrency].filter((item) => item);
-  const filter =
-    filterArray.length > 1 ? filterArray.join('&&') : filterArray[0];
 
-  const args = genQueryString({
+  return await pb.collection('transaction').getFullList(200, {
     sort: '-created',
-    filter: currency || user_id ? filter : undefined,
+    filter: [user_filter, currency_filter].filter(Boolean).join('&&'),
   });
-
-  const url = `http://127.0.0.1:8090/api/collections/transaction/records?${args}`;
-  return await api.get<PocketBaseDataResponse<Transaction>>(url);
 };
