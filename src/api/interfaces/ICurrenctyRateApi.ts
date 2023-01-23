@@ -1,13 +1,13 @@
-import { Currencies, CurrenciesWithPLN } from '@interfaces/ICurrency';
+import { Currencies } from '@interfaces/ICurrency';
 
-export interface CurrencyRatePairRequest {
-  baseCurrency: CurrenciesWithPLN;
-  quoteCurrency: CurrenciesWithPLN;
+export interface CurrencyRatePair {
+  base_currency: Currencies;
+  quote_currency: Currencies;
 }
-
-export interface DailyCurrencyTimeseriesRequest {
-  base: Currencies;
-  symbols?: Currencies[];
+export interface CurrencyRateDates {
   start_date: string;
   end_date: string;
 }
+
+export type DailyCurrencyTimeseriesRequest = CurrencyRateDates &
+  CurrencyRatePair;

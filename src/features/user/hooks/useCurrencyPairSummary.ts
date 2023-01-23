@@ -1,5 +1,5 @@
 import { PocketBaseDataResponse } from '@interfaces/IPocketBase';
-import { roundNumber } from '@utils/misc';
+import { cutNumber } from '@utils/misc';
 
 import { Transaction } from '../history/components/Transactions';
 
@@ -85,7 +85,7 @@ export const useCurrencyPairSummary = (
         for (const [key, value] of Object.entries(item)) {
           if (typeof value === 'number') {
             const typedKey = key as keyof PairSummary;
-            item[typedKey] = roundNumber(value, 4);
+            item[typedKey] = cutNumber(value, 4);
           }
         }
       });

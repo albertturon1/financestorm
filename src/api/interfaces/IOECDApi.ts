@@ -16,7 +16,7 @@ interface Header {
   links: Links[];
 }
 
-type Observation = [number, number, null];
+export type Observation = [number, null];
 
 interface Observations {
   string: Observation;
@@ -24,7 +24,9 @@ interface Observations {
 
 interface DataSet {
   action: string;
-  series: { '0.0.0.0.0': { observations: Observations[] } };
+  series: {
+    '0.0.0.0.0': { observations: Observations; attributes: number[] };
+  };
 }
 
 interface Value {
@@ -69,4 +71,9 @@ export interface CountryMonthlyInflationRateResponse {
   header: Header;
   dataSets: DataSet[];
   structure: Structure;
+}
+
+export interface MonthlyInflationRatesRequest {
+  startPeriod: string;
+  endPeriod: string;
 }

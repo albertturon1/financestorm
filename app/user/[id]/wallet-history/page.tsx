@@ -1,99 +1,62 @@
-'use client';
-
-import Loader from '@components/Loader';
 import PageTitle from '@components/PageTitle';
 import { PADDING_TAILWIND } from '@constants/Globals';
-import useDailyCurrencyRatesData from '@features/currencies/hooks/useDailyCurrencyRatesData';
-import useMonthlyCurrencyRatesData from '@features/currencies/hooks/useMonthlyCurrencyRatesData';
-import useMonthlyInflationData from '@features/currencies/hooks/useMonthlyInflationData';
-import useGetWalletValueOverTime from '@hooks/useGetWalletValueOverTime';
-import { useMonthlyInflationRatesQuery } from '@src/api/OECDApi';
-import useFetch from '@utils/reactQuery/useFetch';
+import UserBalanceCurrencies from '@features/user/components/CurrencyBalancePercentage/UserBalanceCurrencies';
+import InflationOverMonthsLineChart from '@features/walletHistory/components/InflationOverMonthsLineChart';
+import WalletValueOverTimeLineChart from '@features/walletHistory/components/WalletValueOverTimeLineChart';
+import inflationWalletOverTimeValue from '@features/walletHistory/tools/inflationWalletOverTimeValue';
+import walletValueOverTime from '@features/walletHistory/tools/walletValueOverTime';
+import { RechartsMultiData } from '@interfaces/ICharts';
+import { getUser } from '@src/api/UserApi';
 
-import { User, UserParams } from '../page';
-import DailyWalletLineChart from './components/DailyWalletLineChart';
+import { UserParams } from '../page';
 
-const useUserQuery = (id: string) =>
-  useFetch<User>({
-    url: `http://127.0.0.1:8090/api/collections/user/records/${id}`,
-    key: ['user'],
-  });
-
-const WalletHistoryPage = ({ params }: { params: UserParams }) => {
+const WalletHistoryPage = async ({ params }: { params: UserParams }) => {
   const { id } = params;
-  const { data: user } = useUserQuery(id);
-
-  const quoteCurrency = 'pln';
-
-  const { data: monthlyInflation } = useMonthlyInflationRatesQuery({
-    startPeriod: '2014-01',
-    endPeriod: `${new Date().getFullYear()}-${new Date().getMonth() + 1}`,
+  const user = await getUser(id);
+  const dailyWalletValue = await walletValueOverTime({
+    user_currencies: user.currencies,
+    quote_currency: user.current_currency,
+    years: 3,
   });
 
-  const monthlyInflationNormalized = useMonthlyInflationData(monthlyInflation);
+  const inflationDailyWalletValue = await inflationWalletOverTimeValue(
+    dailyWalletValue,
+  );
 
-  //const [gbp_monthly] = useMonthlyCurrencyRatesData({
-  //  baseCurrency: 'gbp',
-  //  quoteCurrency,
-  //});
-  //const [usd_monthly] = useMonthlyCurrencyRatesData({
-  //  baseCurrency: 'usd',
-  //  quoteCurrency,
-  //});
-  //const [chf_monthly] = useMonthlyCurrencyRatesData({
-  //  baseCurrency: 'chf',
-  //  quoteCurrency,
-  //});
-  //const [eur_monthly] = useMonthlyCurrencyRatesData({
-  //  baseCurrency: 'eur',
-  //  quoteCurrency,
-  //});
-  const [gbp_daily] = useDailyCurrencyRatesData({
-    baseCurrency: 'gbp',
-    quoteCurrency,
-  });
-  const [usd_daily] = useDailyCurrencyRatesData({
-    baseCurrency: 'usd',
-    quoteCurrency,
-  });
-  const [chf_daily] = useDailyCurrencyRatesData({
-    baseCurrency: 'chf',
-    quoteCurrency,
-  });
-  const [eur_daily] = useDailyCurrencyRatesData({
-    baseCurrency: 'eur',
-    quoteCurrency,
-  });
+  const inflationData: RechartsMultiData = {
+    name: 'Realna wartość portfela',
+    data: inflationDailyWalletValue,
+  };
 
-  //const monthlyWalletValue = useGetWalletValueOverTime({
-  //  gbp: gbp_monthly?.data,
-  //  eur: eur_monthly?.data,
-  //  usd: usd_monthly?.data,
-  //  chf: chf_monthly?.data,
-  //  user,
-  //  monthlyInflationNormalized,
-  //});
-  const dailyWalletValue = useGetWalletValueOverTime({
-    gbp: gbp_daily?.data,
-    eur: eur_daily?.data,
-    usd: usd_daily?.data,
-    chf: chf_daily?.data,
-    user,
-    monthlyInflationNormalized,
-  });
+  const chartData: RechartsMultiData[] = [
+    {
+      name: 'Wartość portfela',
+      data: dailyWalletValue.rates,
+    },
+    inflationData,
+  ];
 
   return (
-    <div className={`${PADDING_TAILWIND} flex flex-1 flex-col`}>
-      <PageTitle className="pb-5">
-        {'Wartość portfela na przestrzeni lat'}
-      </PageTitle>
-      {dailyWalletValue.length ? (
-        <div className="h-screen w-full pb-40">
-          <DailyWalletLineChart data={dailyWalletValue} />
-        </div>
-      ) : (
-        <Loader />
-      )}
+    <div className={`${PADDING_TAILWIND} flex h-full w-full flex-col pb-4`}>
+      <div className="flex w-full justify-between">
+        <PageTitle className="w-full justify-between pb-5 pr-7">
+          {'Wartość portfela na przestrzeni lat'}
+        </PageTitle>
+        <UserBalanceCurrencies
+          containerClassName="pr-8"
+          itemClassName="border border-slate-600"
+          horizontal
+          user={user}
+          accountID={false}
+          baseValue={false}
+        />
+      </div>
+      <div className="h-3/4">
+        <WalletValueOverTimeLineChart data={chartData} />
+      </div>
+      <div className="h-1/4 w-full">
+        <InflationOverMonthsLineChart data={inflationData.data} />
+      </div>
     </div>
   );
 };

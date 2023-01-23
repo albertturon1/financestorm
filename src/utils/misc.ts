@@ -56,7 +56,52 @@ export const getFloatBetweenRange = (min = 0, max = 1) =>
   Math.random() * (max - min) + min;
 
 // eslint-disable-next-line func-style
-export function roundNumber(number: number, n = 2) {
-  const d = Math.pow(10, n);
-  return Math.round((number + Number.EPSILON) * d) / d;
-}
+export const cutNumber = (number: number, n = 3) => Number(number.toFixed(n));
+
+export const previousDate = (
+  date: Date,
+  // eslint-disable-next-line default-param-last
+  years = 1,
+  months?: number,
+  days?: number,
+) => {
+  const dateCopy = new Date(date);
+
+  dateCopy.setFullYear(dateCopy.getFullYear() - years);
+  if (months) dateCopy.setMonth(dateCopy.getMonth() + 1 - months);
+  if (days) dateCopy.setDate(dateCopy.getDate() - days);
+
+  return dateCopy;
+};
+
+export const serverDate = (date: Date) => date.toISOString().split('T')[0];
+
+const serverDateParts = {
+  year: 1,
+  month: 2,
+};
+type ServerDateParts = keyof typeof serverDateParts;
+
+export const serverDateToParts = (
+  date: string,
+  type: ServerDateParts = 'month',
+) => date.split('-').slice(0, serverDateParts[type]).join('-');
+
+export const getNDaysPastServerDate = (days = 1) => {
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - days);
+
+  return serverDate(yesterday);
+};
+
+export const yAxisFormater = (number: number) => {
+  if (number > 1000000000) {
+    return `${(number / 1000000000).toString()}B`;
+  } else if (number > 1000000) {
+    return `${(number / 1000000).toString()}M`;
+  } else if (number > 1000) {
+    return `${(number / 1000).toString()}K`;
+  } else {
+    return number.toString();
+  }
+};

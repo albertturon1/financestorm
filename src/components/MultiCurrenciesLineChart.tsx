@@ -1,5 +1,6 @@
 'use client';
 
+import abbreviate from 'number-abbreviate';
 import {
   ResponsiveContainer,
   LineChart,
@@ -8,60 +9,24 @@ import {
   YAxis,
   Line,
   Tooltip,
-  TooltipProps,
-  Brush,
-  ComposedChart,
   Legend,
   ReferenceLine,
+  Label,
 } from 'recharts';
 
-import { BALANCE_PERCENTAGE_COLORS } from '@features/user/components/CurrencyBalancePercentage/UserBalancePercentage';
-import { LabeledRates } from '@interfaces/models/IExchangerate';
-import { roundNumber } from '@utils/misc';
+import { CHART_THEME } from '@constants/chartTheme';
+import { RechartsMultiData } from '@interfaces/ICharts';
 
-import FlagCountryCode from './FlagCountryCode';
-
-const CustomTooltip = ({ active, payload }: TooltipProps<number, string>) => {
-  console.log(payload);
-  if (!active || !payload?.length) return null;
-  return (
-    <div className="mx-10 rounded border border-slate-50">
-      <div className=" flex flex-col gap-y-3 bg-secondaryBlack  p-4">
-        <p className="pb-2">{`Dzień: ${payload[0].payload.label}`}</p>
-        {payload.map(({ payload }, index) => (
-          // eslint-disable-next-line react/no-array-index-key
-          <div key={index} className="mb-1 flex items-center  gap-x-2">
-            <div
-              className="h-4 w-4"
-              style={{ backgroundColor: BALANCE_PERCENTAGE_COLORS[index] }}
-            />
-            <FlagCountryCode
-              reverse
-              code={payload.from.toLowerCase()}
-              flagStyle={{
-                width: payload.from.toLowerCase() === 'chf' ? 17 : 24,
-              }}
-              boldName={false}
-            />
-            <p>{payload.value}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
-
-const MultiCurrenciesLineChart = ({
-  data,
-}: {
-  data: {
-    data: LabeledRates[];
-    name: string;
-  }[];
-}) => {
-  const values = data.flatMap((c) => c.data.map((e) => e.value));
+const MultiCurrenciesLineChart = ({ data }: { data: RechartsMultiData[] }) => {
+  const values = data.flatMap((c) => c.data.map((d) => d.value));
   const minValue = Math.min(...values);
   const maxValue = Math.max(...values);
+  const yDomain = [Math.floor(minValue), Math.ceil(maxValue)];
+  const referenceLineLabel = {
+    offset: 20,
+    fontSize: 18,
+    fontWeight: 700,
+  };
 
   return (
     <ResponsiveContainer>
@@ -72,7 +37,6 @@ const MultiCurrenciesLineChart = ({
           left: 20,
           bottom: 5,
         }}
-        data={data.flatMap((c) => c)}
       >
         <CartesianGrid strokeDasharray="2 2" />
         <XAxis
@@ -84,23 +48,49 @@ const MultiCurrenciesLineChart = ({
         />
         <Legend verticalAlign="top" wrapperStyle={{ lineHeight: '40px' }} />
         <YAxis
-          domain={[
-            roundNumber(minValue * 0.8, 3),
-            roundNumber(maxValue * 1.05, 3),
-          ]}
+          allowDecimals={false}
+          tickFormatter={abbreviate}
+          domain={yDomain}
         />
-        {data.map((d, index) => (
+        {data.map((s, index) => (
           <Line
             dataKey="value"
-            data={d.data}
-            name={d.name}
-            key={d.name}
+            data={s.data}
+            name={s.name}
+            key={s.name}
             type="monotone"
-            stroke={BALANCE_PERCENTAGE_COLORS[index]}
+            stroke={CHART_THEME[index]}
             dot={false}
           />
         ))}
-        <Tooltip content={<CustomTooltip />} cursor={false} />
+        <ReferenceLine
+          y={minValue}
+          stroke={CHART_THEME.slice(-1)[0]}
+          strokeDasharray="3 4"
+        >
+          <Label
+            value={`Min: ${minValue}`}
+            position="bottom"
+            {...referenceLineLabel}
+          />
+        </ReferenceLine>
+        <ReferenceLine
+          y={maxValue}
+          stroke={CHART_THEME.slice(-1)[0]}
+          strokeDasharray="3 4"
+        >
+          <Label
+            value={`Max: ${maxValue}`}
+            position="top"
+            {...referenceLineLabel}
+          />
+        </ReferenceLine>
+        <Tooltip
+          cursor={false}
+          labelFormatter={(name) => `Dzień: ${name as string}`}
+          labelStyle={{ color: 'white', fontSize: 16, fontWeight: 700 }}
+          contentStyle={{ backgroundColor: '#161616' }}
+        />
       </LineChart>
     </ResponsiveContainer>
   );

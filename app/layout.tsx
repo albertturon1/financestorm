@@ -2,6 +2,7 @@ import '@styles/global.css';
 import { ReactNode } from 'react';
 
 import GlobalNav from './GlobalNav';
+import ReactQueryWrapper from './ReactQueryWrapper';
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
@@ -10,11 +11,13 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <title>{'Projekt inżynierski'}</title>
       </head>
       <body className="flex h-screen w-screen flex-col">
-        {/* @ts-expect-error Server Component */}
-        <GlobalNav />
-        <div className="flex h-full w-full flex-col bg-primaryBlack pt-5">
-          {children}
-        </div>
+        <ReactQueryWrapper>
+          {/* @ts-expect-error Server Component */}
+          <GlobalNav />
+          <main className={'flex h-full w-full flex-col bg-primaryBlack pt-6'}>
+            {children}
+          </main>
+        </ReactQueryWrapper>
       </body>
     </html>
   );

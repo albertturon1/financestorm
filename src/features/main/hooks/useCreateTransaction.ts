@@ -6,7 +6,7 @@ import { CURRENCIES } from '@constants/currencies';
 import { CurrenciesPairs } from '@features/main/hooks/useCurrentCurrencyRatesData';
 import { Transaction } from '@features/user/history/components/Transactions';
 import { Currencies } from '@interfaces/ICurrency';
-import { getFloatBetweenRange, roundNumber } from '@utils/misc';
+import { getFloatBetweenRange, cutNumber } from '@utils/misc';
 import pb from 'src/api/PocketBase';
 
 const getMultipleRandom = (arr: string[], num = 2) => {
@@ -26,10 +26,10 @@ export const createTransaction = async (currencies: CurrenciesPairs) => {
   const [foreignCurrency] = getMultipleRandom(foreignCurrencies, 1);
 
   const base_currency: Currencies =
-    plnIndex === 0 ? 'pln' : (foreignCurrency as Currencies);
+    plnIndex === 0 ? 'pln' : (foreignCurrency );
 
   const quote_currency: Currencies =
-    plnIndex === 0 ? (foreignCurrency as Currencies) : 'pln';
+    plnIndex === 0 ? (foreignCurrency ) : 'pln';
 
   const plnForeignKey = `pln_${foreignCurrency}`;
 
@@ -40,10 +40,10 @@ export const createTransaction = async (currencies: CurrenciesPairs) => {
   const exchange_rate: number =
     plnIndex === 1 ? presentExchangeRate : 1 / presentExchangeRate;
 
-  const roundedExchangeRate = roundNumber(exchange_rate, decimalPlaces);
+  const roundedExchangeRate = cutNumber(exchange_rate, decimalPlaces);
 
-  const base_currency_value = roundNumber(getFloatBetweenRange(10, 10000), 0);
-  const quote_currency_value = roundNumber(
+  const base_currency_value = cutNumber(getFloatBetweenRange(10, 10000), 0);
+  const quote_currency_value = cutNumber(
     base_currency_value * roundedExchangeRate,
     decimalPlaces,
   );

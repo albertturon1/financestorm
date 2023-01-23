@@ -5,12 +5,12 @@ import { BsArrowDownSquareFill, BsArrowUpSquareFill } from 'react-icons/bs';
 
 import FlagCountryCode from '@components/FlagCountryCode';
 import { CurrencyResponse } from '@features/main/hooks/useCurrentCurrencyRatesData';
-import { roundNumber } from '@utils/misc';
+import { cutNumber } from '@utils/misc';
 
 const getDailyChangePercent = (present: number, past: number) =>
-  roundNumber(((present - past) / past) * 100, 2);
+  cutNumber(((present - past) / past) * 100, 2);
 
-const roundField = (value: number) => roundNumber(value, 5);
+const roundField = (value: number) => cutNumber(value, 5);
 
 const dailyChangeStyle = (change: number) => {
   if (change === 0) return 'text-slate-500';

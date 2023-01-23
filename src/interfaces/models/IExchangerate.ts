@@ -1,18 +1,32 @@
+import { LabelValue } from '@interfaces/ICharts';
 import { Currencies } from '@interfaces/ICurrency';
 
-type Rates = Record<Currencies, number>;
-export type LabeledRates = Rates & { label: string };
+export type CurrencyRate = Record<Currencies, number>;
+export type LabeledRates = CurrencyRate & LabelValue;
 
 export interface TimeseriesRate {
-  [key: string]: Partial<Rates>;
+  [key: string]: CurrencyRate;
 }
 
-export interface ExchangerateTimeseriesResponse {
+export interface ExchangeRateTimeseriesResponse {
   motd: string;
   success: boolean;
   timeseries: boolean;
   base: Currencies;
   start_date: string;
   end_date: string;
-  rates: TimeseriesRate[];
+  rates: TimeseriesRate;
+}
+export interface ExchangeRateTimeseriesNormalized {
+  base: Currencies;
+  start_date: string;
+  end_date: string;
+  rates: NormalizedCurrencyExchangeRate[];
+}
+
+export type NormalizedCurrencyExchangeRate = LabelValue & Partial<FromTo>;
+
+export interface FromTo {
+  from: Currencies;
+  to: Currencies;
 }

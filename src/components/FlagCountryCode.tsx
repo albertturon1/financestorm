@@ -4,11 +4,11 @@ import Flag from 'react-world-flags';
 import { Currencies } from '@interfaces/ICurrency';
 
 const FLAGS: Record<Currencies, string> = {
-  pln: 'pl',
-  eur: 'EU',
-  usd: 'usa',
-  chf: 'che',
-  gbp: 'gbr',
+  PLN: 'pl',
+  EUR: 'EU',
+  USD: 'usa',
+  CHF: 'che',
+  GBP: 'gbr',
 };
 
 const FlagCountryCode = ({
@@ -33,15 +33,13 @@ const FlagCountryCode = ({
   >
     <div className={`mr-1 w-10 ${flagClassName}`}>
       <Flag
-        name={code.toUpperCase()}
-        alt={`${code.toUpperCase()} flag`}
-        code={FLAGS[code as Currencies]}
+        name={code}
+        alt={`${code} flag`}
+        code={FLAGS[code]}
         style={flagStyle}
       />
     </div>
-    <p className={boldName ? 'font-semibold' : ''}>
-      {`${code.toUpperCase()}`}&nbsp;
-    </p>
+    <p className={boldName ? 'font-semibold' : ''}>{`${code}`}&nbsp;</p>
   </div>
 );
 

@@ -1,4 +1,4 @@
-export const CURRENCIES = [
+export const CURRENCIES_WITHOUT_PLN = [
   'AED',
   'AFN',
   'ALL',
@@ -171,3 +171,5 @@ export const CURRENCIES = [
   'ZMW',
   'ZWL',
 ] as const;
+
+export const CURRENCIES = [...CURRENCIES_WITHOUT_PLN, 'PLN'];

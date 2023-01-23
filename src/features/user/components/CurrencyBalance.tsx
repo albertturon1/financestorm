@@ -8,30 +8,34 @@ const CurrencyBalance = ({
   currencyCode,
   value,
   accountID,
-  className,
+  className = '',
   current_currency,
+  baseValue,
 }: {
   userID: string;
   currencyCode: Currencies;
   value: number;
-  accountID: string;
+  accountID?: string;
   className?: string;
   current_currency: Currencies;
+  baseValue?: number;
 }) => (
   <Link
     href={`/user/${userID}/transactions/${currencyCode}`}
-    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-    className={`${className} lg flex w-full flex-col px-2 pt-4 pb-3 text-sm
-		  ${currencyCode !== current_currency ? 'cursor-pointer' : ''}`}
+    className={`lg flex w-full flex-col px-2 pt-4 pb-3 text-sm
+		  ${currencyCode !== current_currency ? 'cursor-pointer' : ''} ${className} `}
   >
-    <div className="flex justify-between">
+    <div className="flex items-center justify-between">
       <FlagCountryCode code={currencyCode} flagClassName="w-6" />
-      <p className="text-sm">{accountID}</p>
+      {accountID && <p className="text-sm">{accountID}</p>}
     </div>
-    <div className="flex justify-between pt-2">
+    <div className="flex items-center justify-between py-1.5">
       <p>{'Saldo bankowe'}</p>
       <p className="text-base font-semibold">{`${value} ${currencyCode.toUpperCase()}`}</p>
     </div>
+    {baseValue && currencyCode !== current_currency && (
+      <p className="self-end text-base font-semibold">{`${baseValue} ${current_currency.toUpperCase()}`}</p>
+    )}
   </Link>
 );
 

@@ -2,9 +2,9 @@ import {
   CurrenciesPairs,
   CurrencyResponse,
 } from '@features/main/hooks/useCurrentCurrencyRatesData';
+import { User } from '@interfaces/models/IUser';
 import { CurrencyRateData } from '@src/api/interfaces/ICurrenctyRateApi';
-import { roundNumber } from '@utils/misc';
-import { User } from 'app/user/[id]/page';
+import { cutNumber } from '@utils/misc';
 
 type MonthlyCurrency = CurrencyRateData[] | undefined;
 
@@ -109,12 +109,12 @@ const useGetWalletValueOverTime = ({
     const eur_rate = eur_filter[i].close;
     const chf_rate = chf_filter[i].close;
 
-    const gbp_value = roundNumber(gbp_filter[i].close * user.gbp, 2);
-    const usd_value = roundNumber(usd_filter[i].close * user.usd, 2);
-    const eur_value = roundNumber(eur_rate * user.eur, 2);
-    const chf_value = roundNumber(chf_rate * user.chf, 2);
+    const gbp_value = cutNumber(gbp_filter[i].close * user.gbp, 2);
+    const usd_value = cutNumber(usd_filter[i].close * user.usd, 2);
+    const eur_value = cutNumber(eur_rate * user.eur, 2);
+    const chf_value = cutNumber(chf_rate * user.chf, 2);
     const sum = gbp_value + usd_value + eur_value + chf_value + user.pln;
-    monthSum = roundNumber(sum, 2);
+    monthSum = cutNumber(sum, 2);
 
     walletValue.push({
       label: gbp_filter[i].label,

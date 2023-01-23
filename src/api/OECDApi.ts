@@ -1,18 +1,16 @@
-import { CountryMonthlyInflationRateResponse } from '@src/api/interfaces/IOECDApi';
-import useFetch from '@utils/reactQuery/useFetch';
+import {
+  CountryMonthlyInflationRateResponse,
+  MonthlyInflationRatesRequest,
+} from '@src/api/interfaces/IOECDApi';
+import api from '@utils/api';
+import { genQueryString } from '@utils/misc';
 
-export const useMonthlyInflationRatesQuery = ({
-  startPeriod,
-  endPeriod,
-}: {
-  startPeriod: string;
-  endPeriod: string;
-}) =>
-  useFetch<CountryMonthlyInflationRateResponse>({
-    url: 'https://stats.oecd.org/sdmx-json/data/DP_LIVE/POL.CPI.TOT.AGRWTH.M/OECD?json-lang=pl&dimensionAtObservation=allDimensions',
-    params: { startPeriod, endPeriod },
-    key: ['a'],
-    config: {
-      staleTime: 600000,
-    },
-  });
+export const getMonthlyInflationRates = async (
+  props: MonthlyInflationRatesRequest,
+) => {
+  const url =
+    'https://stats.oecd.org/sdmx-json/data/DP_LIVE/POL.CPI.TOT.AGRWTH.M/OECD?json-lang=pl&dimensionAtObservation=allDimensions';
+
+  const args = genQueryString(props);
+  return await api.get<CountryMonthlyInflationRateResponse>(`${url}?${args}`);
+};

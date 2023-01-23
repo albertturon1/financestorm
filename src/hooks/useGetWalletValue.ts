@@ -1,6 +1,7 @@
 import { CurrencyResponse } from '@features/currencies/hooks/useDailyCurrencyRatesData';
+
 import { CurrenciesPairs } from '@features/main/hooks/useCurrentCurrencyRatesData';
-import { roundNumber } from '@utils/misc';
+import { cutNumber } from '@utils/misc';
 import { User } from 'app/user/[id]/page';
 
 const useGetWalletValue = (
@@ -33,7 +34,7 @@ const useGetWalletValue = (
     wallet,
     walletInBase: {
       ...walletInBase,
-      summary: roundNumber(walletInBase.summary, 3),
+      summary: cutNumber(walletInBase.summary, 3),
     },
   };
 };

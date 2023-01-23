@@ -1,14 +1,13 @@
 import { Transaction } from '@features/user/history/components/Transactions';
 import { Currencies } from '@interfaces/ICurrency';
 import { PocketBaseDataResponse } from '@interfaces/IPocketBase';
+import { User } from '@interfaces/models/IUser';
+import api from '@utils/api';
 import { genQueryString } from '@utils/misc';
-import { User } from 'app/user/[id]/page';
 
-export const getUser = async (id: string): Promise<User> => {
-  const res = await fetch(
-    `http://127.0.0.1:8090/api/collections/user/records/${id}`,
-  );
-  return (await res.json()) as Promise<User>;
+export const getUser = async (id: string) => {
+  const url = `http://127.0.0.1:8090/api/collections/user/records/${id}`;
+  return await api.get<User>(url);
 };
 
 export const getUserCurrencyTransactions = async (
@@ -29,6 +28,5 @@ export const getUserCurrencyTransactions = async (
   });
 
   const url = `http://127.0.0.1:8090/api/collections/transaction/records?${args}`;
-  const res = await fetch(url);
-  return (await res.json()) as Promise<PocketBaseDataResponse<Transaction>>;
+  return await api.get<PocketBaseDataResponse<Transaction>>(url);
 };
