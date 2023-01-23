@@ -1,5 +1,7 @@
 'use client';
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import abbreviate from 'number-abbreviate';
 import {
   ResponsiveContainer,
@@ -49,7 +51,8 @@ const MultiCurrenciesLineChart = ({ data }: { data: RechartsMultiData[] }) => {
         <Legend verticalAlign="top" wrapperStyle={{ lineHeight: '40px' }} />
         <YAxis
           allowDecimals={false}
-          tickFormatter={abbreviate}
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any
+          tickFormatter={abbreviate as any}
           domain={yDomain}
         />
         {data.map((s, index) => (

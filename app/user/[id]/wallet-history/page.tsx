@@ -42,6 +42,7 @@ const WalletHistoryPage = async ({ params }: { params: UserParams }) => {
         <PageTitle className="w-full justify-between pb-5 pr-7">
           {'Wartość portfela na przestrzeni lat'}
         </PageTitle>
+        {/* @ts-expect-error Server Component */}
         <UserBalanceCurrencies
           containerClassName="pr-8"
           itemClassName="border border-slate-600"

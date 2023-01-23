@@ -42,6 +42,7 @@ const User = async ({ params }: { params: UserParams }) => {
         </div>
       </div>
       <div className="mt-10">
+        {/* @ts-expect-error Server Component */}
         <UserLastTransactions user={user} />
       </div>
       {/*<div className="mt-10">

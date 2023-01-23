@@ -1,5 +1,7 @@
 'use client';
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import abbreviate from 'number-abbreviate';
 import {
   ResponsiveContainer,
@@ -58,7 +60,8 @@ const WalletValueOverTimeLineChart = ({
         <YAxis
           domain={yDomain}
           allowDecimals={false}
-          tickFormatter={abbreviate}
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment
+          tickFormatter={abbreviate as any}
           tickCount={7}
         />
         {data.map((s, index) => (

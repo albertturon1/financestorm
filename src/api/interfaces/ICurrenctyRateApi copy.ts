@@ -1,6 +1,6 @@
-import { CurrenciesWithPLN } from '@interfaces/ICurrency';
+import { Currencies } from '@interfaces/ICurrency';
 
 export interface CurrencyRatePairRequest {
-  baseCurrency: CurrenciesWithPLN;
-  quoteCurrency: CurrenciesWithPLN;
+  baseCurrency: Currencies;
+  quoteCurrency: Currencies;
 }

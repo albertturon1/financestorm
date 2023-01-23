@@ -1,7 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 import { ReactElement } from 'react';
 
 import { TooltipProps } from 'recharts';
 
+import FlagCountryCode from '@components/FlagCountryCode';
 import { CHART_THEME } from '@constants/chartTheme';
 
 const MultiCurrenciesLineChartTooltip = ({

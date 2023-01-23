@@ -1,4 +1,4 @@
-import { User } from 'app/user/[id]/page';
+import { User } from '@interfaces/models/IUser';
 import { getUserCurrencyTransactions } from 'src/api/UserApi';
 
 import Transactions from '../history/components/Transactions';

@@ -1,3 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
+
 import { TooltipProps } from 'recharts';
 
 import FlagCountryCode from '@components/FlagCountryCode';
@@ -10,7 +15,7 @@ const UserBalancePercentageTooltip = ({
 }: TooltipProps<number, string> & {
   current_currency: Currencies;
 }) => {
-  if (!active) return null;
+  if (!active || !payload?.length) return null;
   return (
     <div className="gap-y-3 rounded border border-slate-50 bg-secondaryBlack p-4">
       <div className="flex gap-x-2">
