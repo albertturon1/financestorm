@@ -38,9 +38,13 @@ const inflationWalletOverTimeValue = async (
 
   const monthlyInflationNormalized = await monthlyInflationData({
     startPeriod: dailyWalletStartMonth,
-    endPeriod: dailyWalletEndMonth,
+    endPeriod: dailyWalletEndMonth, //API doesnt respect endDate, returns from last month
   });
-  const monthlyInflation = monthlyInflationNormalized.reverse(); //reverse to start from most recent month
+
+  const monthlyInflation = monthlyInflationNormalized
+    .filter((month) => month.label <= '2021-01')
+    .reverse(); //reverse to start from most recent month
+
   const inflationSums = inflationSumPerMonth(monthlyInflation);
 
   //const [inflationSumsStartMonth] = Object.keys(inflationSums).slice(-1);

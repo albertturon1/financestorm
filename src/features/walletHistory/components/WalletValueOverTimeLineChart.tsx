@@ -27,9 +27,9 @@ const WalletValueOverTimeLineChart = ({
   data: RechartsMultiData[];
 }) => {
   const values = data.flatMap((c) => c.data.map((d) => d.value));
-  const minValue = Math.min(...values);
-  const maxValue = Math.max(...values);
-  const yDomain = [Math.floor(minValue) * 0.95, Math.ceil(maxValue) * 1.05];
+  const minValue = Math.min(...values) - Math.min(...values) * 0.05;
+  const maxValue = Math.max(...values) + Math.max(...values) * 0.05;
+  const yDomain = [minValue, maxValue];
 
   const referenceLineLabel = {
     offset: 20,

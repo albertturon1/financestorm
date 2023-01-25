@@ -1,9 +1,7 @@
 import { LabelValue } from '@interfaces/ICharts';
-import {
-  MonthlyInflationRatesRequest,
-  Observation,
-} from '@src/api/interfaces/IOECDApi';
+import { MonthlyInflationRatesRequest } from '@src/api/interfaces/IOECDApi';
 import { getMonthlyInflationRates } from '@src/api/OECDApi';
+import normalizOECDData from '@utils/normalizOECDData';
 
 const monthlyInflationData = async ({
   startPeriod,
@@ -14,16 +12,7 @@ const monthlyInflationData = async ({
     endPeriod,
   });
 
-  const labels = data.structure.dimensions.observation[0].values;
-
-  const observations =
-    data.dataSets[0].series?.['0:0:0:0:0' as '0.0.0.0.0'].observations;
-
-  const series = Object.values(observations).map((e) => (e as Observation)[0]);
-  return labels.map((label, index) => ({
-    label: label.id,
-    value: series[index],
-  }));
+  return normalizOECDData(data);
 };
 
 export default monthlyInflationData;

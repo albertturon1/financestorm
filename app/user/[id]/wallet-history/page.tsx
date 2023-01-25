@@ -16,12 +16,15 @@ const WalletHistoryPage = async ({ params }: { params: UserParams }) => {
   const dailyWalletValue = await walletValueOverTime({
     user_currencies: user.currencies,
     quote_currency: user.current_currency,
-    years: 1,
+    years: 3,
   });
+  
+  const chuj = dailyWalletValue.rates.filter((a) => a.label < '2021-01-01');
 
-  const inflationDailyWalletValue = await inflationWalletOverTimeValue(
-    dailyWalletValue,
-  );
+  const inflationDailyWalletValue = await inflationWalletOverTimeValue({
+    ...dailyWalletValue,
+    rates: chuj,
+  });
 
   const inflationData: RechartsMultiData = {
     name: 'Realna wartość portfela',
@@ -31,7 +34,7 @@ const WalletHistoryPage = async ({ params }: { params: UserParams }) => {
   const chartData: RechartsMultiData[] = [
     {
       name: 'Wartość portfela',
-      data: dailyWalletValue.rates,
+      data: chuj,
     },
     inflationData,
   ];

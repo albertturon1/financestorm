@@ -67,7 +67,7 @@ interface Structure {
   annotations: Annotations[];
 }
 
-export interface CountryMonthlyInflationRateResponse {
+export interface OECDResponse {
   header: Header;
   dataSets: DataSet[];
   structure: Structure;
