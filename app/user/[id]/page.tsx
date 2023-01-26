@@ -45,10 +45,8 @@ const User = async ({ params }: { params: UserParams }) => {
           <UserBalancePercentage user={user} />
         </div>
       </div>
-      <div className="mt-10">
+      <div className="mt-10 flex flex-col gap-y-10">
         <UserLastTransactions transactions={transactions} />
-      </div>
-      <div className="mt-10">
         <UserCurrencyPairSummary transactions={transactions} />
       </div>
     </div>

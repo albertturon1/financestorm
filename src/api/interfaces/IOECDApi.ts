@@ -19,14 +19,12 @@ interface Header {
 export type Observation = [number, null];
 
 interface Observations {
-  string: Observation;
+  [x: string]: Observation;
 }
 
 interface DataSet {
   action: string;
-  series: {
-    '0.0.0.0.0': { observations: Observations; attributes: number[] };
-  };
+  observations: Observations;
 }
 
 interface Value {

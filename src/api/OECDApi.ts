@@ -12,7 +12,7 @@ export const getMonthlyInflationRates = async (
     'https://stats.oecd.org/sdmx-json/data/DP_LIVE/POL.CPI.TOT.AGRWTH.M/OECD?json-lang=pl&dimensionAtObservation=allDimensions';
 
   const args = genQueryString(props);
-  return await api.get<OECDResponse>(`${url}?${args}`);
+  return await api.get<OECDResponse>(`${url}&${args}`);
 };
 
 export const getMonthlyCPI = async (props: MonthlyInflationRatesRequest) => {
@@ -20,5 +20,5 @@ export const getMonthlyCPI = async (props: MonthlyInflationRatesRequest) => {
     'https://stats.oecd.org/sdmx-json/data/DP_LIVE/POL.CPI.TOT.IDX2015.M/OECD?json-lang=pl&dimensionAtObservation=allDimensions';
 
   const args = genQueryString(props);
-  return await api.get<OECDResponse>(`${url}?${args}`);
+  return await api.get<OECDResponse>(`${url}&${args}`);
 };

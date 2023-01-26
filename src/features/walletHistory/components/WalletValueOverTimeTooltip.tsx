@@ -25,16 +25,28 @@ const WalletValueOverTimeTooltip = ({
             <p>{`${payload[index].name}:`}</p>
             <p>{p.value}</p>
           </div>
-          {!!p.inflationPercentage && (
+          {!!p.monthlyInflation && (
+            <div className={row}>
+              <p>{'Miesięczna inflacja: '}</p>
+              <p>{`${p.monthlyInflation}%`}</p>
+            </div>
+          )}
+          {!!p.cumulativeInflation && (
             <div className={row}>
               <p>{'Skumulowana inflacja: '}</p>
-              <p>{`${p.inflationPercentage}%`}</p>
+              <p>{`${p.cumulativeInflation}%`}</p>
             </div>
           )}
           {!!p.inflationLoss && (
             <div className={row}>
               <p>{'Utrata wartości: '}</p>
               <p>{`${p.inflationLoss}`}</p>
+            </div>
+          )}
+          {!!p.cpi && p.cpi > 0 && (
+            <div className={row}>
+              <p>{'CPI: '}</p>
+              <p>{`${p.cpi}`}</p>
             </div>
           )}
         </>

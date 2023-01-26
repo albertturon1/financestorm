@@ -16,14 +16,12 @@ const WalletHistoryPage = async ({ params }: { params: UserParams }) => {
   const dailyWalletValue = await walletValueOverTime({
     user_currencies: user.currencies,
     quote_currency: user.current_currency,
-    years: 3,
+    years: 1,
   });
-  
-  const chuj = dailyWalletValue.rates.filter((a) => a.label < '2021-01-01');
 
   const inflationDailyWalletValue = await inflationWalletOverTimeValue({
     ...dailyWalletValue,
-    rates: chuj,
+    rates: dailyWalletValue.rates,
   });
 
   const inflationData: RechartsMultiData = {
@@ -34,7 +32,7 @@ const WalletHistoryPage = async ({ params }: { params: UserParams }) => {
   const chartData: RechartsMultiData[] = [
     {
       name: 'Wartość portfela',
-      data: chuj,
+      data: dailyWalletValue.rates,
     },
     inflationData,
   ];
@@ -55,10 +53,10 @@ const WalletHistoryPage = async ({ params }: { params: UserParams }) => {
           baseValue={false}
         />
       </div>
-      <div className="h-3/4">
+      <div className="h-5/6">
         <WalletValueOverTimeLineChart data={chartData} />
       </div>
-      <div className="h-1/4 w-full">
+      <div className="h-1/6 w-full">
         <InflationOverMonthsLineChart data={inflationData.data} />
       </div>
     </div>

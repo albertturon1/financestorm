@@ -14,9 +14,13 @@ const HomePage = async () => {
   const chartData = data.flatMap((d) => ({ name: d.base, data: d.rates }));
 
   return (
-    <div className={`${PADDING_TAILWIND} flex h-full w-full flex-col pb-4`}>
+    <div
+      className={`${PADDING_TAILWIND} flex h-full w-full flex-col pb-6`}
+    >
       <PageTitle>{'Kursy walut w stosunku do PLN'}</PageTitle>
-      <MultiCurrenciesLineChart data={chartData} />
+      <div className="flex h-full flex-col">
+        <MultiCurrenciesLineChart data={chartData} />
+      </div>
     </div>
   );
 };

@@ -22,6 +22,7 @@ const finder = (acc: WalletValueOverTime, value: number) => {
 const walletValueOverTime = async ({
   user_currencies,
   quote_currency,
+  end_date,
   ...props
 }: { user_currencies: UserCurrency[] } & Omit<
   DailyMultiCurrencyDataProps,
@@ -34,6 +35,7 @@ const walletValueOverTime = async ({
   const currencyRates = await dailyMultiCurrencyData({
     base_currencies: nonQuoteCurrencies,
     quote_currency,
+    end_date,
     ...props,
   });
   const currencyAmounts = userCurrenciesAmount(user_currencies);

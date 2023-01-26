@@ -61,14 +61,14 @@ export const cutNumber = (number: number, n = 3) => Number(number.toFixed(n));
 export const previousDate = (
   date: Date,
   // eslint-disable-next-line default-param-last
-  years = 1,
+  years?: number,
   months?: number,
   days?: number,
 ) => {
   const dateCopy = new Date(date);
 
-  dateCopy.setFullYear(dateCopy.getFullYear() - years);
-  if (months) dateCopy.setMonth(dateCopy.getMonth() + 1 - months);
+  if (years) dateCopy.setFullYear(dateCopy.getFullYear() - years);
+  if (months) dateCopy.setMonth(dateCopy.getMonth() - months);
   if (days) dateCopy.setDate(dateCopy.getDate() - days);
 
   return dateCopy;

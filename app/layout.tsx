@@ -10,11 +10,11 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <head>
         <title>{'Projekt inżynierski'}</title>
       </head>
-      <body className="h-full w-full bg-primaryBlack">
+      <body>
         <ReactQueryWrapper>
           {/* @ts-expect-error Server Component */}
           <GlobalNav />
-          <main className={'flex h-full w-full flex-col pt-28 pb-2'}>
+          <main className={'flex h-screen w-full flex-col pt-28 pb-2'}>
             {children}
           </main>
         </ReactQueryWrapper>

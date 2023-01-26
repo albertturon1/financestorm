@@ -1,13 +1,14 @@
 'use client';
 
+import TransactionsFlagCountry from '../history/components/TransactionsFlagCountry';
 import { PairSummary } from '../hooks/useCurrencyPairSummary';
 
 const CurrencyPairSummary = ({ summary }: { summary: PairSummary[] }) => (
   <div className="flex flex-col">
     {/*Header */}
-    <div className="mb-3 flex px-1">
+    <div className="mb-3 flex px-1 gap-x-2">
       <HeaderText wide>{'Waluta sprzedawana'}</HeaderText>
-      <HeaderText>{'Waluta kupowana'}</HeaderText>
+      <HeaderText wide>{'Waluta kupowana'}</HeaderText>
       <HeaderText>{'Liczba transakcji'}</HeaderText>
 
       <HeaderText wide>{'Śr. kwota sprzedawana'}</HeaderText>
@@ -46,9 +47,9 @@ const TransactionRecord = ({
 
   return (
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-    <div className={`flex w-full items-center py-3 px-1 ${className}`}>
-      <Text wide>{baseCurrency}</Text>
-      <Text>{quoteCurrency}</Text>
+    <div className={`flex w-full items-center py-3 px-1 gap-x-2 ${className}`}>
+      <TransactionsFlagCountry currency={quoteCurrency} className="w-52" />
+      <TransactionsFlagCountry currency={baseCurrency} className="w-52" />
       <Text>{summary.appearance}</Text>
 
       <Text wide>{`${summary.avg_quote_currency_value} ${quoteCurrency}`}</Text>

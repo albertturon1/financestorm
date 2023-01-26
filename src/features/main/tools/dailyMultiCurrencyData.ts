@@ -22,6 +22,7 @@ export type DailyMultiCurrencyDataProps = Omit<
   'base_currency'
 > & {
   years?: number;
+  end_date?: string;
   base_currencies: Currencies[];
 };
 
@@ -29,6 +30,7 @@ const dailyMultiCurrencyData = async ({
   years = 1,
   base_currencies, //waluty od których liczysz wartości np EUR/PLN
   quote_currency,
+  end_date,
 }: DailyMultiCurrencyDataProps): Promise<
   ExchangeRateTimeseriesNormalized[]
 > => {
@@ -39,7 +41,7 @@ const dailyMultiCurrencyData = async ({
   const data = await Promise.all(
     base_currencies.map(async (currency) => {
       const currency_start = Date.now();
-      let previousStartDate = new Date();
+      let previousStartDate = end_date ? new Date(end_date) : new Date();
 
       const yearsPairs: CurrencyRateDates[] = [];
 

@@ -12,14 +12,20 @@ export default async function GlobalNav() {
 
   return (
     <div
-      className={`flex h-20 w-full items-center justify-between ${PADDING_TAILWIND} bg-tertiaryBlack fixed z-50`}
+      className={`flex h-20 w-full items-center justify-between ${PADDING_TAILWIND} fixed z-50 bg-tertiaryBlack`}
     >
       <Link href="/">
-        <h1 className={`${linkStyle} text-3xl font-bold `}>{'FinanceStorm'}</h1>
+        <h1
+          className={`${linkStyle} text-5xl font-bold mt-1`}
+          style={{ fontFamily: 'BebasNeue-Regular' }}
+        >
+          <span className="text-yellow-400">{'Finance'}</span>
+          {'Storm'}
+        </h1>
       </Link>
       <Link href={`/user/${USER_ID}`}>
         <div className={`${linkStyle} flex cursor-pointer items-center`}>
-          <h1 className="mr-3 text-xl font-semibold">{'Profil'}</h1>
+          <h1 className="mr-3 text-lg font-semibold">{'Profil'}</h1>
           {user.photo && <UserPhoto photo={user.photo} alt={user.name} />}
         </div>
       </Link>

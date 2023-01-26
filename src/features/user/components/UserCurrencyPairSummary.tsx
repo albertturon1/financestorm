@@ -9,7 +9,7 @@ const UserCurrencyPairSummary = ({
   transactions: Record[];
 }) => {
   const currrencyPairSummary = useCurrencyPairSummary(transactions);
-
+  
   if (!currrencyPairSummary.length) return null;
   return (
     <div className="flex w-full flex-col">

@@ -21,7 +21,7 @@ export const getUserCurrencyTransactions = async ({
 }) => {
   const user_filter = user_id ? `user_id = "lxiry2v1ochapzp"` : '';
   const currency_filter = currency
-    ? `(base_currency = "${currency.toLocaleLowerCase()}" || quote_currency = "${currency.toLocaleLowerCase()}")`
+    ? `(base_currency = "${currency}" || quote_currency = "${currency}")`
     : '';
 
   return await pb.collection('transaction').getFullList(200, {

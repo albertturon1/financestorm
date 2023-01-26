@@ -32,10 +32,10 @@ const InflationOverMonthsLineChart = ({
       syncId="anyId"
     >
       <CartesianGrid strokeDasharray="2 2" />
-      <XAxis dataKey="label" angle={90} dy={50} height={100} />
+      <XAxis dataKey="label" angle={90} dy={50} height={100} hide />
       <YAxis allowDecimals={false} />
       <Line
-        dataKey="inflationPercentage"
+        dataKey="cumulativeInflation"
         type="monotone"
         dot={false}
         stroke={CHART_THEME.slice(-1)[0]}

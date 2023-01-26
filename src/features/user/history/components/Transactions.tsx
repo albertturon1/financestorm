@@ -6,6 +6,8 @@ import {
 
 import { Currencies } from '@interfaces/ICurrency';
 
+import TransactionsFlagCountry from './TransactionsFlagCountry';
+
 const typeColumnWidth = 'w-12';
 
 export interface Transaction extends Record {
@@ -40,7 +42,7 @@ const Transactions = ({
         {arrows && <div className={typeColumnWidth} />}
         <HeaderText>{'ID transakcji'}</HeaderText>
         <HeaderText wide>{'Waluta sprzedawana'}</HeaderText>
-        <HeaderText>{'Waluta kupowana'}</HeaderText>
+        <HeaderText wide>{'Waluta kupowana'}</HeaderText>
         <HeaderText wide>{'Kwota sprzedawana'}</HeaderText>
         <HeaderText wide>{'Kwota kupowana'}</HeaderText>
         <HeaderText>{'Kurs wymiany'}</HeaderText>
@@ -71,32 +73,37 @@ const TransactionRecord = ({
   className?: string;
   type?: TransactionType;
   arrows?: boolean;
-}) => {
-  const baseCurrency = transaction.base_currency.toUpperCase();
-  const quoteCurrency = transaction.quote_currency.toUpperCase();
-
-  return (
-    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-    <div className={`flex w-full items-center py-4 px-1 ${className}`}>
-      {arrows && (
-        <div className={typeColumnWidth}>
-          {type === 'buy' ? (
-            <BsFillArrowLeftSquareFill className="h-5 w-5 text-green-500" />
-          ) : (
-            <BsFillArrowRightSquareFill className="h-5 w-5 text-red-500" />
-          )}
-        </div>
-      )}
-      <Text>{transaction.id}</Text>
-      <Text wide>{baseCurrency}</Text>
-      <Text>{quoteCurrency}</Text>
-      <Text wide>{`${transaction.base_currency_value} ${baseCurrency}`}</Text>
-      <Text wide>{`${transaction.quote_currency_value} ${quoteCurrency}`}</Text>
-      <Text>{transaction.exchange_rate}</Text>
-      <Text wide>{transaction.created.split('.')[0]}</Text>
-    </div>
-  );
-};
+}) => (
+  // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+  <div className={`flex w-full items-center py-4 px-1 ${className}`}>
+    {arrows && (
+      <div className={typeColumnWidth}>
+        {type === 'buy' ? (
+          <BsFillArrowLeftSquareFill className="h-5 w-5 text-green-500" />
+        ) : (
+          <BsFillArrowRightSquareFill className="h-5 w-5 text-red-500" />
+        )}
+      </div>
+    )}
+    <Text>{transaction.id}</Text>
+    <TransactionsFlagCountry
+      currency={transaction.quote_currency}
+      className="w-48"
+    />
+    <TransactionsFlagCountry
+      currency={transaction.base_currency}
+      className="w-48"
+    />
+    <Text wide>{`${
+      transaction.base_currency_value
+    } ${transaction.base_currency.toUpperCase()}`}</Text>
+    <Text wide>{`${
+      transaction.quote_currency_value
+    } ${transaction.quote_currency.toUpperCase()}`}</Text>
+    <Text>{transaction.exchange_rate}</Text>
+    <Text wide>{transaction.created.split('.')[0]}</Text>
+  </div>
+);
 
 interface TextProps {
   children: string | number;

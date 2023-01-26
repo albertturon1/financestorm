@@ -1,31 +1,76 @@
 import { LabelValue } from '@interfaces/ICharts';
-import { cutNumber, serverDateToParts } from '@utils/misc';
+import {
+  cutNumber,
+  previousDate,
+  serverDate,
+  serverDateToParts,
+} from '@utils/misc';
 
-import monthlyInflationData from './monthlyInflationData';
+import monthlyCPIData from './monthlyCPIData';
 import { WalletValueOverTime } from './walletValueOverTime';
 
 export interface InflationWalletOverTimeValue {
   label: string;
   value: number;
-  inflationPercentage: number;
+  cumulativeInflation: number;
+  monthlyInflation: number;
   inflationLoss: number;
   baseValue: number;
+  cpi: number;
 }
-const inflationSumPerMonth = (monthlyInflation: LabelValue[]) => {
-  const data: Record<string, number> = {
-    [monthlyInflation[0].label]: cutNumber(monthlyInflation[0].value / 12, 4),
+
+interface MonthlyInflation {
+  cumulative: number;
+  monthly: number;
+  cpi: number;
+}
+
+//last to first months
+const inflationFromCPI = (currentMonthCPI: number, pastMonthCPI: number) =>
+  ((currentMonthCPI - pastMonthCPI) / pastMonthCPI) * 100;
+
+const inflationSumPerMonth = (
+  monthlyCPI: LabelValue[],
+  walletStartMonth: string,
+) => {
+  const [startingMonth, nextToStartMonth] = monthlyCPI;
+
+  const startingValue = inflationFromCPI(
+    startingMonth.value,
+    nextToStartMonth.value,
+  );
+
+  const data: Record<string, MonthlyInflation> = {
+    [startingMonth.label]: {
+      monthly: startingValue,
+      cumulative: startingValue, //first month has no cumulation
+      cpi: startingMonth.value,
+    },
   };
 
-  for (let i = 0; i < monthlyInflation.length - 1; i++) {
-    const yearMonth = monthlyInflation[i + 1].label
-      .split('-')
-      .slice(0, 2)
-      .join('-');
-    const prevYearMonth = monthlyInflation[i].label;
-    const currentMonthInflation = monthlyInflation[i + 1].value / 12;
-    const prevMonthSum = data[prevYearMonth];
+  //i from 1 becuse 0 has already been used
+  for (let i = 1; i < monthlyCPI.length - 1; i++) {
+    const { label: currentLoopMonth, value: currentLoopCPIValue } =
+      monthlyCPI[i];
 
-    data[yearMonth] = cutNumber(prevMonthSum + currentMonthInflation, 2);
+    if (currentLoopMonth < walletStartMonth) return data; //last month has already been calculated
+    const { value: pastMonthLoopCPIValue } = monthlyCPI[i + 1];
+
+    const currentMonthInflation = inflationFromCPI(
+      currentLoopCPIValue,
+      pastMonthLoopCPIValue,
+    );
+
+    const cumulativeInflation = inflationFromCPI(
+      startingMonth.value,
+      pastMonthLoopCPIValue, //you measure from start to currentMonth - 1
+    );
+
+    data[currentLoopMonth] = {
+      cumulative: cumulativeInflation,
+      monthly: currentMonthInflation,
+      cpi: currentLoopCPIValue,
+    };
   }
   return data;
 };
@@ -33,32 +78,28 @@ const inflationSumPerMonth = (monthlyInflation: LabelValue[]) => {
 const inflationWalletOverTimeValue = async (
   dailyWalletValue: WalletValueOverTime,
 ) => {
-  const dailyWalletStartMonth = serverDateToParts(dailyWalletValue.start_date);
+  const startMonthMinusOneTimestamp = previousDate(
+    new Date(dailyWalletValue.start_date),
+    undefined,
+    1,
+  );
+
+  const dailyWalletStartMonth = serverDateToParts(
+    serverDate(startMonthMinusOneTimestamp),
+  );
   const dailyWalletEndMonth = serverDateToParts(dailyWalletValue.end_date);
 
-  const monthlyInflationNormalized = await monthlyInflationData({
+  const monthlyCPINormalize = await monthlyCPIData({
     startPeriod: dailyWalletStartMonth,
-    endPeriod: dailyWalletEndMonth, //API doesnt respect endDate, returns from last month
+    endPeriod: dailyWalletEndMonth,
   });
 
-  const monthlyInflation = monthlyInflationNormalized
-    .filter((month) => month.label <= '2021-01')
-    .reverse(); //reverse to start from most recent month
+  const monthlyCPI = monthlyCPINormalize.reverse(); //reverse to start from most recent month
 
-  const inflationSums = inflationSumPerMonth(monthlyInflation);
-
-  //const [inflationSumsStartMonth] = Object.keys(inflationSums).slice(-1);
-  //const [inflationSumsEndMonth] = Object.keys(inflationSums);
-
-  //const startMonth =
-  //  dailyWalletStartMonth < inflationSumsStartMonth
-  //    ? dailyWalletStartMonth
-  //    : inflationSumsStartMonth;
-
-  //const endMonth =
-  //  dailyWalletEndMonth < inflationSumsEndMonth
-  //    ? dailyWalletEndMonth
-  //    : inflationSumsEndMonth;
+  const inflationSums = inflationSumPerMonth(
+    monthlyCPI,
+    serverDateToParts(dailyWalletValue.start_date, 'month'),
+  );
 
   return dailyWalletValue.rates.map(({ label, value }) => {
     const month = serverDateToParts(label);
@@ -66,16 +107,20 @@ const inflationWalletOverTimeValue = async (
       label,
       value,
       baseValue: value,
-      inflationPercentage: 0,
+      monthlyInflation: 0,
+      cumulativeInflation: 0,
       inflationLoss: 0,
+      cpi: -1,
     };
 
     if (!inflationSums[month]) return d;
 
-    d.inflationPercentage = inflationSums[month];
-    d.inflationLoss = cutNumber(value * (d.inflationPercentage / 100), 2);
-    d.value = cutNumber(value - d.inflationLoss, 2);
+    d.cumulativeInflation = cutNumber(inflationSums[month].cumulative);
+    d.monthlyInflation = cutNumber(inflationSums[month].monthly);
+    d.inflationLoss = cutNumber(value * (d.cumulativeInflation / 100));
+    d.value = cutNumber(value - d.inflationLoss);
     d.baseValue = value;
+    d.cpi = inflationSums[month].cpi;
 
     return d;
   });
