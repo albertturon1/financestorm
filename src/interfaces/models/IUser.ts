@@ -6,7 +6,7 @@ export interface User {
   updated: Date;
   name: string;
   email: string;
-  current_currency: Currencies;
+  quote_currency: Currencies;
   currencies: UserCurrency[];
   verified?: boolean;
   avatar?: string;

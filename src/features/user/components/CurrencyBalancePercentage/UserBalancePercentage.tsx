@@ -41,10 +41,10 @@ const percentageValues = async (user: User) => {
     },
   );
 
-  const baseCurrencyValue = cutNumber(currencyAmounts[user.current_currency]);
+  const baseCurrencyValue = cutNumber(currencyAmounts[user.quote_currency]);
 
   const baseCurrency: UserCurrencyBalance = {
-    currency: user.current_currency,
+    currency: user.quote_currency,
     value: baseCurrencyValue,
     percentage: cutNumber((baseCurrencyValue / balance) * multiplier),
     current_currency_value: baseCurrencyValue,
@@ -93,12 +93,12 @@ const UserBalancePercentage = ({ user }: { user: User }) => {
         {chartType === 'bar' ? (
           <UserBalancePercentageBarChart
             data={percentage_values.currencies}
-            current_currency={user.current_currency}
+            quote_currency={user.quote_currency}
           />
         ) : (
           <UserBalancePercentagePieChart
             data={percentage_values.currencies}
-            current_currency={user.current_currency}
+            quote_currency={user.quote_currency}
           />
         )}
       </div>

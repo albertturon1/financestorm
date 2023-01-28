@@ -16,7 +16,7 @@ import UserBalancePercentageTooltip from './UserBalancePercentageTooltip';
 
 const UserBalancePercentageBarChart = ({
   data,
-  current_currency,
+  quote_currency,
 }: UserBalanceChart) => (
   <ResponsiveContainer>
     <ComposedChart
@@ -57,7 +57,7 @@ const UserBalancePercentageBarChart = ({
       <YAxis />
       <Tooltip
         content={
-          <UserBalancePercentageTooltip current_currency={current_currency} />
+          <UserBalancePercentageTooltip quote_currency={quote_currency} />
         }
         cursor={false}
       />

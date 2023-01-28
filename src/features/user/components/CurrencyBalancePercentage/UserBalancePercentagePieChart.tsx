@@ -14,7 +14,7 @@ import UserBalancePercentageTooltip from './UserBalancePercentageTooltip';
 
 const UserBalancePercentagePieChart = ({
   data,
-  current_currency,
+  quote_currency,
 }: UserBalanceChart) => (
   <ResponsiveContainer>
     <PieChart>
@@ -45,7 +45,7 @@ const UserBalancePercentagePieChart = ({
       />
       <Tooltip
         content={
-          <UserBalancePercentageTooltip current_currency={current_currency} />
+          <UserBalancePercentageTooltip quote_currency={quote_currency} />
         }
         cursor={false}
       />

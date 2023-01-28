@@ -32,27 +32,28 @@ const UserBalanceCurrencies = async ({
       <CurrencyBalance
         userID={user.id}
         // eslint-disable-next-line react/no-array-index-key
-        currencyCode={user.current_currency}
-        value={currencyAmounts[user.current_currency]}
+        currencyCode={user.quote_currency}
+        value={currencyAmounts[user.quote_currency]}
         baseValue={
           baseValue
-            ? cutNumber(currencyAmounts[user.current_currency], 2)
+            ? cutNumber(currencyAmounts[user.quote_currency], 2)
             : undefined
         }
         accountID={
           accountID
             ? user.currencies.filter(
-                (c) => c.currency === user.current_currency,
+                (c) => c.currency === user.quote_currency,
               )[0].account_id
             : undefined
         }
         className={`bg-secondaryBlack ${
           horizontal ? 'h-20 w-60 px-3' : ''
         } ${itemClassName}`}
-        current_currency={user.current_currency}
+        quote_currency={user.quote_currency}
       />
       {currencyRates.map((currency, index) => (
         <CurrencyBalance
+          currencyRate={currency.rates[0].value}
           userID={user.id}
           // eslint-disable-next-line react/no-array-index-key
           key={index}
@@ -68,13 +69,13 @@ const UserBalanceCurrencies = async ({
           }
           accountID={
             accountID
-              ? user.currencies.filter((c) => c.currency !== currency.base)[0]
+              ? user.currencies.filter((c) => c.currency === currency.base)[0]
                   .account_id
               : undefined
           }
           className={`${index % 2 !== 0 ? 'bg-secondaryBlack' : ''} 
           ${horizontal ? 'h-20 w-56 px-3' : ''} ${itemClassName}`}
-          current_currency={user.current_currency}
+          quote_currency={user.quote_currency}
         />
       ))}
     </div>

@@ -15,7 +15,7 @@ const WalletHistoryPage = async ({ params }: { params: UserParams }) => {
   const user = await getUser(id);
   const dailyWalletValue = await walletValueOverTime({
     user_currencies: user.currencies,
-    quote_currency: user.current_currency,
+    quote_currency: user.quote_currency,
     years: 1,
   });
 

@@ -13,7 +13,7 @@ const FLAGS: Record<Currencies, string> = {
 
 const FlagCountryCode = ({
   code,
-  className,
+  className = '',
   flagClassName,
   reverse,
   boldName = true,

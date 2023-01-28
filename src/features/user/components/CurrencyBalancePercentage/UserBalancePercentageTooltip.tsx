@@ -11,9 +11,9 @@ import { Currencies } from '@interfaces/ICurrency';
 const UserBalancePercentageTooltip = ({
   active,
   payload,
-  current_currency,
+  quote_currency,
 }: TooltipProps<number, string> & {
-  current_currency: Currencies;
+  quote_currency: Currencies;
 }) => {
   if (!active || !payload?.length) return null;
   return (
@@ -26,7 +26,7 @@ const UserBalancePercentageTooltip = ({
           flagClassName="w-4"
         />
       </div>
-      {payload[0].payload.currency !== current_currency && (
+      {payload[0].payload.currency !== quote_currency && (
         <p className="font-semibold">{`${payload[0].payload.current_currency_value} PLN`}</p>
       )}
       <p className="font-semibold">{`${payload[0].payload.percentage}% portfela`}</p>

@@ -9,7 +9,7 @@ export interface UserCurrencyBalance {
 
 export interface UserBalanceChart {
   data: UserCurrencyBalance[];
-  current_currency: Currencies;
+  quote_currency: Currencies;
 }
 
 export interface UserBalanceData {
