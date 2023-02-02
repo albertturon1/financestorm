@@ -20,7 +20,7 @@ const CurrencyBalance = ({
   className?: string;
   quote_currency: Currencies;
   baseValue?: number;
-  currencyRate: number;
+  currencyRate?: number;
 }) => (
   <Link
     href={`/user/${userID}/transactions/${currencyCode}`}

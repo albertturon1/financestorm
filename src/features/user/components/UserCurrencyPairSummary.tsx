@@ -12,7 +12,7 @@ const UserCurrencyPairSummary = ({
   
   if (!currrencyPairSummary.length) return null;
   return (
-    <div className="flex w-full flex-col">
+    <div className="flex w-full flex-col mb-5">
       <p className="mb-4 font-semibold underline">
         {'Podsumowanie transferów walutowych'}
       </p>

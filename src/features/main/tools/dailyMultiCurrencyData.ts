@@ -69,7 +69,7 @@ const dailyMultiCurrencyData = async ({
       );
 
       const currency_api_end = Date.now();
-      const currenciesByYears = normalizeMultiExchangeRateResponse({
+      const currencyByYears = normalizeMultiExchangeRateResponse({
         currency_rates: api_responses,
         quote_currency,
       });
@@ -80,7 +80,7 @@ const dailyMultiCurrencyData = async ({
         execution_api_time: currency_api_end - currency_start,
         execution_time: currency_end - currency_start,
       });
-      return currenciesByYears;
+      return currencyByYears;
     }),
   );
   const function_end = Date.now();

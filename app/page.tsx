@@ -10,13 +10,12 @@ const HomePage = async () => {
     years: 1,
     quote_currency: 'PLN',
     base_currencies: ['USD', 'GBP', 'EUR', 'CHF'],
+    end_date: '2023-01-14',
   });
   const chartData = data.flatMap((d) => ({ name: d.base, data: d.rates }));
 
   return (
-    <div
-      className={`${PADDING_TAILWIND} flex h-full w-full flex-col pb-6`}
-    >
+    <div className={`${PADDING_TAILWIND} flex h-full w-full flex-col pb-6`}>
       <PageTitle>{'Kursy walut w stosunku do PLN'}</PageTitle>
       <div className="flex h-full flex-col">
         <MultiCurrenciesLineChart data={chartData} />

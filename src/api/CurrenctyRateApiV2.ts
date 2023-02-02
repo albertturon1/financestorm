@@ -26,7 +26,6 @@ export const getDailyCurrencyTimeseries = async ({
     base: base_currency,
     symbols: quote_currency?.toUpperCase(), //comma separated values
   });
-  console.log(`${url}?${params}`)
 
   return await api.get<ExchangeRateTimeseriesResponse>(`${url}?${params}`);
 };

@@ -57,6 +57,7 @@ const MultiCurrenciesLineChart = ({ data }: { data: RechartsMultiData[] }) => {
         />
         {data.map((s, index) => (
           <Line
+            strokeWidth={2}
             dataKey="value"
             data={s.data}
             name={s.name}
@@ -68,7 +69,7 @@ const MultiCurrenciesLineChart = ({ data }: { data: RechartsMultiData[] }) => {
         ))}
         <ReferenceLine
           y={minValue}
-          stroke={CHART_THEME.slice(-1)[0]}
+          stroke={CHART_THEME.slice(-2)[0]}
           strokeDasharray="3 4"
         >
           <Label

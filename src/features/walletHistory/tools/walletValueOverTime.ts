@@ -31,13 +31,14 @@ const walletValueOverTime = async ({
   const nonQuoteCurrencies = user_currencies
     ?.filter((b) => b.currency !== quote_currency)
     .map((b) => b.currency);
-
+  const start = Date.now();
   const currencyRates = await dailyMultiCurrencyData({
     base_currencies: nonQuoteCurrencies,
     quote_currency,
     end_date,
     ...props,
   });
+  const end = Date.now();
   const currencyAmounts = userCurrenciesAmount(user_currencies);
 
   //all currencies combined into 1 array

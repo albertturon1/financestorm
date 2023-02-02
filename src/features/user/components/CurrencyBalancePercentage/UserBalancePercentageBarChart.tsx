@@ -45,7 +45,9 @@ const UserBalancePercentageBarChart = ({
           type: 'square',
           value: `${item.currency} (${item.percentage}%)`,
           color: CHART_THEME[index],
+          fontVariant: 'tabular-nums'
         }))}
+        className="tabular-nums"
         layout="vertical"
         verticalAlign="middle"
         align="right"

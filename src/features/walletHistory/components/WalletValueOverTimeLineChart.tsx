@@ -18,6 +18,7 @@ import {
 
 import { CHART_THEME } from '@constants/chartTheme';
 import { RechartsMultiData } from '@interfaces/ICharts';
+import { cutNumber } from '@utils/misc';
 
 import WalletValueOverTimeTooltip from './WalletValueOverTimeTooltip';
 
@@ -27,9 +28,11 @@ const WalletValueOverTimeLineChart = ({
   data: RechartsMultiData[];
 }) => {
   const values = data.flatMap((c) => c.data.map((d) => d.value));
-  const minValue = Math.min(...values) - Math.min(...values) * 0.05;
-  const maxValue = Math.max(...values) + Math.max(...values) * 0.05;
-  const yDomain = [minValue, maxValue];
+  const minValue = Math.min(...values) - Math.min(...values) * 0.01;
+  const maxValue = Math.max(...values) + Math.max(...values) * 0.01;
+  const yDomain = [cutNumber(minValue, 0), cutNumber(maxValue, 0)];
+
+  const currentWalletValue = data[0].data.slice(-1)[0].value;
 
   const referenceLineLabel = {
     offset: 20,
@@ -60,12 +63,12 @@ const WalletValueOverTimeLineChart = ({
         <YAxis
           domain={yDomain}
           allowDecimals={false}
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment
-          tickFormatter={abbreviate as any}
+          type="number"
           tickCount={7}
         />
         {data.map((s, index) => (
           <Line
+            strokeWidth={2}
             dataKey="value"
             data={s.data}
             name={s.name}
@@ -97,7 +100,14 @@ const WalletValueOverTimeLineChart = ({
             {...referenceLineLabel}
           />
         </ReferenceLine>
-        <Tooltip content={<WalletValueOverTimeTooltip />} cursor={false} />
+        <Tooltip
+          content={
+            <WalletValueOverTimeTooltip
+              currentWalletValue={currentWalletValue}
+            />
+          }
+          cursor={false}
+        />
       </LineChart>
     </ResponsiveContainer>
   );
