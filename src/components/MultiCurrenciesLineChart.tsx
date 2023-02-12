@@ -36,7 +36,7 @@ const MultiCurrenciesLineChart = ({ data }: { data: RechartsMultiData[] }) => {
         margin={{
           top: 5,
           right: 30,
-          left: 0,
+          left: -15,
           bottom: 0,
         }}
       >

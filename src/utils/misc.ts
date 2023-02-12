@@ -105,3 +105,46 @@ export const yAxisFormater = (number: number) => {
     return number.toString();
   }
 };
+
+export const nameOfKey = <T>(
+  obj: T,
+  expression: (x: { [Property in keyof T]: () => string }) => () => string,
+): string => {
+  const res: { [Property in keyof T]: () => string } = {} as {
+    [Property in keyof T]: () => string;
+  };
+
+  Object.keys(obj).forEach((k) => (res[k as keyof T] = () => k));
+
+  return expression(res)();
+};
+
+export const on = <T extends Window | Document | HTMLElement | EventTarget>(
+  obj: T | null,
+  ...args:
+    | Parameters<T['addEventListener']>
+    | [string, () => void | null, ...unknown[]]
+): void => {
+  if (obj && obj.addEventListener) {
+    obj.addEventListener(
+      ...(args as Parameters<HTMLElement['addEventListener']>),
+    );
+  }
+};
+
+export const off = <T extends Window | Document | HTMLElement | EventTarget>(
+  obj: T | null,
+  ...args:
+    | Parameters<T['removeEventListener']>
+    | [string, () => void | null, ...unknown[]]
+): void => {
+  if (obj && obj.removeEventListener) {
+    obj.removeEventListener(
+      ...(args as Parameters<HTMLElement['removeEventListener']>),
+    );
+  }
+};
+
+export const isBrowser = typeof window !== 'undefined';
+
+export const isNavigator = typeof navigator !== 'undefined';

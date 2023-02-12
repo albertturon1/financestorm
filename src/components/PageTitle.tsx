@@ -1,15 +1,11 @@
 const PageTitle = ({
   children,
-  className,
+  className = '',
 }: {
   children: string;
   className?: string;
 }) => (
-  <h1
-    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-    className={`${className} text-xl font-semibold tracking-wide
-  `}
-  >
+  <h1 className={`${className} text-xl font-semibold tracking-wide`}>
     {children}
   </h1>
 );

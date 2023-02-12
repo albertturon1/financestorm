@@ -9,9 +9,7 @@ import {
 import monthlyCPIData from './monthlyCPIData';
 import { WalletValueOverTime } from './walletValueOverTime';
 
-export interface InflationWalletOverTimeValue {
-  label: string;
-  value: number;
+export interface InflationWalletOverTimeValue extends LabelValue {
   cumulativeInflation: number;
   monthlyInflation: number;
   inflationLoss: number;
@@ -94,16 +92,13 @@ const inflationWalletOverTimeValue = async (
 
     if (!inflationSums[month]) return d;
 
-    
     d.cumulativeInflation = cutNumber(inflationSums[month].cumulative);
     d.monthlyInflation = cutNumber(inflationSums[month].monthly);
     d.inflationLoss = cutNumber(value * (d.cumulativeInflation / 100));
     d.value = cutNumber(value - d.inflationLoss);
     d.baseValue = value;
     d.cpi = inflationSums[month].cpi;
-    
-    console.log(d)
-    console.log(inflationSums[month])
+
     return d;
   });
 };

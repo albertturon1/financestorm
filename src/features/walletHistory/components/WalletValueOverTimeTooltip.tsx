@@ -1,13 +1,18 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/restrict-template-expressions */
-
 import { ReactElement } from 'react';
 
 import { TooltipProps } from 'recharts';
 
+import TooltipRowWrapper from '@components/TooltipRowWrapper';
 import TooltipWrapper from '@components/TooltipWrapper';
 import { CHART_THEME } from '@constants/chartTheme';
+import { CustomTooltipProps, LabelValue } from '@interfaces/ICharts';
+
+import { InflationWalletOverTimeValue } from '../tools/inflationWalletOverTimeValue';
+
+type P = [
+  CustomTooltipProps<LabelValue>,
+  CustomTooltipProps<InflationWalletOverTimeValue>,
+];
 
 const WalletValueOverTimeTooltip = ({
   active,
@@ -17,52 +22,51 @@ const WalletValueOverTimeTooltip = ({
   currentWalletValue: number;
 }): ReactElement | null => {
   if (!active || !payload?.length) return null;
-  const row = 'mb-1 flex items-center  gap-x-2';
+  const data = payload as P;
+
   return (
     <TooltipWrapper>
-      <div className={row}>
+      <TooltipRowWrapper>
         <p>{'Dzisiejsza wartość portfela: '}</p>
         <p>{`${currentWalletValue} PLN`}</p>
-      </div>
-      <div className='border-b border-slate-50 h-0.5 w-full'/>
+      </TooltipRowWrapper>
+      <div className="h-0.5 w-full border-b border-slate-50" />
       <p
         className="pt-1"
         style={{ color: CHART_THEME[0] }}
-      >{`Dzień: ${payload[0].payload.label}`}</p>
-      {payload.map(({ payload: p }, index) => (
-        <>
-          <div className={row} style={{ color: CHART_THEME[index] }}>
-            {/*eslint-disable-next-line @typescript-eslint/restrict-template-expressions*/}
-            <p>{`${payload[index].name}:`}</p>
-            <p>{`${p.value} PLN`}</p>
-          </div>
-          {!!p.monthlyInflation && (
-            <div className={row}>
-              <p>{'Miesięczna inflacja: '}</p>
-              <p>{`${p.monthlyInflation}%`}</p>
-            </div>
+      >{`Dzień: ${data[0].payload.label}`}</p>
+      {data.map(({ payload: values }, index) => (
+        // eslint-disable-next-line react/no-array-index-key
+        <div key={index}>
+          <TooltipRowWrapper style={{ color: CHART_THEME[index] }}>
+            <p>{`${data[index].name}:`}</p>
+            <p>{`${values.value} PLN`}</p>
+          </TooltipRowWrapper>
+          {/*Months with monthly inflation*/}
+          {'cumulativeInflation' in values && !!values.monthlyInflation && (
+            <>
+              <TooltipRowWrapper>
+                <p>{'Miesięczna inflacja: '}</p>
+                <p>{`${values.monthlyInflation}%`}</p>
+              </TooltipRowWrapper>
+              <TooltipRowWrapper>
+                <p>{'Skumulowana inflacja: '}</p>
+                <p>{`${values.cumulativeInflation}%`}</p>
+              </TooltipRowWrapper>
+              <TooltipRowWrapper>
+                <p>{'Utrata wartości: '}</p>
+                <p>{`${values.inflationLoss}`}</p>
+              </TooltipRowWrapper>
+              <TooltipRowWrapper>
+                <p>{'CPI: '}</p>
+                <p>{`${values.cpi}`}</p>
+              </TooltipRowWrapper>
+            </>
           )}
-          {!!p.cumulativeInflation && (
-            <div className={row}>
-              <p>{'Skumulowana inflacja: '}</p>
-              <p>{`${p.cumulativeInflation}%`}</p>
-            </div>
-          )}
-          {!!p.inflationLoss && (
-            <div className={row}>
-              <p>{'Utrata wartości: '}</p>
-              <p>{`${p.inflationLoss}`}</p>
-            </div>
-          )}
-          {!!p.cpi && p.cpi > 0 && (
-            <div className={row}>
-              <p>{'CPI: '}</p>
-              <p>{`${p.cpi}`}</p>
-            </div>
-          )}
-        </>
+        </div>
       ))}
     </TooltipWrapper>
   );
 };
+
 export default WalletValueOverTimeTooltip;
