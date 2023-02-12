@@ -26,7 +26,7 @@ export interface ExchangeRateTimeseriesNormalized {
   rates: NormalizedCurrencyExchangeRate[];
 }
 
-export type NormalizedCurrencyExchangeRate = LabelValue & Partial<FromTo>;
+export type NormalizedCurrencyExchangeRate = LabelValue & FromTo;
 
 export interface FromTo {
   from: Currencies;

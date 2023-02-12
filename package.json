@@ -23,11 +23,13 @@
     "eslint-config-prettier": "8.6.0",
     "eslint-plugin-prettier": "4.2.1",
     "eslint-plugin-sonarjs": "0.17.0",
+    "immer": "9.0.19",
     "lodash": "4.17.21",
     "next": "13.1.6",
     "number-abbreviate": "2.0.0",
     "pocketbase": "0.9.1",
     "query-string": "8.1.0",
+    "ramda": "0.28.0",
     "react": "18.2.0",
     "react-custom-scrollbars-2": "4.5.0",
     "react-detect-click-outside": "1.1.7",
@@ -38,10 +40,12 @@
     "recharts": "2.4.1",
     "server-only": "0.0.1",
     "styled-jsx": "5.1.0",
-    "use-count-up": "3.0.1"
+    "use-count-up": "3.0.1",
+    "zustand": "4.3.3"
   },
   "devDependencies": {
     "@types/node": "18.0.3",
+    "@types/ramda": "0.28.23",
     "@types/react": "18.0.15",
     "@types/react-dom": "18.0.6",
     "autoprefixer": "^10.4.7",

@@ -16,15 +16,16 @@ import {
   LineProps,
 } from 'recharts';
 import { CategoricalChartProps } from 'recharts/types/chart/generateCategoricalChart';
+import { AxisDomain } from 'recharts/types/util/types';
 
 import { CHART_THEME } from '@constants/chartTheme';
 import { cutNumber } from '@utils/misc';
 
-export const customLineChartYDomain = (values: number[]) => {
+export const customLineChartYDomain = (values: number[], round = 2) => {
   const minValue = Math.min(...values) - Math.min(...values) * 0.01;
   const maxValue = Math.max(...values) + Math.max(...values) * 0.01;
 
-  return [cutNumber(minValue, 0), cutNumber(maxValue, 0)];
+  return [cutNumber(minValue, round), cutNumber(maxValue, round)] as const;
 };
 
 export type CustomLineChartProps<T, Y> = {
@@ -35,8 +36,9 @@ export type CustomLineChartProps<T, Y> = {
   data: T[];
   tooltip?: ReactElement;
   children?: ReactNode;
-  yDomain?: number[];
+  yDomain?: AxisDomain;
   xAxisLabel?: string;
+  yAxisTickCount?: number;
   hideXAxis?: boolean;
   lineColor?: string;
   tooltipWrapperStyle?: CSSProperties;
@@ -58,6 +60,7 @@ const CustomLineChart = <T, Y>({
   hideXAxis,
   lineColor,
   tooltipWrapperStyle,
+  yAxisTickCount,
   ...props
 }: CustomLineChartProps<T, Y>) => (
   <ResponsiveContainer className="select-none">
@@ -83,7 +86,12 @@ const CustomLineChart = <T, Y>({
         hide={hideXAxis}
       />
       <Legend verticalAlign="top" wrapperStyle={{ lineHeight: '40px' }} />
-      <YAxis allowDecimals={false} type="number" domain={yDomain} {...props} />
+      <YAxis
+        type="number"
+        domain={yDomain}
+        {...props}
+        tickCount={yAxisTickCount}
+      />
       {data.map((chart, index) => (
         <Line
           strokeWidth={2}

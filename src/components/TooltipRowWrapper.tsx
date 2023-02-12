@@ -3,11 +3,13 @@ import { CSSProperties, ReactElement } from 'react';
 const TooltipRowWrapper = ({
   children,
   style,
+  className = '',
 }: {
   children: ReactElement | ReactElement[];
   style?: CSSProperties;
+  className?: string;
 }) => (
-  <div className="flex items-center mb-1 gap-x-2" style={style}>
+  <div className={`mb-1 flex items-center gap-x-2 ${className}`} style={style}>
     {children}
   </div>
 );

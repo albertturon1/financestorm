@@ -1,48 +1,51 @@
 'use client';
 
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import CheckboxList from '@components/CheckboxList';
 import { CURRENCIES } from '@constants/currencies';
+import {
+  useBaseCurrencies,
+  useQuoteCurrency,
+  useMultiCurrenciesActions,
+} from '@src/zustand/multiCurrenciesStore';
 
-import useHomePageCurrencies from '../hooks/useHomePageCurrencies';
 import currenciesWithIndex, {
   IndexCurrency,
 } from '../tools/currenciesWithIndex';
 
 const BaseCurrenciesCheckboxList = () => {
-  const {
-    baseCurrencies,
-    quoteCurrency,
-    setBaseCurrencies,
-    setStorageBaseCurrencies,
-  } = useHomePageCurrencies();
-  const availableBaseCurrencies = useMemo(
-    () =>
-      currenciesWithIndex(CURRENCIES.filter((c) => c !== quoteCurrency?.name)),
-    [quoteCurrency],
-  );
+  const [availableBaseCurrencies, setAvailableBaseCurrencies] = useState<
+    IndexCurrency[]
+  >([]);
+  const baseCurrencies = useBaseCurrencies();
+  const quoteCurrency = useQuoteCurrency();
+  const { setBaseCurrencies } = useMultiCurrenciesActions();
+
+  useEffect(() => {
+    const baseCurrenciesNames = baseCurrencies.map((c) => c.name);
+    const nonQuoteCurreciesList = currenciesWithIndex(
+      CURRENCIES.filter(
+        (name) =>
+          name !== quoteCurrency?.name && !baseCurrenciesNames.includes(name),
+      ),
+    );
+    setAvailableBaseCurrencies([...baseCurrencies, ...nonQuoteCurreciesList]);
+  }, [availableBaseCurrencies.length, baseCurrencies, quoteCurrency?.name]);
 
   const onBoxClick = useCallback(
     (v: IndexCurrency) => {
-      if (!baseCurrencies) return;
       const filtered = baseCurrencies.filter((c) => c.id !== v.id);
 
       if (filtered.length < baseCurrencies.length) {
-        console.log('filtered: ', filtered);
         setBaseCurrencies(filtered);
-        setStorageBaseCurrencies(filtered);
       } else {
-        const d = baseCurrencies.concat(v);
-        console.log('d: ', d);
-        setBaseCurrencies(d);
-        setStorageBaseCurrencies(d);
+        setBaseCurrencies(baseCurrencies.concat(v));
       }
     },
-    [baseCurrencies, setBaseCurrencies, setStorageBaseCurrencies],
+    [baseCurrencies, setBaseCurrencies],
   );
 
-  if (!baseCurrencies) return null;
   return (
     <CheckboxList
       title="Waluty bazowe"
