@@ -3,7 +3,7 @@
 import { Currencies } from '@interfaces/ICurrency';
 import { ExchangeRateTimeseriesNormalized } from '@interfaces/models/IExchangerate';
 import { UserCurrency } from '@interfaces/models/IUser';
-import { getDailyCurrencyTimeseries } from '@src/api/CurrenctyRateApiV2';
+import { getDailyCurrencyTimeseries } from '@src/api/CurrenctyRateApi';
 import {
   CurrencyRateDates,
   CurrencyRatePair,

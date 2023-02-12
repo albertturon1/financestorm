@@ -1,7 +1,7 @@
 import { CURRENCIES } from '@constants/currencies';
 import userCurrenciesAmount from '@features/user/tools/userCurrenciesAmount';
 import { User } from '@interfaces/models/IUser';
-import { getDailyCurrencyTimeseries } from '@src/api/CurrenctyRateApiV2';
+import { getDailyCurrencyTimeseries } from '@src/api/CurrenctyRateApi';
 import { getNDaysPastServerDate, cutNumber } from '@utils/misc';
 import normalizeExchangeRateResponse from '@utils/normalizeExchangeRateResponse';
 
