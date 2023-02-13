@@ -25,7 +25,7 @@ export const customLineChartYDomain = (values: number[], round = 2) => {
   const minValue = Math.min(...values) - Math.min(...values) * 0.01;
   const maxValue = Math.max(...values) + Math.max(...values) * 0.01;
 
-  return [cutNumber(minValue, round), cutNumber(maxValue, round)] as const;
+  return [cutNumber(minValue, round), cutNumber(maxValue, round)];
 };
 
 export type CustomLineChartProps<T, Y> = {

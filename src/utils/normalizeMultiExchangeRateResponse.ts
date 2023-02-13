@@ -13,8 +13,11 @@ const normalizeMultiExchangeRateResponse = ({
 }: {
   currency_rates: ExchangeRateTimeseriesResponse[];
   quote_currency: Currencies;
-}) =>
-  currency_rates
+// eslint-disable-next-line arrow-body-style
+}) => {
+  //console.log('currency_rates: ', currency_rates);
+  //console.log('quote_currency: ', quote_currency);
+  return currency_rates
     .sort((a, b) => (a.end_date > b.end_date ? 1 : -1))
     .map((range) =>
       normalizeExchangeRateResponse({ currency_rates: range, quote_currency }),
@@ -38,5 +41,6 @@ const normalizeMultiExchangeRateResponse = ({
         rates: [] as NormalizedCurrencyExchangeRate[],
       } as ExchangeRateTimeseriesNormalized,
     );
+};
 
 export default normalizeMultiExchangeRateResponse;

@@ -23,18 +23,19 @@ const MultiBaseCurrenciesLineChart = () => {
   if (!baseCurrenciesNames?.length || !quoteCurrency) return null;
   const data = use(
     queryClientSide<ExchangeRateTimeseriesNormalized[]>(
-      baseCurrenciesNames.sort().join(''),
+      `${baseCurrenciesNames.sort().join('')}${quoteCurrency.id}`,
       () =>
         dailyMultiCurrencyData({
           years: 1,
           quote_currency: quoteCurrency?.name,
           base_currencies: baseCurrenciesNames,
-          end_date: '2023-01-14',
         }),
     ),
   );
 
-  const chartData = data?.flatMap((d) => ({ name: d.base, data: d.rates }));
+  const chartData = data
+    ?.flatMap((d) => ({ name: d.base, data: d.rates }))
+    .filter((z) => z.data.length);
   const values = chartData.flatMap((c) => c.data.map((d) => d.value));
   const yDomain = [0, customLineChartYDomain(values, 2)[1]];
 
@@ -51,7 +52,6 @@ const MultiBaseCurrenciesLineChart = () => {
       tooltip={<MultiCurrenciesLineChartTooltip />}
     />
   );
-  //return <MultiCurrenciesLineChart data={chartData} />;
 };
 
 export default MultiBaseCurrenciesLineChart;

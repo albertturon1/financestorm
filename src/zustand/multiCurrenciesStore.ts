@@ -1,6 +1,7 @@
 import { mergeDeepLeft } from 'ramda';
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
+import { shallow } from 'zustand/shallow';
 
 import currenciesWithIndex, {
   IndexCurrency,
@@ -46,12 +47,24 @@ const useMultiCurrenciesStore = create<MultiBaseCurrenciesStoreState>()(
 
 //client hooks
 export const useBaseCurrencies = () =>
-  useMultiCurrenciesStore((state) => state.baseCurrencies);
+  useMultiCurrenciesStore((state) => state.baseCurrencies, shallow);
 export const useBaseCurrenciesNames = () =>
-  useMultiCurrenciesStore((state) => state.baseCurrencies.map((c) => c.name));
+  useMultiCurrenciesStore(
+    (state) => state.baseCurrencies.map((c) => c.name),
+    shallow,
+  );
 export const useQuoteCurrency = () =>
-  useMultiCurrenciesStore((state) => state.quoteCurrency);
+  useMultiCurrenciesStore((state) => state.quoteCurrency, shallow);
+
 export const useMultiCurrenciesActions = () =>
   useMultiCurrenciesStore((state) => state.actions);
+
+export const useMultiCurrenciesActionsReset = () => {
+  const { setBaseCurrencies, setQuoteCurrency } = useMultiCurrenciesActions();
+  return () => {
+    setBaseCurrencies(defaultBaseCurrencies);
+    setQuoteCurrency(defaultQuoteCurrency[0]);
+  };
+};
 
 export default useMultiCurrenciesStore;

@@ -1,5 +1,7 @@
 import { ReactNode } from 'react';
 
+import { twMerge } from 'tailwind-merge';
+
 const TooltipWrapper = ({
   children,
   className = '',
@@ -8,7 +10,10 @@ const TooltipWrapper = ({
   className?: string;
 }) => (
   <div
-    className={`flex flex-col rounded border border-slate-50  bg-secondaryBlack p-4 text-lg ${className}`}
+    className={twMerge(
+      'flex flex-col rounded border-2 border-slate-500 bg-secondaryBlack p-5 text-lg',
+      className,
+    )}
   >
     {children}
   </div>

@@ -1,9 +1,10 @@
-import { memo, useState } from 'react';
+import { isValidElement, memo, ReactElement, useState } from 'react';
 
 import { some } from 'lodash';
 import Scrollbars from 'react-custom-scrollbars-2';
 import { useDetectClickOutside } from 'react-detect-click-outside';
 import { BiChevronDown } from 'react-icons/bi';
+import { twMerge } from 'tailwind-merge';
 
 import CheckboxListItem from './CheckboxListItem';
 
@@ -15,6 +16,7 @@ const CheckboxList = <T,>({
   onBoxClick,
   className = '',
   title = '',
+  renderItem,
 }: {
   items: T[];
   activeItems: T[];
@@ -23,9 +25,9 @@ const CheckboxList = <T,>({
   onBoxClick: (value: T) => void;
   className?: string;
   title: string;
+  renderItem?: ((data: T) => ReactElement | null) | ReactElement;
 }) => {
   const [open, setOpen] = useState(false);
-
   const ref = useDetectClickOutside({
     onTriggered: () => {
       setOpen(false);
@@ -35,7 +37,10 @@ const CheckboxList = <T,>({
   return (
     <div
       ref={ref}
-      className={`relative flex h-max cursor-pointer flex-col rounded bg-secondaryBlack ${className}`}
+      className={twMerge(
+        'relative flex h-max cursor-pointer flex-col rounded bg-secondaryBlack',
+        className,
+      )}
     >
       {/*button*/}
       <button
@@ -60,16 +65,20 @@ const CheckboxList = <T,>({
       >
         <Scrollbars className="flex" universal>
           {items.map((item) => {
-            const active =
-              typeof item === 'string'
-                ? activeItems.includes(item)
-                : some(activeItems, item);
+            const RenderItem = isValidElement(renderItem)
+              ? renderItem
+              : renderItem?.(item);
 
+            if (RenderItem) return RenderItem;
             return (
               <CheckboxListItem
                 label={nameExtractor(item)}
                 key={keyExtractor(item)}
-                checked={active}
+                checked={
+                  typeof item === 'string'
+                    ? activeItems.includes(item)
+                    : some(activeItems, item)
+                }
                 onClick={() => {
                   onBoxClick(item);
                 }}

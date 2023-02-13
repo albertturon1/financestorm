@@ -14,9 +14,8 @@ const normalizeExchangeRateResponse = ({
   quote_currency: Currencies;
 }) => {
   const normalizedRates: NormalizedCurrencyExchangeRate[] = [];
-
   for (const [key, value] of Object.entries(currency_rates.rates)) {
-    if (value.PLN)
+    if (value[quote_currency])
       normalizedRates.push({
         value: cutNumber(value[quote_currency.toUpperCase()], 3),
         label: key,
@@ -24,6 +23,7 @@ const normalizeExchangeRateResponse = ({
         to: quote_currency,
       });
   }
+
   return { ...currency_rates, rates: normalizedRates };
 };
 

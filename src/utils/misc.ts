@@ -87,6 +87,9 @@ export const serverDateToParts = (
   type: ServerDateParts = 'month',
 ) => date.split('-').slice(0, serverDateParts[type]).join('-');
 
+export const reverseServerDate = (date: string) =>
+  date.slice().split('-').reverse().join('-');
+
 export const getNDaysPastServerDate = (days = 1) => {
   const yesterday = new Date();
   yesterday.setDate(yesterday.getDate() - days);

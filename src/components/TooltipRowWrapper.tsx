@@ -1,5 +1,7 @@
 import { CSSProperties, ReactElement } from 'react';
 
+import { twMerge } from 'tailwind-merge';
+
 const TooltipRowWrapper = ({
   children,
   style,
@@ -9,7 +11,10 @@ const TooltipRowWrapper = ({
   style?: CSSProperties;
   className?: string;
 }) => (
-  <div className={`mb-1 flex items-center gap-x-2 ${className}`} style={style}>
+  <div
+    className={twMerge('mb-1 flex items-center gap-x-2', className)}
+    style={style}
+  >
     {children}
   </div>
 );

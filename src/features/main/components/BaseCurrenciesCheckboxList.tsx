@@ -8,6 +8,7 @@ import {
   useBaseCurrencies,
   useQuoteCurrency,
   useMultiCurrenciesActions,
+  useBaseCurrenciesNames,
 } from '@src/zustand/multiCurrenciesStore';
 
 import currenciesWithIndex, {
@@ -18,20 +19,27 @@ const BaseCurrenciesCheckboxList = () => {
   const [availableBaseCurrencies, setAvailableBaseCurrencies] = useState<
     IndexCurrency[]
   >([]);
+  const [baseCurrrenciesLength, setBaseCurrrenciesLength] = useState<
+    number | null
+  >(null);
   const baseCurrencies = useBaseCurrencies();
+  const baseCurrenciesNames = useBaseCurrenciesNames();
   const quoteCurrency = useQuoteCurrency();
   const { setBaseCurrencies } = useMultiCurrenciesActions();
 
   useEffect(() => {
-    const baseCurrenciesNames = baseCurrencies.map((c) => c.name);
+    setBaseCurrrenciesLength(baseCurrencies.length);
+  }, [baseCurrencies.length]);
+
+  useEffect(() => {
     const nonQuoteCurreciesList = currenciesWithIndex(
       CURRENCIES.filter(
         (name) =>
           name !== quoteCurrency?.name && !baseCurrenciesNames.includes(name),
       ),
     );
-    setAvailableBaseCurrencies([...baseCurrencies, ...nonQuoteCurreciesList]);
-  }, [availableBaseCurrencies.length, baseCurrencies, quoteCurrency?.name]);
+    setAvailableBaseCurrencies(baseCurrencies.concat(nonQuoteCurreciesList));
+  }, [baseCurrencies, baseCurrenciesNames, quoteCurrency?.name]);
 
   const onBoxClick = useCallback(
     (v: IndexCurrency) => {
@@ -48,7 +56,11 @@ const BaseCurrenciesCheckboxList = () => {
 
   return (
     <CheckboxList
-      title="Waluty bazowe"
+      title={
+        baseCurrrenciesLength
+          ? `Waluty bazowe (${baseCurrrenciesLength})`
+          : 'Waluty bazowe'
+      }
       items={availableBaseCurrencies}
       activeItems={baseCurrencies}
       nameExtractor={(currency) => currency.name}

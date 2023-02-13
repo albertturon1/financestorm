@@ -115,7 +115,6 @@ export const CURRENCIES_WITHOUT_PLN = [
   'PGK',
   'PHP',
   'PKR',
-  'PLN',
   'PYG',
   'QAR',
   'RON',
@@ -172,4 +171,4 @@ export const CURRENCIES_WITHOUT_PLN = [
   'ZWL',
 ] as const;
 
-export const CURRENCIES = [...CURRENCIES_WITHOUT_PLN, 'PLN'];
+export const CURRENCIES = [...CURRENCIES_WITHOUT_PLN, 'PLN'].sort();
