@@ -19,7 +19,7 @@ const MultiCurrenciesLineChartTooltip = ({
   const day = reverseServerDate(data[0].payload.label);
 
   return (
-    <TooltipWrapper className="px-0 pb-3">
+    <TooltipWrapper className="px-0 pb-0">
       <div className="flex flex-col px-5">
         <p>{`Dzień: ${day}`}</p>
         <div className="flex items-center justify-between gap-x-3 pb-3">
@@ -32,7 +32,7 @@ const MultiCurrenciesLineChartTooltip = ({
         .map(({ payload: values }, index) => (
           <TooltipRowWrapper
             key={`${values.from}${values.to}`}
-            className={`flex justify-between gap-x-3 px-5 py-1.5 ${
+            className={`flex justify-between gap-x-3 px-5 pb-0 py-1.5 ${
               index % 2 === 0 ? 'bg-gray-700' : ''
             }`}
           >
@@ -41,7 +41,8 @@ const MultiCurrenciesLineChartTooltip = ({
               style={{
                 backgroundColor:
                   CHART_THEME[
-                    data.findIndex((c) => c.payload.from === values.from)
+                    data.findIndex((c) => c.payload.from === values.from) %
+                      CHART_THEME.length
                   ],
               }}
             />

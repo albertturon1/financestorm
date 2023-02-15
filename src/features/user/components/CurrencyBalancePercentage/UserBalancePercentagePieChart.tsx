@@ -34,7 +34,7 @@ const UserBalancePercentagePieChart = ({
           id: item.currency,
           type: 'square',
           value: `${item.currency} (${item.percentage}%)`,
-          color: CHART_THEME[index],
+          color: CHART_THEME[index % CHART_THEME.length],
         }))}
         layout="vertical"
         verticalAlign="middle"

@@ -1,3 +1,5 @@
+import { CHART_RANGES } from '@constants/chartRange';
+
 import { NormalizedCurrencyExchangeRate } from './models/IExchangerate';
 import { AnyObject } from './Utility';
 
@@ -31,3 +33,6 @@ export type CustomTooltipProps<T extends AnyObject<T>> = {
 };
 
 export type ChartType = 'bar' | 'pie' | 'line';
+export type ChartRangeType = 'day' | 'week' | 'month' | 'year';
+export type ChartRange = { name: string; type: ChartRangeType; value: number };
+export type ChartRanges = (typeof CHART_RANGES)[number];

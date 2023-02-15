@@ -6,9 +6,9 @@ export const CHART_THEME = [
   '#4bc0c0',
   '#ffcd56',
   '#c9cbcf',
-  '#ea5545',
-  '#ef9b20',
-  '#ede15b',
   '#27aeef',
+  '#A55914',
+  '#ea5545',
+  '#726C2E',
   '#b33dc6',
 ];

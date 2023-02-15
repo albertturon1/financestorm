@@ -3,9 +3,11 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { shallow } from 'zustand/shallow';
 
+import { CHART_RANGES } from '@constants/chartRange';
 import currenciesWithIndex, {
   IndexCurrency,
 } from '@features/main/tools/currenciesWithIndex';
+import { ChartRange } from '@interfaces/ICharts';
 
 const defaultBaseCurrencies = currenciesWithIndex(['USD', 'GBP', 'EUR', 'CHF']);
 const defaultQuoteCurrency = currenciesWithIndex(['PLN']);
@@ -13,12 +15,14 @@ const defaultQuoteCurrency = currenciesWithIndex(['PLN']);
 interface Actions {
   setBaseCurrencies: (value: IndexCurrency[]) => void;
   setQuoteCurrency: (value: IndexCurrency) => void;
+  setMutliChartRange: (value: ChartRange) => void;
 }
 
 interface MultiBaseCurrenciesStoreState {
   baseCurrencies: IndexCurrency[];
   quoteCurrency: IndexCurrency;
   actions: Actions;
+  mutliChartRange: ChartRange;
 }
 
 const useMultiCurrenciesStore = create<MultiBaseCurrenciesStoreState>()(
@@ -26,6 +30,7 @@ const useMultiCurrenciesStore = create<MultiBaseCurrenciesStoreState>()(
     (set) => ({
       baseCurrencies: defaultBaseCurrencies,
       quoteCurrency: defaultQuoteCurrency[0],
+      mutliChartRange: CHART_RANGES[0],
       actions: {
         setBaseCurrencies: (params) =>
           set(() => ({
@@ -34,6 +39,10 @@ const useMultiCurrenciesStore = create<MultiBaseCurrenciesStoreState>()(
         setQuoteCurrency: (params) =>
           set(() => ({
             quoteCurrency: params,
+          })),
+        setMutliChartRange: (params) =>
+          set(() => ({
+            mutliChartRange: params,
           })),
       },
     }),
@@ -55,6 +64,8 @@ export const useBaseCurrenciesNames = () =>
   );
 export const useQuoteCurrency = () =>
   useMultiCurrenciesStore((state) => state.quoteCurrency, shallow);
+export const useMutliChartRange = () =>
+  useMultiCurrenciesStore((state) => state.mutliChartRange);
 
 export const useMultiCurrenciesActions = () =>
   useMultiCurrenciesStore((state) => state.actions);

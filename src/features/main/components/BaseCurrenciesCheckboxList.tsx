@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 
 import CheckboxList from '@components/CheckboxList';
 import { CURRENCIES } from '@constants/currencies';
@@ -10,7 +10,9 @@ import {
   useMultiCurrenciesActions,
   useBaseCurrenciesNames,
 } from '@src/zustand/multiCurrenciesStore';
+import { includedInGenericArray } from '@utils/misc';
 
+import CurrenciesCheckboxItem from './CurrenciesCheckboxItem';
 import currenciesWithIndex, {
   IndexCurrency,
 } from '../tools/currenciesWithIndex';
@@ -65,9 +67,16 @@ const BaseCurrenciesCheckboxList = () => {
       activeItems={baseCurrencies}
       nameExtractor={(currency) => currency.name}
       keyExtractor={(currency) => currency.id}
-      onBoxClick={onBoxClick}
+      renderItem={(props) => (
+        <CurrenciesCheckboxItem
+          onClick={onBoxClick}
+          checked={includedInGenericArray(baseCurrencies, props.item)}
+          {...props}
+        />
+      )}
     />
   );
 };
 
-export default BaseCurrenciesCheckboxList;
+const Memo = memo(BaseCurrenciesCheckboxList);
+export default Memo;

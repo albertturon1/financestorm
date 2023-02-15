@@ -1,4 +1,7 @@
+import { isValidElement, ReactElement } from 'react';
+
 import { InfiniteData } from '@tanstack/react-query';
+import { some } from 'lodash';
 import QueryString from 'query-string';
 
 export const genQueryString = (params: object | undefined): string => {
@@ -147,6 +150,14 @@ export const off = <T extends Window | Document | HTMLElement | EventTarget>(
     );
   }
 };
+
+export const includedInGenericArray = <T>(array: T[], item: T) =>
+  typeof item === 'string' ? array.includes(item) : some(array, item);
+
+export type RenderItem<T> = ReactElement | ((data: T) => ReactElement);
+
+export const renderChildren = <T>(item: RenderItem<T> | undefined, data: T) =>
+  isValidElement(item) ? item : item?.(data);
 
 export const isBrowser = typeof window !== 'undefined';
 

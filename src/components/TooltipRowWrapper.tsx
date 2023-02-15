@@ -12,7 +12,7 @@ const TooltipRowWrapper = ({
   className?: string;
 }) => (
   <div
-    className={twMerge('mb-1 flex items-center gap-x-2', className)}
+    className={twMerge('flex items-center gap-x-2', className)}
     style={style}
   >
     {children}

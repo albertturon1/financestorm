@@ -1,13 +1,17 @@
 'use client';
 
-import { use } from 'react';
+import { memo, use, useCallback, useMemo } from 'react';
+
+import { TooltipProps } from 'recharts';
 
 import CustomLineChart, {
   customLineChartYDomain,
 } from '@components/CustomLineChart';
+import { RechartsMultiData } from '@interfaces/ICharts';
 import { ExchangeRateTimeseriesNormalized } from '@interfaces/models/IExchangerate';
 import {
   useBaseCurrenciesNames,
+  useMutliChartRange,
   useQuoteCurrency,
 } from '@src/zustand/multiCurrenciesStore';
 import { nameOfKey } from '@utils/misc';
@@ -18,40 +22,67 @@ import dailyMultiCurrencyData from '../tools/dailyMultiCurrencyData';
 
 const MultiBaseCurrenciesLineChart = () => {
   const quoteCurrency = useQuoteCurrency();
+  const mutliChartRange = useMutliChartRange();
   const baseCurrenciesNames = useBaseCurrenciesNames();
 
-  if (!baseCurrenciesNames?.length || !quoteCurrency) return null;
   const data = use(
     queryClientSide<ExchangeRateTimeseriesNormalized[]>(
-      `${baseCurrenciesNames.sort().join('')}${quoteCurrency.id}`,
+      `${baseCurrenciesNames.sort().join('')}${quoteCurrency.id}${
+        mutliChartRange.value
+      }`,
       () =>
         dailyMultiCurrencyData({
-          years: 1,
+          years: mutliChartRange.value,
           quote_currency: quoteCurrency?.name,
           base_currencies: baseCurrenciesNames,
         }),
     ),
   );
 
-  const chartData = data
-    ?.flatMap((d) => ({ name: d.base, data: d.rates }))
-    .filter((z) => z.data.length);
-  const values = chartData.flatMap((c) => c.data.map((d) => d.value));
-  const yDomain = [0, customLineChartYDomain(values, 2)[1]];
+  const nameExtractor = useCallback((item: RechartsMultiData) => item.name, []);
+  const dataExtractor = useCallback((item: RechartsMultiData) => item.data, []);
+  const dataKeyExtractor = useCallback(
+    (item: RechartsMultiData) => nameOfKey(item.data[0], (x) => x.value),
+    [],
+  );
+
+  const chartData = useMemo(
+    () =>
+      data
+        ?.flatMap((d) => ({ name: d.base, data: d.rates }))
+        .filter((z) => z.data.length) as RechartsMultiData[],
+    [data],
+  );
+  const values = useMemo(
+    () => chartData.flatMap((c) => c.data.map((d) => d.value)),
+    [chartData],
+  );
+
+  const yDomain = useMemo(
+    () => [0, customLineChartYDomain(values, 2)[1]],
+    [values],
+  );
+
+  const tooltip = useCallback(
+    (props: TooltipProps<number, string>) => (
+      <MultiCurrenciesLineChartTooltip {...props} />
+    ),
+    [],
+  );
 
   return (
     <CustomLineChart
       data={chartData}
-      dataKeyExtractor={(item) => nameOfKey(item.data[0], (x) => x.value)}
-      dataExtractor={(item) => item.data}
-      nameExtractor={(item) => item.name}
-      keyExtractor={(item) => item.name}
+      dataKeyExtractor={dataKeyExtractor}
+      dataExtractor={dataExtractor}
+      nameExtractor={nameExtractor}
+      keyExtractor={nameExtractor}
       yAxisTickCount={10}
       yDomain={yDomain}
       xAxisLabel="label"
-      tooltip={<MultiCurrenciesLineChartTooltip />}
+      tooltip={tooltip}
     />
   );
 };
-
-export default MultiBaseCurrenciesLineChart;
+const Memo = memo(MultiBaseCurrenciesLineChart);
+export default Memo;

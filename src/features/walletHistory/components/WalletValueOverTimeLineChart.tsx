@@ -1,8 +1,5 @@
 'use client';
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import abbreviate from 'number-abbreviate';
 import {
   ResponsiveContainer,
   LineChart,
@@ -74,7 +71,7 @@ const WalletValueOverTimeLineChart = ({
             name={s.name}
             key={s.name}
             type="monotone"
-            stroke={CHART_THEME[index]}
+            stroke={CHART_THEME[index % CHART_THEME.length]}
             dot={false}
           />
         ))}

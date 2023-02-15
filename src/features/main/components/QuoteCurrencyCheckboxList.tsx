@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useState } from 'react';
 
 import CheckboxList from '@components/CheckboxList';
 import { CURRENCIES } from '@constants/currencies';
@@ -9,7 +9,9 @@ import {
   useMultiCurrenciesActions,
   useBaseCurrencies,
 } from '@src/zustand/multiCurrenciesStore';
+import { includedInGenericArray } from '@utils/misc';
 
+import CurrenciesCheckboxItem from './CurrenciesCheckboxItem';
 import currenciesWithIndex, {
   IndexCurrency,
 } from '../tools/currenciesWithIndex';
@@ -40,6 +42,7 @@ const QuoteCurrencyCheckboxList = () => {
     },
     [baseCurrencies, setBaseCurrencies, setQuoteCurrency],
   );
+  const activeItems = [availableQuoteCurrencies[0]];
 
   return (
     <CheckboxList
@@ -49,12 +52,19 @@ const QuoteCurrencyCheckboxList = () => {
           : 'Waluta kwotowana'
       }
       items={availableQuoteCurrencies}
-      activeItems={[availableQuoteCurrencies[0]]}
+      activeItems={activeItems}
       nameExtractor={(currency) => currency.name}
       keyExtractor={(currency) => currency.id}
-      onBoxClick={onBoxClick}
+      renderItem={(props) => (
+        <CurrenciesCheckboxItem
+          onClick={onBoxClick}
+          checked={includedInGenericArray(activeItems, props.item)}
+          {...props}
+        />
+      )}
     />
   );
 };
 
-export default QuoteCurrencyCheckboxList;
+const Memo = memo(QuoteCurrencyCheckboxList);
+export default Memo;

@@ -4,7 +4,10 @@ import { ExchangeRateTimeseriesResponse } from '@interfaces/models/IExchangerate
 import api from '@utils/api';
 import { genQueryString, getNDaysPastServerDate } from '@utils/misc';
 
-import { DailyCurrencyTimeseriesRequest } from './interfaces/ICurrenctyRateApi';
+import {
+  CurrencyRatePair,
+  DailyCurrencyTimeseriesRequest,
+} from './interfaces/ICurrenctyRateApi';
 
 export const getDailyCurrencyTimeseries = async ({
   base_currency,
@@ -23,6 +26,19 @@ export const getDailyCurrencyTimeseries = async ({
   const params = genQueryString({
     start_date: dateArgs(start_date),
     end_date: dateArgs(end_date),
+    base: base_currency,
+    symbols: quote_currency?.toUpperCase(), //comma separated values
+  });
+
+  return await api.get<ExchangeRateTimeseriesResponse>(`${url}?${params}`);
+};
+
+export const getTodayCurrencies = async ({
+  base_currency,
+  quote_currency,
+}: CurrencyRatePair) => {
+  const url = 'https://api.exchangerate.host/latest';
+  const params = genQueryString({
     base: base_currency,
     symbols: quote_currency?.toUpperCase(), //comma separated values
   });

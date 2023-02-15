@@ -1,93 +1,116 @@
-import { isValidElement, memo, ReactElement, useState } from 'react';
+import {
+  Dispatch,
+  isValidElement,
+  memo,
+  ReactElement,
+  SetStateAction,
+  useCallback,
+  useRef,
+} from 'react';
 
-import { some } from 'lodash';
 import Scrollbars from 'react-custom-scrollbars-2';
-import { useDetectClickOutside } from 'react-detect-click-outside';
-import { BiChevronDown } from 'react-icons/bi';
-import { twMerge } from 'tailwind-merge';
 
-import CheckboxListItem from './CheckboxListItem';
+import CustomDropdown from '@components/CustomDropdown';
+import { includedInGenericArray } from '@utils/misc';
+
+import CheckboxListDefaultHeader from './CheckboxListDefaultHeader';
+import CheckboxListItem from './CheckboxListIDefaultItem';
+
+type CustomComponent<T> = (data: T) => ReactElement | null;
+export type ChecboxListRenderItem<T> = {
+  item: T;
+  index: number;
+};
+export type ChecboxListRenderHeader = {
+  open: boolean;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+};
+
+export type CheckboxListProps<T> = {
+  items: T[];
+  activeItems: T[];
+  nameExtractor: (value: T) => string;
+  keyExtractor: (value: T) => number;
+  onClick?: (value: T) => void;
+  className?: string;
+  title: string;
+  renderItem?: CustomComponent<ChecboxListRenderItem<T>>;
+  renderHeader?: CustomComponent<ChecboxListRenderHeader>;
+};
 
 const CheckboxList = <T,>({
   items,
   activeItems,
   nameExtractor,
   keyExtractor,
-  onBoxClick,
+  onClick,
   className = '',
   title = '',
   renderItem,
-}: {
-  items: T[];
-  activeItems: T[];
-  nameExtractor: (value: T) => string;
-  keyExtractor: (value: T) => number;
-  onBoxClick: (value: T) => void;
-  className?: string;
-  title: string;
-  renderItem?: ((data: T) => ReactElement | null) | ReactElement;
-}) => {
-  const [open, setOpen] = useState(false);
-  const ref = useDetectClickOutside({
-    onTriggered: () => {
-      setOpen(false);
-    },
-  });
+  renderHeader,
+}: CheckboxListProps<T>) => {
+  //add imprerative hadler to scroll to top
+  const scrollRef = useRef<Scrollbars>(null);
+
+  const ChecboxListRenderHeader = useCallback(
+    (open: boolean, setOpen: Dispatch<SetStateAction<boolean>>) =>
+      isValidElement(renderHeader)
+        ? renderHeader
+        : renderHeader?.({ open, setOpen }),
+    [renderHeader],
+  );
+
+  const ChecboxListRenderItem = useCallback(
+    (props: ChecboxListRenderItem<T>) =>
+      isValidElement(renderItem) ? renderItem : renderItem?.(props),
+    [renderItem],
+  );
 
   return (
-    <div
-      ref={ref}
-      className={twMerge(
-        'relative flex h-max cursor-pointer flex-col rounded bg-secondaryBlack',
-        className,
+    <CustomDropdown className={className}>
+      {({ open, setOpen }) => (
+        <>
+          {ChecboxListRenderHeader(open, setOpen) ?? (
+            <CheckboxListDefaultHeader
+              open={open}
+              title={title}
+              onClick={() => {
+                setOpen((prev) => !prev);
+              }}
+            />
+          )}
+          {/*itemsList*/}
+          <div
+            className={`absolute top-12 z-10 w-full flex-col overflow-hidden bg-secondaryBlack  ${
+              open ? 'h-96 max-h-max' : 'h-0'
+            }`}
+          >
+            <Scrollbars
+              className="flex"
+              universal
+              ref={scrollRef}
+              style={{ color: 'white' }}
+            >
+              {items.map((item, index) => (
+                // eslint-disable-next-line react/jsx-no-useless-fragment
+                <>
+                  {ChecboxListRenderItem({ item, index }) ?? (
+                    <CheckboxListItem
+                      label={nameExtractor(item)}
+                      key={keyExtractor(item)}
+                      checked={includedInGenericArray(activeItems, item)}
+                      onClick={() => {
+                        onClick?.(item);
+                      }}
+                    />
+                  )}
+                </>
+              ))}
+            </Scrollbars>
+          </div>
+        </>
       )}
-    >
-      {/*button*/}
-      <button
-        onClick={() => {
-          setOpen((prev) => !prev);
-        }}
-        className={`flex h-12 items-center px-4 ${open ? 'border-b' : ''}`}
-      >
-        <p className="w-full text-lg font-semibold">{title}</p>
-        <BiChevronDown
-          color="#10668E"
-          className={`h-10 w-10 transition-transform duration-150 ${
-            open ? 'rotate-180' : ''
-          }`}
-        />
-      </button>
-      {/*itemsList*/}
-      <div
-        className={`absolute top-12 z-10 w-full flex-col overflow-hidden bg-secondaryBlack  ${
-          open ? 'h-60' : 'h-0'
-        }`}
-      >
-        <Scrollbars className="flex" universal>
-          {items.map((item) => {
-            const RenderItem = isValidElement(renderItem)
-              ? renderItem
-              : renderItem?.(item);
-
-            if (RenderItem) return RenderItem;
-            return (
-              <CheckboxListItem
-                label={nameExtractor(item)}
-                key={keyExtractor(item)}
-                checked={
-                  typeof item === 'string'
-                    ? activeItems.includes(item)
-                    : some(activeItems, item)
-                }
-                onClick={() => {
-                  onBoxClick(item);
-                }}
-              />
-            );
-          })}
-        </Scrollbars>
-      </div>
-    </div>
+    </CustomDropdown>
   );
 };
 

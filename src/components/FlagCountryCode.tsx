@@ -1,4 +1,5 @@
 import Flag from 'react-world-flags';
+import { twMerge } from 'tailwind-merge';
 
 import { Currencies } from '@interfaces/ICurrency';
 
@@ -6,6 +7,7 @@ const FlagCountryCode = ({
   code,
   className = '',
   flagClassName = '',
+  textClassName = '',
   reverse,
   boldName = true,
   flagStyle,
@@ -13,6 +15,7 @@ const FlagCountryCode = ({
   code: Currencies;
   className?: string;
   flagClassName?: string;
+  textClassName?: string;
   reverse?: boolean;
   boldName?: boolean;
   flagStyle?: React.CSSProperties;
@@ -30,8 +33,13 @@ const FlagCountryCode = ({
         style={flagStyle}
       />
     </div>
-    <p className={`w-10 ${boldName ? 'font-semibold' : ''}`}>
-      {`${code}`}&nbsp;
+    <p
+      className={twMerge(
+        `w-10 ${boldName ? 'font-semibold' : ''}`,
+        textClassName,
+      )}
+    >
+      {code}
     </p>
   </div>
 );
