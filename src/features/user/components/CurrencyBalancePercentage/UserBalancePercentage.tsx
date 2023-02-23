@@ -5,12 +5,9 @@ import { use, useState } from 'react';
 import SegmentedControl, {
   SegmentedControlOptions,
 } from '@components/SegmentedControl';
-import {
-  UserCurrencyBalance,
-  UserBalanceData,
-} from '@features/user/interfaces/IUserBalance';
-import userCurrenciesAmount from '@features/user/tools/userCurrenciesAmount';
-import todayWalletValue from '@features/walletHistory/tools/todayWalletValue';
+import todayWalletValue, {
+  isBaseCurrencyWalletValue,
+} from '@features/walletHistory/tools/todayWalletValue';
 import { ChartType } from '@interfaces/ICharts';
 import { User } from '@interfaces/models/IUser';
 import { cutNumber } from '@utils/misc';
@@ -20,48 +17,30 @@ import UserBalancePercentageBarChart from './UserBalancePercentageBarChart';
 import UserBalancePercentagePieChart from './UserBalancePercentagePieChart';
 
 const percentageValues = async (user: User) => {
-  const multiplier = 100;
-  const { balance, currencyRates } = await todayWalletValue(user);
-  const currencyAmounts = userCurrenciesAmount(user.currencies);
+  const { balance, currencies } = await todayWalletValue(user);
 
-  const transformedNonBaseCurrencies: UserCurrencyBalance[] = currencyRates.map(
-    (currency) => {
-      const [{ value }] = currency.rates;
-      const currencyAmount = currencyAmounts[currency.base];
-      const current_currency_value = cutNumber(currencyAmount * value);
+  const transformedNonBaseCurrencies = currencies.map((c) => ({
+    ...c,
+    value: isBaseCurrencyWalletValue(c) ? c.value : c.amount,
+    percentage: cutNumber(
+      ((isBaseCurrencyWalletValue(c) ? c.value : c.amount) / balance) * 100,
+      2,
+    ),
+  }));
 
-      return {
-        currency: currency.base,
-        value: currencyAmount,
-        percentage: cutNumber(
-          (current_currency_value / balance) * multiplier,
-        ),
-        current_currency_value,
-      };
-    },
-  );
-
-  const baseCurrencyValue = cutNumber(currencyAmounts[user.quote_currency]);
-
-  const baseCurrency: UserCurrencyBalance = {
-    currency: user.quote_currency,
-    value: baseCurrencyValue,
-    percentage: cutNumber((baseCurrencyValue / balance) * multiplier),
-    current_currency_value: baseCurrencyValue,
-  };
   return {
     balance,
-    currencies: [...transformedNonBaseCurrencies, baseCurrency],
+    currencies: transformedNonBaseCurrencies,
   };
 };
 
 const UserBalancePercentage = ({ user }: { user: User }) => {
   const [chartType, setChartType] = useState<ChartType>('pie');
   const percentage_values = use(
-    queryClientSide<UserBalanceData>('userBalance', () =>
-      percentageValues(user),
-    ),
+    queryClientSide('userBalance', () => percentageValues(user)),
   );
+
+  //console.log(percentage_values);
 
   const controlOptions: SegmentedControlOptions = {
     buttons: [
@@ -89,7 +68,7 @@ const UserBalancePercentage = ({ user }: { user: User }) => {
         {'Procentowy udział walut w portfelu'}
       </p>
       <SegmentedControl options={controlOptions} />
-      <div className="mt-5 h-96 w-96 lg:w-128 rounded bg-secondaryBlack px-3 py-2">
+      <div className="mt-5 h-96 w-96 rounded bg-secondaryBlack px-3 py-2 lg:w-128">
         {chartType === 'bar' ? (
           <UserBalancePercentageBarChart
             data={percentage_values.currencies}

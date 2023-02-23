@@ -1,35 +1,38 @@
-import Link from 'next/link';
+import { twMerge } from 'tailwind-merge';
 
 import FlagCountryCode from '@components/FlagCountryCode';
 import { Currencies } from '@interfaces/ICurrency';
 
 const CurrencyBalance = ({
-  userID,
+  onClick,
+  walletID,
   currencyCode,
-  value,
-  accountID,
+  balance,
   className = '',
   quote_currency,
   baseValue,
   currencyRate,
 }: {
-  userID: string;
-  currencyCode: Currencies;
-  value: number;
-  accountID?: string;
+  onClick?: () => void;
+  walletID?: string;
+  currencyRate?: number;
   className?: string;
+  currencyCode: Currencies;
+  balance: number;
   quote_currency: Currencies;
   baseValue?: number;
-  currencyRate?: number;
 }) => (
-  <Link
-    href={`/user/${userID}/transactions/${currencyCode}`}
-    className={`lg flex w-full flex-col px-2 pt-4 pb-3 text-sm
-		  ${currencyCode !== quote_currency ? 'cursor-pointer' : ''} ${className} `}
+  <button
+    onClick={onClick}
+    disabled={!onClick}
+    className={
+      (twMerge('lg flex w-full flex-col bg-red-300 px-2 pt-4 pb-3 text-sm'),
+      className)
+    }
   >
     <div className="flex items-center justify-between pb-1.5">
       <FlagCountryCode code={currencyCode} flagClassName="w-6" />
-      {accountID && <p className="text-sm">{accountID}</p>}
+      {walletID && <p className="text-sm">{walletID}</p>}
     </div>
     {baseValue && currencyCode !== quote_currency && (
       <div className="flex items-center justify-between pb-1.5">
@@ -39,7 +42,7 @@ const CurrencyBalance = ({
     )}
     <div className="flex items-center justify-between pb-1.5">
       <p>{'Saldo bankowe'}</p>
-      <p className="font-medium">{`${value} ${currencyCode.toUpperCase()}`}</p>
+      <p className="font-medium">{`${balance} ${currencyCode.toUpperCase()}`}</p>
     </div>
     {baseValue && currencyCode !== quote_currency && (
       <div className="flex items-center justify-between">
@@ -47,7 +50,7 @@ const CurrencyBalance = ({
         <p className="font-semibold">{`${baseValue} ${quote_currency.toUpperCase()}`}</p>
       </div>
     )}
-  </Link>
+  </button>
 );
 
 export default CurrencyBalance;

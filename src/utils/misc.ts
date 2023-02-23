@@ -61,13 +61,18 @@ export const getFloatBetweenRange = (min = 0, max = 1) =>
 // eslint-disable-next-line func-style
 export const cutNumber = (number: number, n = 3) => Number(number.toFixed(n));
 
-export const previousDate = (
-  date: Date,
+export const previousDate = ({
+  date,
+  years,
+  months,
+  days,
+}: {
+  date: Date;
   // eslint-disable-next-line default-param-last
-  years?: number,
-  months?: number,
-  days?: number,
-) => {
+  years?: number;
+  months?: number;
+  days?: number;
+}) => {
   const dateCopy = new Date(date);
 
   if (years) dateCopy.setFullYear(dateCopy.getFullYear() - years);

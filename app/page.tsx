@@ -1,48 +1,31 @@
-'use client';
-
-import { useState, useEffect } from 'react';
-
-import FlagCountryCode from '@components/FlagCountryCode';
-import Loader from '@components/Loader';
-import PageTitle from '@components/PageTitle';
 import { PADDING_TAILWIND } from '@constants/Globals';
-import BaseCurrenciesCheckboxList from '@features/main/components/BaseCurrenciesCheckboxList';
-import MultiBaseCurrenciesLineChart from '@features/main/components/MultiBaseCurrenciesLineChart';
-//import MultiCurrenciesChartRange from '@features/main/components/MultiCurrenciesChartRange';
-import QuoteCurrencyCheckboxList from '@features/main/components/QuoteCurrencyCheckboxList';
-import { useQuoteCurrency } from '@src/zustand/multiCurrenciesStore';
+import MainRedirectButton from '@features/main/MainRedirectButton';
 
-const HomePage = () => {
-  const quoteCurrency = useQuoteCurrency();
+import { USER_ID } from './Navbar';
 
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) return <Loader />;
-
-  return (
-    <div className={`${PADDING_TAILWIND} flex h-full w-full flex-col pb-4`}>
-      <div className="flex w-full justify-between pb-1">
-        <div className="flex items-center gap-x-2">
-          <PageTitle>{'Kursy walut w stosunku do '}</PageTitle>
-          <FlagCountryCode
-            code={quoteCurrency.name}
-            className="gap-x-0"
-            textClassName="text-xl"
-          />
-        </div>
-        <div className="flex gap-x-10">
-          {/*<MultiCurrenciesChartRange />*/}
-          <BaseCurrenciesCheckboxList />
-          <QuoteCurrencyCheckboxList />
-        </div>
-      </div>
-      <MultiBaseCurrenciesLineChart />
-    </div>
-  );
-};
+const HomePage = () => (
+  <div
+    className={`${PADDING_TAILWIND} grid h-full w-full grid-cols-1 grid-rows-2 gap-5 pb-4 md:grid-cols-2`}
+  >
+    <MainRedirectButton
+      image="/assets/images/dashboard.png"
+      title="Panel użytkownika"
+      subtitle="Zarządzaj swoim kontem i preferencjami za pomocą panelu użytkownika"
+      href={`/user/${USER_ID}`}
+    />
+    <MainRedirectButton
+      image="/assets/images/wallet-history.png"
+      title="Dzisiejsze kursy walut"
+      subtitle="Sprawdź dzisiejsze kursy walut i bądź na bieżąco z rynkiem walutowym."
+      href="/currencies"
+    />
+    <MainRedirectButton
+      image="/assets/images/multi-currencies.png"
+      title="Historyczne kursy walut"
+      subtitle="Przejrzyj archiwalne kursy walut i analizuj zmiany wartości poszczególnych walut w czasie."
+      href="/multi-currencies"
+    />
+  </div>
+);
 
 export default HomePage;

@@ -6,7 +6,7 @@ import { shallow } from 'zustand/shallow';
 import { CHART_RANGES } from '@constants/chartRange';
 import currenciesWithIndex, {
   IndexCurrency,
-} from '@features/main/tools/currenciesWithIndex';
+} from '@features/multi-currencies/tools/currenciesWithIndex';
 import { ChartRange } from '@interfaces/ICharts';
 
 const defaultBaseCurrencies = currenciesWithIndex(['USD', 'GBP', 'EUR', 'CHF']);

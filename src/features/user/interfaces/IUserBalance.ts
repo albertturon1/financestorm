@@ -4,7 +4,7 @@ export interface UserCurrencyBalance {
   currency: string;
   value: number;
   percentage: number;
-  current_currency_value: number;
+  amount: number;
 }
 
 export interface UserBalanceChart {

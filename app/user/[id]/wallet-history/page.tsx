@@ -1,6 +1,7 @@
+import ClientScrollbars from '@components/ClientScrollbars';
 import PageTitle from '@components/PageTitle';
+import UserWalletBalances from '@components/UserWalletBalances';
 import { PADDING_TAILWIND } from '@constants/Globals';
-import UserBalanceCurrencies from '@features/user/components/CurrencyBalancePercentage/UserBalanceCurrencies';
 import WalletOverTimeCharts from '@features/walletHistory/components/WalletOverTimeCharts';
 import inflationWalletOverTimeValue from '@features/walletHistory/tools/inflationWalletOverTimeValue';
 import walletValueOverTime from '@features/walletHistory/tools/walletValueOverTime';
@@ -37,18 +38,19 @@ const WalletHistoryPage = async ({ params }: { params: UserParams }) => {
 
   return (
     <div className={`${PADDING_TAILWIND} flex h-full w-full flex-col pb-4`}>
-      <div className="flex flex-col justify-between w-full pb-1">
-        <PageTitle className="justify-between w-full pb-1">
+      <div className="flex w-full flex-col justify-between pb-1">
+        <PageTitle className="w-full justify-between pb-1">
           {'Wartość portfela walutowego na przestrzeni lat'}
         </PageTitle>
-        {/* @ts-expect-error Server Component */}
-        <UserBalanceCurrencies
-          itemClassName="border border-slate-600"
-          horizontal
-          user={user}
-          accountID={false}
-          baseValue={false}
-        />
+        <ClientScrollbars className="flex-row">
+          {/* @ts-expect-error Server Component */}
+          <UserWalletBalances
+            userID={user.id}
+            containerClassName="flex-row w-max"
+            itemClassName="py-1.5 w-48"
+            onlyBalance
+          />
+        </ClientScrollbars>
       </div>
       <WalletOverTimeCharts chartData={chartData} />
     </div>

@@ -27,7 +27,7 @@ const UserBalancePercentageTooltip = ({
         />
       </div>
       {payload[0].payload.currency !== quote_currency && (
-        <p className="font-semibold">{`${payload[0].payload.current_currency_value} PLN`}</p>
+        <p className="font-semibold">{`${payload[0].payload.amount} PLN`}</p>
       )}
       <p className="font-semibold">{`${payload[0].payload.percentage}% portfela`}</p>
     </div>

@@ -21,11 +21,14 @@ const FlagCountryCode = ({
   flagStyle?: React.CSSProperties;
 }) => (
   <div
-    className={`flex items-center gap-x-2 tabular-nums ${className} ${
-      reverse ? 'flex-row-reverse' : 'flex-row'
-    }`}
+    className={twMerge(
+      `flex items-center gap-x-1 tabular-nums ${
+        reverse ? 'flex-row-reverse' : 'flex-row'
+      }`,
+      className,
+    )}
   >
-    <div className={`mr-1 flex h-6 w-10 ${flagClassName}`}>
+    <div className={twMerge('mr-1 flex h-6 w-10', flagClassName)}>
       <Flag
         alt={`${code} flag`}
         code={code.slice(0, 2).toUpperCase()}
@@ -35,7 +38,7 @@ const FlagCountryCode = ({
     </div>
     <p
       className={twMerge(
-        `w-10 ${boldName ? 'font-semibold' : ''}`,
+        `${reverse ? 'w-10' : ''} ${boldName ? 'font-semibold' : ''}`,
         textClassName,
       )}
     >

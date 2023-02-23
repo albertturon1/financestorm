@@ -1,5 +1,9 @@
 'use client';
 
+import { useCallback } from 'react';
+
+import { TooltipProps } from 'recharts';
+
 import CustomLineChart, {
   customLineChartYDomain,
 } from '@components/CustomLineChart';
@@ -9,6 +13,15 @@ import { nameOfKey, serverDateToParts } from '@utils/misc';
 
 import InflationOverMonthsTooltip from './InflationOverMonthsTooltip';
 import WalletValueOverTimeTooltip from './WalletValueOverTimeTooltip';
+
+const keyExtractor = (item: RechartsMultiData) => item.name;
+const dataExtractor = (item: RechartsMultiData) => item.data;
+const dataKeyExtractor = (item: RechartsMultiData) =>
+  nameOfKey(item.data[0], (x) => x.value);
+const inflationNameExtractor = () => 'Skumulowana inflacja';
+
+const inflationDataKeyExtractor = (item: RechartsMultiData) =>
+  nameOfKey(item.data[0], (x) => x.cumulativeInflation);
 
 const WalletOverTimeCharts = ({
   chartData,
@@ -25,42 +38,50 @@ const WalletOverTimeCharts = ({
   const walletValueYDomain = customLineChartYDomain(values);
   const syncId = 'anyId';
 
+  const tooltip = useCallback(
+    (props: TooltipProps<number, string>) => (
+      <WalletValueOverTimeTooltip
+        currentWalletValue={currentWalletValue}
+        {...props}
+      />
+    ),
+    [currentWalletValue],
+  );
+  const inflationTooltip = useCallback(
+    (props: TooltipProps<number, string>) => (
+      <InflationOverMonthsTooltip lastRangeMonth={lastRangeMonth} {...props} />
+    ),
+    [lastRangeMonth],
+  );
+
   return (
-    <div className="flex flex-col flex-1">
-      <div className="w-full h-5/6">
+    <div className="flex flex-1 flex-col">
+      <div className="h-5/6 w-full">
         <CustomLineChart
           data={chartData}
-          dataKeyExtractor={(item) => nameOfKey(item.data[0], (x) => x.value)}
-          dataExtractor={(item) => item.data}
-          nameExtractor={(item) => item.name}
-          keyExtractor={(item) => item.name}
+          dataKeyExtractor={dataKeyExtractor}
+          dataExtractor={dataExtractor}
+          nameExtractor={keyExtractor}
+          keyExtractor={keyExtractor}
           tickCount={10}
           yDomain={walletValueYDomain}
           xAxisLabel="label"
           syncId={syncId}
-          tooltip={
-            <WalletValueOverTimeTooltip
-              currentWalletValue={currentWalletValue}
-            />
-          }
+          tooltip={tooltip}
         />
       </div>
-      <div className="w-full h-1/6">
+      <div className="h-1/6 w-full">
         <CustomLineChart
           data={chartData.slice(1, 2)}
-          dataKeyExtractor={(item) =>
-            nameOfKey(item.data[0], (x) => x.cumulativeInflation)
-          }
-          dataExtractor={(item) => item.data}
+          dataKeyExtractor={inflationDataKeyExtractor}
+          dataExtractor={dataExtractor}
           xAxisLabel="label"
           hideXAxis
-          nameExtractor={() => 'Skumulowana inflacja'}
-          keyExtractor={(item) => item.name}
+          nameExtractor={inflationNameExtractor}
+          keyExtractor={keyExtractor}
           lineColor={CHART_THEME.slice(-1)[0]}
           syncId={syncId}
-          tooltip={
-            <InflationOverMonthsTooltip lastRangeMonth={lastRangeMonth} />
-          }
+          tooltip={inflationTooltip}
           tooltipWrapperStyle={{ marginTop: -100 }}
         />
       </div>

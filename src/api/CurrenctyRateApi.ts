@@ -1,28 +1,31 @@
-import _ from 'lodash';
-
-import { ExchangeRateTimeseriesResponse } from '@interfaces/models/IExchangerate';
+import {
+  ExchangeRateLatestResponse,
+  ExchangeRateTimeseriesResponse,
+} from '@interfaces/models/IExchangerate';
 import api from '@utils/api';
+import convertRatesToQuoteCurrency from '@utils/convertRatesToQuoteCurrency';
 import { genQueryString, getNDaysPastServerDate } from '@utils/misc';
 
 import {
-  CurrencyRatePair,
-  DailyCurrencyTimeseriesRequest,
+  DailyCurrencyRatesTimeseriesRequest,
+  MultiCurrenciesRate,
 } from './interfaces/ICurrenctyRateApi';
+
+//api after 00:00 UTC become unavailable
+export const dateArgs = (date: string) => {
+  const currentHour = new Date().getUTCHours();
+  const today = getNDaysPastServerDate(0);
+
+  return date === today && currentHour === 0 ? getNDaysPastServerDate(1) : date;
+};
 
 export const getDailyCurrencyTimeseries = async ({
   base_currency,
   start_date,
   end_date,
   quote_currency,
-}: DailyCurrencyTimeseriesRequest) => {
-  //api after 00:00 UTC become unavailable
-  const currentHour = new Date().getUTCHours();
-  const today = getNDaysPastServerDate(0);
-
-  const dateArgs = (date: string) =>
-    date === today && currentHour === 0 ? getNDaysPastServerDate(1) : date;
-
-  const url = 'https://api.exchangerate.host/timeseries';
+}: DailyCurrencyRatesTimeseriesRequest) => {
+  const url = 'https://api.exchangerate.host/timeseries?';
   const params = genQueryString({
     start_date: dateArgs(start_date),
     end_date: dateArgs(end_date),
@@ -30,18 +33,19 @@ export const getDailyCurrencyTimeseries = async ({
     symbols: quote_currency?.toUpperCase(), //comma separated values
   });
 
-  return await api.get<ExchangeRateTimeseriesResponse>(`${url}?${params}`);
+  const data = await api.get<ExchangeRateTimeseriesResponse>(`${url}${params}`);
+  return convertRatesToQuoteCurrency(data);
 };
 
-export const getTodayCurrencies = async ({
-  base_currency,
-  quote_currency,
-}: CurrencyRatePair) => {
-  const url = 'https://api.exchangerate.host/latest';
+export const getTodayCurrencyRatesQuery = async (
+  props: MultiCurrenciesRate,
+) => {
+  const url = 'https://api.exchangerate.host/latest?';
   const params = genQueryString({
-    base: base_currency,
-    symbols: quote_currency?.toUpperCase(), //comma separated values
+    base: props.quote_currency,
+    symbols: props.base_currencies?.join(',')?.toUpperCase(), //comma separated values
   });
 
-  return await api.get<ExchangeRateTimeseriesResponse>(`${url}?${params}`);
+  const data = await api.get<ExchangeRateLatestResponse>(`${url}${params}`);
+  return convertRatesToQuoteCurrency(data);
 };

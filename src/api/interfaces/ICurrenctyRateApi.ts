@@ -4,10 +4,14 @@ export interface CurrencyRatePair {
   base_currency: Currencies;
   quote_currency: Currencies;
 }
-export interface CurrencyRateDates {
+export interface MultiCurrenciesRate {
+  base_currencies?: Currencies[];
+  quote_currency: Currencies;
+}
+export interface CurrencyRateRange {
   start_date: string;
   end_date: string;
 }
 
-export type DailyCurrencyTimeseriesRequest = CurrencyRateDates &
+export type DailyCurrencyRatesTimeseriesRequest = CurrencyRateRange &
   CurrencyRatePair;

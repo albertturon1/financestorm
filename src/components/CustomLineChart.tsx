@@ -29,9 +29,14 @@ import { AxisDomain } from 'recharts/types/util/types';
 import { CHART_THEME } from '@constants/chartTheme';
 import { cutNumber } from '@utils/misc';
 
-export const customLineChartYDomain = (values: number[], round = 2) => {
-  const minValue = Math.min(...values) - Math.min(...values) * 0.01;
-  const maxValue = Math.max(...values) + Math.max(...values) * 0.01;
+export const customLineChartYDomain = (
+  values: number[],
+  round = 2,
+  multiplier = 1.1,
+) => {
+  const mutli = 1.11 - multiplier;
+  const minValue = Math.min(...values) - Math.min(...values) * mutli;
+  const maxValue = Math.max(...values) + Math.max(...values) * mutli;
 
   return [cutNumber(minValue, round), cutNumber(maxValue, round)];
 };
@@ -50,6 +55,7 @@ export type CustomLineChartProps<T, Y> = {
   hideXAxis?: boolean;
   lineColor?: string;
   tooltipWrapperStyle?: CSSProperties;
+  legend?: boolean;
 } & Omit<
   Partial<XAxisProps & YAxisProps & LineProps & CategoricalChartProps>,
   'data' | 'ref' | 'domain'
@@ -69,6 +75,7 @@ const CustomLineChart = <T, Y>({
   lineColor,
   tooltipWrapperStyle,
   yAxisTickCount,
+  legend = true,
   ...props
 }: CustomLineChartProps<T, Y>) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -78,14 +85,14 @@ const CustomLineChart = <T, Y>({
   }, [data]);
 
   return (
-    <div className="relative flex flex-1">
-      {isLoading && <CustomLineChartLoader />}
+    <div className="relative flex h-full w-full">
+      {/*{isLoading && <CustomLineChartLoader />}*/}
       <ResponsiveContainer className="select-none">
         <LineChart
           margin={{
             top: 5,
             right: 0,
-            left: 0,
+            left: 20,
             bottom: 0,
           }}
           data={data}
@@ -102,11 +109,13 @@ const CustomLineChart = <T, Y>({
             {...props}
             hide={hideXAxis}
           />
-          <Legend verticalAlign="top" wrapperStyle={{ lineHeight: '40px' }} />
+          {legend && (
+            <Legend verticalAlign="top" wrapperStyle={{ lineHeight: '40px' }} />
+          )}
           <YAxis
             type="number"
-            domain={yDomain}
             {...props}
+            domain={yDomain}
             tickCount={yAxisTickCount}
           />
           {data.map((chart, index) => (

@@ -3,10 +3,10 @@ import Link from 'next/link';
 import UserPhoto from '@components/UserPhoto';
 import { PADDING_TAILWIND } from '@constants/Globals';
 import { getUser } from 'src/api/UserApi';
+export const USER_ID = 'lxiry2v1ochapzp';
 
 const Navbar = async () => {
   const linkStyle = 'h-full cursor-pointer';
-  const USER_ID = 'lxiry2v1ochapzp';
 
   const user = await getUser(USER_ID);
 

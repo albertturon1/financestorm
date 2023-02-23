@@ -24,7 +24,7 @@ const UserBalancePercentageBarChart = ({
       margin={{
         top: 5,
         bottom: 5,
-        left: -20,
+        left: 0,
         right: 0,
       }}
     >
@@ -56,7 +56,7 @@ const UserBalancePercentageBarChart = ({
         }}
       />
       <XAxis dataKey="currency" />
-      <YAxis />
+      <YAxis/>
       <Tooltip
         content={
           <UserBalancePercentageTooltip quote_currency={quote_currency} />

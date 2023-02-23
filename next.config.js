@@ -17,7 +17,7 @@ const nextConfig = {
   //  return [
   //    {
   //      source: '/',
-  //      destination: '/user/:id*', // Matched parameters can be used in the destination
+  //      destination: '/',
   //      permanent: true,
   //    },
   //  ];

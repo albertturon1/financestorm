@@ -1,4 +1,4 @@
-export const CURRENCIES_WITHOUT_PLN = [
+export const CURRENCIES = <const>[
   'AED',
   'AFN',
   'ALL',
@@ -20,7 +20,6 @@ export const CURRENCIES_WITHOUT_PLN = [
   'BOB',
   'BRL',
   'BSD',
-  'BTC',
   'BTN',
   'BWP',
   'BYN',
@@ -112,6 +111,7 @@ export const CURRENCIES_WITHOUT_PLN = [
   'OMR',
   'PAB',
   'PEN',
+  'PLN',
   'PGK',
   'PHP',
   'PKR',
@@ -160,6 +160,4 @@ export const CURRENCIES_WITHOUT_PLN = [
   'ZAR',
   'ZMW',
   'ZWL',
-] as const;
-
-export const CURRENCIES = [...CURRENCIES_WITHOUT_PLN, 'PLN'].sort();
+];

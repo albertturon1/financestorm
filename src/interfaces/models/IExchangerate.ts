@@ -4,19 +4,32 @@ import { Currencies } from '@interfaces/ICurrency';
 export type CurrencyRate = Record<Currencies, number>;
 export type LabeledRates = CurrencyRate & LabelValue;
 
-export interface TimeseriesRate {
+export type ExchangeRateLatestResponseRates = Record<Currencies, number>;
+
+type MOTD = {
+  msg: string;
+  url: string;
+};
+export interface ExchangeRateLatestResponse {
+  motd: MOTD;
+  success: boolean;
+  base: Currencies;
+  date: string;
+  rates: ExchangeRateLatestResponseRates;
+}
+
+export interface ExchangeRateTimeseriesResponseRates {
   [key: string]: CurrencyRate;
 }
 
-export interface ExchangeRateTimeseriesResponse {
-  motd: string;
-  success: boolean;
+export interface ExchangeRateTimeseriesResponse
+  extends Omit<ExchangeRateLatestResponse, 'rates' | 'date'> {
   timeseries: boolean;
-  base: Currencies;
   start_date: string;
   end_date: string;
-  rates: TimeseriesRate;
+  rates: ExchangeRateTimeseriesResponseRates;
 }
+
 export interface ExchangeRateTimeseriesNormalized {
   base: Currencies;
   start_date: string;
