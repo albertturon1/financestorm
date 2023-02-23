@@ -7,11 +7,23 @@ import { ExchangeRateLatestResponseRates } from '@interfaces/models/IExchangerat
 
 import { getTodayCurrencyRatesQuery } from '../../../src/api/CurrenctyRateApi';
 
-const normalizedRates = (rates: ExchangeRateLatestResponseRates) =>
-  Object.entries(rates).map(([key, value]) => ({
-    base_currenncy: key,
-    rate: value ** -1,
-  }));
+export type CurrencyTileRates = {
+  baseCurrency: Currencies;
+  rate: number;
+};
+
+const normalizedRates = (
+  rates: ExchangeRateLatestResponseRates | undefined,
+) => {
+  if (!rates) return [];
+  return Object.entries(rates).map(
+    ([key, value]) =>
+      ({
+        baseCurrency: key,
+        rate: value ** -1,
+      } as CurrencyTileRates),
+  );
+};
 
 export type CurrenciesCurrencyProps = { currency: Currencies };
 
@@ -20,18 +32,18 @@ const Currencies = async ({ params }: { params: CurrenciesCurrencyProps }) => {
     base_currencies: CURRENCIES,
     quote_currency: params.currency,
   });
-  const rates = normalizedRates(data.rates);
+  const rates = normalizedRates(data?.rates);
 
   return (
     <div className={`h-full w-full ${PADDING_TAILWIND}`}>
       <PageTitle>{`Dzisiejsze kursy walut w stosunku do ${params.currency}`}</PageTitle>
-      <div className="grid grid-cols-1 gap-5 pt-5 pb-4 auto-cols-max sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+      <div className="grid auto-cols-max grid-cols-1 gap-5 pt-5 pb-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
         {rates.map((rate) => (
           <CurrencyTile
-            baseCurrency={rate.base_currenncy}
+            baseCurrency={rate.baseCurrency}
             quoteCurrency={params.currency}
             rate={rate.rate}
-            key={rate.base_currenncy}
+            key={rate.baseCurrency}
           />
         ))}
       </div>

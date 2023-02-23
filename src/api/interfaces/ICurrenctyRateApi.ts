@@ -5,7 +5,7 @@ export interface CurrencyRatePair {
   quote_currency: Currencies;
 }
 export interface MultiCurrenciesRate {
-  base_currencies?: Currencies[];
+  base_currencies: readonly Currencies[];
   quote_currency: Currencies;
 }
 export interface CurrencyRateRange {

@@ -17,7 +17,7 @@ const HomePage = () => (
       image="/assets/images/wallet-history.png"
       title="Dzisiejsze kursy walut"
       subtitle="Sprawdź dzisiejsze kursy walut i bądź na bieżąco z rynkiem walutowym."
-      href="/currencies"
+      href="/currencies/pln"
     />
     <MainRedirectButton
       image="/assets/images/multi-currencies.png"

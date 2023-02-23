@@ -43,7 +43,7 @@ const MainRedirectButton = ({
       />
       <div className="relative z-20 flex h-full w-full select-none flex-col">
         <div className="absolute top-45 flex w-full flex-col items-center justify-center px-2 lg:px-6">
-          <p className="mb-1 text-center text-3xl font-extrabold leading-10">
+          <p className="mb-1 text-center text-2xl font-extrabold leading-10">
             {title}
           </p>
           <p className="text-white/85 text-center">{subtitle}</p>

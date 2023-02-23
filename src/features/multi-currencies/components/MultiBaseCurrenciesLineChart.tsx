@@ -32,9 +32,7 @@ const MultiBaseCurrenciesLineChart = () => {
 
   const data = use(
     queryClientSide<ExchangeRateTimeseriesNormalized[]>(
-      `${baseCurrenciesNames.sort().join('')}${quoteCurrency.id}${
-        mutliChartRange.value
-      }`,
+      [baseCurrenciesNames, quoteCurrency.id, mutliChartRange.value],
       () =>
         dailyMultiCurrencyData({
           years: mutliChartRange.value,
@@ -43,6 +41,8 @@ const MultiBaseCurrenciesLineChart = () => {
         }),
     ),
   );
+
+  console.log(data);
 
   const chartData = useMemo(
     () =>

@@ -11,16 +11,13 @@ export const isExchangeRateTimeseriesResponse = (
 ): data is ExchangeRateTimeseriesResponse =>
   (data as ExchangeRateTimeseriesResponse).timeseries !== undefined;
 
-const convertDayRates = (day: CurrencyRate, quoteCurrency: Currencies) => {
-  const rates = {} as CurrencyRate;
-  Object.entries(day).forEach((rate) => {
+const convertDayRates = (day: CurrencyRate, quoteCurrency: Currencies) =>
+  //console.log('day:', day);
+  Object.entries(day).reduce((acc, rate) => {
     const [key, value] = rate;
-    if (key === quoteCurrency) return; //skip quoteCurrency
-    rates[key as Currencies] = value ** -1;
-  });
-  return rates;
-};
-
+    if (key !== quoteCurrency) acc[key as keyof CurrencyRate] = value ** -1;
+    return acc;
+  }, {} as CurrencyRate);
 const convertRatesToQuoteCurrency = <
   T extends ExchangeRateLatestResponse | ExchangeRateTimeseriesResponse,
 >(
@@ -29,12 +26,13 @@ const convertRatesToQuoteCurrency = <
   if (!data) return;
   const rates = !isExchangeRateTimeseriesResponse(data)
     ? convertDayRates(data.rates, data.base)
-    : Object.entries(data.rates).map((day) => {
-        const convertedDayRates = {} as ExchangeRateTimeseriesResponseRates;
+    : Object.entries(data.rates).reduce((acc, day) => {
         const [dayLabel, dayRates] = day;
-        convertedDayRates[dayLabel] = convertDayRates(dayRates, data.base);
-        return convertedDayRates;
-      });
+        const chuj = convertDayRates(dayRates, data.base);
+        acc[dayLabel] = chuj;
+        //if (index === 0) console.log(acc);
+        return acc;
+      }, {} as ExchangeRateTimeseriesResponseRates);
 
   return { ...data, rates };
 };

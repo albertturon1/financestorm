@@ -35,8 +35,8 @@ const HomePage = () => {
         </div>
         <div className="flex gap-x-10">
           {/*<MultiCurrenciesChartRange />*/}
-          <BaseCurrenciesCheckboxList />
-          <QuoteCurrencyCheckboxList />
+          {/*<BaseCurrenciesCheckboxList />
+          <QuoteCurrencyCheckboxList />*/}
         </div>
       </div>
       <MultiBaseCurrenciesLineChart />

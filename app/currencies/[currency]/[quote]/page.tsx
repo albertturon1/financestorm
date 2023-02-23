@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useMemo } from 'react';
+import { use, useCallback, useMemo } from 'react';
 
 import { TooltipProps } from 'recharts';
 
@@ -10,10 +10,20 @@ import CustomLineChart, {
 import FlagCountryCode from '@components/FlagCountryCode';
 import { PADDING_TAILWIND } from '@constants/Globals';
 import MultiCurrenciesLineChartTooltip from '@features/multi-currencies/components/MultiCurrenciesLineChartTooltip';
+import dailyMultiCurrencyData from '@features/multi-currencies/tools/dailyMultiCurrencyData';
 import { RechartsMultiData } from '@interfaces/ICharts';
 import { Currencies } from '@interfaces/ICurrency';
+import {
+  CurrencyRate,
+  ExchangeRateLatestResponse,
+  ExchangeRateTimeseriesNormalized,
+  ExchangeRateTimeseriesResponse,
+  ExchangeRateTimeseriesResponseRates,
+} from '@interfaces/models/IExchangerate';
 import { useDailyCurrencyRatesTimeseriesQuery } from '@src/api/client/CurrenctyRateApi';
+import { getDailyCurrencyTimeseries } from '@src/api/CurrenctyRateApi';
 import { nameOfKey, serverDate } from '@utils/misc';
+import queryClientSide from '@utils/queryClientSide';
 
 import { CurrenciesCurrencyProps } from '../page';
 
@@ -26,13 +36,25 @@ type CurrenciesPairProps = { quote: Currencies } & CurrenciesCurrencyProps;
 
 const CurrenciesPair = ({ params }: { params: CurrenciesPairProps }) => {
   const { currency, quote } = params;
-  const { data } = useDailyCurrencyRatesTimeseriesQuery({
-    quote_currency: quote,
-    base_currency: currency,
-    start_date: '2021-01-01',
-    end_date: serverDate(new Date()),
-  });
-
+  const data = use(
+    queryClientSide<
+      | (ExchangeRateTimeseriesResponse & {
+          rates: CurrencyRate | ExchangeRateTimeseriesResponseRates[];
+        })
+      | undefined
+    >(
+      // eslint-disable-next-line sonarjs/no-duplicate-string
+      [quote, currency, '2021-01-01', serverDate(new Date())],
+      () =>
+        getDailyCurrencyTimeseries({
+          quote_currency: quote,
+          base_currency: currency,
+          start_date: '2021-01-01',
+          end_date: serverDate(new Date()),
+        }),
+    ),
+  );
+  //console.log(data);
   //data.rates to obiekt - najpierw znormalizuj
   //const chartData = useMemo(
   //  () =>
