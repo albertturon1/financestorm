@@ -1,6 +1,6 @@
 import { CHART_RANGES } from '@constants/chartRange';
 
-import { NormalizedCurrencyExchangeRate } from './models/IExchangerate';
+import { Currencies } from './ICurrency';
 import { AnyObject } from './Utility';
 
 export interface RechartsData {
@@ -10,15 +10,32 @@ export interface RechartsData {
   baseValue: number;
 }
 
-export interface LabelValue {
+export interface DateValue {
   label: string;
   value: number;
 }
 
-export interface RechartsMultiData {
-  name: string;
-  data: NormalizedCurrencyExchangeRate[];
+export type WalletQuoteCurrencyValue = {
+  currency: Currencies;
+  value: number;
+};
+
+export type WalletBaseCurrencyValue = {
+  amount: number;
+  rate: number;
+} & WalletQuoteCurrencyValue;
+
+export interface WalletDay extends DateValue {
+  baseCurrencies: WalletBaseCurrencyValue[];
+  quoteCurrency: WalletQuoteCurrencyValue;
 }
+
+export type ChartMultiData<T> = {
+  name: string;
+  minValue: number;
+  maxValue: number;
+  data: T[];
+};
 
 export type CustomTooltipProps<T extends AnyObject<T>> = {
   strokeWidth: number;

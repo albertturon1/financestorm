@@ -1,4 +1,4 @@
-import hashArray from './deepSortArray';
+import hashQueryKey from './hashQueryKey';
 
 export const makeQueryClient = <T>() => {
   const fetchMap = new Map<string, Promise<T>>();
@@ -7,7 +7,7 @@ export const makeQueryClient = <T>() => {
     name: (string[] | number[] | string | number)[],
     query: () => Promise<QueryResult>,
   ): Promise<QueryResult> {
-    const hashedKey = hashArray(name);
+    const hashedKey = hashQueryKey(name);
     if (!fetchMap.has(hashedKey)) {
       fetchMap.set(hashedKey, query());
     }

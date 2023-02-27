@@ -1,36 +1,33 @@
-import { LabelValue } from '@interfaces/ICharts';
-import {
-  cutNumber,
-  previousDate,
-  serverDate,
-  serverDateToParts,
-} from '@utils/misc';
+import { DateTime } from 'luxon';
+
+import { DateValue } from '@interfaces/ICharts';
+import { cutNumber, serverDateToParts } from '@utils/misc';
 
 import monthlyCPIData from './monthlyCPIData';
 import { WalletValueOverTime } from './walletValueOverTime';
 
-export interface InflationWalletOverTimeValue extends LabelValue {
+export interface InflationWalletOverTimeValue extends DateValue {
   cumulativeInflation: number;
   monthlyInflation: number;
   inflationLoss: number;
-  baseValue: number;
+  baseValue: number; //original value without inflation
   cpi: number;
 }
 
 interface MonthlyInflation {
-  cumulative: number;
-  monthly: number;
+  monthCumulativeInflation: number;
+  monthToMonthInflation: number;
   cpi: number;
 }
 
-const daysInMonth = (month: number, year: number) =>
-  new Date(year, month, 0).getDate();
+//const daysInMonth = (month: number, year: number) =>
+//  new Date(year, month, 0).getDate();
 
 //last to first months
 const inflationFromCPI = (currentMonthCPI: number, pastMonthCPI: number) =>
   ((currentMonthCPI - pastMonthCPI) / pastMonthCPI) * 100;
 
-const inflationSumPerMonth = (monthlyCPI: LabelValue[]) => {
+const inflationSumPerMonth = (monthlyCPI: DateValue[]) => {
   const data: Record<string, MonthlyInflation> = {};
 
   //i from 1 becuse 0 has already been used
@@ -51,8 +48,8 @@ const inflationSumPerMonth = (monthlyCPI: LabelValue[]) => {
     );
 
     data[currentLoopMonth] = {
-      cumulative: cutNumber(cumulativeInflation, 3),
-      monthly: cutNumber(currentMonthInflation, 3),
+      monthCumulativeInflation: cutNumber(cumulativeInflation, 3),
+      monthToMonthInflation: cutNumber(currentMonthInflation, 3),
       cpi: currentLoopCPIValue,
     };
   }
@@ -60,54 +57,43 @@ const inflationSumPerMonth = (monthlyCPI: LabelValue[]) => {
 };
 
 const inflationWalletOverTimeValue = async (
-  dailyWalletValue: WalletValueOverTime,
+  dailyWalletValues: WalletValueOverTime,
 ) => {
-  const startMonthMinusOneTimestamp = previousDate({
-    date: new Date(dailyWalletValue.start_date),
-    months: 1,
-  });
-
-  const dailyWalletStartMonth = serverDateToParts(
-    serverDate(startMonthMinusOneTimestamp),
-  );
-  const dailyWalletEndMonth = serverDateToParts(dailyWalletValue.end_date);
+  const [year, month] = DateTime.fromISO(dailyWalletValues.startDate)
+    .minus({ months: 1 })
+    .toISODate()
+    .split('-');
+  const startPeriod = `${year}-${month}-01`; //data from previous month of start date is needed for calculations
 
   const monthlyCPINormalize = await monthlyCPIData({
-    startPeriod: dailyWalletStartMonth,
-    endPeriod: dailyWalletEndMonth,
+    startPeriod,
+    endPeriod: dailyWalletValues.endDate,
   });
-  const monthlyCPI = monthlyCPINormalize.reverse(); //reverse to start from most recent month
+  const monthlyCPI = [...monthlyCPINormalize].reverse(); //reverse to start from most recent month
 
   const inflationSums = inflationSumPerMonth(monthlyCPI);
 
-  return dailyWalletValue.rates.map(({ label, value }, index) => {
+  return dailyWalletValues.values.map(({ label, value }) => {
     const yearMonth = serverDateToParts(label);
-    const year = serverDateToParts(label, 'year');
+    //const year = serverDateToParts(label, 'year');
     const d: InflationWalletOverTimeValue = {
       label,
-      value,
       baseValue: value,
+      value,
       monthlyInflation: 0,
       cumulativeInflation: 0,
       inflationLoss: 0,
       cpi: -1,
     };
 
-    const prevYearMonth = prevMonthDate(label);
+    //const prevYearMonth = prevMonthDate(label);
     if (!inflationSums[yearMonth]) return d;
-
-    const daysNumber = daysInMonth(
-      Number(yearMonth.split('-')[1]),
-      Number(year),
+    d.cumulativeInflation = cutNumber(
+      inflationSums[yearMonth].monthCumulativeInflation,
     );
-    const day = Number(label.split('-')[2]);
-    const multiplier = day / daysNumber;
-
-    //if (inflationSums[prevYearMonth])
-      //console.log(label, inflationSums[prevYearMonth]);
-
-    d.cumulativeInflation = cutNumber(inflationSums[yearMonth].cumulative);
-    d.monthlyInflation = cutNumber(inflationSums[yearMonth].monthly);
+    d.monthlyInflation = cutNumber(
+      inflationSums[yearMonth].monthToMonthInflation,
+    );
     d.inflationLoss = cutNumber(value * (d.cumulativeInflation / 100));
     d.value = cutNumber(value - d.inflationLoss);
     d.baseValue = value;
@@ -124,7 +110,5 @@ export const prevMonthDate = (date: string) => {
   const month1 = `${Number(month) - 1}`.padStart(2, '0');
   return `${year}-${month1}`;
 };
-
-//const chuj = (currentCumulative: number, prev) => {
 
 export default inflationWalletOverTimeValue;

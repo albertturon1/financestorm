@@ -6,8 +6,6 @@ import { getUser } from 'src/api/UserApi';
 export const USER_ID = 'lxiry2v1ochapzp';
 
 const Navbar = async () => {
-  const linkStyle = 'h-full cursor-pointer';
-
   const user = await getUser(USER_ID);
 
   return (
@@ -16,7 +14,7 @@ const Navbar = async () => {
     >
       <Link href="/">
         <h1
-          className={`${linkStyle} mt-1 text-5xl font-bold`}
+          className="'h-full cursor-pointer' mt-1 text-4xl lg:text-5xl font-bold"
           style={{ fontFamily: 'BebasNeue-Regular' }}
         >
           <span className="text-yellow-400">{'Finance'}</span>
@@ -24,7 +22,7 @@ const Navbar = async () => {
         </h1>
       </Link>
       <Link href={`/user/${USER_ID}`}>
-        <div className={`${linkStyle} flex cursor-pointer items-center`}>
+        <div className="flex h-full cursor-pointer items-center">
           <h1 className="mr-3 text-lg font-semibold">{'Profil'}</h1>
           {user.photo && <UserPhoto photo={user.photo} alt={user.name} />}
         </div>

@@ -5,7 +5,7 @@ import { USER_ID } from './Navbar';
 
 const HomePage = () => (
   <div
-    className={`${PADDING_TAILWIND} grid h-full w-full grid-cols-1 grid-rows-2 gap-5 pb-4 md:grid-cols-2`}
+    className={`${PADDING_TAILWIND} grid flex-1 grid-cols-1 gap-y-2 lg:gap-5 pb-4 md:grid-cols-2`}
   >
     <MainRedirectButton
       image="/assets/images/dashboard.png"

@@ -2,6 +2,7 @@ import { isValidElement, ReactElement } from 'react';
 
 import { InfiniteData } from '@tanstack/react-query';
 import { some } from 'lodash';
+import { DateTime } from 'luxon';
 import QueryString from 'query-string';
 
 export const genQueryString = (params: object | undefined): string => {
@@ -164,6 +165,24 @@ export type RenderItem<T> = ReactElement | ((data: T) => ReactElement);
 export const renderChildren = <T>(item: RenderItem<T> | undefined, data: T) =>
   isValidElement(item) ? item : item?.(data);
 
+export const dateDiff = (
+  startDate: string,
+  endDate: string,
+  type: 'years' | 'months' | 'days' = 'months',
+) => {
+  const start_date = DateTime.fromISO(startDate);
+  const end_date = DateTime.fromISO(endDate);
+
+  return end_date.diff(start_date, ['months']).toObject();
+};
+
 export const isBrowser = typeof window !== 'undefined';
 
 export const isNavigator = typeof navigator !== 'undefined';
+
+export const xAxisInterval = (monthsDiff: number) => {
+  const diff = Math.ceil(monthsDiff + 1);
+  // eslint-disable-next-line sonarjs/prefer-immediate-return
+  const nearestLowerPowerOfTwo = 1 << (31 - Math.clz32(diff));
+  return nearestLowerPowerOfTwo;
+};

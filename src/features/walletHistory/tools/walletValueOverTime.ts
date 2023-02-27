@@ -1,93 +1,122 @@
-import dailyMultiCurrencyData, {
-  DailyMultiCurrencyDataProps,
-} from '@features/main/tools/dailyMultiCurrencyData';
+import { DateTime } from 'luxon';
+
 import userCurrenciesAmount from '@features/user/tools/userCurrenciesAmount';
-import { LabelValue } from '@interfaces/ICharts';
+import { WalletBaseCurrencyValue, WalletDay } from '@interfaces/ICharts';
+import { Currencies } from '@interfaces/ICurrency';
 import { UserCurrency } from '@interfaces/models/IUser';
-import { cutNumber } from '@utils/misc';
+import { getDailyCurrencyTimeseries } from '@src/api/CurrenctyRateApi';
+import { CurrencyRatePair } from '@src/api/interfaces/ICurrenctyRateApi';
+import { cutNumber, previousDate } from '@utils/misc';
 
-export interface WalletValueOverTime {
-  start_date: string;
-  end_date: string;
-  min_value: number;
-  max_value: number;
-  rates: LabelValue[];
-}
+//const years = (years: number, endDate?: string) => {
+//  let previousStartDate = endDate ? new Date(endDate) : new Date();
+//  const yearsPairs: CurrencyRateRange[] = [];
 
-const finder = (acc: WalletValueOverTime, value: number) => {
-  if (acc.min_value == -1 || value < acc.min_value) acc.min_value = value;
-  if (acc.max_value == -1 || value > acc.max_value) acc.max_value = value;
+//  for (let i = 0; i < years; i++) {
+//    const end_date = previousStartDate;
+
+//    const start_date = previousDate({
+//      date: end_date,
+//      years: 1,
+//      days: -1,
+//    });
+
+//    previousStartDate = previousDate({ date: end_date, years: 1 });
+
+//    yearsPairs.push({
+//      start_date: DateTime.fromJSDate(start_date).toFormat('yyyy-MM-dd'),
+//      end_date: DateTime.fromJSDate(end_date).toFormat('yyyy-MM-dd'),
+//    });
+//  }
+//  return yearsPairs;
+//};
+
+export type WalletValueOverTimeProps = Omit<
+  CurrencyRatePair,
+  'base_currency'
+> & {
+  years?: number;
+  end_date?: string;
+  currencies: UserCurrency[];
 };
 
+export interface WalletValueOverTime {
+  startDate: string;
+  endDate: string;
+  minValue: number;
+  maxValue: number;
+  values: WalletDay[];
+}
+
 const walletValueOverTime = async ({
-  user_currencies,
+  currencies,
   quote_currency,
   end_date,
-  ...props
-}: { user_currencies: UserCurrency[] } & Omit<
-  DailyMultiCurrencyDataProps,
-  'base_currencies'
->) => {
-  const nonQuoteCurrencies = user_currencies
+  years,
+}: WalletValueOverTimeProps) => {
+  const nonQuoteCurrencies = currencies
     ?.filter((b) => b.currency !== quote_currency)
     .map((b) => b.currency);
-  const start = Date.now();
-  const currencyRates = await dailyMultiCurrencyData({
-    base_currencies: nonQuoteCurrencies,
-    quote_currency,
-    end_date,
-    ...props,
+
+  const startDateTimestamp = previousDate({
+    date: new Date(),
+    years,
+    days: -1,
   });
-  const end = Date.now();
-  const currencyAmounts = userCurrenciesAmount(user_currencies);
+  const startDate =
+    DateTime.fromJSDate(startDateTimestamp).toFormat('yyyy-MM-dd');
+  const endDate = DateTime.fromJSDate(
+    end_date ? new Date(end_date) : new Date(),
+  ).toFormat('yyyy-MM-dd');
 
-  //all currencies combined into 1 array
-  const ratesOnlyCombined = currencyRates.flatMap((currency) => currency.rates);
+  const currencyRates = await getDailyCurrencyTimeseries({
+    quote_currency,
+    base_currencies: nonQuoteCurrencies,
+    end_date: endDate,
+    start_date: startDate,
+  });
 
-  return ratesOnlyCombined.reduce(
-    (acc, day) => {
-      if (!acc.start_date || day.label < acc.start_date)
-        acc.start_date = day.label;
-      if (!acc.end_date || day.label > acc.end_date) acc.end_date = day.label;
+  const currencyAmounts = userCurrenciesAmount(currencies);
+  let minValue = -1;
+  let maxValue = -1;
 
-      const labelIndex = acc.rates.findIndex((a) => a.label === day.label); //searching for existing day in array
+  const values = currencyRates?.rates_array.reduce((acc, day) => {
+    let dayValue = currencyAmounts[quote_currency];
+    const baseCurrencies: WalletBaseCurrencyValue[] = Object.entries(
+      day.rates,
+    ).map(([currency, rate]) => {
+      const value = cutNumber(rate * currencyAmounts[currency as Currencies]);
+      dayValue = cutNumber(dayValue + value);
 
-      //day is not yet in object
-      if (labelIndex === -1) {
-        const value =
-          day.value * currencyAmounts[day.from] +
-          currencyAmounts[quote_currency]; //random currency + currenct_currency
+      return {
+        currency: currency as Currencies,
+        amount: currencyAmounts[currency as Currencies],
+        value,
+        rate,
+      };
+    });
 
-        acc.rates.push({
-          label: day.label,
-          value: cutNumber(value, 2),
-        });
+    if (minValue === -1 || dayValue < minValue) minValue = dayValue;
+    if (maxValue === -1 || dayValue > maxValue) maxValue = dayValue;
 
-        finder(acc, cutNumber(value, 2));
+    acc.push({
+      label: day.date,
+      baseCurrencies,
+      quoteCurrency: {
+        currency: quote_currency,
+        value: currencyAmounts[quote_currency],
+      },
+      value: dayValue,
+    });
+    return acc;
+  }, [] as WalletDay[]);
 
-        return acc;
-      } else {
-        const currentValue = acc.rates[labelIndex].value;
-        const currencyConvertedValue = day.value * currencyAmounts[day.from];
-        const value = currentValue + currencyConvertedValue;
-
-        acc.rates[labelIndex] = {
-          ...acc.rates[labelIndex], //label
-          value: cutNumber(value, 2),
-        };
-
-        finder(acc, cutNumber(value, 2));
-
-        return acc;
-      }
-    },
-    {
-      start_date: '',
-      end_date: '',
-      min_value: -1,
-      max_value: -1,
-      rates: [],
-    } as WalletValueOverTime,
-  );
+  return {
+    startDate,
+    endDate,
+    minValue,
+    maxValue,
+    values,
+  } as WalletValueOverTime;
 };
 export default walletValueOverTime;

@@ -5,12 +5,12 @@ import { TooltipProps } from 'recharts';
 import TooltipRowWrapper from '@components/TooltipRowWrapper';
 import TooltipWrapper from '@components/TooltipWrapper';
 import { CHART_THEME } from '@constants/chartTheme';
-import { CustomTooltipProps, LabelValue } from '@interfaces/ICharts';
+import { CustomTooltipProps, DateValue } from '@interfaces/ICharts';
 
 import { InflationWalletOverTimeValue } from '../tools/inflationWalletOverTimeValue';
 
 type P = [
-  CustomTooltipProps<LabelValue>,
+  CustomTooltipProps<DateValue>,
   CustomTooltipProps<InflationWalletOverTimeValue>,
 ];
 

@@ -14,4 +14,4 @@ export interface CurrencyRateRange {
 }
 
 export type DailyCurrencyRatesTimeseriesRequest = CurrencyRateRange &
-  CurrencyRatePair;
+  MultiCurrenciesRate;

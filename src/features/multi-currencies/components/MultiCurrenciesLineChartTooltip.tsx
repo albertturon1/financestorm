@@ -24,15 +24,15 @@ const MultiCurrenciesLineChartTooltip = ({
         <p>{`Dzień: ${day}`}</p>
         <div className="flex items-center justify-between gap-x-3 pb-3">
           <p>{'Waluta kwotowana: '}</p>
-          <p>{data[0].payload.to}</p>
+          <p>{data[0].payload.quote_currency}</p>
         </div>
       </div>
-      {[...data]
+      {data
         .sort((a, b) => (a.value > b.value ? -1 : 1))
         .map(({ payload: values }, index) => (
           <TooltipRowWrapper
-            key={`${values.from}${values.to}`}
-            className={`flex justify-between gap-x-3 px-5 pb-0 py-1.5 ${
+            key={`${values.base_currency}${values.quote_currency}`}
+            className={`flex justify-between gap-x-3 px-5 py-1.5 ${
               index % 2 === 0 ? 'bg-gray-700' : ''
             }`}
           >
@@ -41,13 +41,18 @@ const MultiCurrenciesLineChartTooltip = ({
               style={{
                 backgroundColor:
                   CHART_THEME[
-                    data.findIndex((c) => c.payload.from === values.from) %
-                      CHART_THEME.length
+                    data.findIndex(
+                      (c) => c.payload.base_currency === values.base_currency,
+                    ) % CHART_THEME.length
                   ],
               }}
             />
             <div className="flex flex-1 justify-between">
-              <FlagCountryCode reverse code={values.from} boldName={false} />
+              <FlagCountryCode
+                reverse
+                code={values.base_currency}
+                boldName={false}
+              />
               <p>{values.value.toFixed(3)}</p>
             </div>
           </TooltipRowWrapper>

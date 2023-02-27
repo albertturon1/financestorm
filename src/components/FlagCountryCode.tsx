@@ -42,7 +42,7 @@ const FlagCountryCode = ({
         textClassName,
       )}
     >
-      {code}
+      {code.toUpperCase()}
     </p>
   </div>
 );

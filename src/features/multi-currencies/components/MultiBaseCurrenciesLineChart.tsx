@@ -2,63 +2,65 @@
 
 import { memo, use, useCallback, useMemo } from 'react';
 
+import { DateTime } from 'luxon';
 import { TooltipProps } from 'recharts';
 
 import CustomLineChart, {
   customLineChartYDomain,
 } from '@components/CustomLineChart';
-import { RechartsMultiData } from '@interfaces/ICharts';
-import { ExchangeRateTimeseriesNormalized } from '@interfaces/models/IExchangerate';
+import { ChartMultiData } from '@interfaces/ICharts';
+import { NormalizedCurrencyExchangeRate } from '@interfaces/models/IExchangerate';
+import { getDailyCurrencyTimeseries } from '@src/api/CurrenctyRateApi';
 import {
   useBaseCurrenciesNames,
   useMutliChartRange,
   useQuoteCurrency,
 } from '@src/zustand/multiCurrenciesStore';
-import { nameOfKey } from '@utils/misc';
+import convertDailyCurrencyTimeseriesToChartData from '@utils/convertDailyCurrencyTimeseriesToChartData';
+import { dateDiff, nameOfKey, serverDate, xAxisInterval } from '@utils/misc';
 import queryClientSide from '@utils/queryClientSide';
 
 import MultiCurrenciesLineChartTooltip from './MultiCurrenciesLineChartTooltip';
-import dailyMultiCurrencyData from '../tools/dailyMultiCurrencyData';
 
-const nameExtractor = (item: RechartsMultiData) => item.name;
-const dataExtractor = (item: RechartsMultiData) => item.data;
-const dataKeyExtractor = (item: RechartsMultiData) =>
-  nameOfKey(item.data[0], (x) => x.value);
+const nameExtractor = (item: ChartMultiData<NormalizedCurrencyExchangeRate>) =>
+  item.name;
+const dataExtractor = (item: ChartMultiData<NormalizedCurrencyExchangeRate>) =>
+  item.data;
+const dataKeyExtractor = (
+  item: ChartMultiData<NormalizedCurrencyExchangeRate>,
+) => nameOfKey(item.data[0], (x) => x.value);
+
+const xAxisLabelExtractor = (
+  item: ChartMultiData<NormalizedCurrencyExchangeRate>,
+) => nameOfKey(item.data[0], (x) => x.label);
 
 const MultiBaseCurrenciesLineChart = () => {
   const quoteCurrency = useQuoteCurrency();
+  const baseCurrencies = useBaseCurrenciesNames();
   const mutliChartRange = useMutliChartRange();
   const baseCurrenciesNames = useBaseCurrenciesNames();
 
   const data = use(
-    queryClientSide<ExchangeRateTimeseriesNormalized[]>(
+    queryClientSide(
       [baseCurrenciesNames, quoteCurrency.id, mutliChartRange.value],
       () =>
-        dailyMultiCurrencyData({
-          years: mutliChartRange.value,
-          quote_currency: quoteCurrency?.name,
-          base_currencies: baseCurrenciesNames,
+        getDailyCurrencyTimeseries({
+          quote_currency: quoteCurrency.name,
+          base_currencies: baseCurrencies,
+          start_date: '2021-01-27',
+          end_date: serverDate(new Date()),
         }),
     ),
   );
 
-  console.log(data);
-
   const chartData = useMemo(
-    () =>
-      data
-        ?.flatMap((d) => ({ name: d.base, data: d.rates }))
-        .filter((z) => z.data.length) as RechartsMultiData[],
+    () => convertDailyCurrencyTimeseriesToChartData(data),
     [data],
   );
-  const values = useMemo(
-    () => chartData.flatMap((c) => c.data.map((d) => d.value)),
-    [chartData],
-  );
 
-  const yDomain = useMemo(
-    () => [0, customLineChartYDomain(values, 2)[1], 2], //mutli nie działa
-    [values],
+  const yDomain = customLineChartYDomain(
+    chartData.flatMap((c) => c.data.map((d) => d.value)),
+    2,
   );
 
   const tooltip = useCallback(
@@ -68,19 +70,31 @@ const MultiBaseCurrenciesLineChart = () => {
     [],
   );
 
+  const { months: monthsDiff } = dateDiff(data.start_date, data.end_date);
+
+  const interval = xAxisInterval(monthsDiff);
+
   return (
     <CustomLineChart
       data={chartData}
       dataKeyExtractor={dataKeyExtractor}
       dataExtractor={dataExtractor}
       nameExtractor={nameExtractor}
-      keyExtractor={nameExtractor}
+      xAxisLabelExtractor={xAxisLabelExtractor}
       yAxisTickCount={10}
+      xAxisInterval={'preserveStartEnd'}
+      //xAxisInterval={chuj}
+      tickFormatter={(v) =>
+        DateTime.fromISO(v as string).toFormat('dd.LLL yy', {
+          locale: 'pl',
+        })
+      }
       yDomain={yDomain}
       xAxisLabel="label"
       tooltip={tooltip}
     />
   );
 };
+
 const Memo = memo(MultiBaseCurrenciesLineChart);
 export default Memo;

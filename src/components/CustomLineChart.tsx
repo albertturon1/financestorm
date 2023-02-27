@@ -31,27 +31,31 @@ import { cutNumber } from '@utils/misc';
 
 export const customLineChartYDomain = (
   values: number[],
+  multiplier = 5, //in percent
   round = 2,
-  multiplier = 1.1,
 ) => {
-  const mutli = 1.11 - multiplier;
-  const minValue = Math.min(...values) - Math.min(...values) * mutli;
-  const maxValue = Math.max(...values) + Math.max(...values) * mutli;
+  const multi = multiplier / 100;
 
-  return [cutNumber(minValue, round), cutNumber(maxValue, round)];
+  const minValue = Math.min(...values);
+  const maxValue = Math.max(...values);
+
+  const rMinValue = cutNumber(minValue - minValue * multi, round);
+  const rMaxValue = cutNumber(maxValue + maxValue * multi, round);
+  return [rMinValue, rMaxValue];
 };
 
 export type CustomLineChartProps<T, Y> = {
   dataKeyExtractor: (item: T) => string;
+  xAxisLabelExtractor: (item: T) => string;
   nameExtractor: (item: T) => string;
-  keyExtractor: (item: T) => number | string;
   dataExtractor: (item: T, index: number) => Y[];
-  data: T[];
+  data: readonly T[] | T[];
   tooltip?: (props: TooltipProps<number, string>) => ReactElement;
   children?: ReactNode;
   yDomain?: AxisDomain;
   xAxisLabel?: string;
   yAxisTickCount?: number;
+  xAxisInterval?: 'preserveStart' | 'preserveEnd' | 'preserveStartEnd' | number;
   hideXAxis?: boolean;
   lineColor?: string;
   tooltipWrapperStyle?: CSSProperties;
@@ -61,27 +65,34 @@ export type CustomLineChartProps<T, Y> = {
   'data' | 'ref' | 'domain'
 >;
 
+/**
+ * @param dataKeyExtractor - The key or getter of a group of data which should be unique in a LineChart
+ * @param dataExtractor - extract object with label and value
+ * @param nameExtractor - extract name of the dataset (used in legend)
+ * @param keyExtractor - The second input number
+ * @returns Component to render generic line charts
+ */
+
 const CustomLineChart = <T, Y>({
   data,
+  xAxisLabelExtractor,
   dataKeyExtractor,
   nameExtractor,
-  keyExtractor,
   dataExtractor,
   tooltip,
   children,
   yDomain,
-  xAxisLabel,
   hideXAxis,
   lineColor,
   tooltipWrapperStyle,
   yAxisTickCount,
   legend = true,
+  xAxisInterval,
   ...props
 }: CustomLineChartProps<T, Y>) => {
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     setIsLoading(true);
-    console.log('data changed');
   }, [data]);
 
   return (
@@ -92,17 +103,16 @@ const CustomLineChart = <T, Y>({
           margin={{
             top: 5,
             right: 0,
-            left: 20,
+            left: -20,
             bottom: 0,
           }}
-          data={data}
           {...props}
           syncId="anyId"
         >
           <CartesianGrid strokeDasharray="2 2" />
           <XAxis
-            dataKey={xAxisLabel}
-            angle={90}
+            dataKey={xAxisLabelExtractor(data[0])}
+            interval={xAxisInterval}
             dy={50}
             height={100}
             allowDuplicatedCategory={false}
@@ -116,7 +126,15 @@ const CustomLineChart = <T, Y>({
             type="number"
             {...props}
             domain={yDomain}
+            style={{ letterSpacing: -5, fontSize: 5 }}
+            //className="leading-tight"
             tickCount={yAxisTickCount}
+            tickFormatter={(value: number) =>
+              new Intl.NumberFormat('en-US', {
+                notation: 'compact',
+                compactDisplay: 'short',
+              }).format(value)
+            }
           />
           {data.map((chart, index) => (
             <Line
@@ -124,7 +142,7 @@ const CustomLineChart = <T, Y>({
               dataKey={dataKeyExtractor(chart)}
               data={dataExtractor(chart, index)}
               name={nameExtractor(chart)} //line legend
-              key={keyExtractor(chart)}
+              key={nameExtractor(chart)}
               stroke={lineColor ?? CHART_THEME[index % CHART_THEME.length]}
               dot={false}
               {...props}
@@ -146,11 +164,11 @@ const CustomLineChart = <T, Y>({
   );
 };
 
-const CustomLineChartLoader = () => (
-  <div className="absolute flex h-full w-full items-center justify-center bg-blue-900/10">
-    <p className="text-2xl font-bold">{'Loading chart...'}</p>
-  </div>
-);
+//const CustomLineChartLoader = () => (
+//  <div className="absolute flex h-full w-full items-center justify-center bg-blue-900/10 pt-10">
+//    <p className="text-2xl font-bold">{'Loading chart...'}</p>
+//  </div>
+//);
 
 const Memo = memo(CustomLineChart);
 export default Memo as typeof CustomLineChart;

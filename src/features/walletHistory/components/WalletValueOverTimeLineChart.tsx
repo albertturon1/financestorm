@@ -14,7 +14,7 @@ import {
 } from 'recharts';
 
 import { CHART_THEME } from '@constants/chartTheme';
-import { RechartsMultiData } from '@interfaces/ICharts';
+import { ChartMultiData } from '@interfaces/ICharts';
 import { cutNumber } from '@utils/misc';
 
 import WalletValueOverTimeTooltip from './WalletValueOverTimeTooltip';
@@ -22,7 +22,7 @@ import WalletValueOverTimeTooltip from './WalletValueOverTimeTooltip';
 const WalletValueOverTimeLineChart = ({
   data,
 }: {
-  data: RechartsMultiData[];
+  data: ChartMultiData[];
 }) => {
   const values = data.flatMap((c) => c.data.map((d) => d.value));
   const minValue = Math.min(...values) - Math.min(...values) * 0.01;

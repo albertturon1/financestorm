@@ -3,7 +3,10 @@ import {
   ExchangeRateTimeseriesResponse,
 } from '@interfaces/models/IExchangerate';
 import api from '@utils/api';
-import convertRatesToQuoteCurrency from '@utils/convertRatesToQuoteCurrency';
+import {
+  convertLastestRatesToQuoteCurrency,
+  convertTimeseriesRatesToQuoteCurrency,
+} from '@utils/convertRatesToQuoteCurrency';
 import { genQueryString, getNDaysPastServerDate } from '@utils/misc';
 
 import {
@@ -20,7 +23,7 @@ export const dateArgs = (date: string) => {
 };
 
 export const getDailyCurrencyTimeseries = async ({
-  base_currency,
+  base_currencies,
   start_date,
   end_date,
   quote_currency,
@@ -29,12 +32,12 @@ export const getDailyCurrencyTimeseries = async ({
   const params = genQueryString({
     start_date: dateArgs(start_date),
     end_date: dateArgs(end_date),
-    base: base_currency,
-    symbols: quote_currency?.toUpperCase(), //comma separated values
+    base: quote_currency,
+    symbols: base_currencies.join(',').toUpperCase(), //comma separated values
   });
 
   const data = await api.get<ExchangeRateTimeseriesResponse>(`${url}${params}`);
-  return convertRatesToQuoteCurrency(data);
+  return convertTimeseriesRatesToQuoteCurrency(data);
 };
 
 export const getTodayCurrencyRatesQuery = async (
@@ -47,5 +50,5 @@ export const getTodayCurrencyRatesQuery = async (
   });
 
   const data = await api.get<ExchangeRateLatestResponse>(`${url}${params}`);
-  return convertRatesToQuoteCurrency(data);
+  return convertLastestRatesToQuoteCurrency(data);
 };

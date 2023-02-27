@@ -37,7 +37,7 @@ const percentageValues = async (user: User) => {
 const UserBalancePercentage = ({ user }: { user: User }) => {
   const [chartType, setChartType] = useState<ChartType>('pie');
   const percentage_values = use(
-    queryClientSide('userBalance', () => percentageValues(user)),
+    queryClientSide(['userBalance'], () => percentageValues(user)),
   );
 
   //console.log(percentage_values);
