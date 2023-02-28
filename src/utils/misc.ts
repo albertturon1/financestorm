@@ -173,7 +173,7 @@ export const dateDiff = (
   const start_date = DateTime.fromISO(startDate);
   const end_date = DateTime.fromISO(endDate);
 
-  return end_date.diff(start_date, ['months']).toObject();
+  return end_date.diff(start_date, [type]).toObject();
 };
 
 export const isBrowser = typeof window !== 'undefined';
@@ -183,6 +183,5 @@ export const isNavigator = typeof navigator !== 'undefined';
 export const xAxisInterval = (monthsDiff: number) => {
   const diff = Math.ceil(monthsDiff + 1);
   // eslint-disable-next-line sonarjs/prefer-immediate-return
-  const nearestLowerPowerOfTwo = 1 << (31 - Math.clz32(diff));
-  return nearestLowerPowerOfTwo;
+  return Math.pow(2, Math.round(Math.log(diff) / Math.log(2)));
 };

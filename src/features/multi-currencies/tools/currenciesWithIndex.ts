@@ -6,7 +6,7 @@ export interface IndexCurrency {
   id: number;
 }
 
-const currenciesWithIndex = (currencies: Currencies[]) =>
+const currenciesWithIndex = (currencies: readonly Currencies[]) =>
   CURRENCIES.reduce((acc, item, index) => {
     const included = currencies.includes(item);
     if (!included) return acc;

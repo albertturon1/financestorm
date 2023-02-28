@@ -9,6 +9,7 @@ import {
   useState,
 } from 'react';
 
+import { DateTime } from 'luxon';
 import {
   ResponsiveContainer,
   LineChart,
@@ -27,7 +28,10 @@ import { CategoricalChartProps } from 'recharts/types/chart/generateCategoricalC
 import { AxisDomain } from 'recharts/types/util/types';
 
 import { CHART_THEME } from '@constants/chartTheme';
+import useWindowSize from '@hooks/useWindowSize';
 import { cutNumber } from '@utils/misc';
+
+import Loader from './Loader';
 
 export const customLineChartYDomain = (
   values: number[],
@@ -65,6 +69,20 @@ export type CustomLineChartProps<T, Y> = {
   'data' | 'ref' | 'domain'
 >;
 
+const intervalDivider = (width: number) => {
+  const sizes = [
+    { size: 586, interval: 3 },
+    { size: 640, interval: 4 },
+    { size: 768, interval: 6 },
+    { size: 1024, interval: 8 },
+    { size: 1280, interval: 10 },
+    { size: 1536, interval: 14 },
+  ];
+  const z = sizes.find((s) => width < s.size);
+  if (!z) return 16;
+  return z.interval;
+};
+
 /**
  * @param dataKeyExtractor - The key or getter of a group of data which should be unique in a LineChart
  * @param dataExtractor - extract object with label and value
@@ -91,33 +109,37 @@ const CustomLineChart = <T, Y>({
   ...props
 }: CustomLineChartProps<T, Y>) => {
   const [isLoading, setIsLoading] = useState(true);
+  const { width } = useWindowSize();
+
   useEffect(() => {
     setIsLoading(true);
   }, [data]);
 
   return (
     <div className="relative flex h-full w-full">
-      {/*{isLoading && <CustomLineChartLoader />}*/}
+      {isLoading && <CustomLineChartLoader />}
       <ResponsiveContainer className="select-none">
-        <LineChart
-          margin={{
-            top: 5,
-            right: 0,
-            left: -20,
-            bottom: 0,
-          }}
-          {...props}
-          syncId="anyId"
-        >
+        <LineChart {...props} syncId="anyId">
           <CartesianGrid strokeDasharray="2 2" />
           <XAxis
             dataKey={xAxisLabelExtractor(data[0])}
-            interval={xAxisInterval}
+            interval={
+              xAxisInterval ??
+              Math.ceil(
+                dataExtractor(data[0], 0).length / intervalDivider(width),
+              )
+            }
             dy={50}
             height={100}
             allowDuplicatedCategory={false}
             {...props}
             hide={hideXAxis}
+            tickFormatter={(v: string, i: number) =>
+              props.tickFormatter?.(v, i) ??
+              DateTime.fromISO(v).toFormat('d.LLL yy', {
+                locale: 'pl',
+              })
+            }
           />
           {legend && (
             <Legend verticalAlign="top" wrapperStyle={{ lineHeight: '40px' }} />
@@ -126,8 +148,6 @@ const CustomLineChart = <T, Y>({
             type="number"
             {...props}
             domain={yDomain}
-            style={{ letterSpacing: -5, fontSize: 5 }}
-            //className="leading-tight"
             tickCount={yAxisTickCount}
             tickFormatter={(value: number) =>
               new Intl.NumberFormat('en-US', {
@@ -164,11 +184,14 @@ const CustomLineChart = <T, Y>({
   );
 };
 
-//const CustomLineChartLoader = () => (
-//  <div className="absolute flex h-full w-full items-center justify-center bg-blue-900/10 pt-10">
-//    <p className="text-2xl font-bold">{'Loading chart...'}</p>
-//  </div>
-//);
+const CustomLineChartLoader = () => (
+  <div className="bg-blue-900/15 absolute flex h-full w-full items-center justify-center gap-x-10 pt-10">
+    <div className="flex aspect-square w-10">
+      <Loader />
+    </div>
+    <p className="text-2xl font-bold">{'Loading chart...'}</p>
+  </div>
+);
 
 const Memo = memo(CustomLineChart);
 export default Memo as typeof CustomLineChart;

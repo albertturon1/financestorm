@@ -1,16 +1,17 @@
 import { ReactElement } from 'react';
 
+import { DateTime } from 'luxon';
 import { TooltipProps } from 'recharts';
 
 import TooltipRowWrapper from '@components/TooltipRowWrapper';
 import TooltipWrapper from '@components/TooltipWrapper';
 import { CHART_THEME } from '@constants/chartTheme';
-import { CustomTooltipProps, DateValue } from '@interfaces/ICharts';
+import { CustomTooltipProps, WalletDay } from '@interfaces/ICharts';
 
 import { InflationWalletOverTimeValue } from '../tools/inflationWalletOverTimeValue';
 
 type P = [
-  CustomTooltipProps<DateValue>,
+  CustomTooltipProps<WalletDay>,
   CustomTooltipProps<InflationWalletOverTimeValue>,
 ];
 
@@ -34,7 +35,10 @@ const WalletValueOverTimeTooltip = ({
       <p
         className="pt-1"
         style={{ color: CHART_THEME[0] }}
-      >{`Dzień: ${data[0].payload.label}`}</p>
+      >{`Dzień: ${DateTime.fromISO(data[0].payload.label).toFormat(
+        'dd LLL, yyyy',
+        { locale: 'pl' },
+      )}`}</p>
       {data.map(({ payload: values }, index) => (
         // eslint-disable-next-line react/no-array-index-key
         <div key={index}>
@@ -55,7 +59,7 @@ const WalletValueOverTimeTooltip = ({
               </TooltipRowWrapper>
               <TooltipRowWrapper>
                 <p>{'Utrata wartości: '}</p>
-                <p>{`${values.inflationLoss}`}</p>
+                <p>{`${values.inflationLoss} ${data[0].payload.quoteCurrency.currency}`}</p>
               </TooltipRowWrapper>
               <TooltipRowWrapper>
                 <p>{'CPI: '}</p>

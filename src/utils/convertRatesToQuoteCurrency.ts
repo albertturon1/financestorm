@@ -34,6 +34,8 @@ export const convertTimeseriesRatesToQuoteCurrency = (
 ): ExchangeRateTimeseries => {
   const rates = Object.entries(data.rates).reduce((acc, day) => {
     const [dayLabel, dayRates] = day;
+    if (!Object.keys(dayRates).length) return acc; //return when there's no data for the day
+
     acc.push({ date: dayLabel, rates: convertDayRates(dayRates, data.base) });
     return acc;
   }, [] as ExchangeRateTimeseriesRatesArray[]);

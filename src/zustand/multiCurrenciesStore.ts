@@ -1,6 +1,6 @@
 import { mergeDeepLeft } from 'ramda';
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { createJSONStorage, persist } from 'zustand/middleware';
 import { shallow } from 'zustand/shallow';
 
 import { CHART_RANGES } from '@constants/chartRange';
@@ -48,6 +48,7 @@ const useMultiCurrenciesStore = create<MultiBaseCurrenciesStoreState>()(
     }),
     {
       name: 'multiCurrenciesStore',
+      storage: createJSONStorage(() => sessionStorage),
       merge: (persistedState, currentState) =>
         mergeDeepLeft(persistedState as object, currentState), //to prevent from rewriting actions on persist
     },

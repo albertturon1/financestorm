@@ -4,32 +4,9 @@ import userCurrenciesAmount from '@features/user/tools/userCurrenciesAmount';
 import { WalletBaseCurrencyValue, WalletDay } from '@interfaces/ICharts';
 import { Currencies } from '@interfaces/ICurrency';
 import { UserCurrency } from '@interfaces/models/IUser';
-import { getDailyCurrencyTimeseries } from '@src/api/CurrenctyRateApi';
+import { getDailyCurrencyTimeseriesOneYear } from '@src/api/CurrenctyRateApi';
 import { CurrencyRatePair } from '@src/api/interfaces/ICurrenctyRateApi';
 import { cutNumber, previousDate } from '@utils/misc';
-
-//const years = (years: number, endDate?: string) => {
-//  let previousStartDate = endDate ? new Date(endDate) : new Date();
-//  const yearsPairs: CurrencyRateRange[] = [];
-
-//  for (let i = 0; i < years; i++) {
-//    const end_date = previousStartDate;
-
-//    const start_date = previousDate({
-//      date: end_date,
-//      years: 1,
-//      days: -1,
-//    });
-
-//    previousStartDate = previousDate({ date: end_date, years: 1 });
-
-//    yearsPairs.push({
-//      start_date: DateTime.fromJSDate(start_date).toFormat('yyyy-MM-dd'),
-//      end_date: DateTime.fromJSDate(end_date).toFormat('yyyy-MM-dd'),
-//    });
-//  }
-//  return yearsPairs;
-//};
 
 export type WalletValueOverTimeProps = Omit<
   CurrencyRatePair,
@@ -69,12 +46,14 @@ const walletValueOverTime = async ({
     end_date ? new Date(end_date) : new Date(),
   ).toFormat('yyyy-MM-dd');
 
-  const currencyRates = await getDailyCurrencyTimeseries({
+  const currencyRates = await getDailyCurrencyTimeseriesOneYear({
     quote_currency,
     base_currencies: nonQuoteCurrencies,
     end_date: endDate,
     start_date: startDate,
   });
+
+  //console.log('currencyRates', JSON.stringify(currencyRates));
 
   const currencyAmounts = userCurrenciesAmount(currencies);
   let minValue = -1;

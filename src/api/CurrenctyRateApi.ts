@@ -7,22 +7,14 @@ import {
   convertLastestRatesToQuoteCurrency,
   convertTimeseriesRatesToQuoteCurrency,
 } from '@utils/convertRatesToQuoteCurrency';
-import { genQueryString, getNDaysPastServerDate } from '@utils/misc';
+import { genQueryString } from '@utils/misc';
 
 import {
   DailyCurrencyRatesTimeseriesRequest,
   MultiCurrenciesRate,
 } from './interfaces/ICurrenctyRateApi';
 
-//api after 00:00 UTC become unavailable
-export const dateArgs = (date: string) => {
-  const currentHour = new Date().getUTCHours();
-  const today = getNDaysPastServerDate(0);
-
-  return date === today && currentHour === 0 ? getNDaysPastServerDate(1) : date;
-};
-
-export const getDailyCurrencyTimeseries = async ({
+export const getDailyCurrencyTimeseriesOneYear = async ({
   base_currencies,
   start_date,
   end_date,
@@ -30,8 +22,8 @@ export const getDailyCurrencyTimeseries = async ({
 }: DailyCurrencyRatesTimeseriesRequest) => {
   const url = 'https://api.exchangerate.host/timeseries?';
   const params = genQueryString({
-    start_date: dateArgs(start_date),
-    end_date: dateArgs(end_date),
+    start_date,
+    end_date,
     base: quote_currency,
     symbols: base_currencies.join(',').toUpperCase(), //comma separated values
   });

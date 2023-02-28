@@ -2,7 +2,6 @@
 
 import { memo, use, useCallback, useMemo } from 'react';
 
-import { DateTime } from 'luxon';
 import { TooltipProps } from 'recharts';
 
 import CustomLineChart, {
@@ -10,14 +9,14 @@ import CustomLineChart, {
 } from '@components/CustomLineChart';
 import { ChartMultiData } from '@interfaces/ICharts';
 import { NormalizedCurrencyExchangeRate } from '@interfaces/models/IExchangerate';
-import { getDailyCurrencyTimeseries } from '@src/api/CurrenctyRateApi';
 import {
   useBaseCurrenciesNames,
   useMutliChartRange,
   useQuoteCurrency,
 } from '@src/zustand/multiCurrenciesStore';
 import convertDailyCurrencyTimeseriesToChartData from '@utils/convertDailyCurrencyTimeseriesToChartData';
-import { dateDiff, nameOfKey, serverDate, xAxisInterval } from '@utils/misc';
+import dailyCurrencyTimeseriesYears from '@utils/dailyCurrencyTimeseriesYears';
+import { nameOfKey } from '@utils/misc';
 import queryClientSide from '@utils/queryClientSide';
 
 import MultiCurrenciesLineChartTooltip from './MultiCurrenciesLineChartTooltip';
@@ -44,11 +43,10 @@ const MultiBaseCurrenciesLineChart = () => {
     queryClientSide(
       [baseCurrenciesNames, quoteCurrency.id, mutliChartRange.value],
       () =>
-        getDailyCurrencyTimeseries({
+        dailyCurrencyTimeseriesYears({
           quote_currency: quoteCurrency.name,
           base_currencies: baseCurrencies,
-          start_date: '2021-01-27',
-          end_date: serverDate(new Date()),
+          years: 10,
         }),
     ),
   );
@@ -70,10 +68,6 @@ const MultiBaseCurrenciesLineChart = () => {
     [],
   );
 
-  const { months: monthsDiff } = dateDiff(data.start_date, data.end_date);
-
-  const interval = xAxisInterval(monthsDiff);
-
   return (
     <CustomLineChart
       data={chartData}
@@ -82,13 +76,6 @@ const MultiBaseCurrenciesLineChart = () => {
       nameExtractor={nameExtractor}
       xAxisLabelExtractor={xAxisLabelExtractor}
       yAxisTickCount={10}
-      xAxisInterval={'preserveStartEnd'}
-      //xAxisInterval={chuj}
-      tickFormatter={(v) =>
-        DateTime.fromISO(v as string).toFormat('dd.LLL yy', {
-          locale: 'pl',
-        })
-      }
       yDomain={yDomain}
       xAxisLabel="label"
       tooltip={tooltip}

@@ -32,8 +32,6 @@ export interface WalletDay extends DateValue {
 
 export type ChartMultiData<T> = {
   name: string;
-  minValue: number;
-  maxValue: number;
   data: T[];
 };
 

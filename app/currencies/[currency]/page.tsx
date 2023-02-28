@@ -1,6 +1,6 @@
 import PageTitle from '@components/PageTitle';
 import { CURRENCIES } from '@constants/currencies';
-import { PADDING_TAILWIND } from '@constants/Globals';
+import { PADDING_TAILWIND } from '@constants/globals';
 import CurrencyTile from '@features/currencies/compoonents/CurrencyTile';
 import { Currencies } from '@interfaces/ICurrency';
 
@@ -8,7 +8,7 @@ import { getTodayCurrencyRatesQuery } from '../../../src/api/CurrenctyRateApi';
 
 export type CurrenciesPageProps = { currency: Currencies };
 
-const Currencies = async ({ params }: { params: CurrenciesPageProps }) => {
+const CurrenciesPage = async ({ params }: { params: CurrenciesPageProps }) => {
   const data = await getTodayCurrencyRatesQuery({
     base_currencies: CURRENCIES,
     quote_currency: params.currency,
@@ -31,4 +31,4 @@ const Currencies = async ({ params }: { params: CurrenciesPageProps }) => {
   );
 };
 
-export default Currencies;
+export default CurrenciesPage;

@@ -1,4 +1,4 @@
-import { PADDING_TAILWIND } from '@constants/Globals';
+import { PADDING_TAILWIND } from '@constants/globals';
 import MainRedirectButton from '@features/main/MainRedirectButton';
 
 import { USER_ID } from './Navbar';

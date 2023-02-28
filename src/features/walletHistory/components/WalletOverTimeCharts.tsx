@@ -1,11 +1,13 @@
-import { TooltipProps } from 'recharts';
+'use client';
+
+import { DateTime } from 'luxon';
 
 import CustomLineChart, {
   customLineChartYDomain,
 } from '@components/CustomLineChart';
 import { CHART_THEME } from '@constants/chartTheme';
 import { ChartMultiData, WalletDay } from '@interfaces/ICharts';
-import { nameOfKey, serverDateToParts } from '@utils/misc';
+import { nameOfKey } from '@utils/misc';
 
 import InflationOverMonthsTooltip from './InflationOverMonthsTooltip';
 import WalletValueOverTimeTooltip from './WalletValueOverTimeTooltip';
@@ -18,6 +20,9 @@ const dataExtractor = (item: ChartMultiData<ChartDataType>) => item.data;
 const dataKeyExtractor = (item: ChartMultiData<ChartDataType>) =>
   nameOfKey(item.data[0], (x) => x.value);
 const inflationNameExtractor = () => 'Skumulowana inflacja';
+
+const xAxisLabelExtractor = (item: ChartMultiData<ChartDataType>) =>
+  nameOfKey(item.data[0], (x) => x.label);
 
 const inflationDataKeyExtractor = (
   item: ChartMultiData<InflationWalletOverTimeValue>,
@@ -38,10 +43,9 @@ const WalletOverTimeCharts = ({
   ];
 }) => {
   const todayWalletValue = chartData[0].data.slice(-1)[0].value;
-  const lastRangeMonth = serverDateToParts(
+  const lastRangeMonth = DateTime.fromISO(
     chartData[1].data.slice(-1)[0].label,
-    'month',
-  );
+  ).toFormat('MM');
 
   const walletValueYDomain = customLineChartYDomain(
     chartData.flatMap((c) => c.data.map((d) => d.value)),
@@ -58,7 +62,7 @@ const WalletOverTimeCharts = ({
           dataKeyExtractor={dataKeyExtractor}
           dataExtractor={dataExtractor}
           nameExtractor={keyExtractor}
-          keyExtractor={keyExtractor}
+          xAxisLabelExtractor={xAxisLabelExtractor}
           tickCount={10}
           yDomain={walletValueYDomain}
           xAxisLabel="label"
@@ -73,13 +77,13 @@ const WalletOverTimeCharts = ({
       </div>
       <div className="h-1/6 w-full">
         <CustomLineChart
-          data={chartData.slice(1)}
+          data={[chartData[1]]}
           dataKeyExtractor={inflationDataKeyExtractor}
           dataExtractor={dataExtractor}
+          xAxisLabelExtractor={xAxisLabelExtractor}
           xAxisLabel="label"
           hideXAxis
           nameExtractor={inflationNameExtractor}
-          keyExtractor={keyExtractor}
           lineColor={CHART_THEME.slice(-1)[0]}
           syncId={syncId}
           tooltip={(props) => (

@@ -30,7 +30,7 @@ export type CheckboxListProps<T> = {
   items: T[];
   activeItems: T[];
   nameExtractor: (value: T) => string;
-  keyExtractor: (value: T) => number;
+  keyExtractor: (value: T) => number | string;
   onClick?: (value: T) => void;
   className?: string;
   title: string;
@@ -92,19 +92,17 @@ const CheckboxList = <T,>({
               style={{ color: 'white' }}
             >
               {items.map((item, index) => (
-                // eslint-disable-next-line react/jsx-no-useless-fragment
-                <>
+                <div key={keyExtractor(item)}>
                   {ChecboxListRenderItem({ item, index }) ?? (
                     <CheckboxListItem
                       label={nameExtractor(item)}
-                      key={keyExtractor(item)}
                       checked={includedInGenericArray(activeItems, item)}
                       onClick={() => {
                         onClick?.(item);
                       }}
                     />
                   )}
-                </>
+                </div>
               ))}
             </Scrollbars>
           </div>

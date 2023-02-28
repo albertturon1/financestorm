@@ -1,8 +1,9 @@
 'use client';
 
-import { memo, useCallback, useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 
 import CheckboxList from '@components/CheckboxList';
+import { ChecboxListRenderItem } from '@components/CheckboxList/CheckboxList';
 import { CURRENCIES } from '@constants/currencies';
 import {
   useQuoteCurrency,
@@ -15,6 +16,9 @@ import CurrenciesCheckboxItem from './CurrenciesCheckboxItem';
 import currenciesWithIndex, {
   IndexCurrency,
 } from '../tools/currenciesWithIndex';
+
+const nameExtractor = (currency: IndexCurrency) => currency.name;
+const keyExtractor = (currency: IndexCurrency) => currency.id;
 
 const QuoteCurrencyCheckboxList = () => {
   const quoteCurrency = useQuoteCurrency();
@@ -42,7 +46,21 @@ const QuoteCurrencyCheckboxList = () => {
     },
     [baseCurrencies, setBaseCurrencies, setQuoteCurrency],
   );
-  const activeItems = [availableQuoteCurrencies[0]];
+  const activeItems = useMemo(
+    () => [availableQuoteCurrencies[0]],
+    [availableQuoteCurrencies],
+  );
+
+  const renderItem = useCallback(
+    (props: ChecboxListRenderItem<IndexCurrency>) => (
+      <CurrenciesCheckboxItem
+        onClick={onBoxClick}
+        checked={includedInGenericArray(activeItems, props.item)}
+        {...props}
+      />
+    ),
+    [activeItems, onBoxClick],
+  );
 
   return (
     <CheckboxList
@@ -53,15 +71,9 @@ const QuoteCurrencyCheckboxList = () => {
       }
       items={availableQuoteCurrencies}
       activeItems={activeItems}
-      nameExtractor={(currency) => currency.name}
-      keyExtractor={(currency) => currency.id}
-      renderItem={(props) => (
-        <CurrenciesCheckboxItem
-          onClick={onBoxClick}
-          checked={includedInGenericArray(activeItems, props.item)}
-          {...props}
-        />
-      )}
+      nameExtractor={nameExtractor}
+      keyExtractor={keyExtractor}
+      renderItem={renderItem}
     />
   );
 };

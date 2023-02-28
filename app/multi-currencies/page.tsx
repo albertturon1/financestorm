@@ -1,30 +1,19 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-
 import FlagCountryCode from '@components/FlagCountryCode';
-import Loader from '@components/Loader';
 import PageTitle from '@components/PageTitle';
-import { PADDING_TAILWIND } from '@constants/Globals';
+import { PADDING_TAILWIND } from '@constants/globals';
 import BaseCurrenciesCheckboxList from '@features/multi-currencies/components/BaseCurrenciesCheckboxList';
 import MultiBaseCurrenciesLineChart from '@features/multi-currencies/components/MultiBaseCurrenciesLineChart';
 import QuoteCurrencyCheckboxList from '@features/multi-currencies/components/QuoteCurrencyCheckboxList';
 import { useQuoteCurrency } from '@src/zustand/multiCurrenciesStore';
 
-const HomePage = () => {
+const MultiCurrenciesPage = () => {
   const quoteCurrency = useQuoteCurrency();
-
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) return <Loader />;
 
   return (
     <div className={`${PADDING_TAILWIND} flex h-full w-full flex-col pb-4`}>
-      <div className="flex w-full justify-between pb-1">
+      <div className="flex w-full flex-col justify-between gap-y-3 pb-1 lg:flex-row">
         <div className="flex items-center gap-x-2">
           <PageTitle>{'Kursy walut w stosunku do '}</PageTitle>
           <FlagCountryCode
@@ -33,10 +22,9 @@ const HomePage = () => {
             textClassName="text-xl"
           />
         </div>
-        <div className="flex gap-x-10">
-          {/*<MultiCurrenciesChartRange />*/}
-          {/*<BaseCurrenciesCheckboxList />
-          <QuoteCurrencyCheckboxList />*/}
+        <div className="flex gap-x-6">
+          <BaseCurrenciesCheckboxList />
+          <QuoteCurrencyCheckboxList />
         </div>
       </div>
       <MultiBaseCurrenciesLineChart />
@@ -44,4 +32,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default MultiCurrenciesPage;

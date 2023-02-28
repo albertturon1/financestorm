@@ -1,3 +1,4 @@
+import { DateTime } from 'luxon';
 import { TooltipProps } from 'recharts';
 
 import FlagCountryCode from '@components/FlagCountryCode';
@@ -21,7 +22,10 @@ const MultiCurrenciesLineChartTooltip = ({
   return (
     <TooltipWrapper className="px-0 pb-0">
       <div className="flex flex-col px-5">
-        <p>{`Dzień: ${day}`}</p>
+        <p>{`Dzień: ${DateTime.fromFormat(day, 'dd-mm-yyyy').toFormat(
+          'dd MMMM, yyyy',
+        )}`}</p>{' '}
+        {/*TODO: january only - sortowanie danych jest zjebane (są odrwotnie)*/}
         <div className="flex items-center justify-between gap-x-3 pb-3">
           <p>{'Waluta kwotowana: '}</p>
           <p>{data[0].payload.quote_currency}</p>

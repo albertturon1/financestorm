@@ -5,7 +5,7 @@ import { AiOutlineLineChart } from 'react-icons/ai';
 import PageTitle from '@components/PageTitle';
 import UserPhoto from '@components/UserPhoto';
 import { CHART_THEME } from '@constants/chartTheme';
-import { PADDING_TAILWIND } from '@constants/Globals';
+import { PADDING_TAILWIND } from '@constants/globals';
 import UserBalancePercentage from '@features/user/components/CurrencyBalancePercentage/UserBalancePercentage';
 import UserBalance from '@features/user/components/UserBalance';
 import UserCurrencyPairSummary from '@features/user/components/UserCurrencyPairSummary';

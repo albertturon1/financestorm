@@ -9,15 +9,15 @@ import CustomLineChart, {
   customLineChartYDomain,
 } from '@components/CustomLineChart';
 import FlagCountryCode from '@components/FlagCountryCode';
-import { PADDING_TAILWIND } from '@constants/Globals';
+import { PADDING_TAILWIND } from '@constants/globals';
 import MultiCurrenciesLineChartTooltip from '@features/multi-currencies/components/MultiCurrenciesLineChartTooltip';
 import { Currencies } from '@interfaces/ICurrency';
 import {
   ExchangeRateTimeseries,
   NormalizedCurrencyExchangeRate,
 } from '@interfaces/models/IExchangerate';
-import { getDailyCurrencyTimeseries } from '@src/api/CurrenctyRateApi';
-import { dateDiff, nameOfKey, serverDate } from '@utils/misc';
+import { getDailyCurrencyTimeseriesOneYear } from '@src/api/CurrenctyRateApi';
+import { nameOfKey, serverDate } from '@utils/misc';
 import queryClientSide from '@utils/queryClientSide';
 
 import { CurrenciesPageProps } from '../page';
@@ -43,7 +43,7 @@ const CurrenciesPair = ({ params }: { params: CurrenciesPairPageProps }) => {
     queryClientSide(
       [quote, currency, '2021-01-01', serverDate(new Date())],
       () =>
-        getDailyCurrencyTimeseries({
+        getDailyCurrencyTimeseriesOneYear({
           quote_currency: quote,
           base_currencies: [currency],
           start_date: '2022-01-01',
@@ -78,10 +78,6 @@ const CurrenciesPair = ({ params }: { params: CurrenciesPairPageProps }) => {
     ),
     [],
   );
-  //const { months: monthsDiff } = dateDiff(
-  //  chartData.start_date,
-  //  chartData.end_date,
-  //);
 
   return (
     <div className={`${PADDING_TAILWIND} flex h-full w-full flex-col pb-4`}>

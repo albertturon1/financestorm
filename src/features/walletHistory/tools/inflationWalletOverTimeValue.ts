@@ -20,9 +20,6 @@ interface MonthlyInflation {
   cpi: number;
 }
 
-//const daysInMonth = (month: number, year: number) =>
-//  new Date(year, month, 0).getDate();
-
 //last to first months
 const inflationFromCPI = (currentMonthCPI: number, pastMonthCPI: number) =>
   ((currentMonthCPI - pastMonthCPI) / pastMonthCPI) * 100;

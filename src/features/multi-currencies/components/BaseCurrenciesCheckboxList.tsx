@@ -66,7 +66,7 @@ const BaseCurrenciesCheckboxList = () => {
       items={availableBaseCurrencies}
       activeItems={baseCurrencies}
       nameExtractor={(currency) => currency.name}
-      keyExtractor={(currency) => currency.id}
+      keyExtractor={(currency) => `${currency.id}_${currency.name}`}
       renderItem={(props) => (
         <CurrenciesCheckboxItem
           onClick={onBoxClick}

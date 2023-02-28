@@ -34,10 +34,6 @@ const InflationOverMonthsTooltip = ({
         <p>{'Inflacja miesięczna: '}</p>
         <p>{`${payload[0].payload.monthlyInflation}%`}</p>
       </div>
-      {/*<div className={row}>
-        <p>{'Utrata wartości: '}</p>
-        <p>{`${payload[0].payload.inflationLoss}`}</p>
-      </div>*/}
       <div className="mb-1 mt-0.5 h-0.5 w-full border-b border-slate-50" />
       <p>{`Miesiąc odniesienia: ${lastRangeMonth}`}</p>
     </TooltipWrapper>
