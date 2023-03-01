@@ -3,7 +3,7 @@ import { TooltipProps } from 'recharts';
 
 import TooltipRowWrapper from '@components/TooltipRowWrapper';
 import TooltipWrapper from '@components/TooltipWrapper';
-import { CHART_THEME } from '@constants/chartTheme';
+import { CHART_THEME } from '@constants/Chart';
 import { CustomTooltipProps, WalletDay } from '@interfaces/ICharts';
 
 import { InflationWalletOverTimeValue } from '../tools/inflationWalletOverTimeValue';
@@ -33,9 +33,8 @@ const WalletValueOverTimeTooltip = ({
       <p
         className="pt-1"
         style={{ color: CHART_THEME[0] }}
-      >{`Dzień: ${DateTime.fromISO(data[0].payload.label).toFormat(
-        'dd LLL, yyyy',
-        { locale: 'pl' },
+      >{`Dzień: ${DateTime.fromISO(data[0].payload.label).toLocaleString(
+        DateTime.DATE_FULL,
       )}`}</p>
       {data.map(({ payload: values }, index) => (
         // eslint-disable-next-line react/no-array-index-key

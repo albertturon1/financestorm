@@ -9,7 +9,7 @@ import {
   ComposedChart,
 } from 'recharts';
 
-import { CHART_THEME } from '@constants/chartTheme';
+import { CHART_THEME } from '@constants/Chart';
 import { UserBalanceChart } from '@features/user/interfaces/IUserBalance';
 import { Mutable } from '@interfaces/IUtility';
 

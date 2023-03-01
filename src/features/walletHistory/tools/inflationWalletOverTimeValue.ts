@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon';
 
 import { DateValue } from '@interfaces/ICharts';
-import { cutNumber, serverDateToParts } from '@utils/misc';
+import { cutNumber } from '@utils/misc';
 
 import monthlyCPIData from './monthlyCPIData';
 import { WalletValueOverTime } from './walletValueOverTime';
@@ -71,8 +71,7 @@ const inflationWalletOverTimeValue = async (
   const inflationSums = inflationSumPerMonth(monthlyCPI);
 
   return dailyWalletValues.values.map(({ label, value }) => {
-    const yearMonth = serverDateToParts(label);
-    //const year = serverDateToParts(label, 'year');
+    const yearMonth = DateTime.fromISO(label).toFormat('yyyy-MM');
     const d: InflationWalletOverTimeValue = {
       label,
       baseValue: value,
@@ -83,7 +82,6 @@ const inflationWalletOverTimeValue = async (
       cpi: -1,
     };
 
-    //const prevYearMonth = prevMonthDate(label);
     if (!inflationSums[yearMonth]) return d;
     d.cumulativeInflation = cutNumber(
       inflationSums[yearMonth].monthCumulativeInflation,

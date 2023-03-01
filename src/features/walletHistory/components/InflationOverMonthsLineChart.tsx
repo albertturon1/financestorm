@@ -1,5 +1,6 @@
 'use client';
 
+import { DateTime } from 'luxon';
 import {
   ResponsiveContainer,
   LineChart,
@@ -10,9 +11,8 @@ import {
   Tooltip,
 } from 'recharts';
 
-import { CHART_THEME } from '@constants/chartTheme';
+import { CHART_THEME } from '@constants/Chart';
 import { NormalizedCurrencyExchangeRate } from '@interfaces/models/IExchangerate';
-import { serverDateToParts } from '@utils/misc';
 
 import InflationOverMonthsTooltip from './InflationOverMonthsTooltip';
 
@@ -21,7 +21,10 @@ const InflationOverMonthsLineChart = ({
 }: {
   data: NormalizedCurrencyExchangeRate[];
 }) => {
-  const lastRangeMonth = serverDateToParts(data.slice(-1)[0].label, 'month');
+  const lastRangeMonth = DateTime.fromISO(data.slice(-1)[0].label).toFormat(
+    'LLL yyyy',
+    { locale: 'pl' },
+  );
 
   return (
     <ResponsiveContainer>
@@ -46,7 +49,9 @@ const InflationOverMonthsLineChart = ({
           strokeWidth={3}
         />
         <Tooltip
-          content={<InflationOverMonthsTooltip lastRangeMonth={lastRangeMonth}/>}
+          content={
+            <InflationOverMonthsTooltip lastRangeMonth={lastRangeMonth} />
+          }
           cursor={false}
           labelFormatter={(name) => `Dzień: ${name as string}`}
           labelStyle={{ color: 'white', fontSize: 16, fontWeight: 700 }}

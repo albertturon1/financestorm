@@ -1,12 +1,13 @@
 import { DateTime } from 'luxon';
 
+import { SERVER_DATE } from '@constants/DateTime';
 import userCurrenciesAmount from '@features/user/tools/userCurrenciesAmount';
 import { WalletBaseCurrencyValue, WalletDay } from '@interfaces/ICharts';
 import { Currencies } from '@interfaces/ICurrency';
 import { UserCurrency } from '@interfaces/models/IUser';
 import { getDailyCurrencyTimeseriesOneYearQuery } from '@src/api/CurrenctyRateApi';
 import { CurrencyRatePair } from '@src/api/interfaces/ICurrenctyRateApi';
-import { cutNumber, previousDate } from '@utils/misc';
+import { cutNumber } from '@utils/misc';
 
 export type WalletValueOverTimeProps = Omit<
   CurrencyRatePair,
@@ -35,16 +36,16 @@ const walletValueOverTime = async ({
     ?.filter((b) => b.currency !== quote_currency)
     .map((b) => b.currency);
 
-  const startDateTimestamp = previousDate({
-    date: new Date(),
-    years,
-    days: -1,
-  });
-  const startDate =
-    DateTime.fromJSDate(startDateTimestamp).toFormat('yyyy-MM-dd');
+  const startDate = DateTime.now()
+    .minus({
+      years,
+      days: -1,
+    })
+    .toFormat(SERVER_DATE);
+
   const endDate = DateTime.fromJSDate(
     end_date ? new Date(end_date) : new Date(),
-  ).toFormat('yyyy-MM-dd');
+  ).toFormat(SERVER_DATE);
 
   const currencyRates = await getDailyCurrencyTimeseriesOneYearQuery({
     quote_currency,

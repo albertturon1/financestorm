@@ -3,7 +3,7 @@ import { Transaction } from '@interfaces/ITransaction';
 
 import Transactions from '../history/components/Transactions';
 
-const UserCurrencyPairSummary = (props: {
+const UserLastTransactions = (props: {
   transactions: Transaction[];
   quoteCurrency: Currencies;
 }) => (
@@ -15,4 +15,4 @@ const UserCurrencyPairSummary = (props: {
   </div>
 );
 
-export default UserCurrencyPairSummary;
+export default UserLastTransactions;

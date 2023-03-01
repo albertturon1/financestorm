@@ -1,15 +1,9 @@
 'use client';
 
-import { memo, useCallback, useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 
 import CheckboxList from '@components/CheckboxList';
-import { CURRENCIES } from '@constants/currencies';
-import {
-  useBaseCurrencies,
-  useQuoteCurrency,
-  useMultiCurrenciesActions,
-  useBaseCurrenciesNames,
-} from '@src/zustand/multiCurrenciesStore';
+import { CURRENCIES } from '@constants/Currencies';
 import { includedInGenericArray } from '@utils/misc';
 
 import CurrenciesCheckboxItem from './CurrenciesCheckboxItem';
@@ -17,17 +11,22 @@ import currenciesWithIndex, {
   IndexCurrency,
 } from '../tools/currenciesWithIndex';
 
-const BaseCurrenciesCheckboxList = () => {
+const BaseCurrenciesCheckboxList = ({
+  baseCurrencies,
+  quoteCurrency,
+  onClick,
+}: {
+  quoteCurrency: IndexCurrency;
+  baseCurrencies: IndexCurrency[];
+  onClick: (value: IndexCurrency) => void;
+}) => {
   const [availableBaseCurrencies, setAvailableBaseCurrencies] = useState<
     IndexCurrency[]
   >([]);
   const [baseCurrrenciesLength, setBaseCurrrenciesLength] = useState<
     number | null
   >(null);
-  const baseCurrencies = useBaseCurrencies();
-  const baseCurrenciesNames = useBaseCurrenciesNames();
-  const quoteCurrency = useQuoteCurrency();
-  const { setBaseCurrencies } = useMultiCurrenciesActions();
+  const baseCurrenciesNames = baseCurrencies.map((c) => c.name);
 
   useEffect(() => {
     setBaseCurrrenciesLength(baseCurrencies.length);
@@ -43,19 +42,6 @@ const BaseCurrenciesCheckboxList = () => {
     setAvailableBaseCurrencies(baseCurrencies.concat(nonQuoteCurreciesList));
   }, [baseCurrencies, baseCurrenciesNames, quoteCurrency?.name]);
 
-  const onBoxClick = useCallback(
-    (v: IndexCurrency) => {
-      const filtered = baseCurrencies.filter((c) => c.id !== v.id);
-
-      if (filtered.length < baseCurrencies.length) {
-        setBaseCurrencies(filtered);
-      } else {
-        setBaseCurrencies(baseCurrencies.concat(v));
-      }
-    },
-    [baseCurrencies, setBaseCurrencies],
-  );
-
   return (
     <CheckboxList
       title={
@@ -69,7 +55,7 @@ const BaseCurrenciesCheckboxList = () => {
       keyExtractor={(currency) => `${currency.id}_${currency.name}`}
       renderItem={(props) => (
         <CurrenciesCheckboxItem
-          onClick={onBoxClick}
+          onClick={onClick}
           checked={includedInGenericArray(baseCurrencies, props.item)}
           {...props}
         />

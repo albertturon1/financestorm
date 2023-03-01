@@ -1,23 +1,25 @@
 'use client';
 
-import { use, useState } from 'react';
+import { useState } from 'react';
 
 import SegmentedControl, {
   SegmentedControlOptions,
 } from '@components/SegmentedControl';
-import todayWalletValue from '@features/walletHistory/tools/todayWalletValue';
+import {
+  BaseCurrencyWalletValue,
+  QuoteCurrencyWalletValue,
+} from '@features/walletHistory/tools/todayWalletValue';
 import { ChartType } from '@interfaces/ICharts';
-import { User } from '@interfaces/models/IUser';
-import queryClientSide from '@utils/queryClientSide';
 
 import UserBalancePercentageBarChart from './UserBalancePercentageBarChart';
 import UserBalancePercentagePieChart from './UserBalancePercentagePieChart';
 
-const UserBalancePercentage = ({ user }: { user: User }) => {
+const UserBalancePercentage = ({
+  currencies,
+}: {
+  currencies: readonly [QuoteCurrencyWalletValue, ...BaseCurrencyWalletValue[]];
+}) => {
   const [chartType, setChartType] = useState<ChartType>('pie');
-  const { currencies } = use(
-    queryClientSide(['userBalance'], () => todayWalletValue(user)),
-  );
 
   const controlOptions: SegmentedControlOptions = {
     buttons: [

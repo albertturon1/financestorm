@@ -1,11 +1,15 @@
 'use client';
 
+import { useCallback } from 'react';
+
 import { DateTime } from 'luxon';
+import { TooltipProps } from 'recharts';
 
 import CustomLineChart, {
   customLineChartYDomain,
-} from '@components/CustomLineChart';
-import { CHART_THEME } from '@constants/chartTheme';
+} from '@components/CustomLineChart/CustomLineChart';
+import { xAxisDateTickFormatter } from '@components/CustomLineChart/CustomLineChartHelpers';
+import { CHART_THEME } from '@constants/Chart';
 import { ChartMultiData, WalletDay } from '@interfaces/ICharts';
 import { nameOfKey } from '@utils/misc';
 
@@ -45,7 +49,7 @@ const WalletOverTimeCharts = ({
   const todayWalletValue = chartData[0].data.slice(-1)[0].value;
   const lastRangeMonth = DateTime.fromISO(
     chartData[1].data.slice(-1)[0].label,
-  ).toFormat('MM');
+  ).toFormat('LLL yyyy');
 
   const walletValueYDomain = customLineChartYDomain(
     chartData.flatMap((c) => c.data.map((d) => d.value)),
@@ -53,6 +57,22 @@ const WalletOverTimeCharts = ({
   );
 
   const syncId = 'anyId';
+
+  const walletValueTooltip = useCallback(
+    (props: TooltipProps<number, string>) => (
+      <WalletValueOverTimeTooltip
+        currentWalletValue={todayWalletValue}
+        {...props}
+      />
+    ),
+    [todayWalletValue],
+  );
+  const inflationChartTooltip = useCallback(
+    (props: TooltipProps<number, string>) => (
+      <InflationOverMonthsTooltip lastRangeMonth={lastRangeMonth} {...props} />
+    ),
+    [lastRangeMonth],
+  );
 
   return (
     <div className="flex flex-1 flex-col">
@@ -67,12 +87,8 @@ const WalletOverTimeCharts = ({
           yDomain={walletValueYDomain}
           xAxisLabel="label"
           syncId={syncId}
-          tooltip={(props) => (
-            <WalletValueOverTimeTooltip
-              currentWalletValue={todayWalletValue}
-              {...props}
-            />
-          )}
+          xAxisTickFormatter={xAxisDateTickFormatter}
+          tooltip={walletValueTooltip}
         />
       </div>
       <div className="h-1/6 w-full">
@@ -86,12 +102,7 @@ const WalletOverTimeCharts = ({
           nameExtractor={inflationNameExtractor}
           lineColor={CHART_THEME.slice(-1)[0]}
           syncId={syncId}
-          tooltip={(props) => (
-            <InflationOverMonthsTooltip
-              lastRangeMonth={lastRangeMonth}
-              {...props}
-            />
-          )}
+          tooltip={inflationChartTooltip}
           tooltipWrapperStyle={{ marginTop: -100 }}
         />
       </div>

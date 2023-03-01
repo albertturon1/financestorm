@@ -4,12 +4,7 @@ import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 
 import CheckboxList from '@components/CheckboxList';
 import { ChecboxListRenderItem } from '@components/CheckboxList/CheckboxList';
-import { CURRENCIES } from '@constants/currencies';
-import {
-  useQuoteCurrency,
-  useMultiCurrenciesActions,
-  useBaseCurrencies,
-} from '@src/zustand/multiCurrenciesStore';
+import { CURRENCIES } from '@constants/Currencies';
 import { includedInGenericArray } from '@utils/misc';
 
 import CurrenciesCheckboxItem from './CurrenciesCheckboxItem';
@@ -20,10 +15,13 @@ import currenciesWithIndex, {
 const nameExtractor = (currency: IndexCurrency) => currency.name;
 const keyExtractor = (currency: IndexCurrency) => currency.id;
 
-const QuoteCurrencyCheckboxList = () => {
-  const quoteCurrency = useQuoteCurrency();
-  const baseCurrencies = useBaseCurrencies();
-  const { setQuoteCurrency, setBaseCurrencies } = useMultiCurrenciesActions();
+const QuoteCurrencyCheckboxList = ({
+  quoteCurrency,
+  onClick,
+}: {
+  quoteCurrency: IndexCurrency;
+  onClick: (value: IndexCurrency) => void;
+}) => {
   const [availableQuoteCurrencies, setAvailableQuoteCurrencies] = useState<
     IndexCurrency[]
   >([]);
@@ -35,17 +33,6 @@ const QuoteCurrencyCheckboxList = () => {
     setAvailableQuoteCurrencies(sortedCurrencies);
   }, [quoteCurrency.id]);
 
-  const onBoxClick = useCallback(
-    (v: IndexCurrency) => {
-      const filtered = baseCurrencies.filter((c) => c.id !== v.id);
-      setQuoteCurrency(v);
-
-      if (filtered.length < baseCurrencies.length) {
-        setBaseCurrencies(filtered);
-      }
-    },
-    [baseCurrencies, setBaseCurrencies, setQuoteCurrency],
-  );
   const activeItems = useMemo(
     () => [availableQuoteCurrencies[0]],
     [availableQuoteCurrencies],
@@ -54,12 +41,12 @@ const QuoteCurrencyCheckboxList = () => {
   const renderItem = useCallback(
     (props: ChecboxListRenderItem<IndexCurrency>) => (
       <CurrenciesCheckboxItem
-        onClick={onBoxClick}
+        onClick={onClick}
         checked={includedInGenericArray(activeItems, props.item)}
         {...props}
       />
     ),
-    [activeItems, onBoxClick],
+    [activeItems, onClick],
   );
 
   return (

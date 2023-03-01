@@ -6,13 +6,13 @@ import { TooltipProps } from 'recharts';
 
 import CustomLineChart, {
   customLineChartYDomain,
-} from '@components/CustomLineChart';
+} from '@components/CustomLineChart/CustomLineChart';
+import { xAxisDateTickFormatter } from '@components/CustomLineChart/CustomLineChartHelpers';
 import { ChartMultiData } from '@interfaces/ICharts';
 import { NormalizedCurrencyExchangeRate } from '@interfaces/models/IExchangerate';
 import {
-  useBaseCurrenciesNames,
-  useMutliChartRange,
-  useQuoteCurrency,
+  useMultiCurrenciesQuoteCurrency,
+  useMultiCurrenciesBaseCurrenciesNames,
 } from '@src/zustand/multiCurrenciesStore';
 import convertDailyCurrencyTimeseriesToChartData from '@utils/convertDailyCurrencyTimeseriesToChartData';
 import dailyCurrencyTimeseriesYears from '@utils/dailyCurrencyTimeseriesYears';
@@ -34,20 +34,17 @@ const xAxisLabelExtractor = (
 ) => nameOfKey(item.data[0], (x) => x.label);
 
 const MultiBaseCurrenciesLineChart = () => {
-  const quoteCurrency = useQuoteCurrency();
-  const baseCurrencies = useBaseCurrenciesNames();
-  const mutliChartRange = useMutliChartRange();
-  const baseCurrenciesNames = useBaseCurrenciesNames();
+  const quoteCurrency = useMultiCurrenciesQuoteCurrency();
+  const baseCurrencies = useMultiCurrenciesBaseCurrenciesNames();
+  const baseCurrenciesNames = useMultiCurrenciesBaseCurrenciesNames();
 
   const data = use(
-    queryClientSide(
-      [baseCurrenciesNames, quoteCurrency.id, mutliChartRange.value],
-      () =>
-        dailyCurrencyTimeseriesYears({
-          quote_currency: quoteCurrency.name,
-          base_currencies: baseCurrencies,
-          years: 3,
-        }),
+    queryClientSide([baseCurrenciesNames, quoteCurrency.id], () =>
+      dailyCurrencyTimeseriesYears({
+        quote_currency: quoteCurrency.name,
+        base_currencies: baseCurrencies,
+        years: 1,
+      }),
     ),
   );
 
@@ -79,6 +76,7 @@ const MultiBaseCurrenciesLineChart = () => {
       yDomain={yDomain}
       xAxisLabel="label"
       tooltip={tooltip}
+      xAxisTickFormatter={xAxisDateTickFormatter}
     />
   );
 };

@@ -2,11 +2,10 @@
 
 import FlagCountryCode from '@components/FlagCountryCode';
 import PageTitle from '@components/PageTitle';
-import { useQuoteCurrency } from '@src/zustand/multiCurrenciesStore';
+import { useMultiCurrenciesQuoteCurrency } from '@src/zustand/multiCurrenciesStore';
 
 const MultiCurrenciesPageHeader = () => {
-  const quoteCurrency = useQuoteCurrency();
-
+  const quoteCurrency = useMultiCurrenciesQuoteCurrency();
   return (
     <div className="flex items-center gap-x-2">
       <PageTitle>{'Kursy walut w stosunku do '}</PageTitle>

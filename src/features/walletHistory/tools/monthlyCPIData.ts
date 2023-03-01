@@ -1,7 +1,7 @@
 import { DateValue } from '@interfaces/ICharts';
 import { MonthlyInflationRatesRequest } from '@src/api/interfaces/IOECDApi';
 import { getMonthlyCPI } from '@src/api/OECDApi';
-import normalizOECDData from '@utils/normalizOECDData';
+import normalizeOECDData from '@utils/normalizeOECDData';
 
 const monthlyInflationData = async ({
   startPeriod,
@@ -12,7 +12,7 @@ const monthlyInflationData = async ({
     endPeriod,
   });
 
-  return normalizOECDData(data);
+  return normalizeOECDData(data);
 };
 
 export default monthlyInflationData;

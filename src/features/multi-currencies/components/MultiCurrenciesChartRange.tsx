@@ -2,10 +2,10 @@ import { Dispatch, SetStateAction, useCallback } from 'react';
 
 import CustomDropdown from '@components/CustomDropdown';
 import SegmentedSwitch from '@components/SegmentedSwitch';
-import { CHART_RANGES } from '@constants/chartRange';
+import { CHART_RANGES } from '@constants/Chart';
 import { ChartRanges, ChartRange } from '@interfaces/ICharts';
 import {
-  useMutliChartRange,
+  useMultiCurrenciesChartRange,
   useMultiCurrenciesActions,
 } from '@src/zustand/multiCurrenciesStore';
 
@@ -20,18 +20,18 @@ const Inside = ({
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
 }) => {
-  const mutliChartRange = useMutliChartRange();
-  const { setMutliChartRange } = useMultiCurrenciesActions();
+  const mutliChartRange = useMultiCurrenciesChartRange();
+  const { setMultiCurrenciesChartRange } = useMultiCurrenciesActions();
 
   const onSegementedSwitchClick = useCallback(
     (item: ChartRanges) => {
       if (!open) setOpen(true);
       else {
         setOpen(false);
-        setMutliChartRange(item);
+        setMultiCurrenciesChartRange(item);
       }
     },
-    [setMutliChartRange, setOpen, open],
+    [setMultiCurrenciesChartRange, setOpen, open],
   );
 
   const nameExtractor = useCallback((item: ChartRange) => item.name, []);

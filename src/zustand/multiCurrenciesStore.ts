@@ -3,7 +3,7 @@ import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import { shallow } from 'zustand/shallow';
 
-import { CHART_RANGES } from '@constants/chartRange';
+import { CHART_RANGES } from '@constants/Chart';
 import currenciesWithIndex, {
   IndexCurrency,
 } from '@features/multi-currencies/tools/currenciesWithIndex';
@@ -13,9 +13,9 @@ const defaultBaseCurrencies = currenciesWithIndex(['USD', 'GBP', 'EUR', 'CHF']);
 const defaultQuoteCurrency = currenciesWithIndex(['PLN']);
 
 interface Actions {
-  setBaseCurrencies: (value: IndexCurrency[]) => void;
-  setQuoteCurrency: (value: IndexCurrency) => void;
-  setMutliChartRange: (value: ChartRange) => void;
+  setMultiCurrenciesBaseCurrencies: (value: IndexCurrency[]) => void;
+  setMultiCurrenciesQuoteCurrency: (value: IndexCurrency) => void;
+  setMultiCurrenciesChartRange: (value: ChartRange) => void;
 }
 
 interface MultiBaseCurrenciesStoreState {
@@ -32,15 +32,15 @@ const useMultiCurrenciesStore = create<MultiBaseCurrenciesStoreState>()(
       quoteCurrency: defaultQuoteCurrency[0],
       mutliChartRange: CHART_RANGES[0],
       actions: {
-        setBaseCurrencies: (params) =>
+        setMultiCurrenciesBaseCurrencies: (params) =>
           set(() => ({
             baseCurrencies: params,
           })),
-        setQuoteCurrency: (params) =>
+        setMultiCurrenciesQuoteCurrency: (params) =>
           set(() => ({
             quoteCurrency: params,
           })),
-        setMutliChartRange: (params) =>
+        setMultiCurrenciesChartRange: (params) =>
           set(() => ({
             mutliChartRange: params,
           })),
@@ -56,26 +56,27 @@ const useMultiCurrenciesStore = create<MultiBaseCurrenciesStoreState>()(
 );
 
 //client hooks
-export const useBaseCurrencies = () =>
+export const useMultiCurrenciesBaseCurrencies = () =>
   useMultiCurrenciesStore((state) => state.baseCurrencies, shallow);
-export const useBaseCurrenciesNames = () =>
+export const useMultiCurrenciesBaseCurrenciesNames = () =>
   useMultiCurrenciesStore(
     (state) => state.baseCurrencies.map((c) => c.name),
     shallow,
   );
-export const useQuoteCurrency = () =>
+export const useMultiCurrenciesQuoteCurrency = () =>
   useMultiCurrenciesStore((state) => state.quoteCurrency, shallow);
-export const useMutliChartRange = () =>
+export const useMultiCurrenciesChartRange = () =>
   useMultiCurrenciesStore((state) => state.mutliChartRange);
 
 export const useMultiCurrenciesActions = () =>
   useMultiCurrenciesStore((state) => state.actions);
 
 export const useMultiCurrenciesActionsReset = () => {
-  const { setBaseCurrencies, setQuoteCurrency } = useMultiCurrenciesActions();
+  const { setMultiCurrenciesBaseCurrencies, setMultiCurrenciesQuoteCurrency } =
+    useMultiCurrenciesActions();
   return () => {
-    setBaseCurrencies(defaultBaseCurrencies);
-    setQuoteCurrency(defaultQuoteCurrency[0]);
+    setMultiCurrenciesBaseCurrencies(defaultBaseCurrencies);
+    setMultiCurrenciesQuoteCurrency(defaultQuoteCurrency[0]);
   };
 };
 

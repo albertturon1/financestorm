@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react';
 
 import { Record } from 'pocketbase';
 
-import { Transaction } from '@features/user/history/components/Transactions';
 import { PocketBaseDataResponse } from '@interfaces/IPocketBase';
+import { Transaction } from '@interfaces/ITransaction';
 import pb from 'src/api/PocketBase';
 
 export interface RealTimeTransaction extends Transaction {

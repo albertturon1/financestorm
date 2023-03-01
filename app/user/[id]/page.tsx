@@ -4,12 +4,13 @@ import { AiOutlineLineChart } from 'react-icons/ai';
 
 import PageTitle from '@components/PageTitle';
 import UserPhoto from '@components/UserPhoto';
-import { CHART_THEME } from '@constants/chartTheme';
-import { PADDING_TAILWIND } from '@constants/globals';
+import { CHART_THEME } from '@constants/Chart';
+import { PADDING_TAILWIND } from '@constants/Globals';
 import UserBalancePercentage from '@features/user/components/CurrencyBalancePercentage/UserBalancePercentage';
 import UserBalance from '@features/user/components/UserBalance';
 import UserCurrencyPairSummary from '@features/user/components/UserCurrencyPairSummary';
 import UserLastTransactions from '@features/user/components/UserLastTransactions';
+import todayWalletValue from '@features/walletHistory/tools/todayWalletValue';
 import { getUser, getUserCurrencyTransactions } from 'src/api/UserApi';
 
 export interface UserParams {
@@ -20,7 +21,9 @@ const User = async ({ params }: { params: UserParams }) => {
   const user = await getUser(params.id);
   if (!user.id) notFound();
 
+  const { currencies } = await todayWalletValue(user);
   const transactions = await getUserCurrencyTransactions({ user_id: user.id });
+  
   return (
     <div className={`${PADDING_TAILWIND} flex h-full w-full flex-col pb-6`}>
       {/*Header */}
@@ -41,7 +44,7 @@ const User = async ({ params }: { params: UserParams }) => {
           </Link>
         </div>
         <div className="flex grow">
-          <UserBalancePercentage user={user} />
+          <UserBalancePercentage currencies={currencies} />
         </div>
       </div>
       <div className="mt-10 flex flex-col gap-y-10">

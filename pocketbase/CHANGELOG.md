@@ -830,9 +830,9 @@ Please check the individual SDK package changelog and apply the necessary change
   func (m *Record) SetTokenKey(key string) error
   func (m *Record) RefreshTokenKey() error
   func (m *Record) LastResetSentAt() types.DateTime
-  func (m *Record) SetLastResetSentAt(dateTime types.DateTime) error
+  func (m *Record) SetLastResetSentAt(DateTime types.DateTime) error
   func (m *Record) LastVerificationSentAt() types.DateTime
-  func (m *Record) SetLastVerificationSentAt(dateTime types.DateTime) error
+  func (m *Record) SetLastVerificationSentAt(DateTime types.DateTime) error
   func (m *Record) ValidatePassword(password string) bool
   func (m *Record) SetPassword(password string) error
   ```

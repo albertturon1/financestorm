@@ -1,11 +1,11 @@
-import { PADDING_TAILWIND } from '@constants/globals';
+import { PADDING_TAILWIND } from '@constants/Globals';
 import MainRedirectButton from '@features/main/MainRedirectButton';
 
 import { USER_ID } from './Navbar';
 
 const HomePage = () => (
   <div
-    className={`${PADDING_TAILWIND} grid flex-1 grid-cols-1 gap-y-2 lg:gap-5 pb-4 md:grid-cols-2`}
+    className={`${PADDING_TAILWIND} grid flex-1 grid-cols-1 gap-y-2 pb-4 md:grid-cols-2 lg:gap-5`}
   >
     <MainRedirectButton
       image="/assets/images/dashboard.png"
@@ -17,7 +17,7 @@ const HomePage = () => (
       image="/assets/images/wallet-history.png"
       title="Dzisiejsze kursy walut"
       subtitle="Sprawdź dzisiejsze kursy walut i bądź na bieżąco z rynkiem walutowym."
-      href="/currencies/pln"
+      href="currencies"
     />
     <MainRedirectButton
       image="/assets/images/multi-currencies.png"

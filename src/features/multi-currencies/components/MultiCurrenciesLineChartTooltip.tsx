@@ -4,10 +4,9 @@ import { TooltipProps } from 'recharts';
 import FlagCountryCode from '@components/FlagCountryCode';
 import TooltipRowWrapper from '@components/TooltipRowWrapper';
 import TooltipWrapper from '@components/TooltipWrapper';
-import { CHART_THEME } from '@constants/chartTheme';
+import { CHART_THEME } from '@constants/Chart';
 import { CustomTooltipProps } from '@interfaces/ICharts';
 import { NormalizedCurrencyExchangeRate } from '@interfaces/models/IExchangerate';
-import { reverseServerDate } from '@utils/misc';
 
 type TooltipPayload = CustomTooltipProps<NormalizedCurrencyExchangeRate>[];
 
@@ -17,13 +16,13 @@ const MultiCurrenciesLineChartTooltip = ({
 }: TooltipProps<number, string>) => {
   if (!active || !payload?.length) return null;
   const data = payload as TooltipPayload;
-  const day = reverseServerDate(data[0].payload.label);
 
   return (
     <TooltipWrapper className="px-0 pb-0">
       <div className="flex flex-col px-5">
-        <p>{`Dzień: ${DateTime.fromFormat(day, 'dd-mm-yyyy').toFormat(
-          'dd MMMM, yyyy',
+        <p>{`Dzień: ${DateTime.fromISO(data[0].payload.label).toFormat(
+          'dd MMM, yyyy',
+          { locale: 'pl' },
         )}`}</p>{' '}
         {/*TODO: january only - sortowanie danych jest zjebane (są odrwotnie)*/}
         <div className="flex items-center justify-between gap-x-3 pb-3">

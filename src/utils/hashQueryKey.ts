@@ -1,4 +1,4 @@
-import { AnyObject } from '@interfaces/Utility';
+import { AnyObject } from '@interfaces/IUtility';
 
 const sortObject = <T>(obj: AnyObject<T>) =>
   Object.keys(obj)

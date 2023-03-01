@@ -10,8 +10,6 @@ const UserCurrencyPairSummary = (props: {
 }) => {
   const currrencyPairSummary = currenciesPairSummary(props.transactions);
 
-  //console.log(JSON.stringify(currrencyPairSummary));
-
   return (
     <div className="mb-5 flex w-full flex-col">
       <p className="mb-4 font-semibold underline">

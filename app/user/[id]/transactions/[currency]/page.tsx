@@ -1,6 +1,6 @@
 import FlagCountryCode from '@components/FlagCountryCode';
 import PageTitle from '@components/PageTitle';
-import { PADDING_TAILWIND } from '@constants/globals';
+import { PADDING_TAILWIND } from '@constants/Globals';
 import Transactions from '@features/user/history/components/Transactions';
 import { Currencies } from '@interfaces/ICurrency';
 import { getUserCurrencyTransactions } from 'src/api/UserApi';
@@ -27,7 +27,11 @@ const CurrencyHistory = async ({
       </div>
       <div className="mt-5 flex flex-col">
         {history.length ? (
-          <Transactions transactions={history} baseCurrency={currency} arrows />
+          <Transactions
+            transactions={history}
+            quoteCurrency={currency}
+            arrows
+          />
         ) : (
           <p>{'Nie masz żadnych transakcji w wybranej walucie'}</p>
         )}

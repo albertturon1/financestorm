@@ -23,17 +23,17 @@ const convertDailyCurrencyTimeseriesToChartData = (
       if (currencyIndexInAcc === -1)
         acc.push({
           name: currency,
-          minValue: value,
-          maxValue: value,
+          //minValue: value,
+          //maxValue: value,
           data: [obj],
         });
       else {
-        //set minValue
-        if (value > acc[currencyIndexInAcc].maxValue)
-          acc[currencyIndexInAcc].maxValue = value;
-        //set maxValue
-        if (value < acc[currencyIndexInAcc].minValue)
-          acc[currencyIndexInAcc].minValue = value;
+        ////set minValue
+        //if (value > acc[currencyIndexInAcc].maxValue)
+        //  acc[currencyIndexInAcc].maxValue = value;
+        ////set maxValue
+        //if (value < acc[currencyIndexInAcc].minValue)
+        //  acc[currencyIndexInAcc].minValue = value;
         acc[currencyIndexInAcc].data = [...acc[currencyIndexInAcc].data, obj];
       }
     });

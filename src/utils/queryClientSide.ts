@@ -9,9 +9,10 @@ export const makeQueryClient = <T>() => {
   ): Promise<QueryResult> {
     const hashedKey = hashQueryKey(name);
     if (!fetchMap.has(hashedKey)) {
-      fetchMap.set(hashedKey, query());
+      fetchMap.set(hashedKey, query() as unknown as Promise<T>);
     }
-    return fetchMap.get(hashedKey);
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-explicit-any
+    return fetchMap.get(hashedKey) as any;
   };
 };
 

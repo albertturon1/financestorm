@@ -15,7 +15,6 @@
   },
   "dependencies": {
     "@tanstack/react-query": "4.20.9",
-    "@tanstack/react-query-devtools": "4.22.0",
     "@types/lodash": "4.14.191",
     "@types/luxon": "3.2.0",
     "@types/react-world-flags": "1.4.2",
@@ -24,11 +23,9 @@
     "eslint-config-prettier": "8.6.0",
     "eslint-plugin-prettier": "4.2.1",
     "eslint-plugin-sonarjs": "0.17.0",
-    "immer": "9.0.19",
     "lodash": "4.17.21",
     "luxon": "3.2.1",
-    "next": "13.2.1",
-    "number-abbreviate": "2.0.0",
+    "next": "13.2.3",
     "pocketbase": "0.9.1",
     "query-string": "8.1.0",
     "ramda": "0.28.0",
@@ -44,7 +41,6 @@
     "server-only": "0.0.1",
     "styled-jsx": "5.1.0",
     "tailwind-merge": "1.9.1",
-    "use-count-up": "3.0.1",
     "zustand": "4.3.3"
   },
   "devDependencies": {
@@ -56,7 +52,7 @@
     "@welldone-software/why-did-you-render": "7.0.1",
     "autoprefixer": "^10.4.7",
     "eslint": "8.19.0",
-    "eslint-config-next": "13.1.1",
+    "eslint-config-next": "13.2.3",
     "postcss": "^8.4.14",
     "prettier": "^2.7.1",
     "prettier-plugin-tailwindcss": "^0.1.12",

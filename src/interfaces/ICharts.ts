@@ -1,7 +1,7 @@
-import { CHART_RANGES } from '@constants/chartRange';
+import { CHART_RANGES } from '@constants/Chart';
 
 import { Currencies } from './ICurrency';
-import { AnyObject } from './Utility';
+import { AnyObject } from './IUtility';
 
 export interface RechartsData {
   name: string;
