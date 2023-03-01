@@ -1,5 +1,3 @@
-import { ReactElement } from 'react';
-
 import { DateTime } from 'luxon';
 import { TooltipProps } from 'recharts';
 
@@ -21,7 +19,7 @@ const WalletValueOverTimeTooltip = ({
   currentWalletValue,
 }: TooltipProps<number, string> & {
   currentWalletValue: number;
-}): ReactElement | null => {
+}) => {
   if (!active || !payload?.length) return null;
   const data = payload as P;
 

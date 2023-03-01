@@ -1,12 +1,17 @@
 'use client';
 
-import TransactionsFlagCountry from '../history/components/TransactionsFlagCountry';
-import { PairSummary } from '../hooks/useCurrencyPairSummary';
+import { TransactionPairSummary } from '@interfaces/ITransaction';
 
-const CurrencyPairSummary = ({ summary }: { summary: PairSummary[] }) => (
+import TransactionsFlagCountry from '../history/components/TransactionsFlagCountry';
+
+const CurrencyPairSummary = ({
+  summary,
+}: {
+  summary: TransactionPairSummary[];
+}) => (
   <div className="flex flex-col">
     {/*Header */}
-    <div className="mb-3 flex px-1 gap-x-2">
+    <div className="mb-3 flex gap-x-2 px-1">
       <HeaderText wide>{'Waluta sprzedawana'}</HeaderText>
       <HeaderText wide>{'Waluta kupowana'}</HeaderText>
       <HeaderText>{'Liczba transakcji'}</HeaderText>
@@ -39,7 +44,7 @@ const TransactionRecord = ({
   summary,
   className,
 }: {
-  summary: PairSummary;
+  summary: TransactionPairSummary;
   className?: string;
 }) => {
   const baseCurrency = summary.base_currency.toUpperCase();
@@ -47,7 +52,7 @@ const TransactionRecord = ({
 
   return (
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-    <div className={`flex w-full items-center py-3 px-1 gap-x-2 ${className}`}>
+    <div className={`flex w-full items-center gap-x-2 py-3 px-1 ${className}`}>
       <TransactionsFlagCountry currency={quoteCurrency} className="w-52" />
       <TransactionsFlagCountry currency={baseCurrency} className="w-52" />
       <Text>{summary.appearance}</Text>

@@ -1,35 +1,30 @@
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-/* eslint-disable @typescript-eslint/restrict-template-expressions */
-
 import { TooltipProps } from 'recharts';
 
 import FlagCountryCode from '@components/FlagCountryCode';
-import { Currencies } from '@interfaces/ICurrency';
+import {
+  BaseCurrencyWalletValue,
+  isBaseCurrencyWalletValue,
+} from '@features/walletHistory/tools/todayWalletValue';
+import { CustomTooltipProps } from '@interfaces/ICharts';
 
 const UserBalancePercentageTooltip = ({
   active,
   payload,
-  quote_currency,
-}: TooltipProps<number, string> & {
-  quote_currency: Currencies;
-}) => {
+}: TooltipProps<number, string>) => {
   if (!active || !payload?.length) return null;
+  const [data] = payload as [CustomTooltipProps<BaseCurrencyWalletValue>];
+  const { payload: p } = data;
+
   return (
     <div className="gap-y-3 rounded border border-slate-50 bg-secondaryBlack p-4">
       <div className="flex gap-x-2">
-        <p className="font-semibold">{payload[0].payload.value}</p>
-        <FlagCountryCode
-          reverse
-          code={payload[0].payload.currency}
-          flagClassName="w-4"
-        />
+        <p className="font-semibold">{p.amount}</p>
+        <FlagCountryCode reverse code={p.currency} flagClassName="w-4" />
       </div>
-      {payload[0].payload.currency !== quote_currency && (
-        <p className="font-semibold">{`${payload[0].payload.amount} PLN`}</p>
+      {isBaseCurrencyWalletValue(p) && (
+        <p className="font-semibold">{`${p.value} PLN`}</p>
       )}
-      <p className="font-semibold">{`${payload[0].payload.percentage}% portfela`}</p>
+      <p className="font-semibold">{`${p.percentage}% portfela`}</p>
     </div>
   );
 };

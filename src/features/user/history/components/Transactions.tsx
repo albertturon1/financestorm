@@ -1,35 +1,21 @@
-import { Record } from 'pocketbase';
 import {
   BsFillArrowLeftSquareFill,
   BsFillArrowRightSquareFill,
 } from 'react-icons/bs';
 
 import { Currencies } from '@interfaces/ICurrency';
+import { Transaction, TransactionType } from '@interfaces/ITransaction';
 
 import TransactionsFlagCountry from './TransactionsFlagCountry';
 
 const typeColumnWidth = 'w-12';
 
-export interface Transaction extends Record {
-  base_currency: Currencies;
-  quote_currency: Currencies;
-  base_currency_value: number;
-  quote_currency_value: number;
-  exchange_rate: number;
-  user_id: string;
-  id: string;
-  created: string;
-  updated: string;
-}
-
-type TransactionType = 'sell' | 'buy';
-
 const Transactions = ({
-  baseCurrency,
+  quoteCurrency,
   transactions,
   arrows,
 }: {
-  baseCurrency: Currencies;
+  quoteCurrency: Currencies;
   transactions: Transaction[] | undefined;
   arrows?: boolean;
   // eslint-disable-next-line arrow-body-style
@@ -54,7 +40,7 @@ const Transactions = ({
             key={`${item.id}${Math.random()}`}
             transaction={item}
             className={index % 2 === 0 ? 'bg-secondaryBlack' : ''}
-            type={item.base_currency === baseCurrency ? 'sell' : 'buy'}
+            type={item.base_currency === quoteCurrency ? 'sell' : 'buy'}
             arrows={arrows}
           />
         ))}

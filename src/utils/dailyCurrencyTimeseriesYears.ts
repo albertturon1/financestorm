@@ -3,7 +3,7 @@ import { DateTime } from 'luxon';
 import { SERVER_DATE } from '@constants/dateTime';
 import { Currencies } from '@interfaces/ICurrency';
 import { ExchangeRateTimeseries } from '@interfaces/models/IExchangerate';
-import { getDailyCurrencyTimeseriesOneYear } from '@src/api/CurrenctyRateApi';
+import { getDailyCurrencyTimeseriesOneYearQuery } from '@src/api/CurrenctyRateApi';
 import {
   CurrencyRateRange,
   CurrencyRatePair,
@@ -61,7 +61,7 @@ const dailyCurrencyTimeseriesYears = async ({
 
   const api_responses = await Promise.all(
     yearsPairs.map((dates) =>
-      getDailyCurrencyTimeseriesOneYear({
+      getDailyCurrencyTimeseriesOneYearQuery({
         ...dates,
         base_currencies,
         quote_currency,

@@ -4,13 +4,14 @@ import { User } from '@interfaces/models/IUser';
 import { getTodayCurrencyRatesQuery } from '@src/api/CurrenctyRateApi';
 import { cutNumber } from '@utils/misc';
 
-interface QuoteCurrencyWalletValue {
+export interface QuoteCurrencyWalletValue {
   currency: Currencies;
   amount: number;
   accountID: string;
+  percentage: number;
 }
 
-interface BaseCurrencyWalletValue extends QuoteCurrencyWalletValue {
+export interface BaseCurrencyWalletValue extends QuoteCurrencyWalletValue {
   rate: number;
   value: number;
 }
@@ -21,45 +22,47 @@ export const isBaseCurrencyWalletValue = (
   (value as BaseCurrencyWalletValue).rate !== undefined;
 
 const todayWalletValue = async (user: User) => {
-  const baseCurrencies = user.currencies.filter(
+  const userBaseCurrencies = user.currencies.filter(
     (c) =>
-      CURRENCIES.includes(c.currency.toUpperCase()) &&
+      CURRENCIES.includes(c.currency.toUpperCase() as Currencies) &&
       c.currency !== user.quote_currency,
   );
 
-  const currencyRatesResponse = await Promise.all(
-    baseCurrencies.map(
-      async (c) =>
-        await getTodayCurrencyRatesQuery({
-          base_currency: c.currency,
-          quote_currency: user.quote_currency,
-        }),
-    ),
-  );
+  const { rates } = await getTodayCurrencyRatesQuery({
+    base_currencies: userBaseCurrencies.map((b) => b.currency),
+    quote_currency: user.quote_currency,
+  });
+
   const [quoteCurrency] = user.currencies.filter(
     (c) => user.quote_currency === c.currency,
   );
 
-  const currencyRates = currencyRatesResponse.reduce((acc, item) => {
-    {
-      acc[item.base] = item.rates[user.quote_currency]; //take quote_currency rate
+  const balance =
+    quoteCurrency.amount +
+    userBaseCurrencies.reduce((acc, c) => {
+      // eslint-disable-next-line no-param-reassign
+      acc += c.amount * rates[c.currency];
       return acc;
-    }
-  }, {} as Record<Currencies, number>);
+    }, 0);
 
-  const baseCurrenciesValues: BaseCurrencyWalletValue[] = baseCurrencies.map(
-    (c) => ({
-      rate: currencyRates[c.currency],
-      currency: c.currency,
-      amount: c.amount,
-      value: cutNumber(c.amount * currencyRates[c.currency]),
-      accountID: c.account_id,
-    }),
-  );
+  const baseCurrenciesValues: BaseCurrencyWalletValue[] =
+    userBaseCurrencies.map((c) => {
+      const value = cutNumber(c.amount * rates[c.currency]);
+      return {
+        rate: rates[c.currency],
+        currency: c.currency,
+        amount: c.amount,
+        value,
+        accountID: c.account_id,
+        percentage: cutNumber((value / balance) * 100, 2),
+      };
+    });
+
   const quoteCurrencyWalletValue: QuoteCurrencyWalletValue = {
     currency: quoteCurrency.currency,
     amount: quoteCurrency.amount,
     accountID: quoteCurrency.account_id,
+    percentage: cutNumber((quoteCurrency.amount / balance) * 100, 2),
   };
 
   const currencies = [
@@ -67,17 +70,9 @@ const todayWalletValue = async (user: User) => {
     ...baseCurrenciesValues,
   ] as const;
 
-  const balance =
-    quoteCurrency.amount +
-    baseCurrencies.reduce((acc, c) => {
-      // eslint-disable-next-line no-param-reassign
-      acc += c.amount * currencyRates[c.currency];
-      return acc;
-    }, 0);
-
   return {
     balance: cutNumber(balance, 3),
-    currencyRates,
+    rates,
     currencies,
   };
 };

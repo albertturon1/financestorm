@@ -14,7 +14,7 @@ import {
   MultiCurrenciesRate,
 } from './interfaces/ICurrenctyRateApi';
 
-export const getDailyCurrencyTimeseriesOneYear = async ({
+export const getDailyCurrencyTimeseriesOneYearQuery = async ({
   base_currencies,
   start_date,
   end_date,

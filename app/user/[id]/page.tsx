@@ -21,7 +21,6 @@ const User = async ({ params }: { params: UserParams }) => {
   if (!user.id) notFound();
 
   const transactions = await getUserCurrencyTransactions({ user_id: user.id });
-
   return (
     <div className={`${PADDING_TAILWIND} flex h-full w-full flex-col pb-6`}>
       {/*Header */}
@@ -33,7 +32,7 @@ const User = async ({ params }: { params: UserParams }) => {
       <div className="mt-5 mb-10 flex flex-col lg:flex-row">
         <div className="lg:mr-16">
           {/* @ts-expect-error Server Component */}
-          {/*<UserBalance user={user} />*/}
+          <UserBalance user={user} />
           <Link href={`/user/${user.id}/wallet-history`}>
             <div className=" mt-3 mb-10 flex h-11 w-96 items-center justify-center gap-x-4 self-center rounded border border-gray-500 bg-gray-700 font-bold lg:mb-0">
               <p>{'Wartość portfela w czasie'}</p>
@@ -41,14 +40,20 @@ const User = async ({ params }: { params: UserParams }) => {
             </div>
           </Link>
         </div>
-        {/*<div className="flex grow">
+        <div className="flex grow">
           <UserBalancePercentage user={user} />
-        </div>*/}
+        </div>
       </div>
-      {/*<div className="mt-10 flex flex-col gap-y-10">
-        <UserLastTransactions transactions={transactions} />
-        <UserCurrencyPairSummary transactions={transactions} />
-      </div>*/}
+      <div className="mt-10 flex flex-col gap-y-10">
+        <UserLastTransactions
+          transactions={transactions}
+          quoteCurrency={user.quote_currency}
+        />
+        <UserCurrencyPairSummary
+          transactions={transactions}
+          quoteCurrency={user.quote_currency}
+        />
+      </div>
     </div>
   );
 };

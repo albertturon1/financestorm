@@ -1,18 +1,19 @@
-import { Record } from 'pocketbase';
+import { Currencies } from '@interfaces/ICurrency';
+import { Transaction } from '@interfaces/ITransaction';
 
-import { useCurrencyPairSummary } from '../hooks/useCurrencyPairSummary';
 import CurrencyPairSummary from './CurrencyPairSummary';
+import currenciesPairSummary from '../tools/currenciesPairSummary';
 
-const UserCurrencyPairSummary = ({
-  transactions,
-}: {
-  transactions: Record[];
+const UserCurrencyPairSummary = (props: {
+  transactions: Transaction[];
+  quoteCurrency: Currencies;
 }) => {
-  const currrencyPairSummary = useCurrencyPairSummary(transactions);
-  
-  if (!currrencyPairSummary.length) return null;
+  const currrencyPairSummary = currenciesPairSummary(props.transactions);
+
+  //console.log(JSON.stringify(currrencyPairSummary));
+
   return (
-    <div className="flex w-full flex-col mb-5">
+    <div className="mb-5 flex w-full flex-col">
       <p className="mb-4 font-semibold underline">
         {'Podsumowanie transferów walutowych'}
       </p>

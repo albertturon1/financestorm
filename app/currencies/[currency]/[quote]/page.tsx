@@ -16,7 +16,7 @@ import {
   ExchangeRateTimeseries,
   NormalizedCurrencyExchangeRate,
 } from '@interfaces/models/IExchangerate';
-import { getDailyCurrencyTimeseriesOneYear } from '@src/api/CurrenctyRateApi';
+import { getDailyCurrencyTimeseriesOneYearQuery } from '@src/api/CurrenctyRateApi';
 import { nameOfKey, serverDate } from '@utils/misc';
 import queryClientSide from '@utils/queryClientSide';
 
@@ -40,15 +40,13 @@ type A = Omit<ExchangeRateTimeseries, 'rates_array'> & {
 const CurrenciesPair = ({ params }: { params: CurrenciesPairPageProps }) => {
   const { currency, quote } = params;
   const data = use(
-    queryClientSide(
-      [quote, currency, '2021-01-01', serverDate(new Date())],
-      () =>
-        getDailyCurrencyTimeseriesOneYear({
-          quote_currency: quote,
-          base_currencies: [currency],
-          start_date: '2022-01-01',
-          end_date: serverDate(new Date()),
-        }),
+    queryClientSide([quote, currency, serverDate(new Date())], () =>
+      getDailyCurrencyTimeseriesOneYearQuery({
+        quote_currency: quote,
+        base_currencies: [currency],
+        start_date: DateTime.now().minus({ years: 1 }).toFormat('yyyy-MM-dd'),
+        end_date: DateTime.now().toFormat('yyyy-MM-dd'),
+      }),
     ),
   );
 

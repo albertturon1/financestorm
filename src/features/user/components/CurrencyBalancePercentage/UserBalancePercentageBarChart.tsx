@@ -11,16 +11,14 @@ import {
 
 import { CHART_THEME } from '@constants/chartTheme';
 import { UserBalanceChart } from '@features/user/interfaces/IUserBalance';
+import { Mutable } from '@interfaces/IUtility';
 
 import UserBalancePercentageTooltip from './UserBalancePercentageTooltip';
 
-const UserBalancePercentageBarChart = ({
-  data,
-  quote_currency,
-}: UserBalanceChart) => (
+const UserBalancePercentageBarChart = ({ data }: UserBalanceChart) => (
   <ResponsiveContainer>
     <ComposedChart
-      data={data}
+      data={data as Mutable<typeof data>}
       margin={{
         top: 5,
         bottom: 5,
@@ -29,14 +27,10 @@ const UserBalancePercentageBarChart = ({
       }}
     >
       <Bar dataKey="percentage">
-        {data
+        {[...data]
           .sort((a, b) => (a.percentage > b.percentage ? -1 : 1))
-          .map((_entry, index) => (
-            <Cell
-              // eslint-disable-next-line react/no-array-index-key
-              key={`cell-${index}`}
-              fill={CHART_THEME[index]}
-            />
+          .map((e, index) => (
+            <Cell key={e.currency} fill={CHART_THEME[index]} />
           ))}
       </Bar>
       <Legend
@@ -45,7 +39,7 @@ const UserBalancePercentageBarChart = ({
           type: 'square',
           value: `${item.currency} (${item.percentage}%)`,
           color: CHART_THEME[index],
-          fontVariant: 'tabular-nums'
+          fontVariant: 'tabular-nums',
         }))}
         className="tabular-nums"
         layout="vertical"
@@ -56,13 +50,8 @@ const UserBalancePercentageBarChart = ({
         }}
       />
       <XAxis dataKey="currency" />
-      <YAxis/>
-      <Tooltip
-        content={
-          <UserBalancePercentageTooltip quote_currency={quote_currency} />
-        }
-        cursor={false}
-      />
+      <YAxis domain={[0, 100]} />
+      <Tooltip content={<UserBalancePercentageTooltip />} cursor={false} />
     </ComposedChart>
   </ResponsiveContainer>
 );

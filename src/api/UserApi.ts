@@ -2,6 +2,7 @@
 import PocketBase from 'pocketbase';
 
 import { Currencies } from '@interfaces/ICurrency';
+import { Transaction } from '@interfaces/ITransaction';
 import { User } from '@interfaces/models/IUser';
 import api from '@utils/api';
 
@@ -18,7 +19,7 @@ export const getUserCurrencyTransactions = async ({
 }: {
   currency?: Currencies;
   user_id?: string;
-}) => {
+}): Promise<Transaction[]> => {
   const user_filter = user_id ? `user_id = "lxiry2v1ochapzp"` : '';
   const currency_filter = currency
     ? `(base_currency = "${currency}" || quote_currency = "${currency}")`

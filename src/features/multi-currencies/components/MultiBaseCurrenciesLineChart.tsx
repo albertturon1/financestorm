@@ -46,7 +46,7 @@ const MultiBaseCurrenciesLineChart = () => {
         dailyCurrencyTimeseriesYears({
           quote_currency: quoteCurrency.name,
           base_currencies: baseCurrencies,
-          years: 10,
+          years: 3,
         }),
     ),
   );

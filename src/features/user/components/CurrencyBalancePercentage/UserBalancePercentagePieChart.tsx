@@ -9,17 +9,15 @@ import {
 
 import { CHART_THEME } from '@constants/chartTheme';
 import { UserBalanceChart } from '@features/user/interfaces/IUserBalance';
+import { Mutable } from '@interfaces/IUtility';
 
 import UserBalancePercentageTooltip from './UserBalancePercentageTooltip';
 
-const UserBalancePercentagePieChart = ({
-  data,
-  quote_currency,
-}: UserBalanceChart) => (
+const UserBalancePercentagePieChart = ({ data }: UserBalanceChart) => (
   <ResponsiveContainer>
     <PieChart>
-      <Pie data={data} dataKey="percentage">
-        {data
+      <Pie data={data as Mutable<typeof data>} dataKey="percentage">
+        {[...data]
           .sort((a, b) => (a.percentage > b.percentage ? -1 : 1))
           .map((_entry, index) => (
             <Cell
@@ -43,12 +41,7 @@ const UserBalancePercentagePieChart = ({
           paddingLeft: '30px',
         }}
       />
-      <Tooltip
-        content={
-          <UserBalancePercentageTooltip quote_currency={quote_currency} />
-        }
-        cursor={false}
-      />
+      <Tooltip content={<UserBalancePercentageTooltip />} cursor={false} />
     </PieChart>
   </ResponsiveContainer>
 );

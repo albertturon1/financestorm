@@ -1,18 +1,8 @@
-import { Currencies } from '@interfaces/ICurrency';
-
-export interface UserCurrencyBalance {
-  currency: string;
-  value: number;
-  percentage: number;
-  amount: number;
-}
+import {
+  QuoteCurrencyWalletValue,
+  BaseCurrencyWalletValue,
+} from '@features/walletHistory/tools/todayWalletValue';
 
 export interface UserBalanceChart {
-  data: UserCurrencyBalance[];
-  quote_currency: Currencies;
-}
-
-export interface UserBalanceData {
-  balance: number;
-  currencies: UserCurrencyBalance[];
+  data: readonly [QuoteCurrencyWalletValue, ...BaseCurrencyWalletValue[]];
 }

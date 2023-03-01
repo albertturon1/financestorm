@@ -4,7 +4,7 @@ import userCurrenciesAmount from '@features/user/tools/userCurrenciesAmount';
 import { WalletBaseCurrencyValue, WalletDay } from '@interfaces/ICharts';
 import { Currencies } from '@interfaces/ICurrency';
 import { UserCurrency } from '@interfaces/models/IUser';
-import { getDailyCurrencyTimeseriesOneYear } from '@src/api/CurrenctyRateApi';
+import { getDailyCurrencyTimeseriesOneYearQuery } from '@src/api/CurrenctyRateApi';
 import { CurrencyRatePair } from '@src/api/interfaces/ICurrenctyRateApi';
 import { cutNumber, previousDate } from '@utils/misc';
 
@@ -46,14 +46,12 @@ const walletValueOverTime = async ({
     end_date ? new Date(end_date) : new Date(),
   ).toFormat('yyyy-MM-dd');
 
-  const currencyRates = await getDailyCurrencyTimeseriesOneYear({
+  const currencyRates = await getDailyCurrencyTimeseriesOneYearQuery({
     quote_currency,
     base_currencies: nonQuoteCurrencies,
     end_date: endDate,
     start_date: startDate,
   });
-
-  //console.log('currencyRates', JSON.stringify(currencyRates));
 
   const currencyAmounts = userCurrenciesAmount(currencies);
   let minValue = -1;
