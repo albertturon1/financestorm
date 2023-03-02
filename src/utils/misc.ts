@@ -1,8 +1,10 @@
 import { isValidElement, ReactElement } from 'react';
 
-import { some } from 'lodash';
+import { PartialShallow, some } from 'lodash';
 import { DateTime } from 'luxon';
 import QueryString from 'query-string';
+
+import { AnyObject } from '@interfaces/IUtility';
 
 export const genQueryString = (params: object | undefined): string => {
   if (!params || !Object.keys(params).length) return '';
@@ -42,7 +44,7 @@ export const getFloatBetweenRange = (min = 0, max = 1) =>
 
 export const cutNumber = (number: number, n = 3) => Number(number.toFixed(n));
 
-export const nameOfKey = <T>(
+export const nameOfKey = <T extends AnyObject<T>>(
   obj: T,
   expression: (x: { [Property in keyof T]: () => string }) => () => string,
 ): string => {
@@ -56,7 +58,9 @@ export const nameOfKey = <T>(
 };
 
 export const includedInGenericArray = <T>(array: T[], item: T) =>
-  typeof item === 'string' ? array.includes(item) : some(array, item);
+  typeof item === 'string'
+    ? array.includes(item)
+    : some(array, item as PartialShallow<T>);
 
 export type RenderItem<T> = ReactElement | ((data: T) => ReactElement);
 
