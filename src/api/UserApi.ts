@@ -1,16 +1,13 @@
-/* eslint-disable sonarjs/no-nested-template-literals */
-import PocketBase from 'pocketbase';
-
 import { Currencies } from '@interfaces/ICurrency';
 import { Transaction } from '@interfaces/ITransaction';
-import { User } from '@interfaces/models/IUser';
+import { UserModel } from '@interfaces/models/IUser';
 import api from '@utils/api';
 
-const pb = new PocketBase('http://127.0.0.1:8090');
+import pb from './PocketBase';
 
-export const getUser = async (id: string) => {
-  const url = `http://127.0.0.1:8090/api/collections/user/records/${id}`;
-  return await api.get<User>(url);
+export const getUser = async () => {
+  const url = `${process.env.NEXT_PUBLIC_DATABASE_URL}/api/collections/user/records/${process.env.NEXT_PUBLIC_USER_ID}`;
+  return await api.get<UserModel>(url);
 };
 
 export const getUserCurrencyTransactions = async ({
@@ -20,7 +17,9 @@ export const getUserCurrencyTransactions = async ({
   currency?: Currencies;
   user_id?: string;
 }): Promise<Transaction[]> => {
-  const user_filter = user_id ? `user_id = "lxiry2v1ochapzp"` : '';
+  const user_filter = user_id
+    ? `user_id = "${process.env.NEXT_PUBLIC_USER_ID}"`
+    : '';
   const currency_filter = currency
     ? `(base_currency = "${currency}" || quote_currency = "${currency}")`
     : '';

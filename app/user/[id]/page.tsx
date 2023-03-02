@@ -17,13 +17,12 @@ export interface UserParams {
   id: string;
 }
 
-const User = async ({ params }: { params: UserParams }) => {
-  const user = await getUser(params.id);
+const User = async () => {
+  const user = await getUser();
   if (!user.id) notFound();
 
   const { currencies } = await todayWalletValue(user);
   const transactions = await getUserCurrencyTransactions({ user_id: user.id });
-  
   return (
     <div className={`${PADDING_TAILWIND} flex h-full w-full flex-col pb-6`}>
       {/*Header */}
@@ -47,16 +46,15 @@ const User = async ({ params }: { params: UserParams }) => {
           <UserBalancePercentage currencies={currencies} />
         </div>
       </div>
-      <div className="mt-10 flex flex-col gap-y-10">
-        <UserLastTransactions
-          transactions={transactions}
-          quoteCurrency={user.quote_currency}
-        />
-        <UserCurrencyPairSummary
-          transactions={transactions}
-          quoteCurrency={user.quote_currency}
-        />
-      </div>
+      {!!transactions.length && (
+        <div className="mt-10 flex flex-col gap-y-10">
+          <UserLastTransactions
+            transactions={transactions}
+            quoteCurrency={user.quote_currency}
+          />
+          <UserCurrencyPairSummary transactions={transactions} />
+        </div>
+      )}
     </div>
   );
 };

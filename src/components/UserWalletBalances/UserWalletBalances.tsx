@@ -10,17 +10,15 @@ import UserWalletBalancesItem from './UserWalletBalancesItem';
 import UserWalletBalancesRowWrapper from './UserWalletBalancesRowWrapper';
 
 const UserWalletBalances = async ({
-  userID,
   onlyBalance,
   containerClassName = '',
   itemClassName = '',
 }: {
-  userID: string;
   containerClassName?: string;
   itemClassName?: string;
   onlyBalance?: boolean;
 }) => {
-  const user = await getUser(userID);
+  const user = await getUser();
   const { currencies } = await todayWalletValue(user);
 
   return (

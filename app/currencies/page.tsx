@@ -2,17 +2,22 @@
 
 import { use } from 'react';
 
+import dynamic from 'next/dynamic';
+
 import FlagCountryCode from '@components/FlagCountryCode';
 import PageTitle from '@components/PageTitle';
 import { CURRENCIES } from '@constants/Currencies';
 import { PADDING_TAILWIND } from '@constants/Globals';
-import CurrencyTile from '@features/currencies/compoonents/CurrencyTile';
 import TodayRatesQuoteCurrencyPicker from '@features/todayRates/components/TodayRatesQuoteCurrencyPicker';
 import { Currencies } from '@interfaces/ICurrency';
 import { useTodayRatesQuoteCurrency } from '@src/zustand/todayCurrencyRatesStore';
 import queryClientSide from '@utils/queryClientSide';
 
 import { getTodayCurrencyRatesQuery } from '../../src/api/CurrenctyRateApi';
+
+const CurrenciesRatesTiles = dynamic(
+  () => import('@features/currencies/compoonents/CurrenciesRatesTiles'),
+);
 
 export type CurrenciesPageProps = { currency: Currencies };
 
@@ -40,17 +45,10 @@ const CurrenciesPage = () => {
         </div>
         <TodayRatesQuoteCurrencyPicker />
       </div>
-      <div className="grid auto-cols-max grid-cols-1 gap-5 pt-5 pb-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-        {Object.entries(data.rates).map(([baseCurrency, rate]) => (
-          <CurrencyTile
-            currenciesPair={`${baseCurrency as Currencies}-${
-              quoteCurrency.name
-            }`}
-            rate={rate}
-            key={baseCurrency}
-          />
-        ))}
-      </div>
+      <CurrenciesRatesTiles
+        data={data}
+        quoteCurrencyName={quoteCurrency.name}
+      />
     </div>
   );
 };
