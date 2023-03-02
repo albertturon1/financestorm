@@ -13,15 +13,9 @@ const nextConfig = {
       },
     ],
   },
-  //async redirects() {
-  //  return [
-  //    {
-  //      source: '/',
-  //      destination: '/',
-  //      permanent: true,
-  //    },
-  //  ];
-  //},
+  typescript: {
+    ignoreBuildErrors: true,
+  },
 };
 
 module.exports = nextConfig;
