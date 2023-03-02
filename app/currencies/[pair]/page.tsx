@@ -16,8 +16,10 @@ const CurrenciesPairPage = async ({
 }: {
   params: CurrenciesPairPageProps;
 }) => {
-  const { pair } = params;
-  const [currency, quote] = pair.split('-') as [Currencies, Currencies];
+  const [currency, quote] = (params.pair as string).split('-') as [
+    Currencies,
+    Currencies,
+  ];
   const data = await getDailyCurrencyTimeseriesOneYearQuery({
     quote_currency: quote,
     base_currencies: [currency],
