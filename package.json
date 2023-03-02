@@ -5,7 +5,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "format": "prettier --write \"**/*.{js,ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{js,ts,tsx,md}\"",
+    "analyze": "cross-env ANALYZE=true next build"
   },
   "prettier": {
     "arrowParens": "always",
@@ -44,6 +45,7 @@
     "zustand": "4.3.5"
   },
   "devDependencies": {
+    "@next/bundle-analyzer": "13.2.3",
     "@simbathesailor/use-what-changed": "2.0.0",
     "@types/node": "18.14.2",
     "@types/ramda": "0.28.23",
@@ -51,6 +53,7 @@
     "@types/react-dom": "18.0.11",
     "@welldone-software/why-did-you-render": "7.0.1",
     "autoprefixer": "^10.4.7",
+    "cross-env": "7.0.3",
     "eslint": "8.35.0",
     "eslint-config-next": "13.2.3",
     "postcss": "^8.4.14",

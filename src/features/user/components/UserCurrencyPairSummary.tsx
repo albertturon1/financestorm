@@ -1,13 +1,9 @@
-import { Currencies } from '@interfaces/ICurrency';
 import { Transaction } from '@interfaces/ITransaction';
 
 import CurrencyPairSummary from './CurrencyPairSummary';
 import currenciesPairSummary from '../tools/currenciesPairSummary';
 
-const UserCurrencyPairSummary = (props: {
-  transactions: Transaction[];
-  quoteCurrency: Currencies;
-}) => {
+const UserCurrencyPairSummary = (props: { transactions: Transaction[] }) => {
   const currrencyPairSummary = currenciesPairSummary(props.transactions);
 
   return (

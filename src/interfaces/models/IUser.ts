@@ -1,6 +1,6 @@
 import { Currencies } from '@interfaces/ICurrency';
 
-export interface User {
+export interface UserModel {
   id: string;
   created: Date;
   updated: Date;

@@ -1,17 +1,19 @@
+import dynamic from 'next/dynamic';
+
 import ClientScrollbars from '@components/ClientScrollbars';
 import PageTitle from '@components/PageTitle';
 import UserWalletBalances from '@components/UserWalletBalances';
-import { PADDING_TAILWIND } from '@constants/Globals'
-import WalletOverTimeCharts from '@features/walletHistory/components/WalletOverTimeCharts';
+import { PADDING_TAILWIND } from '@constants/Globals';
 import inflationWalletOverTimeValue from '@features/walletHistory/tools/inflationWalletOverTimeValue';
 import walletValueOverTime from '@features/walletHistory/tools/walletValueOverTime';
 import { getUser } from '@src/api/UserApi';
 
-import { UserParams } from '../page';
+const WalletOverTimeCharts = dynamic(
+  () => import('@features/walletHistory/components/WalletOverTimeCharts'),
+);
 
-const WalletHistoryPage = async ({ params }: { params: UserParams }) => {
-  const { id } = params;
-  const user = await getUser(id);
+const WalletHistoryPage = async () => {
+  const user = await getUser();
   const dailyWalletValues = await walletValueOverTime({
     currencies: user.currencies,
     quote_currency: user.quote_currency,
@@ -42,7 +44,6 @@ const WalletHistoryPage = async ({ params }: { params: UserParams }) => {
         <ClientScrollbars className="flex-row">
           {/* @ts-expect-error Server Component */}
           <UserWalletBalances
-            userID={user.id}
             containerClassName="flex-row w-max"
             itemClassName="py-1.5 w-48"
             onlyBalance

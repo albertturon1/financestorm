@@ -1,6 +1,6 @@
 import { CURRENCIES } from '@constants/Currencies';
 import { Currencies } from '@interfaces/ICurrency';
-import { User } from '@interfaces/models/IUser';
+import { UserModel } from '@interfaces/models/IUser';
 import { getTodayCurrencyRatesQuery } from '@src/api/CurrenctyRateApi';
 import { cutNumber } from '@utils/misc';
 
@@ -21,7 +21,7 @@ export const isBaseCurrencyWalletValue = (
 ): value is BaseCurrencyWalletValue =>
   (value as BaseCurrencyWalletValue).rate !== undefined;
 
-const todayWalletValue = async (user: User) => {
+const todayWalletValue = async (user: UserModel) => {
   const userBaseCurrencies = user.currencies.filter(
     (c) =>
       CURRENCIES.includes(c.currency.toUpperCase() as Currencies) &&

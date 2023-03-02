@@ -1,8 +1,6 @@
 import { PADDING_TAILWIND } from '@constants/Globals';
 import MainRedirectButton from '@features/main/MainRedirectButton';
 
-import { USER_ID } from './Navbar';
-
 const HomePage = () => (
   <div
     className={`${PADDING_TAILWIND} grid flex-1 grid-cols-1 gap-y-2 pb-4 md:grid-cols-2 lg:gap-5`}
@@ -11,7 +9,7 @@ const HomePage = () => (
       image="/assets/images/dashboard.png"
       title="Panel użytkownika"
       subtitle="Zarządzaj swoim kontem i preferencjami za pomocą panelu użytkownika"
-      href={`/user/${USER_ID}`}
+      href={`/user/${process.env.NEXT_PUBLIC_USER_ID}`}
     />
     <MainRedirectButton
       image="/assets/images/wallet-history.png"

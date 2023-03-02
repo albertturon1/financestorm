@@ -8,9 +8,11 @@ import { cutNumber } from '@utils/misc';
 
 type Z = Omit<TransactionPairStatistics, 'appearance'>;
 
-const currenciesPairSummary = (transactions: Transaction[]) => {
-  const stats = ['max', 'min', 'avg'] as const;
+const stats = ['max', 'min', 'avg'] as const;
 
+// eslint-disable-next-line sonarjs/cognitive-complexity
+const currenciesPairSummary = (transactions: Transaction[]) => {
+  if (!transactions.length) return [];
   const keys = Object.keys(transactions[0]).filter(
     (k) => typeof transactions[0][k] === 'number',
   ) as (keyof TransactionStatistics)[];
@@ -25,9 +27,8 @@ const currenciesPairSummary = (transactions: Transaction[]) => {
     if (accIndex === -1) {
       const statistics = keys.reduce((keysAcc, k) => {
         stats.forEach((r) => {
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
-          const newKey = `${r}_${k}` as keyof Z;
-          keysAcc[newKey] = t[k];
+          const newKey = `${r}_${k}`;
+          keysAcc[newKey as keyof Z] = t[k];
         });
         return keysAcc;
       }, {} as Z);
