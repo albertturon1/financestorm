@@ -52,7 +52,7 @@ const inflationSumPerMonth = (monthlyCPI: DateValue[]) => {
   }
   return data;
 };
-
+//BŁĄD
 const inflationWalletOverTimeValue = async (
   dailyWalletValues: WalletValueOverTime,
 ) => {

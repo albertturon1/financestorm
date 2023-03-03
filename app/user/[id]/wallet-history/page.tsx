@@ -17,12 +17,14 @@ const WalletHistoryPage = async () => {
   const dailyWalletValues = await walletValueOverTime({
     currencies: user.currencies,
     quote_currency: user.quote_currency,
-    years: 1,
+    years: 10,
   });
 
   const inflationDailyWalletValue = await inflationWalletOverTimeValue(
     dailyWalletValues,
   );
+
+  console.log(JSON.stringify(inflationDailyWalletValue));
 
   const chartData = [
     {
