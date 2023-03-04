@@ -17,7 +17,7 @@ const CurrencyHistory = async ({
   params: CurrencyHistoryProps;
 }) => {
   const { currency, id } = params;
-  const history = await getUserCurrencyTransactions({ currency, user_id: id });
+  const history = await getUserCurrencyTransactions();
 
   return (
     <div className={`${PADDING_TAILWIND} h-full w-full bg-primaryBlack`}>

@@ -3,7 +3,7 @@ import MainRedirectButton from '@features/main/MainRedirectButton';
 
 const HomePage = () => (
   <div
-    className={`${PADDING_TAILWIND} grid flex-1 grid-cols-1 gap-y-2 pb-4 md:grid-cols-2 lg:gap-5`}
+    className={`${PADDING_TAILWIND} grid flex-1 grid-cols-1 gap-2 pb-4 md:grid-cols-2 lg:gap-5`}
   >
     <MainRedirectButton
       image="/assets/images/dashboard.png"

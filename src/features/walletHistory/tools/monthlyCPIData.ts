@@ -12,7 +12,9 @@ const monthlyInflationData = async ({
     endPeriod,
   });
 
-  return normalizeOECDData(data);
+  console.log(JSON.stringify(data))
+
+  // return normalizeOECDData(data);
 };
 
 export default monthlyInflationData;

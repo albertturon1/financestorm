@@ -5,8 +5,6 @@ import {
   memo,
   ReactElement,
   ReactNode,
-  useEffect,
-  useState,
 } from 'react';
 
 import {
@@ -97,16 +95,10 @@ const CustomLineChart = <T, Y>({
   xAxisInterval,
   ...props
 }: CustomLineChartProps<T, Y>) => {
-  const [isLoading, setIsLoading] = useState(true);
   const { width } = useWindowSize();
-
-  useEffect(() => {
-    setIsLoading(true);
-  }, [data]);
 
   return (
     <div className="relative flex h-full w-full">
-      {isLoading && <CustomLineChartLoader />}
       <ResponsiveContainer className="select-none">
         <LineChart {...props} syncId="anyId">
           <CartesianGrid strokeDasharray="2 2" />
@@ -151,9 +143,6 @@ const CustomLineChart = <T, Y>({
               dot={false}
               {...props}
               type={props.type ?? 'monotone'}
-              onAnimationStart={() => {
-                setIsLoading(false);
-              }}
             />
           ))}
           {children}

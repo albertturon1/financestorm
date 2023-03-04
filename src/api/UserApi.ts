@@ -10,22 +10,7 @@ export const getUser = async () => {
   return await api.get<UserModel>(url);
 };
 
-export const getUserCurrencyTransactions = async ({
-  currency,
-  user_id,
-}: {
-  currency?: Currencies;
-  user_id?: string;
-}): Promise<Transaction[]> => {
-  const user_filter = user_id
-    ? `user_id = "${process.env.NEXT_PUBLIC_USER_ID}"`
-    : '';
-  const currency_filter = currency
-    ? `(base_currency = "${currency}" || quote_currency = "${currency}")`
-    : '';
-
-  return await pb.collection('transaction').getFullList(200, {
-    sort: '-created',
-    filter: [user_filter, currency_filter].filter(Boolean).join('&&'),
-  });
-};
+export const getUserCurrencyTransactions = async (): Promise<Transaction[]> => await pb.collection('transaction').getFullList(200, {
+  sort: '-created',
+  filter: `user_id = '${process.env.NEXT_PUBLIC_USER_ID}'`,
+})
