@@ -61,43 +61,40 @@ const inflationWalletOverTimeValue = async (
     .split('-');
   const startPeriod = `${year}-${month}-01`; //data from previous month of start date is needed for calculations
 
-  //TODO: ten endpoint wali błęy, choc data isnitnje
   const monthlyCPINormalize = await monthlyCPIData({
     startPeriod,
     endPeriod: dailyWalletValues.endDate,
   });
-  // // const monthlyCPI = [...monthlyCPINormalize].reverse(); //reverse to start from most recent month
+  const monthlyCPI = [...monthlyCPINormalize].reverse(); //reverse to start from most recent month
 
-  // const inflationSums = inflationSumPerMonth(monthlyCPI);
+  const inflationSums = inflationSumPerMonth(monthlyCPI);
 
-  // console.log(JSON.stringify(inflationSums))
+  return dailyWalletValues.values.map(({ label, value }) => {
+    const yearMonth = DateTime.fromISO(label).toFormat('yyyy-MM');
+    const d: InflationWalletOverTimeValue = {
+      label,
+      baseValue: value,
+      value,
+      monthlyInflation: 0,
+      cumulativeInflation: 0,
+      inflationLoss: 0,
+      cpi: -1,
+    };
 
-  // return dailyWalletValues.values.map(({ label, value }) => {
-  //   const yearMonth = DateTime.fromISO(label).toFormat('yyyy-MM');
-  //   const d: InflationWalletOverTimeValue = {
-  //     label,
-  //     baseValue: value,
-  //     value,
-  //     monthlyInflation: 0,
-  //     cumulativeInflation: 0,
-  //     inflationLoss: 0,
-  //     cpi: -1,
-  //   };
+    if (!inflationSums[yearMonth]) return d;
+    d.cumulativeInflation = cutNumber(
+      inflationSums[yearMonth].monthCumulativeInflation,
+    );
+    d.monthlyInflation = cutNumber(
+      inflationSums[yearMonth].monthToMonthInflation,
+    );
+    d.inflationLoss = cutNumber(value * (d.cumulativeInflation / 100));
+    d.value = cutNumber(value - d.inflationLoss);
+    d.baseValue = value;
+    d.cpi = inflationSums[yearMonth].cpi;
 
-  //   if (!inflationSums[yearMonth]) return d;
-  //   d.cumulativeInflation = cutNumber(
-  //     inflationSums[yearMonth].monthCumulativeInflation,
-  //   );
-  //   d.monthlyInflation = cutNumber(
-  //     inflationSums[yearMonth].monthToMonthInflation,
-  //   );
-  //   d.inflationLoss = cutNumber(value * (d.cumulativeInflation / 100));
-  //   d.value = cutNumber(value - d.inflationLoss);
-  //   d.baseValue = value;
-  //   d.cpi = inflationSums[yearMonth].cpi;
-
-  //   return d;
-  // });
+    return d;
+  });
 };
 
 export default inflationWalletOverTimeValue;
