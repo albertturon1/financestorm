@@ -29,7 +29,6 @@ import useWindowSize from '@hooks/useWindowSize';
 import { cutNumber } from '@utils/misc';
 
 import { xAxisIntervalDivider } from './CustomLineChartHelpers';
-import Loader from '../Loader';
 
 export const customLineChartYDomain = (
   values: number[],
@@ -156,15 +155,6 @@ const CustomLineChart = <T, Y>({
     </div>
   );
 };
-
-const CustomLineChartLoader = () => (
-  <div className="absolute z-50 flex h-full w-full items-center justify-center gap-x-10 bg-slate-900/20 pt-10">
-    <div className="flex aspect-square w-10">
-      <Loader />
-    </div>
-    <p className="text-2xl font-bold">{'Loading chart...'}</p>
-  </div>
-);
 
 const Memo = memo(CustomLineChart);
 export default Memo as typeof CustomLineChart;

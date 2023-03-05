@@ -20,7 +20,7 @@ export const getDailyCurrencyTimeseriesOneYearQuery = async ({
   end_date,
   quote_currency,
 }: DailyCurrencyRatesTimeseriesRequest) => {
-  const url = `${process.env.NEXT_PUBLIC_EXCHANGERATE_URL}/timeseries?`;
+  const url = `${process.env.NEXT_PUBLIC_EXCHANGERATE_URL ?? ''}/timeseries?`;
   const params = genQueryString({
     start_date,
     end_date,
@@ -35,7 +35,7 @@ export const getDailyCurrencyTimeseriesOneYearQuery = async ({
 export const getTodayCurrencyRatesQuery = async (
   props: MultiCurrenciesRate,
 ) => {
-  const url = `${process.env.NEXT_PUBLIC_EXCHANGERATE_URL}/latest?`;
+  const url = `${process.env.NEXT_PUBLIC_EXCHANGERATE_URL ?? ''}/latest?`;
   const params = genQueryString({
     base: props.quote_currency,
     symbols: props.base_currencies?.join(',')?.toUpperCase(), //comma separated values

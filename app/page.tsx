@@ -9,7 +9,7 @@ const HomePage = () => (
       image="/assets/images/dashboard.png"
       title="Panel użytkownika"
       subtitle="Zarządzaj swoim kontem i preferencjami za pomocą panelu użytkownika"
-      href={`/user/${process.env.NEXT_PUBLIC_USER_ID}`}
+      href={`/user/${process.env.NEXT_PUBLIC_USER_ID ?? ''}`}
     />
     <MainRedirectButton
       image="/assets/images/wallet-history.png"

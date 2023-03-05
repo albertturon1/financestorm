@@ -20,9 +20,9 @@ const request = async <T>(
 };
 
 const api = {
-  get: <T>(url: string, config?: RequestInit) => request<T>(url, { method: 'GET' }),
-  post: <TBody extends BodyInit, TResponse>(url: string, body: TBody) =>
-    request<TResponse>(url, { method: 'POST', body }),
+  get: <T>(url: string, config?: RequestInit) => request<T>(url, { method: 'GET', ...config }),
+  post: <TBody extends BodyInit, TResponse>(url: string, body: TBody, config?: RequestInit) =>
+    request<TResponse>(url, { method: 'POST', body, ...config }),
 };
 
 export default api;

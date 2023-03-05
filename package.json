@@ -37,6 +37,7 @@
     "react-world-flags": "1.5.1",
     "recharts": "2.4.3",
     "server-only": "0.0.1",
+    "sharp": "0.31.3",
     "styled-jsx": "5.1.2",
     "tailwind-merge": "1.10.0",
     "zustand": "4.3.5"
