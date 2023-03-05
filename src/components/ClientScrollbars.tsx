@@ -13,7 +13,7 @@ const ClientScrollbars = ({
   children: ReactNode;
   className?: string;
 } & Partial<Scrollbars>) => (
-  <Scrollbars universal autoHeight {...props}>
+  <Scrollbars universal {...props} autoHeight>
     <div className={twMerge('flex w-max', className)}>{children}</div>
   </Scrollbars>
 );

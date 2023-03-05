@@ -22,7 +22,8 @@ const User = async () => {
   if (!user.id) notFound();
 
   const { currencies } = await todayWalletValue(user);
-  const transactions = await getUserCurrencyTransactions({ user_id: user.id });
+  const transactions = await getUserCurrencyTransactions();
+
   return (
     <div className={`${PADDING_TAILWIND} flex h-full w-full flex-col pb-6`}>
       {/*Header */}

@@ -27,7 +27,6 @@ const inflationFromCPI = (currentMonthCPI: number, pastMonthCPI: number) =>
 const inflationSumPerMonth = (monthlyCPI: DateValue[]) => {
   const data: Record<string, MonthlyInflation> = {};
 
-  //i from 1 becuse 0 has already been used
   for (let i = 0; i < monthlyCPI.length - 1; i++) {
     const { label: currentLoopMonth, value: currentLoopCPIValue } =
       monthlyCPI[i];
@@ -96,14 +95,6 @@ const inflationWalletOverTimeValue = async (
 
     return d;
   });
-};
-
-export const prevMonthDate = (date: string) => {
-  const [year, month] = date.split('-');
-  if (month === '01') return `${Number(year) - 1}-12`;
-
-  const month1 = `${Number(month) - 1}`.padStart(2, '0');
-  return `${year}-${month1}`;
 };
 
 export default inflationWalletOverTimeValue;

@@ -16,20 +16,19 @@ const CurrencyHistory = async ({
 }: {
   params: CurrencyHistoryProps;
 }) => {
-  const { currency, id } = params;
-  const history = await getUserCurrencyTransactions({ currency, user_id: id });
+  const history = await getUserCurrencyTransactions();
 
   return (
     <div className={`${PADDING_TAILWIND} h-full w-full bg-primaryBlack`}>
       <div className="flex gap-x-2">
         <PageTitle>{'Historia transakcji'}</PageTitle>
-        <FlagCountryCode code={currency} reverse className="text-2xl" />
+        <FlagCountryCode code={params.currency} reverse className="text-2xl" />
       </div>
       <div className="mt-5 flex flex-col">
         {history.length ? (
           <Transactions
             transactions={history}
-            quoteCurrency={currency}
+            quoteCurrency={params.currency}
             arrows
           />
         ) : (

@@ -5,8 +5,6 @@ import {
   memo,
   ReactElement,
   ReactNode,
-  useEffect,
-  useState,
 } from 'react';
 
 import {
@@ -31,7 +29,6 @@ import useWindowSize from '@hooks/useWindowSize';
 import { cutNumber } from '@utils/misc';
 
 import { xAxisIntervalDivider } from './CustomLineChartHelpers';
-import Loader from '../Loader';
 
 export const customLineChartYDomain = (
   values: number[],
@@ -97,16 +94,10 @@ const CustomLineChart = <T, Y>({
   xAxisInterval,
   ...props
 }: CustomLineChartProps<T, Y>) => {
-  const [isLoading, setIsLoading] = useState(true);
   const { width } = useWindowSize();
-
-  useEffect(() => {
-    setIsLoading(true);
-  }, [data]);
 
   return (
     <div className="relative flex h-full w-full">
-      {isLoading && <CustomLineChartLoader />}
       <ResponsiveContainer className="select-none">
         <LineChart {...props} syncId="anyId">
           <CartesianGrid strokeDasharray="2 2" />
@@ -151,9 +142,6 @@ const CustomLineChart = <T, Y>({
               dot={false}
               {...props}
               type={props.type ?? 'monotone'}
-              onAnimationStart={() => {
-                setIsLoading(false);
-              }}
             />
           ))}
           {children}
@@ -167,15 +155,6 @@ const CustomLineChart = <T, Y>({
     </div>
   );
 };
-
-const CustomLineChartLoader = () => (
-  <div className="absolute z-50 flex h-full w-full items-center justify-center gap-x-10 bg-slate-900/20 pt-10">
-    <div className="flex aspect-square w-10">
-      <Loader />
-    </div>
-    <p className="text-2xl font-bold">{'Loading chart...'}</p>
-  </div>
-);
 
 const Memo = memo(CustomLineChart);
 export default Memo as typeof CustomLineChart;

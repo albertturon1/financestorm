@@ -13,6 +13,12 @@ const nextConfig = {
       },
     ],
   },
+  env: {
+    NEXT_PUBLIC_OECD_URL: process.env.NEXT_PUBLIC_OECD_URL,
+    NEXT_PUBLIC_USER_ID: process.env.NEXT_PUBLIC_USER_ID,
+    NEXT_PUBLIC_DATABASE_URL: process.env.NEXT_PUBLIC_DATABASE_URL,
+    NEXT_PUBLIC_EXCHANGERATE_URL: process.env.NEXT_PUBLIC_EXCHANGERATE_URL,
+  },
 };
 
 const withBundleAnalyzer = require('@next/bundle-analyzer')({

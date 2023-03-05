@@ -5,8 +5,8 @@ import userCurrenciesAmount from '@features/user/tools/userCurrenciesAmount';
 import { WalletBaseCurrencyValue, WalletDay } from '@interfaces/ICharts';
 import { Currencies } from '@interfaces/ICurrency';
 import { UserCurrency } from '@interfaces/models/IUser';
-import { getDailyCurrencyTimeseriesOneYearQuery } from '@src/api/CurrenctyRateApi';
 import { CurrencyRatePair } from '@src/api/interfaces/ICurrenctyRateApi';
+import dailyCurrencyTimeseriesYears from '@utils/dailyCurrencyTimeseriesYears';
 import { cutNumber } from '@utils/misc';
 
 export type WalletValueOverTimeProps = Omit<
@@ -47,7 +47,7 @@ const walletValueOverTime = async ({
     end_date ? new Date(end_date) : new Date(),
   ).toFormat(SERVER_DATE);
 
-  const currencyRates = await getDailyCurrencyTimeseriesOneYearQuery({
+  const currencyRates = await dailyCurrencyTimeseriesYears({
     quote_currency,
     base_currencies: nonQuoteCurrencies,
     end_date: endDate,

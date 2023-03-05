@@ -20,7 +20,7 @@ const Navbar = async () => {
           {'Storm'}
         </h1>
       </Link>
-      <Link href={`/user/${process.env.NEXT_PUBLIC_USER_ID}`}>
+      <Link href={`/user/${process.env.NEXT_PUBLIC_USER_ID ?? ''}`}>
         <div className="flex h-full cursor-pointer items-center">
           <h1 className="mr-3 text-lg font-semibold">{'Profil'}</h1>
           {user.photo && <UserPhoto photo={user.photo} alt={user.name} />}
