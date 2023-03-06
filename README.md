@@ -1,5 +1,5 @@
 ## Check version online
-https://finanacestorm-albertturon1.vercel.app/
+https://financestorm-albertturon1.vercel.app/
 
 ## Running Locally
 
