@@ -18,3 +18,4 @@ Build on top of Next.js 13 (at the time of the creation app directory is experim
 with Zustand as the state manager, Tailwind for styling and Recharts for data visualization.
 
 Only tested on desktop like devices, mobile devices to be tested soon.
+Texts only in Polish, possible addition of English translation. 
