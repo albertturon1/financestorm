@@ -12,8 +12,9 @@ const sortObject = <T>(obj: AnyObject<T>) =>
 const hashQueryKey = <T>(array: T[]) => {
   const sortedArray = array
     .map((item) => {
-      if (Array.isArray(item)) return item.sort((a, b) => (a > b ? 1 : -1));
       if (typeof item === 'object') return sortObject(item as AnyObject<T>);
+      if (Array.isArray(item))
+        return (item as []).sort((a, b) => (a > b ? 1 : -1));
       return item;
     })
     .sort((a, b) => (a > b ? 1 : -1));

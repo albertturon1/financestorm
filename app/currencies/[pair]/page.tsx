@@ -36,7 +36,7 @@ const CurrenciesPairPage = async ({
           <FlagCountryCode code={quote} className="gap-x-0" />
         </div>
       </div>
-      <CurrenciesBaseQuoteChart data={data} />
+      {!!data && <CurrenciesBaseQuoteChart data={data} />}
     </div>
   );
 };

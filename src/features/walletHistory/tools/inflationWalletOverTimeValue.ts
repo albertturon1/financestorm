@@ -66,6 +66,7 @@ const inflationWalletOverTimeValue = async (
     endPeriod: dailyWalletValues.endDate,
   });
   const monthlyCPI = [...monthlyCPINormalize].reverse(); //reverse to start from most recent month
+  if (!monthlyCPI.length) return [];
 
   const inflationSums = inflationSumPerMonth(monthlyCPI);
 

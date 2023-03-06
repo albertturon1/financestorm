@@ -1,11 +1,6 @@
 'use client';
 
-import {
-  CSSProperties,
-  memo,
-  ReactElement,
-  ReactNode,
-} from 'react';
+import { CSSProperties, memo, ReactElement, ReactNode } from 'react';
 
 import {
   ResponsiveContainer,
@@ -131,19 +126,22 @@ const CustomLineChart = <T, Y>({
               }).format(value)
             }
           />
-          {data.map((chart, index) => (
-            <Line
-              strokeWidth={2}
-              dataKey={dataKeyExtractor(chart)}
-              data={dataExtractor(chart, index)}
-              name={nameExtractor(chart)} //line legend
-              key={nameExtractor(chart)}
-              stroke={lineColor ?? CHART_THEME[index % CHART_THEME.length]}
-              dot={false}
-              {...props}
-              type={props.type ?? 'monotone'}
-            />
-          ))}
+          {data.map((chart, index) => {
+            if (!dataExtractor(chart, index).length) return null; //if data has no values
+            return (
+              <Line
+                strokeWidth={2}
+                dataKey={dataKeyExtractor(chart)}
+                data={dataExtractor(chart, index)}
+                name={nameExtractor(chart)} //line legend
+                key={nameExtractor(chart)}
+                stroke={lineColor ?? CHART_THEME[index % CHART_THEME.length]}
+                dot={false}
+                {...props}
+                type={props.type ?? 'monotone'}
+              />
+            );
+          })}
           {children}
           <Tooltip
             content={tooltip}

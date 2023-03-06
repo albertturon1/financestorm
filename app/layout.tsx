@@ -14,7 +14,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <ReactQueryWrapper>
           {/* @ts-expect-error Server Component */}
           <Navbar />
-          <main className={'flex h-screen w-full flex-col pt-24 lg:pt-28 pb-2'}>
+          <main className={'flex h-screen w-full flex-col pt-24 pb-2'}>
             {children}
           </main>
         </ReactQueryWrapper>

@@ -28,10 +28,13 @@ const todayWalletValue = async (user: UserModel) => {
       c.currency !== user.quote_currency,
   );
 
-  const { rates } = await getTodayCurrencyRatesQuery({
+  const todayCurrencyRates = await getTodayCurrencyRatesQuery({
     base_currencies: userBaseCurrencies.map((b) => b.currency),
     quote_currency: user.quote_currency,
   });
+
+  if (!todayCurrencyRates) return;
+  const { rates } = todayCurrencyRates;
 
   const [quoteCurrency] = user.currencies.filter(
     (c) => user.quote_currency === c.currency,

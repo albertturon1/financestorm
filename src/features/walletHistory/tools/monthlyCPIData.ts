@@ -3,7 +3,7 @@ import { MonthlyInflationRatesRequest } from '@src/api/interfaces/IOECDApi';
 import { getMonthlyCPI } from '@src/api/OECDApi';
 import normalizeOECDData from '@utils/normalizeOECDData';
 
-const monthlyInflationData = async ({
+const monthlyCPIData = async ({
   startPeriod,
   endPeriod,
 }: MonthlyInflationRatesRequest): Promise<DateValue[]> => {
@@ -11,8 +11,8 @@ const monthlyInflationData = async ({
     startPeriod,
     endPeriod,
   });
-
+  if (!data) return [];
   return normalizeOECDData(data);
 };
 
-export default monthlyInflationData;
+export default monthlyCPIData;

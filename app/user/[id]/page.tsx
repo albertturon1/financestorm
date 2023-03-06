@@ -19,9 +19,10 @@ export interface UserParams {
 
 const User = async () => {
   const user = await getUser();
+  if (!user) return null;
   if (!user.id) notFound();
 
-  const { currencies } = await todayWalletValue(user);
+  const walletValue = await todayWalletValue(user);
   const transactions = await getUserCurrencyTransactions();
 
   return (
@@ -43,9 +44,11 @@ const User = async () => {
             </div>
           </Link>
         </div>
-        <div className="flex grow">
-          <UserBalancePercentage currencies={currencies} />
-        </div>
+        {!!walletValue && (
+          <div className="flex grow">
+            <UserBalancePercentage currencies={walletValue.currencies} />
+          </div>
+        )}
       </div>
       {!!transactions.length && (
         <div className="mt-10 flex flex-col gap-y-10">

@@ -19,7 +19,7 @@ import { InflationWalletOverTimeValue } from '../tools/inflationWalletOverTimeVa
 
 type ChartDataType = InflationWalletOverTimeValue | WalletDay;
 
-const keyExtractor = (item: ChartMultiData<ChartDataType>) => item.name;
+const nameExtractor = (item: ChartMultiData<ChartDataType>) => item.name;
 const dataExtractor = (item: ChartMultiData<ChartDataType>) => item.data;
 const dataKeyExtractor = (item: ChartMultiData<ChartDataType>) =>
   nameOfKey(item.data[0], (x) => x.value);
@@ -46,10 +46,13 @@ const WalletOverTimeCharts = ({
     },
   ];
 }) => {
+  const doesInflationDataExits = !!chartData[1].data.length;
   const todayWalletValue = chartData[0].data.slice(-1)[0].value;
-  const lastRangeMonth = DateTime.fromISO(
-    chartData[1].data.slice(-1)[0].label,
-  ).toFormat('LLL yyyy');
+  const lastRangeMonth = doesInflationDataExits
+    ? DateTime.fromISO(chartData[1].data.slice(-1)[0].label).toFormat(
+        'LLL yyyy',
+      )
+    : '';
 
   const walletValueYDomain = customLineChartYDomain(
     chartData.flatMap((c) => c.data.map((d) => d.value)),
@@ -76,12 +79,12 @@ const WalletOverTimeCharts = ({
 
   return (
     <div className="flex flex-1 flex-col">
-      <div className="h-5/6 w-full">
+      <div className="w-full flex-1">
         <CustomLineChart
           data={chartData}
           dataKeyExtractor={dataKeyExtractor}
           dataExtractor={dataExtractor}
-          nameExtractor={keyExtractor}
+          nameExtractor={nameExtractor}
           xAxisLabelExtractor={xAxisLabelExtractor}
           tickCount={10}
           yDomain={walletValueYDomain}
@@ -91,21 +94,23 @@ const WalletOverTimeCharts = ({
           tooltip={walletValueTooltip}
         />
       </div>
-      <div className="h-1/6 w-full">
-        <CustomLineChart
-          data={[chartData[1]]}
-          dataKeyExtractor={inflationDataKeyExtractor}
-          dataExtractor={dataExtractor}
-          xAxisLabelExtractor={xAxisLabelExtractor}
-          xAxisLabel="label"
-          hideXAxis
-          nameExtractor={inflationNameExtractor}
-          lineColor={CHART_THEME.slice(-1)[0]}
-          syncId={syncId}
-          tooltip={inflationChartTooltip}
-          tooltipWrapperStyle={{ marginTop: -100 }}
-        />
-      </div>
+      {doesInflationDataExits && (
+        <div className="h-1/6 w-full">
+          <CustomLineChart
+            data={[chartData[1]]}
+            dataKeyExtractor={inflationDataKeyExtractor}
+            dataExtractor={dataExtractor}
+            xAxisLabelExtractor={xAxisLabelExtractor}
+            xAxisLabel="label"
+            hideXAxis
+            nameExtractor={inflationNameExtractor}
+            lineColor={CHART_THEME.slice(-1)[0]}
+            syncId={syncId}
+            tooltip={inflationChartTooltip}
+            tooltipWrapperStyle={{ marginTop: -100 }}
+          />
+        </div>
+      )}
     </div>
   );
 };

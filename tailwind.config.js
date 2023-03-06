@@ -14,10 +14,6 @@ module.exports = {
       },
       width: {
         128: '32rem',
-        144: '40rem',
-      },
-      inset: {
-        45: '45%',
       },
       blur: {
         10: '10px',

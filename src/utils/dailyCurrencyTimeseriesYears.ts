@@ -69,7 +69,7 @@ const dailyCurrencyTimeseriesYears = async ({
     ),
   );
 
-  return api_responses.reduce((acc, item, index) => {
+  return api_responses.filter(Boolean).reduce((acc, item, index) => {
     // eslint-disable-next-line no-param-reassign
     if (index === 0) acc = item;
     else {

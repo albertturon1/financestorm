@@ -3,7 +3,7 @@ import todayWalletValue from '@features/walletHistory/tools/todayWalletValue';
 import { UserModel } from '@interfaces/models/IUser';
 
 const UserBalance = async ({ user }: { user: UserModel }) => {
-  const { balance } = await todayWalletValue(user);
+  const walletValue = await todayWalletValue(user);
 
   return (
     <div className="flex w-96 flex-col">
@@ -14,7 +14,9 @@ const UserBalance = async ({ user }: { user: UserModel }) => {
         <p className="mb-1 text-sm font-semibold">
           {'Łączna wartość portfela'}
         </p>
-        <p className="text-xl font-bold">{`${balance} PLN`}</p>
+        {!!walletValue && (
+          <p className="text-xl font-bold">{`${walletValue.balance} PLN`}</p>
+        )}
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 'use client';
 
-import { memo, use, useCallback, useMemo } from 'react';
+import { memo, use, useMemo } from 'react';
 
 import { TooltipProps } from 'recharts';
 
@@ -23,11 +23,17 @@ import MultiCurrenciesLineChartTooltip from './MultiCurrenciesLineChartTooltip';
 
 const nameExtractor = (item: ChartMultiData<NormalizedCurrencyExchangeRate>) =>
   item.name;
+
 const dataExtractor = (item: ChartMultiData<NormalizedCurrencyExchangeRate>) =>
   item.data;
+
 const dataKeyExtractor = (
   item: ChartMultiData<NormalizedCurrencyExchangeRate>,
 ) => nameOfKey(item.data[0], (x) => x.value);
+
+const tooltip = (props: TooltipProps<number, string>) => (
+  <MultiCurrenciesLineChartTooltip {...props} />
+);
 
 const xAxisLabelExtractor = (
   item: ChartMultiData<NormalizedCurrencyExchangeRate>,
@@ -53,16 +59,13 @@ const MultiBaseCurrenciesLineChart = () => {
     [data],
   );
 
-  const yDomain = customLineChartYDomain(
-    chartData.flatMap((c) => c.data.map((d) => d.value)),
-    2,
-  );
-
-  const tooltip = useCallback(
-    (props: TooltipProps<number, string>) => (
-      <MultiCurrenciesLineChartTooltip {...props} />
-    ),
-    [],
+  const yDomain = useMemo(
+    () =>
+      customLineChartYDomain(
+        chartData.flatMap((c) => c.data.map((d) => d.value)),
+        2,
+      ),
+    [chartData],
   );
 
   return (

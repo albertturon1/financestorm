@@ -29,6 +29,7 @@ export const getDailyCurrencyTimeseriesOneYearQuery = async ({
   });
 
   const data = await api.get<ExchangeRateTimeseriesResponse>(`${url}${params}`);
+  if (!data) return;
   return convertTimeseriesRatesToQuoteCurrency(data);
 };
 
@@ -42,5 +43,6 @@ export const getTodayCurrencyRatesQuery = async (
   });
 
   const data = await api.get<ExchangeRateLatestResponse>(`${url}${params}`);
+  if (!data) return;
   return convertLastestRatesToQuoteCurrency(data);
 };

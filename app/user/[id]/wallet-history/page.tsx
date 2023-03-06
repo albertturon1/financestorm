@@ -1,5 +1,8 @@
 import dynamic from 'next/dynamic';
 
+import ClientScrollbars from '@components/ClientScrollbars';
+import PageTitle from '@components/PageTitle';
+import UserWalletBalances from '@components/UserWalletBalances';
 import { PADDING_TAILWIND } from '@constants/Globals';
 import inflationWalletOverTimeValue from '@features/walletHistory/tools/inflationWalletOverTimeValue';
 import walletValueOverTime from '@features/walletHistory/tools/walletValueOverTime';
@@ -11,16 +14,17 @@ const WalletOverTimeCharts = dynamic(
 
 const WalletHistoryPage = async () => {
   const user = await getUser();
+  if (!user) return null;
+
   const dailyWalletValues = await walletValueOverTime({
     currencies: user.currencies,
     quote_currency: user.quote_currency,
-    years: 10,
+    years: 1,
   });
 
   const inflationDailyWalletValue = await inflationWalletOverTimeValue(
     dailyWalletValues,
   );
-
   const chartData = [
     {
       name: 'Wartość portfela',
@@ -34,6 +38,17 @@ const WalletHistoryPage = async () => {
 
   return (
     <div className={`${PADDING_TAILWIND} flex h-full w-full flex-col pb-4`}>
+      <PageTitle className="pb-3">
+        {'Wartość portfela walutowego na przestrzeni lat'}
+      </PageTitle>
+      <ClientScrollbars className="flex-row">
+        {/* @ts-expect-error Server Component */}
+        <UserWalletBalances
+          containerClassName="flex-row w-max"
+          itemClassName="py-1.5 w-48"
+          onlyBalance
+        />
+      </ClientScrollbars>
       <WalletOverTimeCharts chartData={chartData} />
     </div>
   );
