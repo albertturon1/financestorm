@@ -4,7 +4,7 @@ import ClientScrollbars from '@components/ClientScrollbars';
 import PageTitle from '@components/PageTitle';
 import UserWalletBalances from '@components/UserWalletBalances';
 import { PADDING_TAILWIND } from '@constants/Globals';
-import inflationWalletOverTimeValue from '@features/walletHistory/tools/inflationWalletOverTimeValue';
+// import inflationWalletOverTimeValue from '@features/walletHistory/tools/inflationWalletOverTimeValue';
 import walletValueOverTime from '@features/walletHistory/tools/walletValueOverTime';
 import { getUser } from '@src/api/UserApi';
 
@@ -22,18 +22,18 @@ const WalletHistoryPage = async () => {
     years: 1,
   });
 
-  const inflationDailyWalletValue = await inflationWalletOverTimeValue(
-    dailyWalletValues,
-  );
+  // const inflationDailyWalletValue = await inflationWalletOverTimeValue(
+  //   dailyWalletValues,
+  // );
   const chartData = [
     {
       name: 'Wartość portfela',
       data: dailyWalletValues.values,
     },
-    {
-      name: 'Realna wartość portfela',
-      data: inflationDailyWalletValue,
-    },
+    // {
+    //   name: 'Realna wartość portfela',
+    //   data: inflationDailyWalletValue,
+    // },
   ] as const;
 
   return (

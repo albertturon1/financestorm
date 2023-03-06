@@ -2,18 +2,18 @@
 
 import { useCallback } from 'react';
 
-import { DateTime } from 'luxon';
+// import { DateTime } from 'luxon';
 import { TooltipProps } from 'recharts';
 
 import CustomLineChart, {
   customLineChartYDomain,
 } from '@components/CustomLineChart/CustomLineChart';
 import { xAxisDateTickFormatter } from '@components/CustomLineChart/CustomLineChartHelpers';
-import { CHART_THEME } from '@constants/Chart';
+// import { CHART_THEME } from '@constants/Chart';
 import { ChartMultiData, WalletDay } from '@interfaces/ICharts';
 import { nameOfKey } from '@utils/misc';
 
-import InflationOverMonthsTooltip from './InflationOverMonthsTooltip';
+// import InflationOverMonthsTooltip from './InflationOverMonthsTooltip';
 import WalletValueOverTimeTooltip from './WalletValueOverTimeTooltip';
 import { InflationWalletOverTimeValue } from '../tools/inflationWalletOverTimeValue';
 
@@ -23,14 +23,17 @@ const nameExtractor = (item: ChartMultiData<ChartDataType>) => item.name;
 const dataExtractor = (item: ChartMultiData<ChartDataType>) => item.data;
 const dataKeyExtractor = (item: ChartMultiData<ChartDataType>) =>
   nameOfKey(item.data[0], (x) => x.value);
-const inflationNameExtractor = () => 'Skumulowana inflacja';
 
 const xAxisLabelExtractor = (item: ChartMultiData<ChartDataType>) =>
   nameOfKey(item.data[0], (x) => x.label);
 
-const inflationDataKeyExtractor = (
-  item: ChartMultiData<InflationWalletOverTimeValue>,
-) => nameOfKey(item.data[0], (x) => x.cumulativeInflation);
+// const inflationNameExtractor = () => 'Skumulowana inflacja';
+
+// const inflationDataKeyExtractor = (
+//   item: ChartMultiData<InflationWalletOverTimeValue>,
+// ) => nameOfKey(item.data[0], (x) => x.cumulativeInflation);
+
+// WIP
 
 const WalletOverTimeCharts = ({
   chartData,
@@ -40,19 +43,19 @@ const WalletOverTimeCharts = ({
       readonly name: 'Wartość portfela';
       readonly data: WalletDay[];
     },
-    {
-      readonly name: 'Realna wartość portfela';
-      readonly data: InflationWalletOverTimeValue[];
-    },
+    // {
+    //   readonly name: 'Realna wartość portfela';
+    //   readonly data: InflationWalletOverTimeValue[];
+    // },
   ];
 }) => {
-  const doesInflationDataExits = !!chartData[1].data.length;
   const todayWalletValue = chartData[0].data.slice(-1)[0].value;
-  const lastRangeMonth = doesInflationDataExits
-    ? DateTime.fromISO(chartData[1].data.slice(-1)[0].label).toFormat(
-        'LLL yyyy',
-      )
-    : '';
+  // const doesInflationDataExits = !!chartData[1].data.length;
+  // const lastRangeMonth = doesInflationDataExits
+  //   ? DateTime.fromISO(chartData[1].data.slice(-1)[0].label).toFormat(
+  //       'LLL yyyy',
+  //     )
+  //   : '';
 
   const walletValueYDomain = customLineChartYDomain(
     chartData.flatMap((c) => c.data.map((d) => d.value)),
@@ -70,12 +73,12 @@ const WalletOverTimeCharts = ({
     ),
     [todayWalletValue],
   );
-  const inflationChartTooltip = useCallback(
-    (props: TooltipProps<number, string>) => (
-      <InflationOverMonthsTooltip lastRangeMonth={lastRangeMonth} {...props} />
-    ),
-    [lastRangeMonth],
-  );
+  // const inflationChartTooltip = useCallback(
+  //   (props: TooltipProps<number, string>) => (
+  //     <InflationOverMonthsTooltip lastRangeMonth={lastRangeMonth} {...props} />
+  //   ),
+  //   [lastRangeMonth],
+  // );
 
   return (
     <div className="flex flex-1 flex-col">
@@ -94,7 +97,7 @@ const WalletOverTimeCharts = ({
           tooltip={walletValueTooltip}
         />
       </div>
-      {doesInflationDataExits && (
+      {/* {doesInflationDataExits && (
         <div className="h-1/6 w-full">
           <CustomLineChart
             data={[chartData[1]]}
@@ -110,7 +113,7 @@ const WalletOverTimeCharts = ({
             tooltipWrapperStyle={{ marginTop: -100 }}
           />
         </div>
-      )}
+      )} */}
     </div>
   );
 };
