@@ -45,6 +45,7 @@
   "devDependencies": {
     "@next/bundle-analyzer": "13.2.3",
     "@simbathesailor/use-what-changed": "2.0.0",
+    "@total-typescript/ts-reset": "0.3.7",
     "@types/lodash": "4.14.191",
     "@types/luxon": "3.2.0",
     "@types/node": "18.14.2",

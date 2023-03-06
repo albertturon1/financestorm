@@ -19,8 +19,10 @@ const UserWalletBalances = async ({
   onlyBalance?: boolean;
 }) => {
   const user = await getUser();
-  const { currencies } = await todayWalletValue(user);
-
+  if (!user) return null;
+  const walletValue = await todayWalletValue(user);
+  
+  if (!walletValue) return null;
   return (
     <div
       className={twMerge(
@@ -28,7 +30,7 @@ const UserWalletBalances = async ({
         containerClassName,
       )}
     >
-      {currencies.map((c, index) => (
+      {walletValue.currencies.map((c, index) => (
         <UserWalletBalancesItem
           key={c.accountID}
           currency={c.currency}

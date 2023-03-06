@@ -45,9 +45,10 @@ export const getFloatBetweenRange = (min = 0, max = 1) =>
 export const cutNumber = (number: number, n = 3) => Number(number.toFixed(n));
 
 export const nameOfKey = <T extends AnyObject<T>>(
-  obj: T,
+  obj: T | undefined,
   expression: (x: { [Property in keyof T]: () => string }) => () => string,
 ): string => {
+  if (!obj) return '';
   const res: { [Property in keyof T]: () => string } = {} as {
     [Property in keyof T]: () => string;
   };
@@ -64,8 +65,10 @@ export const includedInGenericArray = <T>(array: T[], item: T) =>
 
 export type RenderItem<T> = ReactElement | ((data: T) => ReactElement);
 
-export const renderChildren = <T>(item: RenderItem<T> | undefined, data: T) =>
-  isValidElement(item) ? item : item?.(data);
+export const renderChildren = <T>(item: RenderItem<T> | undefined, data: T) => {
+  if (!item) return null;
+  return isValidElement(item) ? item : item(data);
+};
 
 export const dateDiff = (
   startDate: string,
