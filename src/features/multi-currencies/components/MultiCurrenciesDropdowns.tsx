@@ -8,11 +8,11 @@ import {
   useMultiCurrenciesQuoteCurrency,
 } from '@src/zustand/multiCurrenciesStore';
 
-import BaseCurrenciesCheckboxList from './BaseCurrenciesCheckboxList';
-import QuoteCurrencyCheckboxList from './QuoteCurrencyCheckboxList';
+import MultiCurrenciesBaseCurrenciesDropdown from './MultiCurrenciesBaseCurrenciesDropdown';
+import MultiCurrenciesQuoteCurrencyDropdown from './MultiCurrenciesQuoteCurrencyDropdown';
 import { IndexCurrency } from '../tools/currenciesWithIndex';
 
-const MultiCurrenciesPageCurrenciesPickers = () => {
+const MultiCurrenciesDropdowns = () => {
   const baseCurrencies = useMultiCurrenciesBaseCurrencies();
   const quoteCurrency = useMultiCurrenciesQuoteCurrency();
   const { setMultiCurrenciesBaseCurrencies, setMultiCurrenciesQuoteCurrency } = useMultiCurrenciesActions();
@@ -44,12 +44,12 @@ const MultiCurrenciesPageCurrenciesPickers = () => {
 
   return (
     <div className="flex gap-x-6">
-      <BaseCurrenciesCheckboxList
+      <MultiCurrenciesBaseCurrenciesDropdown
         onClick={onBaseCurrenciesCheckboxListClick}
         quoteCurrency={quoteCurrency}
         baseCurrencies={baseCurrencies}
       />
-      <QuoteCurrencyCheckboxList
+      <MultiCurrenciesQuoteCurrencyDropdown
         onClick={onQuoteCurrencyCheckboxListClick}
         quoteCurrency={quoteCurrency}
       />
@@ -57,4 +57,4 @@ const MultiCurrenciesPageCurrenciesPickers = () => {
   );
 };
 
-export default MultiCurrenciesPageCurrenciesPickers;
+export default MultiCurrenciesDropdowns;

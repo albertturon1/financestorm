@@ -1,4 +1,4 @@
-import UserWalletBalances from '@components/UserWalletBalances';
+import UserWalletBalances from '@components/userWalletBalances';
 import todayWalletValue from '@features/walletHistory/tools/todayWalletValue';
 import { UserModel } from '@interfaces/models/IUser';
 

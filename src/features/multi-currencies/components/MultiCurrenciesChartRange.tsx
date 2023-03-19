@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useCallback } from 'react';
 
-import CustomDropdown from '@components/CustomDropdown';
-import SegmentedSwitch from '@components/SegmentedSwitch';
+import CustomDropdown from '@components/customDropdown';
+import SegmentedSwitch from '@components/segmentedSwitch';
 import { CHART_RANGES } from '@constants/Chart';
 import { ChartRanges, ChartRange } from '@interfaces/ICharts';
 import {

@@ -1,2 +1,2 @@
-import SegmentedSwitch from './SegmentedSwitch';
+import SegmentedSwitch from "./SegmentedSwitch";
 export default SegmentedSwitch;

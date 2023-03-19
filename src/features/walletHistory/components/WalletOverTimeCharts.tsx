@@ -7,8 +7,8 @@ import { TooltipProps } from 'recharts';
 
 import CustomLineChart, {
   customLineChartYDomain,
-} from '@components/CustomLineChart/CustomLineChart';
-import { xAxisDateTickFormatter } from '@components/CustomLineChart/CustomLineChartHelpers';
+} from '@components/customLineChart/CustomLineChart';
+import { xAxisDateTickFormatter } from '@components/customLineChart/CustomLineChartHelpers';
 // import { CHART_THEME } from '@constants/Chart';
 import { ChartMultiData, WalletDay } from '@interfaces/ICharts';
 import { nameOfKey } from '@utils/misc';

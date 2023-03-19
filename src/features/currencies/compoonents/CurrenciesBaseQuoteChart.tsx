@@ -6,8 +6,8 @@ import { TooltipProps } from 'recharts';
 
 import CustomLineChart, {
   customLineChartYDomain,
-} from '@components/CustomLineChart/CustomLineChart';
-import { xAxisDateTickFormatter } from '@components/CustomLineChart/CustomLineChartHelpers';
+} from '@components/customLineChart/CustomLineChart';
+import { xAxisDateTickFormatter } from '@components/customLineChart/CustomLineChartHelpers';
 import MultiCurrenciesLineChartTooltip from '@features/multi-currencies/components/MultiCurrenciesLineChartTooltip';
 import {
   ExchangeRateTimeseries,
