@@ -1,24 +1,21 @@
-# Next.js + Turbopack App Directory Playground
-
-[Turbopack](https://turbo.build/pack) is a new incremental bundler optimized for JavaScript and TypeScript, written in Rust by the creators of Webpack and Next.js at [Vercel](https://vercel.com). On large applications Turbopack updates 10x faster than Vite and 700x faster than Webpack ([benchmark](https://turbo.build/pack/docs/benchmarks)). For the biggest applications the difference grows even more stark with updates up to 20x faster than Vite.
-
-This playground is a mirror of the [Next.js v13 App Directory Playground](https://github.com/vercel/app-playground), but uses Turbopack as the Next.js development server (`next dev --turbo`).
-
-**As a reminder, Turbopack is currently in alpha and not yet ready for production. We appreciate your ongoing support as we work to make it ready for everyone.**
+## Check version online
+https://financestorm-albertturon1.vercel.app/
 
 ## Running Locally
 
+//dev
 1. Install dependencies: `yarn`
 1. Start the dev server: `yarn dev`
 
-**Note:** The playground uses [Tailwind CSS](https://tailwindcss.com) via [PostCSS](https://turbo.build/pack/docs/features/css#postcss).
+//build
+1. Install dependencies: `yarn build`
+1. Start the dev server: `yarn start`
 
-For more information, see: https://turbo.build/pack/docs/features/css#tailwind-css
+An engineering project on the subject of data processing and visualization. 
+The project used data obtained from external APIs such as on exchange rates 
+and inflation data to create analyses. 
+Build on top of Next.js 13 (at the time of the creation app directory is experimental in the version 13.2)
+with Zustand as the state manager, Tailwind for styling and Recharts for data visualization.
 
-## Documentation
-
-https://nextjs.link/with-turbopack
-
-## Providing Feedback
-
-https://nextjs.link/turbopack-feedback
+Only tested on desktop like devices, mobile devices to be tested soon.
+Texts only in Polish, possible addition of English translation. 
