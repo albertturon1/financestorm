@@ -2,14 +2,14 @@
 
 import { useCallback } from 'react';
 
+import BaseCurrenciesDropdown from '@features/currenciesDropdowns/components/BaseCurrenciesDropdown';
+import QuoteCurrencyDropdown from '@features/currenciesDropdowns/components/QuoteCurrencyDropdown';
 import {
   useMultiCurrenciesBaseCurrencies,
   useMultiCurrenciesActions,
   useMultiCurrenciesQuoteCurrency,
 } from '@src/zustand/multiCurrenciesStore';
 
-import MultiCurrenciesBaseCurrenciesDropdown from './MultiCurrenciesBaseCurrenciesDropdown';
-import MultiCurrenciesQuoteCurrencyDropdown from './MultiCurrenciesQuoteCurrencyDropdown';
 import { IndexCurrency } from '../tools/currenciesWithIndex';
 
 const MultiCurrenciesDropdowns = () => {
@@ -49,12 +49,12 @@ const MultiCurrenciesDropdowns = () => {
 
   return (
     <div className="flex flex-col gap-x-6 gap-y-3 md:flex-row">
-      <MultiCurrenciesBaseCurrenciesDropdown
+      <BaseCurrenciesDropdown
         onClick={onBaseCurrenciesCheckboxListClick}
         quoteCurrency={quoteCurrency}
         baseCurrencies={baseCurrencies}
       />
-      <MultiCurrenciesQuoteCurrencyDropdown
+      <QuoteCurrencyDropdown
         onClick={onQuoteCurrencyCheckboxListClick}
         quoteCurrency={quoteCurrency}
       />

@@ -33,7 +33,7 @@ const User = async () => {
         {user.photo && <UserPhoto photo={user.photo} alt={user.name} />}
       </div>
       {/*User balance*/}
-      <div className="mt-5 mb-10 flex flex-col lg:flex-row">
+      <div className="mt-1 lg:mt-3 mb-10 flex flex-col lg:flex-row">
         <div className="lg:mr-16">
           {/* @ts-expect-error Server Component */}
           <UserBalance user={user} />

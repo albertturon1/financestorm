@@ -17,6 +17,7 @@ const MultiCurrenciesPage = () => {
   useEffect(() => {
     setName(quoteCurrency.name);
   }, [quoteCurrency.name]);
+  
   return (
     <div className={`${PADDING_TAILWIND} flex flex-1 flex-col pb-4`}>
       {/*Page Header */}

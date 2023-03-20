@@ -2,13 +2,13 @@
 
 import { useCallback } from 'react';
 
-import MultiCurrenciesQuoteCurrencyDropdown from '@features/multi-currencies/components/MultiCurrenciesQuoteCurrencyDropdown';
+import QuoteCurrencyDropdown from '@features/currenciesDropdowns/components/QuoteCurrencyDropdown';
+import { IndexCurrency } from '@features/multi-currencies/tools/currenciesWithIndex';
 import {
   useTodayCurrencyRatesActions,
   useTodayRatesQuoteCurrency,
 } from '@src/zustand/todayCurrencyRatesStore';
 
-import { IndexCurrency } from '../../multi-currencies/tools/currenciesWithIndex';
 
 const TodayRatesQuoteCurrencyPicker = () => {
   const quoteCurrency = useTodayRatesQuoteCurrency();
@@ -23,7 +23,7 @@ const TodayRatesQuoteCurrencyPicker = () => {
 
   return (
     <div className="flex">
-      <MultiCurrenciesQuoteCurrencyDropdown
+      <QuoteCurrencyDropdown
         onClick={onQuoteCurrencyCustomDropdownListClick}
         quoteCurrency={quoteCurrency}
       />

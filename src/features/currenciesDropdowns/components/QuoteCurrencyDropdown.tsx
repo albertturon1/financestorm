@@ -1,16 +1,16 @@
 'use client';
 
-import { memo, useCallback, useEffect, useMemo, useState } from 'react';
+import { memo, useCallback } from 'react';
 
 import CustomDropdownList from '@components/customDropdownList';
 import { CustomDropdownListRenderItemProps } from '@components/customDropdownList/CustomDropdownList';
-import { CURRENCIES } from '@constants/currencies';
+import {
+  IndexCurrency,
+} from '@features/multi-currencies/tools/currenciesWithIndex';
 import { includedInGenericArray } from '@utils/misc';
 
-import MultiCurrenciesDropdownCurrenciesItem from './MultiCurrenciesDropdownCurrenciesItem';
-import currenciesWithIndex, {
-  IndexCurrency,
-} from '../tools/currenciesWithIndex';
+import CurrencyDropdownItem from './CurrencyDropdownItem';
+import useQuoteCurrencyDropdownData from '../hooks/useQuoteCurrencyDropdownData';
 
 const nameExtractor = (currency: IndexCurrency) => currency.name;
 const keyExtractor = (currency: IndexCurrency) => currency.id;
@@ -22,34 +22,21 @@ const MultiCurrenciesQuoteCurrencyDropdown = ({
   quoteCurrency: IndexCurrency;
   onClick: (value: IndexCurrency) => void;
 }) => {
-  const [availableQuoteCurrencies, setAvailableQuoteCurrencies] = useState<
-    IndexCurrency[]
-  >([]);
-
-  useEffect(() => {
-    const sortedCurrencies = currenciesWithIndex(CURRENCIES).sort((a) =>
-      a.id === quoteCurrency.id ? -1 : 1,
-    );
-    setAvailableQuoteCurrencies(sortedCurrencies);
-  }, [quoteCurrency.id]);
-
-  const activeItems = useMemo(
-    () => [availableQuoteCurrencies[0]],
-    [availableQuoteCurrencies],
-  );
+  const { availableQuoteCurrencies, activeQuoteCurrency } =
+    useQuoteCurrencyDropdownData({ quoteCurrency });
 
   const renderItem = useCallback(
     (props: CustomDropdownListRenderItemProps<IndexCurrency>) => (
-      <MultiCurrenciesDropdownCurrenciesItem
+      <CurrencyDropdownItem
         type="radio"
         onClick={() => {
           onClick(props.item);
         }}
-        checked={includedInGenericArray(activeItems, props.item)}
+        checked={includedInGenericArray(activeQuoteCurrency, props.item)}
         {...props}
       />
     ),
-    [activeItems, onClick],
+    [activeQuoteCurrency, onClick],
   );
 
   if (!availableQuoteCurrencies.length) return null;
@@ -57,7 +44,7 @@ const MultiCurrenciesQuoteCurrencyDropdown = ({
     <CustomDropdownList
       items={availableQuoteCurrencies}
       title={`Waluta kwotowana ${availableQuoteCurrencies[0].name}`}
-      activeItems={activeItems}
+      activeItems={activeQuoteCurrency}
       nameExtractor={nameExtractor}
       keyExtractor={keyExtractor}
       renderItem={renderItem}

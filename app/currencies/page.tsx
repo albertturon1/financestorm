@@ -4,6 +4,7 @@ import { use, useState, useEffect } from 'react';
 
 import dynamic from 'next/dynamic';
 
+import ClientScrollbars from '@components/ClientScrollbars';
 import PageTitle from '@components/PageTitle';
 import { CURRENCIES } from '@constants/currencies';
 import { PADDING_TAILWIND } from '@constants/globals';
@@ -41,7 +42,7 @@ const CurrenciesPage = () => {
   }, [quoteCurrency.name]);
 
   return (
-    <div className={`h-full w-full ${PADDING_TAILWIND}`}>
+    <div className={`flex h-full w-full flex-col ${PADDING_TAILWIND}`}>
       <div className="flex w-full flex-col justify-between gap-y-3 pb-1 lg:flex-row">
         <div className="flex items-center gap-x-2">
           <PageTitle>{'Dzisiejsze kursy walut'}</PageTitle>
@@ -49,10 +50,12 @@ const CurrenciesPage = () => {
         <TodayRatesQuoteCurrencyPicker />
       </div>
       {!!data && !!quoteCurrencyName && (
-        <CurrenciesRatesTiles
-          data={data}
-          quoteCurrencyName={quoteCurrencyName}
-        />
+        <ClientScrollbars className="flex flex-1 flex-col pt-1">
+          <CurrenciesRatesTiles
+            data={data}
+            quoteCurrencyName={quoteCurrencyName}
+          />
+        </ClientScrollbars>
       )}
     </div>
   );

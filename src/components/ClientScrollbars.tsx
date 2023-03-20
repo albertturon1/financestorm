@@ -3,7 +3,6 @@
 import { ReactNode } from 'react';
 
 import Scrollbars from 'react-custom-scrollbars-2';
-import { twMerge } from 'tailwind-merge';
 
 const ClientScrollbars = ({
   children,
@@ -13,9 +12,12 @@ const ClientScrollbars = ({
   children: ReactNode;
   className?: string;
 } & Partial<Scrollbars>) => (
-  <Scrollbars universal {...props} autoHeight>
-    <div className={twMerge('flex w-max', className)}>{children}</div>
-  </Scrollbars>
+  <div className={className}>
+    <Scrollbars universal {...props}>
+      {/*wrapper div to prevent SSR children render errors*/}
+      <div>{children}</div>
+    </Scrollbars>
+  </div>
 );
 
 export default ClientScrollbars;

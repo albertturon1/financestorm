@@ -88,6 +88,7 @@ const WalletOverTimeCharts = ({
           margin={{
             top: 5,
             left: -20,
+            right: 10,
           }}
           data={chartData}
           dataKeyExtractor={dataKeyExtractor}

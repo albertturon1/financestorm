@@ -7,7 +7,7 @@ const PageTitle = ({
   children: string;
   className?: string;
 }) => (
-  <h1 className={twMerge('text-xl font-semibold tracking-wide', className)}>
+  <h1 className={twMerge('text-lg lg:text-xl font-semibold tracking-wide', className)}>
     {children}
   </h1>
 );

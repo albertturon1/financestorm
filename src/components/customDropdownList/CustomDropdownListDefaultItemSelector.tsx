@@ -5,8 +5,9 @@ export type CustomDropdownListDefaultItemSelectorProps = {
   checked: boolean;
 };
 
-const CustomDropdownListDefaultItemSelector = (
-  props: CustomDropdownListDefaultItemSelectorProps,
-) => <input readOnly className="h-6 w-6" {...props} />;
+const CustomDropdownListDefaultItemSelector = ({
+  type = 'checkbox',
+  ...props
+}: CustomDropdownListDefaultItemSelectorProps) => <input readOnly className="h-6 w-6" type={type} {...props} />;
 
 export default CustomDropdownListDefaultItemSelector;

@@ -39,9 +39,9 @@ const WalletHistoryPage = async () => {
   return (
     <div className={`${PADDING_TAILWIND} flex h-full w-full flex-col pb-4`}>
       <PageTitle className="pb-3">
-        {'Wartość portfela walutowego na przestrzeni lat'}
+        {'Wartość portfela walutowego w czasie'}
       </PageTitle>
-      <ClientScrollbars className="flex-row">
+      <ClientScrollbars className="h-20">
         {/* @ts-expect-error Server Component */}
         <UserWalletBalances
           containerClassName="flex-row w-max"

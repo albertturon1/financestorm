@@ -14,15 +14,15 @@ const CustomDropdownListDefaultItem = <T,>({
   onClick,
   ...props
 }: CustomDropdownListDefaultItemProps<T>) => (
-  <button
-    className="flex w-full items-center gap-x-3 border-t px-5 py-2"
-    onClick={() => {
-      onClick?.();
-    }}
-  >
-    <CustomDropdownListDefaultItemSelector {...props} />
-    <p className="text-lg">{label}</p>
-  </button>
-);
+    <button
+      className="flex w-full items-center gap-x-3 border-t px-5 py-2"
+      onClick={() => {
+        onClick?.();
+      }}
+    >
+      <CustomDropdownListDefaultItemSelector {...props} />
+      <p className="text-lg">{label}</p>
+    </button>
+  );
 
 export default CustomDropdownListDefaultItem;

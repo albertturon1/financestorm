@@ -10,7 +10,7 @@ const CurrenciesRatesTiles = ({
   data: ExchangeRateLatestResponse;
   quoteCurrencyName: Currencies;
 }) => (
-  <div className="grid auto-cols-max grid-cols-1 gap-5 pt-5 pb-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+  <div className="grid auto-cols-max grid-cols-1 gap-y-3 lg:gap-5 pt-3 pb-2 lg:pb-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
     {Object.entries(data.rates).map(([baseCurrency, rate]) => (
       <CurrencyTile
         currenciesPair={`${baseCurrency as Currencies}-${quoteCurrencyName}`}

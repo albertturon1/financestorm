@@ -5,7 +5,10 @@ import { useCallback, useMemo } from 'react';
 import { TooltipProps } from 'recharts';
 
 import CustomLineChart from '@components/customLineChart';
-import { customLineChartYDomain, xAxisDateTickFormatter } from '@components/customLineChart/CustomLineChartHelpers';
+import {
+  customLineChartYDomain,
+  xAxisDateTickFormatter,
+} from '@components/customLineChart/CustomLineChartHelpers';
 import MultiCurrenciesLineChartTooltip from '@features/multi-currencies/components/MultiCurrenciesLineChartTooltip';
 import {
   ExchangeRateTimeseries,
@@ -62,6 +65,7 @@ const CurrenciesBaseQuoteChart = ({
 
   return (
     <CustomLineChart
+      margin={{ top: 5, left: -10, right: 10 }}
       yAxisTickCount={8}
       data={[chartData]}
       dataKeyExtractor={dataKeyExtractor}
