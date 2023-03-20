@@ -2,8 +2,8 @@ import { DateTime } from 'luxon';
 
 import FlagCountryCode from '@components/FlagCountryCode';
 import PageTitle from '@components/PageTitle';
-import { SERVER_DATE } from '@constants/DateTime';
-import { PADDING_TAILWIND } from '@constants/Globals';
+import { SERVER_DATE } from '@constants/dateTime';
+import { PADDING_TAILWIND } from '@constants/globals';
 import CurrenciesBaseQuoteChart from '@features/currencies/compoonents/CurrenciesBaseQuoteChart';
 import { Currencies, CurrenciesPair } from '@interfaces/ICurrency';
 import { getDailyCurrencyTimeseriesOneYearQuery } from '@src/api/CurrenctyRateApi';

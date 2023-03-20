@@ -4,9 +4,9 @@ import { AiOutlineLineChart } from 'react-icons/ai';
 
 import PageTitle from '@components/PageTitle';
 import UserPhoto from '@components/UserPhoto';
-import { CHART_THEME } from '@constants/Chart';
-import { PADDING_TAILWIND } from '@constants/Globals';
-import UserBalancePercentage from '@features/user/components/CurrencyBalancePercentage/UserBalancePercentage';
+import { CHART_THEME } from '@constants/chart';
+import { PADDING_TAILWIND } from '@constants/globals';
+import UserBalancePercentage from '@features/user/components/currencyBalancePercentage/UserBalancePercentage';
 import UserBalance from '@features/user/components/UserBalance';
 // import UserCurrencyPairSummary from '@features/user/components/UserCurrencyPairSummary';
 // import UserLastTransactions from '@features/user/components/UserLastTransactions';

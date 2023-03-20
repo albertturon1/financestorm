@@ -5,8 +5,8 @@ import { use, useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 
 import PageTitle from '@components/PageTitle';
-import { CURRENCIES } from '@constants/Currencies';
-import { PADDING_TAILWIND } from '@constants/Globals';
+import { CURRENCIES } from '@constants/currencies';
+import { PADDING_TAILWIND } from '@constants/globals';
 import TodayRatesQuoteCurrencyPicker from '@features/todayRates/components/TodayRatesQuoteCurrencyPicker';
 import { Currencies } from '@interfaces/ICurrency';
 import { useTodayRatesQuoteCurrency } from '@src/zustand/todayCurrencyRatesStore';

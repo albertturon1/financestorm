@@ -4,7 +4,7 @@ import { TooltipProps } from 'recharts';
 import FlagCountryCode from '@components/FlagCountryCode';
 import TooltipRowWrapper from '@components/TooltipRowWrapper';
 import TooltipWrapper from '@components/TooltipWrapper';
-import { CHART_THEME } from '@constants/Chart';
+import { CHART_THEME } from '@constants/chart';
 import { CustomTooltipProps } from '@interfaces/ICharts';
 import { NormalizedCurrencyExchangeRate } from '@interfaces/models/IExchangerate';
 

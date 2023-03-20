@@ -4,7 +4,7 @@ import { memo, useCallback, useEffect, useState } from 'react';
 
 import CustomDropdownList from '@components/customDropdownList';
 import { CustomDropdownListRenderItemProps } from '@components/customDropdownList/CustomDropdownList';
-import { CURRENCIES } from '@constants/Currencies';
+import { CURRENCIES } from '@constants/currencies';
 import { includedInGenericArray } from '@utils/misc';
 
 import MultiCurrenciesDropdownCurrenciesItem from './MultiCurrenciesDropdownCurrenciesItem';

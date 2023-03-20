@@ -1,13 +1,13 @@
 import { Dispatch, SetStateAction, useCallback } from 'react';
 
-import CustomDropdown from '@components/customDropdown';
 import SegmentedSwitch from '@components/segmentedSwitch';
-import { CHART_RANGES } from '@constants/Chart';
+import { CHART_RANGES } from '@constants/chart';
 import { ChartRanges, ChartRange } from '@interfaces/ICharts';
 import {
   useMultiCurrenciesChartRange,
   useMultiCurrenciesActions,
 } from '@src/zustand/multiCurrenciesStore';
+import CustomDropdown from '@components/customDropdown';
 
 const MultiCurrenciesChartRange = () => (
   <CustomDropdown>{(props) => <Inside {...props} />}</CustomDropdown>

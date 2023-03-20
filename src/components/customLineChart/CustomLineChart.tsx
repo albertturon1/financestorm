@@ -19,7 +19,7 @@ import {
 import { CategoricalChartProps } from 'recharts/types/chart/generateCategoricalChart';
 import { AxisDomain } from 'recharts/types/util/types';
 
-import { CHART_THEME } from '@constants/Chart';
+import { CHART_THEME } from '@constants/chart';
 import useWindowSize from '@hooks/useWindowSize';
 
 import { xAxisIntervalDivider } from './CustomLineChartHelpers';

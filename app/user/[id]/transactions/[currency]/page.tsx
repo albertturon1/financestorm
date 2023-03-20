@@ -1,6 +1,6 @@
 import FlagCountryCode from '@components/FlagCountryCode';
 import PageTitle from '@components/PageTitle';
-import { PADDING_TAILWIND } from '@constants/Globals';
+import { PADDING_TAILWIND } from '@constants/globals';
 import Transactions from '@features/user/history/components/Transactions';
 import { Currencies } from '@interfaces/ICurrency';
 import { getUserCurrencyTransactions } from 'src/api/UserApi';

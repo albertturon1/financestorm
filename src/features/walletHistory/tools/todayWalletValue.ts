@@ -1,4 +1,4 @@
-import { CURRENCIES } from '@constants/Currencies';
+import { CURRENCIES } from '@constants/currencies';
 import { Currencies } from '@interfaces/ICurrency';
 import { UserModel } from '@interfaces/models/IUser';
 import { getTodayCurrencyRatesQuery } from '@src/api/CurrenctyRateApi';

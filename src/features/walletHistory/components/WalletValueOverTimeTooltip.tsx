@@ -3,7 +3,7 @@ import { TooltipProps } from 'recharts';
 
 import TooltipRowWrapper from '@components/TooltipRowWrapper';
 import TooltipWrapper from '@components/TooltipWrapper';
-import { CHART_THEME } from '@constants/Chart';
+import { CHART_THEME } from '@constants/chart';
 import { CustomTooltipProps, WalletDay } from '@interfaces/ICharts';
 
 import { InflationWalletOverTimeValue } from '../tools/inflationWalletOverTimeValue';

@@ -7,7 +7,7 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 
-import { CHART_THEME } from '@constants/Chart';
+import { CHART_THEME } from '@constants/chart';
 import { UserBalanceChart } from '@features/user/interfaces/IUserBalance';
 import { Mutable } from '@interfaces/IUtility';
 

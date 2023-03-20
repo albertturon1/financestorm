@@ -11,7 +11,7 @@ import {
   Tooltip,
 } from 'recharts';
 
-import { CHART_THEME } from '@constants/Chart';
+import { CHART_THEME } from '@constants/chart';
 import { NormalizedCurrencyExchangeRate } from '@interfaces/models/IExchangerate';
 
 import InflationOverMonthsTooltip from './InflationOverMonthsTooltip';

@@ -1,5 +1,5 @@
-import { PADDING_TAILWIND } from '@constants/Globals';
-import MainRedirectButton from '@features/main/MainRedirectButton';
+import { PADDING_TAILWIND } from '@constants/globals';
+import MainRedirectButton from '@features/main/components/MainRedirectButton';
 
 const HomePage = () => (
   <div

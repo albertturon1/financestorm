@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 
 import FlagCountryCode from '@components/FlagCountryCode';
 import PageTitle from '@components/PageTitle';
-import { PADDING_TAILWIND } from '@constants/Globals';
+import { PADDING_TAILWIND } from '@constants/globals';
 import MultiBaseCurrenciesLineChart from '@features/multi-currencies/components/MultiBaseCurrenciesLineChart';
 import MultiCurrenciesDropdowns from '@features/multi-currencies/components/MultiCurrenciesDropdowns';
 import { Currencies } from '@interfaces/ICurrency';

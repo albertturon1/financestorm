@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon';
 
-import { SERVER_DATE } from '@constants/DateTime';
+import { SERVER_DATE } from '@constants/dateTime';
 import { Currencies } from '@interfaces/ICurrency';
 import { ExchangeRateTimeseries } from '@interfaces/models/IExchangerate';
 import { getDailyCurrencyTimeseriesOneYearQuery } from '@src/api/CurrenctyRateApi';

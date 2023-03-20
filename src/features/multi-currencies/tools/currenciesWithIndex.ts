@@ -1,4 +1,4 @@
-import { CURRENCIES } from '@constants/Currencies';
+import { CURRENCIES } from '@constants/currencies';
 import { Currencies } from '@interfaces/ICurrency';
 
 export interface IndexCurrency {
