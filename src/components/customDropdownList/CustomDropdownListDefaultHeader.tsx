@@ -1,19 +1,36 @@
+import { ReactElement } from 'react';
+
 import { BiChevronDown } from 'react-icons/bi';
+import { twMerge } from 'tailwind-merge';
+
+export type CustomDropdownListDefaultHeaderProps = {
+  onClick: () => void;
+  open: boolean;
+  title: string;
+  children?: ReactElement;
+  className?: string;
+};
 
 const CustomDropdownListDefaultHeader = ({
   onClick,
   open,
   title,
-}: {
-  onClick: () => void;
-  open: boolean;
-  title: string;
-}) => (
+  children,
+  className,
+}: CustomDropdownListDefaultHeaderProps) => (
   <button
     onClick={onClick}
-    className={`flex h-12 items-center justify-between pl-4 pr-1 ${open ? 'border-b' : ''}`}
+    className={twMerge(
+      `flex h-12 items-center justify-between pl-4 pr-1 ${
+        open ? 'border-b' : ''
+      }`,
+      className,
+    )}
   >
-    <p className="w-max font-semibold tabular-nums">{title}</p>
+    <div className="flex">
+      <p className="w-max font-semibold tabular-nums">{title}</p>
+    </div>
+    {children}
     <BiChevronDown
       color="#10668E"
       className={`h-12 w-12 transition-transform duration-150 ${

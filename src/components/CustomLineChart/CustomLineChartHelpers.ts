@@ -1,5 +1,7 @@
 import { DateTime } from 'luxon';
 
+import { cutNumber } from '@utils/misc';
+
 export const xAxisIntervalDivider = (width: number) => {
   const sizes = [
     { size: 586, interval: 3 },
@@ -18,3 +20,18 @@ export const xAxisDateTickFormatter = (v: string) =>
   DateTime.fromISO(v).toFormat('d.LLL yy', {
     locale: 'pl',
   });
+
+export const customLineChartYDomain = (
+  values: number[],
+  multiplier = 5, //in percent
+  round = 2,
+) => {
+  const multi = multiplier / 100;
+
+  const minValue = Math.min(...values);
+  const maxValue = Math.max(...values);
+
+  const rMinValue = cutNumber(minValue - minValue * multi, round);
+  const rMaxValue = cutNumber(maxValue + maxValue * multi, round);
+  return [rMinValue, rMaxValue];
+};

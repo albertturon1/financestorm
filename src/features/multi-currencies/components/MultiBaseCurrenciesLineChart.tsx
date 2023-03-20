@@ -4,10 +4,11 @@ import { memo, use, useMemo } from 'react';
 
 import { TooltipProps } from 'recharts';
 
-import CustomLineChart, {
+import CustomLineChart from '@components/customLineChart/CustomLineChart';
+import {
   customLineChartYDomain,
-} from '@components/customLineChart/CustomLineChart';
-import { xAxisDateTickFormatter } from '@components/customLineChart/CustomLineChartHelpers';
+  xAxisDateTickFormatter,
+} from '@components/customLineChart/CustomLineChartHelpers';
 import { ChartMultiData } from '@interfaces/ICharts';
 import { NormalizedCurrencyExchangeRate } from '@interfaces/models/IExchangerate';
 import {
@@ -69,18 +70,21 @@ const MultiBaseCurrenciesLineChart = () => {
   );
 
   return (
-    <CustomLineChart
-      data={chartData}
-      dataKeyExtractor={dataKeyExtractor}
-      dataExtractor={dataExtractor}
-      nameExtractor={nameExtractor}
-      xAxisLabelExtractor={xAxisLabelExtractor}
-      yAxisTickCount={10}
-      yDomain={yDomain}
-      xAxisLabel="label"
-      tooltip={tooltip}
-      xAxisTickFormatter={xAxisDateTickFormatter}
-    />
+    <div className="flex flex-1">
+      <CustomLineChart
+        margin={{ top: 5, left: -20 }}
+        data={chartData}
+        dataKeyExtractor={dataKeyExtractor}
+        dataExtractor={dataExtractor}
+        nameExtractor={nameExtractor}
+        xAxisLabelExtractor={xAxisLabelExtractor}
+        yAxisTickCount={10}
+        yDomain={yDomain}
+        xAxisLabel="label"
+        tooltip={tooltip}
+        xAxisTickFormatter={xAxisDateTickFormatter}
+      />
+    </div>
   );
 };
 

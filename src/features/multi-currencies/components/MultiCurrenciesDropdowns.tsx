@@ -15,7 +15,8 @@ import { IndexCurrency } from '../tools/currenciesWithIndex';
 const MultiCurrenciesDropdowns = () => {
   const baseCurrencies = useMultiCurrenciesBaseCurrencies();
   const quoteCurrency = useMultiCurrenciesQuoteCurrency();
-  const { setMultiCurrenciesBaseCurrencies, setMultiCurrenciesQuoteCurrency } = useMultiCurrenciesActions();
+  const { setMultiCurrenciesBaseCurrencies, setMultiCurrenciesQuoteCurrency } =
+    useMultiCurrenciesActions();
 
   const onBaseCurrenciesCheckboxListClick = useCallback(
     (v: IndexCurrency) => {
@@ -39,11 +40,15 @@ const MultiCurrenciesDropdowns = () => {
         setMultiCurrenciesBaseCurrencies(filtered);
       }
     },
-    [baseCurrencies, setMultiCurrenciesBaseCurrencies, setMultiCurrenciesQuoteCurrency],
+    [
+      baseCurrencies,
+      setMultiCurrenciesBaseCurrencies,
+      setMultiCurrenciesQuoteCurrency,
+    ],
   );
 
   return (
-    <div className="flex gap-x-6">
+    <div className="flex flex-col gap-x-6 gap-y-3 md:flex-row">
       <MultiCurrenciesBaseCurrenciesDropdown
         onClick={onBaseCurrenciesCheckboxListClick}
         quoteCurrency={quoteCurrency}

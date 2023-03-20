@@ -21,24 +21,8 @@ import { AxisDomain } from 'recharts/types/util/types';
 
 import { CHART_THEME } from '@constants/Chart';
 import useWindowSize from '@hooks/useWindowSize';
-import { cutNumber } from '@utils/misc';
 
 import { xAxisIntervalDivider } from './CustomLineChartHelpers';
-
-export const customLineChartYDomain = (
-  values: number[],
-  multiplier = 5, //in percent
-  round = 2,
-) => {
-  const multi = multiplier / 100;
-
-  const minValue = Math.min(...values);
-  const maxValue = Math.max(...values);
-
-  const rMinValue = cutNumber(minValue - minValue * multi, round);
-  const rMaxValue = cutNumber(maxValue + maxValue * multi, round);
-  return [rMinValue, rMaxValue];
-};
 
 export type CustomLineChartProps<T, Y> = {
   dataKeyExtractor: (item: T) => string;
@@ -104,8 +88,8 @@ const CustomLineChart = <T, Y>({
                 dataExtractor(data[0], 0).length / xAxisIntervalDivider(width),
               )
             }
-            dy={50}
-            height={100}
+            dy={20}
+            height={40}
             allowDuplicatedCategory={false}
             {...props}
             hide={hideXAxis}

@@ -3,7 +3,7 @@
 import { memo, useCallback, useEffect, useState } from 'react';
 
 import CustomDropdownList from '@components/customDropdownList';
-import { CustomDropdownListRenderItem } from '@components/customDropdownList/CustomDropdownList';
+import { CustomDropdownListRenderItemProps } from '@components/customDropdownList/CustomDropdownList';
 import { CURRENCIES } from '@constants/Currencies';
 import { includedInGenericArray } from '@utils/misc';
 
@@ -11,6 +11,10 @@ import MultiCurrenciesDropdownCurrenciesItem from './MultiCurrenciesDropdownCurr
 import currenciesWithIndex, {
   IndexCurrency,
 } from '../tools/currenciesWithIndex';
+
+const nameExtractor = (currency: IndexCurrency) => currency.name;
+const keyExtractor = (currency: IndexCurrency) =>
+  `${currency.id}_${currency.name}`;
 
 const MultiCurrenciesBaseCurrenciesDropdown = ({
   baseCurrencies,
@@ -24,16 +28,18 @@ const MultiCurrenciesBaseCurrenciesDropdown = ({
   const [availableBaseCurrencies, setAvailableBaseCurrencies] = useState<
     IndexCurrency[]
   >([]);
-  const [baseCurrrenciesLength, setBaseCurrrenciesLength] = useState<
+
+  //useState to prevent hydration error on render
+  const [baseCurrenciesLength, setBaseCurrenciesLength] = useState<
     number | null
   >(null);
-  const baseCurrenciesNames = baseCurrencies.map((c) => c.name);
 
   useEffect(() => {
-    setBaseCurrrenciesLength(baseCurrencies.length);
+    setBaseCurrenciesLength(baseCurrencies.length);
   }, [baseCurrencies.length]);
 
   useEffect(() => {
+    const baseCurrenciesNames = baseCurrencies.map((c) => c.name);
     const nonQuoteCurreciesList = currenciesWithIndex(
       CURRENCIES.filter(
         (name) =>
@@ -41,10 +47,10 @@ const MultiCurrenciesBaseCurrenciesDropdown = ({
       ),
     );
     setAvailableBaseCurrencies(baseCurrencies.concat(nonQuoteCurreciesList));
-  }, [baseCurrencies, baseCurrenciesNames, quoteCurrency?.name]);
+  }, [baseCurrencies, quoteCurrency?.name]);
 
   const renderItem = useCallback(
-    (props: CustomDropdownListRenderItem<IndexCurrency>) => (
+    (props: CustomDropdownListRenderItemProps<IndexCurrency>) => (
       <MultiCurrenciesDropdownCurrenciesItem
         onClick={() => {
           onClick(props.item);
@@ -56,18 +62,16 @@ const MultiCurrenciesBaseCurrenciesDropdown = ({
     [baseCurrencies, onClick],
   );
 
+  if (!baseCurrenciesLength) return null;
   return (
     <CustomDropdownList
-      title={
-        baseCurrrenciesLength
-          ? `Waluty bazowe (${baseCurrrenciesLength})`
-          : 'Waluty bazowe'
-      }
+      title={`Waluty bazowe (${baseCurrenciesLength})`}
       items={availableBaseCurrencies}
       activeItems={baseCurrencies}
-      nameExtractor={(currency) => currency.name}
-      keyExtractor={(currency) => `${currency.id}_${currency.name}`}
+      nameExtractor={nameExtractor}
+      keyExtractor={keyExtractor}
       renderItem={renderItem}
+      containerClassName="w-full lg:w-64"
     />
   );
 };

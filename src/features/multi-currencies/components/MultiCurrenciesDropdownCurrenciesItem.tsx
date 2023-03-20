@@ -1,4 +1,4 @@
-import { CustomDropdownListRenderItem } from '@components/customDropdownList/CustomDropdownList';
+import { CustomDropdownListRenderItemProps } from '@components/customDropdownList/CustomDropdownList';
 import CustomDropdownListDefaultItemSelector, {
   CustomDropdownListDefaultItemSelectorProps,
 } from '@components/customDropdownList/CustomDropdownListDefaultItemSelector';
@@ -8,12 +8,12 @@ import { IndexCurrency } from '../tools/currenciesWithIndex';
 
 type Props = {
   onClick: () => void;
-} & CustomDropdownListRenderItem<IndexCurrency> &
+} & CustomDropdownListRenderItemProps<IndexCurrency> &
   CustomDropdownListDefaultItemSelectorProps;
 
 const MultiCurrenciesDropdownCurrenciesItem = ({
   item,
-  onClick, 
+  onClick,
   index,
   ...props
 }: Props) => (

@@ -4,10 +4,8 @@ import { useCallback, useMemo } from 'react';
 
 import { TooltipProps } from 'recharts';
 
-import CustomLineChart, {
-  customLineChartYDomain,
-} from '@components/customLineChart/CustomLineChart';
-import { xAxisDateTickFormatter } from '@components/customLineChart/CustomLineChartHelpers';
+import CustomLineChart from '@components/customLineChart';
+import { customLineChartYDomain, xAxisDateTickFormatter } from '@components/customLineChart/CustomLineChartHelpers';
 import MultiCurrenciesLineChartTooltip from '@features/multi-currencies/components/MultiCurrenciesLineChartTooltip';
 import {
   ExchangeRateTimeseries,

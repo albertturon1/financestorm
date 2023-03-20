@@ -16,7 +16,7 @@ export interface CustomDropdownProps {
 
 const CustomDropdown = ({
   children,
-  className = '',
+  className,
   openOnMount = false,
 }: CustomDropdownProps) => {
   const [open, setOpen] = useState(openOnMount);

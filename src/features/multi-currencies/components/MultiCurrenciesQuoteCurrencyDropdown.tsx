@@ -3,7 +3,7 @@
 import { memo, useCallback, useEffect, useMemo, useState } from 'react';
 
 import CustomDropdownList from '@components/customDropdownList';
-import { CustomDropdownListRenderItem } from '@components/customDropdownList/CustomDropdownList';
+import { CustomDropdownListRenderItemProps } from '@components/customDropdownList/CustomDropdownList';
 import { CURRENCIES } from '@constants/Currencies';
 import { includedInGenericArray } from '@utils/misc';
 
@@ -39,7 +39,7 @@ const MultiCurrenciesQuoteCurrencyDropdown = ({
   );
 
   const renderItem = useCallback(
-    (props: CustomDropdownListRenderItem<IndexCurrency>) => (
+    (props: CustomDropdownListRenderItemProps<IndexCurrency>) => (
       <MultiCurrenciesDropdownCurrenciesItem
         type="radio"
         onClick={() => {
@@ -52,19 +52,16 @@ const MultiCurrenciesQuoteCurrencyDropdown = ({
     [activeItems, onClick],
   );
 
+  if (!availableQuoteCurrencies.length) return null;
   return (
     <CustomDropdownList
-      title={
-        availableQuoteCurrencies.length
-          ? `Waluta kwotowana (${availableQuoteCurrencies[0].name})`
-          : 'Waluta kwotowana'
-      }
       items={availableQuoteCurrencies}
+      title={`Waluta kwotowana ${availableQuoteCurrencies[0].name}`}
       activeItems={activeItems}
       nameExtractor={nameExtractor}
       keyExtractor={keyExtractor}
       renderItem={renderItem}
-      className="w-72"
+      containerClassName="w-full lg:w-64"
     />
   );
 };

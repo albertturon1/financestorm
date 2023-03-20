@@ -9,6 +9,7 @@ import {
 } from 'react';
 
 import Scrollbars from 'react-custom-scrollbars-2';
+import { twMerge } from 'tailwind-merge';
 
 import CustomDropdown from '@components/customDropdown';
 import { includedInGenericArray } from '@utils/misc';
@@ -18,11 +19,11 @@ import CustomDropdownListDefaultItem from './CustomDropdownListDefaultItem';
 
 type CustomComponent<T> = (data: T) => ReactElement | null;
 
-export type CustomDropdownListRenderItem<T> = {
+export type CustomDropdownListRenderItemProps<T> = {
   item: T;
   index: number;
 };
-export type CustomDropdownListHeader = {
+export type CustomDropdownListHeaderProps = {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
 };
@@ -33,10 +34,11 @@ export type CustomDropdownListProps<T> = {
   nameExtractor: (value: T) => string;
   keyExtractor: (value: T) => number | string;
   onClick?: (value: T) => void;
-  className?: string;
-  title: string;
-  renderItem?: CustomComponent<CustomDropdownListRenderItem<T>>;
-  renderHeader?: CustomComponent<CustomDropdownListHeader>;
+  containerClassName?: string;
+  itemsClassName?: string;
+  title?: string;
+  renderItem?: CustomComponent<CustomDropdownListRenderItemProps<T>>;
+  renderHeader?: CustomComponent<CustomDropdownListHeaderProps>;
 };
 
 const CustomDropdownList = <T,>({
@@ -45,7 +47,8 @@ const CustomDropdownList = <T,>({
   nameExtractor,
   keyExtractor,
   onClick,
-  className = '',
+  containerClassName,
+  itemsClassName,
   title = '',
   renderItem,
   renderHeader,
@@ -62,13 +65,13 @@ const CustomDropdownList = <T,>({
   );
 
   const CustomDropdownListRenderItem = useCallback(
-    (props: CustomDropdownListRenderItem<T>) =>
+    (props: CustomDropdownListRenderItemProps<T>) =>
       isValidElement(renderItem) ? renderItem : renderItem?.(props),
     [renderItem],
   );
 
   return (
-    <CustomDropdown className={className}>
+    <CustomDropdown className={containerClassName}>
       {({ open, setOpen }) => (
         <>
           {CustomDropdownListHeader(open, setOpen) ?? (
@@ -82,9 +85,12 @@ const CustomDropdownList = <T,>({
           )}
           {/*itemsList*/}
           <div
-            className={`absolute top-12 z-10 w-full flex-col overflow-hidden bg-secondaryBlack  ${
-              open ? 'h-96 max-h-max' : 'h-0'
-            }`}
+            className={twMerge(
+              `absolute top-12 z-10 w-full flex-col overflow-hidden bg-secondaryBlack  ${
+                open ? 'h-96 max-h-max' : 'h-0'
+              }`,
+              itemsClassName,
+            )}
           >
             <Scrollbars
               className="flex"

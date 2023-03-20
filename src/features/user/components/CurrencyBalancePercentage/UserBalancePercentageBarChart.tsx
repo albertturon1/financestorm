@@ -22,7 +22,7 @@ const UserBalancePercentageBarChart = ({ data }: UserBalanceChart) => (
       margin={{
         top: 5,
         bottom: 5,
-        left: 0,
+        left: -20,
         right: 0,
       }}
     >

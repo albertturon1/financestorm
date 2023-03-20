@@ -8,10 +8,10 @@ import { CHART_THEME } from '@constants/Chart';
 import { PADDING_TAILWIND } from '@constants/Globals';
 import UserBalancePercentage from '@features/user/components/CurrencyBalancePercentage/UserBalancePercentage';
 import UserBalance from '@features/user/components/UserBalance';
-import UserCurrencyPairSummary from '@features/user/components/UserCurrencyPairSummary';
-import UserLastTransactions from '@features/user/components/UserLastTransactions';
+// import UserCurrencyPairSummary from '@features/user/components/UserCurrencyPairSummary';
+// import UserLastTransactions from '@features/user/components/UserLastTransactions';
 import todayWalletValue from '@features/walletHistory/tools/todayWalletValue';
-import { getUser, getUserCurrencyTransactions } from 'src/api/UserApi';
+import { getUser } from 'src/api/UserApi';
 
 export interface UserParams {
   id: string;
@@ -23,7 +23,7 @@ const User = async () => {
   if (!user.id) notFound();
 
   const walletValue = await todayWalletValue(user);
-  const transactions = await getUserCurrencyTransactions();
+  // const transactions = await getUserCurrencyTransactions();
 
   return (
     <div className={`${PADDING_TAILWIND} flex h-full w-full flex-col pb-6`}>
@@ -45,20 +45,20 @@ const User = async () => {
           </Link>
         </div>
         {!!walletValue && (
-          <div className="flex grow">
+          <div className="flex grow mb-10 ">
             <UserBalancePercentage currencies={walletValue.currencies} />
           </div>
         )}
       </div>
-      {!!transactions.length && (
-        <div className="mt-10 flex flex-col gap-y-10">
+      {/* {!!transactions.length && (
+        <div className="flex flex-col gap-y-10">
           <UserLastTransactions
             transactions={transactions}
             quoteCurrency={user.quote_currency}
           />
           <UserCurrencyPairSummary transactions={transactions} />
         </div>
-      )}
+      )} */}
     </div>
   );
 };

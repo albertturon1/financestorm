@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon';
 
 import FlagCountryCode from '@components/FlagCountryCode';
+import PageTitle from '@components/PageTitle';
 import { SERVER_DATE } from '@constants/DateTime';
 import { PADDING_TAILWIND } from '@constants/Globals';
 import CurrenciesBaseQuoteChart from '@features/currencies/compoonents/CurrenciesBaseQuoteChart';
@@ -29,7 +30,8 @@ const CurrenciesPairPage = async ({
 
   return (
     <div className={`${PADDING_TAILWIND} flex h-full w-full flex-col pb-4`}>
-      <div className="flex w-full justify-between pb-5">
+      <div className="flex w-full items-center pb-5 gap-x-2">
+        <PageTitle>{'Kurs'}</PageTitle>
         <div className="flex items-center gap-x-2 text-xl">
           <FlagCountryCode code={currency} className="gap-x-0" />
           <p className="text-2xl font-bold">{'/'}</p>

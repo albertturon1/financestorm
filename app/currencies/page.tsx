@@ -4,7 +4,6 @@ import { use, useState, useEffect } from 'react';
 
 import dynamic from 'next/dynamic';
 
-import FlagCountryCode from '@components/FlagCountryCode';
 import PageTitle from '@components/PageTitle';
 import { CURRENCIES } from '@constants/Currencies';
 import { PADDING_TAILWIND } from '@constants/Globals';
@@ -45,14 +44,7 @@ const CurrenciesPage = () => {
     <div className={`h-full w-full ${PADDING_TAILWIND}`}>
       <div className="flex w-full flex-col justify-between gap-y-3 pb-1 lg:flex-row">
         <div className="flex items-center gap-x-2">
-          <PageTitle>{'Dzisiejsze kursy walut w stosunku do'}</PageTitle>
-          {!!quoteCurrencyName && (
-            <FlagCountryCode
-              code={quoteCurrencyName}
-              className="gap-x-0"
-              textClassName="text-xl"
-            />
-          )}
+          <PageTitle>{'Dzisiejsze kursy walut'}</PageTitle>
         </div>
         <TodayRatesQuoteCurrencyPicker />
       </div>
