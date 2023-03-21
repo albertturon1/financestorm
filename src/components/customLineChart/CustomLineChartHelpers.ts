@@ -32,6 +32,9 @@ export const customLineChartYDomain = (
   const maxValue = Math.max(...values);
 
   const rMinValue = cutNumber(minValue - minValue * multi, round);
-  const rMaxValue = cutNumber(maxValue + maxValue * multi, round);
+  const rMaxValue = cutNumber(
+    Math.max(maxValue + maxValue * multi, 0.1),
+    round,
+  );
   return [rMinValue, rMaxValue];
 };

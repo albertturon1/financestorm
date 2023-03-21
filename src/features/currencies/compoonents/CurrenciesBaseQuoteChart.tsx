@@ -55,6 +55,10 @@ const CurrenciesBaseQuoteChart = ({
   );
 
   const yDomain = useMemo(() => customLineChartYDomain(values, 2), [values]);
+  const margin = useMemo(
+    () => ({ top: 5, left: yDomain[0] < 1 ? 15 : -15, right: 10 }),
+    [yDomain],
+  );
 
   const tooltip = useCallback(
     (props: TooltipProps<number, string>) => (
@@ -65,7 +69,7 @@ const CurrenciesBaseQuoteChart = ({
 
   return (
     <CustomLineChart
-      margin={{ top: 5, left: -10, right: 10 }}
+      margin={margin}
       yAxisTickCount={8}
       data={[chartData]}
       dataKeyExtractor={dataKeyExtractor}

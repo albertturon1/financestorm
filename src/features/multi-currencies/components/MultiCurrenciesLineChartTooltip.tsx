@@ -56,7 +56,7 @@ const MultiCurrenciesLineChartTooltip = ({
                 code={values.base_currency}
                 boldName={false}
               />
-              <p>{values.value.toFixed(3)}</p>
+              <p>{values.value.toFixed(values.value < 1 ? 5 : 3)}</p>
             </div>
           </TooltipRowWrapper>
         ))}

@@ -15,7 +15,7 @@
     "singleQuote": true
   },
   "dependencies": {
-    "@tanstack/react-query": "4.24.10",
+    "@tanstack/react-query": "4.28.0",
     "@typescript-eslint/eslint-plugin": "5.54.0",
     "clsx": "1.2.1",
     "eslint-config-prettier": "8.6.0",

@@ -1,7 +1,8 @@
 'use client';
 
-import { memo, use, useMemo } from 'react';
+import { memo, useMemo } from 'react';
 
+import { useQuery } from '@tanstack/react-query';
 import { TooltipProps } from 'recharts';
 
 import CustomLineChart from '@components/customLineChart/CustomLineChart';
@@ -9,6 +10,7 @@ import {
   customLineChartYDomain,
   xAxisDateTickFormatter,
 } from '@components/customLineChart/CustomLineChartHelpers';
+import Loader from '@components/Loader';
 import { ChartMultiData } from '@interfaces/ICharts';
 import { NormalizedCurrencyExchangeRate } from '@interfaces/models/IExchangerate';
 import {
@@ -18,7 +20,6 @@ import {
 import convertDailyCurrencyTimeseriesToChartData from '@utils/convertDailyCurrencyTimeseriesToChartData';
 import dailyCurrencyTimeseriesYears from '@utils/dailyCurrencyTimeseriesYears';
 import { nameOfKey } from '@utils/misc';
-import queryClientSide from '@utils/queryClientSide';
 
 import MultiCurrenciesLineChartTooltip from './MultiCurrenciesLineChartTooltip';
 
@@ -43,16 +44,16 @@ const xAxisLabelExtractor = (
 const MultiBaseCurrenciesLineChart = () => {
   const quoteCurrency = useMultiCurrenciesQuoteCurrency();
   const baseCurrencies = useMultiCurrenciesBaseCurrenciesNames();
-  const baseCurrenciesNames = useMultiCurrenciesBaseCurrenciesNames();
 
-  const data = use(
-    queryClientSide([baseCurrenciesNames, quoteCurrency.id], () =>
-      dailyCurrencyTimeseriesYears({
-        quote_currency: quoteCurrency.name,
-        base_currencies: baseCurrencies,
-        years: 1,
-      }),
-    ),
+  const props = {
+    quote_currency: quoteCurrency.name,
+    base_currencies: baseCurrencies,
+    years: 1,
+  };
+
+  const { data, isLoading } = useQuery(
+    ['dailyCurrencyTimeseriesYears', props],
+    () => dailyCurrencyTimeseriesYears(props),
   );
 
   const chartData = useMemo(
@@ -69,6 +70,7 @@ const MultiBaseCurrenciesLineChart = () => {
     [chartData],
   );
 
+  if (isLoading) return <Loader />;
   return (
     <div className="flex flex-1">
       <CustomLineChart
