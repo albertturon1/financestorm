@@ -4,7 +4,6 @@ import Link from 'next/link';
 
 import FlagCountryCode from '@components/FlagCountryCode';
 import { Currencies, CurrenciesPair } from '@interfaces/ICurrency';
-import { cutNumber } from '@utils/misc';
 
 const CurrencyTile = ({
   currenciesPair,
@@ -19,11 +18,11 @@ const CurrencyTile = ({
   ];
   return (
     <Link href={`/currencies/${base.toLowerCase()}-${quote.toLowerCase()}`}>
-      <div className="flex items-center gap-x-4 rounded-lg border-gray-500 bg-secondaryBlack px-4 py-2">
+      <div className="flex items-center justify-between gap-x-4 rounded-lg border-gray-500 bg-secondaryBlack px-4 py-2">
         <FlagCountryCode code={base} />
-        <p className="text-lg font-semibold">
-          {`${cutNumber(rate)}${quote.toUpperCase()}`}
-        </p>
+        <div className="flex text-lg font-semibold">
+          <p>{`${rate} ${quote.toUpperCase()}`}</p>
+        </div>
       </div>
     </Link>
   );

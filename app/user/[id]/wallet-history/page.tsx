@@ -2,8 +2,8 @@ import dynamic from 'next/dynamic';
 
 import ClientScrollbars from '@components/ClientScrollbars';
 import PageTitle from '@components/PageTitle';
-import UserWalletBalances from '@components/UserWalletBalances';
-import { PADDING_TAILWIND } from '@constants/Globals';
+import UserWalletBalances from '@components/userWalletBalances';
+import { PADDING_TAILWIND } from '@constants/globals';
 // import inflationWalletOverTimeValue from '@features/walletHistory/tools/inflationWalletOverTimeValue';
 import walletValueOverTime from '@features/walletHistory/tools/walletValueOverTime';
 import { getUser } from '@src/api/UserApi';
@@ -39,9 +39,9 @@ const WalletHistoryPage = async () => {
   return (
     <div className={`${PADDING_TAILWIND} flex h-full w-full flex-col pb-4`}>
       <PageTitle className="pb-3">
-        {'Wartość portfela walutowego na przestrzeni lat'}
+        {'Wartość portfela walutowego w czasie'}
       </PageTitle>
-      <ClientScrollbars className="flex-row">
+      <ClientScrollbars className="h-20">
         {/* @ts-expect-error Server Component */}
         <UserWalletBalances
           containerClassName="flex-row w-max"

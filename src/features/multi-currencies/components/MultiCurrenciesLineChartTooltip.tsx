@@ -4,7 +4,7 @@ import { TooltipProps } from 'recharts';
 import FlagCountryCode from '@components/FlagCountryCode';
 import TooltipRowWrapper from '@components/TooltipRowWrapper';
 import TooltipWrapper from '@components/TooltipWrapper';
-import { CHART_THEME } from '@constants/Chart';
+import { CHART_THEME } from '@constants/chart';
 import { CustomTooltipProps } from '@interfaces/ICharts';
 import { NormalizedCurrencyExchangeRate } from '@interfaces/models/IExchangerate';
 
@@ -56,7 +56,7 @@ const MultiCurrenciesLineChartTooltip = ({
                 code={values.base_currency}
                 boldName={false}
               />
-              <p>{values.value.toFixed(3)}</p>
+              <p>{values.value.toFixed(values.value < 1 ? 5 : 3)}</p>
             </div>
           </TooltipRowWrapper>
         ))}

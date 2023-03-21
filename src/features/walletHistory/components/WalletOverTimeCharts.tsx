@@ -5,10 +5,11 @@ import { useCallback } from 'react';
 // import { DateTime } from 'luxon';
 import { TooltipProps } from 'recharts';
 
-import CustomLineChart, {
+import CustomLineChart from '@components/customLineChart';
+import {
   customLineChartYDomain,
-} from '@components/CustomLineChart/CustomLineChart';
-import { xAxisDateTickFormatter } from '@components/CustomLineChart/CustomLineChartHelpers';
+  xAxisDateTickFormatter,
+} from '@components/customLineChart/CustomLineChartHelpers';
 // import { CHART_THEME } from '@constants/Chart';
 import { ChartMultiData, WalletDay } from '@interfaces/ICharts';
 import { nameOfKey } from '@utils/misc';
@@ -84,6 +85,11 @@ const WalletOverTimeCharts = ({
     <div className="flex flex-1 flex-col">
       <div className="w-full flex-1">
         <CustomLineChart
+          margin={{
+            top: 5,
+            left: -20,
+            right: 10,
+          }}
           data={chartData}
           dataKeyExtractor={dataKeyExtractor}
           dataExtractor={dataExtractor}

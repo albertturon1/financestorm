@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon';
 
-import { SERVER_DATE } from '@constants/DateTime';
+import { SERVER_DATE } from '@constants/dateTime';
 import userCurrenciesAmount from '@features/user/tools/userCurrenciesAmount';
 import { WalletBaseCurrencyValue, WalletDay } from '@interfaces/ICharts';
 import { Currencies } from '@interfaces/ICurrency';

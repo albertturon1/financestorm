@@ -1,4 +1,4 @@
-import { CHART_RANGES } from '@constants/Chart';
+import { CHART_RANGES } from '@constants/chart';
 
 import { Currencies } from './ICurrency';
 import { AnyObject } from './IUtility';

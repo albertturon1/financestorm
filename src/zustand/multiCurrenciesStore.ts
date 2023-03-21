@@ -3,7 +3,7 @@ import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import { shallow } from 'zustand/shallow';
 
-import { CHART_RANGES } from '@constants/Chart';
+import { CHART_RANGES } from '@constants/chart';
 import currenciesWithIndex, {
   IndexCurrency,
 } from '@features/multi-currencies/tools/currenciesWithIndex';

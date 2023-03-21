@@ -17,8 +17,13 @@ export const isExchangeRateTimeseriesResponse = (
 const convertDayRates = (day: CurrenciesRates, quoteCurrency: Currencies) =>
   Object.entries(day).reduce((acc, rate) => {
     const [key, value] = rate;
-    if (key !== quoteCurrency)
-      acc[key as keyof CurrenciesRates] = cutNumber(value ** -1);
+    if (key !== quoteCurrency) {
+      const newValue = value ** -1;
+      acc[key as keyof CurrenciesRates] = cutNumber(
+        newValue,
+        newValue < 1 ? 5 : 3,
+      );
+    }
     return acc;
   }, {} as CurrenciesRates);
 

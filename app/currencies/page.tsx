@@ -1,19 +1,19 @@
 'use client';
 
-import { use, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 import dynamic from 'next/dynamic';
 
-import FlagCountryCode from '@components/FlagCountryCode';
+import ClientScrollbars from '@components/ClientScrollbars';
+import Loader from '@components/Loader';
 import PageTitle from '@components/PageTitle';
-import { CURRENCIES } from '@constants/Currencies';
-import { PADDING_TAILWIND } from '@constants/Globals';
+import { CURRENCIES } from '@constants/currencies';
+import { PADDING_TAILWIND } from '@constants/globals';
 import TodayRatesQuoteCurrencyPicker from '@features/todayRates/components/TodayRatesQuoteCurrencyPicker';
 import { Currencies } from '@interfaces/ICurrency';
+import { ExchangeRateLatestResponse } from '@interfaces/models/IExchangerate';
+import { useGetTodayCurrencyRatesQuery } from '@src/api/client/CurrenctyRateClientApi';
 import { useTodayRatesQuoteCurrency } from '@src/zustand/todayCurrencyRatesStore';
-import queryClientSide from '@utils/queryClientSide';
-
-import { getTodayCurrencyRatesQuery } from '../../src/api/CurrenctyRateApi';
 
 const CurrenciesRatesTiles = dynamic(
   () => import('@features/currencies/compoonents/CurrenciesRatesTiles'),
@@ -26,43 +26,50 @@ const CurrenciesPage = () => {
     null,
   );
   const quoteCurrency = useTodayRatesQuoteCurrency();
-  const data =
-    !!quoteCurrencyName &&
-    use(
-      queryClientSide([quoteCurrency.id], () =>
-        getTodayCurrencyRatesQuery({
-          base_currencies: CURRENCIES,
-          quote_currency: quoteCurrencyName,
-        }),
-      ),
-    );
+  const { data, isLoading, isError } = useGetTodayCurrencyRatesQuery({
+    base_currencies: CURRENCIES,
+    quote_currency: quoteCurrencyName as Currencies,
+  });
 
   useEffect(() => {
     setQuoteCurrencyName(quoteCurrency.name);
   }, [quoteCurrency.name]);
 
   return (
-    <div className={`h-full w-full ${PADDING_TAILWIND}`}>
+    <div className={`flex h-full w-full flex-col ${PADDING_TAILWIND}`}>
       <div className="flex w-full flex-col justify-between gap-y-3 pb-1 lg:flex-row">
         <div className="flex items-center gap-x-2">
-          <PageTitle>{'Dzisiejsze kursy walut w stosunku do'}</PageTitle>
-          {!!quoteCurrencyName && (
-            <FlagCountryCode
-              code={quoteCurrencyName}
-              className="gap-x-0"
-              textClassName="text-xl"
-            />
-          )}
+          <PageTitle>{'Dzisiejsze kursy walut'}</PageTitle>
         </div>
         <TodayRatesQuoteCurrencyPicker />
       </div>
-      {!!data && !!quoteCurrencyName && (
-        <CurrenciesRatesTiles
-          data={data}
-          quoteCurrencyName={quoteCurrencyName}
-        />
-      )}
+      <Inside
+        data={data}
+        quoteCurrencyName={quoteCurrencyName}
+        isLoading={isLoading}
+        isError={isError}
+      />
     </div>
+  );
+};
+
+const Inside = ({
+  isLoading,
+  isError,
+  data,
+  quoteCurrencyName,
+}: {
+  isLoading: boolean;
+  isError: boolean;
+  data: ExchangeRateLatestResponse | undefined;
+  quoteCurrencyName: Currencies | null;
+}) => {
+  if (isLoading) return <Loader />;
+  if (!data || !quoteCurrencyName || isError) return <div>{'Error...'}</div>;
+  return (
+    <ClientScrollbars className="flex flex-1 flex-col pt-1">
+      <CurrenciesRatesTiles data={data} quoteCurrencyName={quoteCurrencyName} />
+    </ClientScrollbars>
   );
 };
 

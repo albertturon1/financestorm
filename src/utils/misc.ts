@@ -67,7 +67,9 @@ export type RenderItem<T> = ReactElement | ((data: T) => ReactElement);
 
 export const renderChildren = <T>(item: RenderItem<T> | undefined, data: T) => {
   if (!item) return null;
-  return isValidElement(item) ? item : item(data);
+  return isValidElement(item)
+    ? item
+    : (item as (data: T) => ReactElement)(data);
 };
 
 export const dateDiff = (

@@ -1,7 +1,7 @@
 import Link from 'next/link';
 
 import UserPhoto from '@components/UserPhoto';
-import { PADDING_TAILWIND } from '@constants/Globals';
+import { PADDING_TAILWIND } from '@constants/globals';
 import { getUser } from 'src/api/UserApi';
 
 const Navbar = async () => {
