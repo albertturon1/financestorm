@@ -1,10 +1,12 @@
 import { PADDING_TAILWIND } from '@constants/globals';
 import MainRedirectButton from '@features/main/components/MainRedirectButton';
+import UserFavouriteCurrencyRate from '@features/main/components/UserFavouriteCurrencyRate';
 
 const HomePage = () => (
   <div
     className={`${PADDING_TAILWIND} grid flex-1 grid-cols-1 gap-2 pb-4 md:grid-cols-2 lg:gap-5`}
   >
+    <UserFavouriteCurrencyRate />
     <MainRedirectButton
       image="/assets/images/dashboard.png"
       title="Panel użytkownika"

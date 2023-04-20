@@ -14,7 +14,7 @@ import {
   DailyCurrencyRatesTimeseriesRequest,
   MultiCurrenciesRate,
 } from './interfaces/ICurrenctyRateApi';
-import { currencyRateKeys } from './queryKeys/CurrencyRateKeys';
+import { CURRENCY_RATE_KEYS } from './queryKeys/CurrencyRateKeys';
 
 export const getDailyCurrencyTimeseriesOneYearQuery = async ({
   base_currencies,
@@ -54,7 +54,7 @@ export const prefetchDailyCurrencyTimeseriesOneYearQuery = async (
 ) => {
   const queryClient = getQueryClient();
   await queryClient.prefetchQuery({
-    queryKey: currencyRateKeys.dailyCurrencyTimeseriesOneYear(props),
+    queryKey: CURRENCY_RATE_KEYS.dailyCurrencyTimeseriesOneYear(props),
     queryFn: () => getDailyCurrencyTimeseriesOneYearQuery(props),
   });
 };

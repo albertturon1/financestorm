@@ -10,6 +10,7 @@ import {
   DailyCurrencyRatesTimeseriesRequest,
   MultiCurrenciesRate,
 } from '../interfaces/ICurrenctyRateApi';
+import { CURRENCY_RATE_KEYS } from '../queryKeys/CurrencyRateKeys';
 
 export const useGetTodayCurrencyRatesQuery = (props: MultiCurrenciesRate) =>
   useQuery(
@@ -18,11 +19,12 @@ export const useGetTodayCurrencyRatesQuery = (props: MultiCurrenciesRate) =>
     { enabled: !!props.base_currencies.length && !!props.base_currencies },
   );
 
-export const useGetDailyCurrencyTimeseriesOneYearQuery = (
+export const useDailyCurrencyRatesQuery = (
   props: DailyCurrencyRatesTimeseriesRequest,
 ) =>
-  useQuery(
-    ['todayCurrencyRates', props],
-    () => getDailyCurrencyTimeseriesOneYearQuery(props),
-    { enabled: !!props.base_currencies.length && !!props.base_currencies },
-  );
+  useQuery({
+    queryKey: CURRENCY_RATE_KEYS.dailyCurrencyTimeseriesOneYear(props),
+    queryFn: () => getDailyCurrencyTimeseriesOneYearQuery(props),
+    enabled: !!props.base_currencies.length && !!props.base_currencies,
+    staleTime: 24 * 60 * 1000,
+  });
