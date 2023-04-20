@@ -7,12 +7,14 @@ import {
   convertLastestRatesToQuoteCurrency,
   convertTimeseriesRatesToQuoteCurrency,
 } from '@utils/convertRatesToQuoteCurrency';
+import getQueryClient from '@utils/getQueryClient';
 import { genQueryString } from '@utils/misc';
 
 import {
   DailyCurrencyRatesTimeseriesRequest,
   MultiCurrenciesRate,
 } from './interfaces/ICurrenctyRateApi';
+import { currencyRateKeys } from './queryKeys/CurrencyRateKeys';
 
 export const getDailyCurrencyTimeseriesOneYearQuery = async ({
   base_currencies,
@@ -45,4 +47,14 @@ export const getTodayCurrencyRatesQuery = async (
   const data = await api.get<ExchangeRateLatestResponse>(`${url}${params}`);
   if (!data) return;
   return convertLastestRatesToQuoteCurrency(data);
+};
+
+export const prefetchDailyCurrencyTimeseriesOneYearQuery = async (
+  props: DailyCurrencyRatesTimeseriesRequest,
+) => {
+  const queryClient = getQueryClient();
+  await queryClient.prefetchQuery({
+    queryKey: currencyRateKeys.dailyCurrencyTimeseriesOneYear(props),
+    queryFn: () => getDailyCurrencyTimeseriesOneYearQuery(props),
+  });
 };

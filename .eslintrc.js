@@ -109,7 +109,7 @@ module.exports = {
     'prefer-destructuring': 'warn',
     'prefer-template': 'warn',
     'default-param-last': 'warn',
-    'func-style': ['warn', 'expression'],
+    // 'func-style': ['warn', 'expression'],
     'arrow-body-style': 'warn',
     'no-param-reassign': 'warn',
     'prefer-spread': 'warn',
