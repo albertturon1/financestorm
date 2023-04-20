@@ -90,3 +90,10 @@ export const xAxisInterval = (monthsDiff: number) => {
   // eslint-disable-next-line sonarjs/prefer-immediate-return
   return Math.pow(2, Math.round(Math.log(diff) / Math.log(2)));
 };
+
+export function valuesDifferenceInPercentage(rates: number[]) {
+  const [oldestValue] = rates;
+  const [newestValue] = rates.slice(-1);
+
+  return ((newestValue - oldestValue) / oldestValue) * 100;
+}

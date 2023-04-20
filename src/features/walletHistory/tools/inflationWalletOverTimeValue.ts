@@ -1,12 +1,12 @@
 import { DateTime } from 'luxon';
 
-import { DateValue } from '@interfaces/ICharts';
+import { LabelValue } from '@interfaces/ICharts';
 import { cutNumber } from '@utils/misc';
 
 import monthlyCPIData from './monthlyCPIData';
 import { WalletValueOverTime } from './walletValueOverTime';
 
-export interface InflationWalletOverTimeValue extends DateValue {
+export interface InflationWalletOverTimeValue extends LabelValue {
   cumulativeInflation: number;
   monthlyInflation: number;
   inflationLoss: number;
@@ -24,7 +24,7 @@ interface MonthlyInflation {
 const inflationFromCPI = (currentMonthCPI: number, pastMonthCPI: number) =>
   ((currentMonthCPI - pastMonthCPI) / pastMonthCPI) * 100;
 
-const inflationSumPerMonth = (monthlyCPI: DateValue[]) => {
+const inflationSumPerMonth = (monthlyCPI: LabelValue[]) => {
   const data: Record<string, MonthlyInflation> = {};
 
   for (let i = 0; i < monthlyCPI.length - 1; i++) {

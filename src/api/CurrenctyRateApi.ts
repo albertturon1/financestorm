@@ -35,6 +35,23 @@ export const getDailyCurrencyTimeseriesOneYearQuery = async ({
   return convertTimeseriesRatesToQuoteCurrency(data);
 };
 
+export const dailyCurrencyRatesQuery = async ({
+  base_currencies,
+  start_date,
+  end_date,
+  quote_currency,
+}: DailyCurrencyRatesTimeseriesRequest) => {
+  const url = `${process.env.NEXT_PUBLIC_EXCHANGERATE_URL ?? ''}/timeseries?`;
+  const params = genQueryString({
+    start_date,
+    end_date,
+    base: quote_currency,
+    symbols: base_currencies.join(',').toUpperCase(), //comma separated values
+  });
+
+  return await api.get<ExchangeRateTimeseriesResponse>(`${url}${params}`);
+};
+
 export const getTodayCurrencyRatesQuery = async (
   props: MultiCurrenciesRate,
 ) => {

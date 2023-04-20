@@ -9,6 +9,10 @@
   font-style: normal;
 }
 
+:root {
+  --stark: '#e7dfdd';
+}
+
 html,
 body,
 #__next {

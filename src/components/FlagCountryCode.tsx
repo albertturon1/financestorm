@@ -1,7 +1,7 @@
 import Flag from 'react-world-flags';
 import { twMerge } from 'tailwind-merge';
 
-import { Currencies } from '@interfaces/ICurrency';
+import { Currency } from '@interfaces/ICurrency';
 
 const FlagCountryCode = ({
   code,
@@ -12,7 +12,7 @@ const FlagCountryCode = ({
   boldName = true,
   flagStyle,
 }: {
-  code: Currencies;
+  code: Currency;
   className?: string;
   flagClassName?: string;
   textClassName?: string;
@@ -32,7 +32,7 @@ const FlagCountryCode = ({
       <Flag
         alt={`${code} flag`}
         code={code.slice(0, 2).toUpperCase()}
-        className="h-full object-left-top"
+        className="h-full object-left-top border"
         style={flagStyle}
       />
     </div>

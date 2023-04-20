@@ -3,7 +3,7 @@ import { twMerge } from 'tailwind-merge';
 import todayWalletValue, {
   isBaseCurrencyWalletValue,
 } from '@features/walletHistory/tools/todayWalletValue';
-import { Currencies } from '@interfaces/ICurrency';
+import { Currency } from '@interfaces/ICurrency';
 import { getUser } from '@src/api/UserApi';
 
 import UserWalletBalancesItem from './UserWalletBalancesItem';
@@ -66,7 +66,7 @@ const Balance = ({
   quoteCurrency,
 }: {
   balance: number;
-  quoteCurrency: Currencies;
+  quoteCurrency: Currency;
 }) => (
   <UserWalletBalancesRowWrapper>
     <p>{'Saldo bankowe'}</p>

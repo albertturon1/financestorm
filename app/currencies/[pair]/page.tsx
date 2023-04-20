@@ -5,7 +5,7 @@ import PageTitle from '@components/PageTitle';
 import { SERVER_DATE } from '@constants/dateTime';
 import { PADDING_TAILWIND } from '@constants/globals';
 import CurrenciesBaseQuoteChart from '@features/currencies/compoonents/CurrenciesBaseQuoteChart';
-import { Currencies, CurrenciesPair } from '@interfaces/ICurrency';
+import { Currency, CurrenciesPair } from '@interfaces/ICurrency';
 import { getDailyCurrencyTimeseriesOneYearQuery } from '@src/api/CurrenctyRateApi';
 
 export type CurrenciesPairPageProps = {
@@ -18,8 +18,8 @@ const CurrenciesPairPage = async ({
   params: CurrenciesPairPageProps;
 }) => {
   const [currency, quote] = (params.pair as string).split('-') as [
-    Currencies,
-    Currencies,
+    Currency,
+    Currency,
   ];
   const data = await getDailyCurrencyTimeseriesOneYearQuery({
     quote_currency: quote,

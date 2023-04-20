@@ -1,9 +1,9 @@
-import { DateValue } from '@interfaces/ICharts';
-import { Currencies } from '@interfaces/ICurrency';
+import { LabelValue } from '@interfaces/ICharts';
+import { Currency } from '@interfaces/ICurrency';
 import { CurrencyRatePair } from '@src/api/interfaces/ICurrenctyRateApi';
 
-export type CurrenciesRates = Record<Currencies, number>;
-export type LabeledRates = CurrenciesRates & DateValue;
+export type CurrenciesRates = Record<Currency, number>;
+export type LabeledRates = CurrenciesRates & LabelValue;
 
 type MOTD = {
   msg: string;
@@ -12,7 +12,7 @@ type MOTD = {
 export interface ExchangeRateLatestResponse {
   motd: MOTD;
   success: boolean;
-  base: Currencies;
+  base: Currency;
   date: string;
   rates: CurrenciesRates;
 }
@@ -38,14 +38,14 @@ export type ExchangeRateTimeseries = Omit<
   ExchangeRateTimeseriesResponse,
   'base' | 'motd' | 'success'
 > & {
-  quote_currency: Currencies;
-  base_currencies: Currencies[];
+  quote_currency: Currency;
+  base_currencies: Currency[];
   rates_array: ExchangeRateTimeseriesRatesArray[];
 };
 
 export interface ExchangeRateTimeseriesNormalized {
-  quote_currency: Currencies;
-  base_currency: Currencies;
+  quote_currency: Currency;
+  base_currency: Currency;
   start_date: string;
   end_date: string;
   min_value: number;
@@ -53,4 +53,10 @@ export interface ExchangeRateTimeseriesNormalized {
   rates: NormalizedCurrencyExchangeRate[];
 }
 
-export type NormalizedCurrencyExchangeRate = DateValue & CurrencyRatePair;
+export type NormalizedCurrencyExchangeRate = LabelValue & CurrencyRatePair;
+
+export type SeparateDailyCurrencyRates = {
+  quote_currency: Currency;
+  base_currency: Currency;
+  rates: LabelValue[];
+};

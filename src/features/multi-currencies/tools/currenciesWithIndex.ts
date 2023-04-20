@@ -1,12 +1,12 @@
 import { CURRENCIES } from '@constants/currencies';
-import { Currencies } from '@interfaces/ICurrency';
+import { Currency } from '@interfaces/ICurrency';
 
 export interface IndexCurrency {
-  name: Currencies;
+  name: Currency;
   id: number;
 }
 
-const currenciesWithIndex = (currencies: readonly Currencies[]) =>
+const currenciesWithIndex = (currencies: readonly Currency[]) =>
   CURRENCIES.reduce((acc, item, index) => {
     const included = currencies.includes(item);
     if (!included) return acc;

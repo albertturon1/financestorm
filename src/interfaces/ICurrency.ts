@@ -1,4 +1,4 @@
 import { CURRENCIES } from '@constants/currencies';
 
-export type Currencies = (typeof CURRENCIES)[number];
-export type CurrenciesPair = `${Currencies}-${Currencies}`;
+export type Currency = (typeof CURRENCIES)[number];
+export type CurrenciesPair = `${Currency}-${Currency}`;

@@ -1,5 +1,5 @@
 import { ChartMultiData } from '@interfaces/ICharts';
-import { Currencies } from '@interfaces/ICurrency';
+import { Currency } from '@interfaces/ICurrency';
 import {
   ExchangeRateTimeseries,
   NormalizedCurrencyExchangeRate,
@@ -14,7 +14,7 @@ const convertDailyCurrencyTimeseriesToChartData = (
     Object.entries(rates).forEach(([currency, value]) => {
       const currencyIndexInAcc = acc.findIndex((c) => c.name === currency);
       const obj: NormalizedCurrencyExchangeRate = {
-        base_currency: currency as Currencies,
+        base_currency: currency as Currency,
         quote_currency: data.quote_currency,
         value,
         label: date,

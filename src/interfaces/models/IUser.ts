@@ -1,4 +1,4 @@
-import { Currencies } from '@interfaces/ICurrency';
+import { Currency } from '@interfaces/ICurrency';
 
 export interface UserModel {
   id: string;
@@ -6,7 +6,7 @@ export interface UserModel {
   updated: Date;
   name: string;
   email: string;
-  quote_currency: Currencies;
+  quote_currency: Currency;
   currencies: UserCurrency[];
   verified?: boolean;
   avatar?: string;
@@ -16,5 +16,5 @@ export interface UserModel {
 export interface UserCurrency {
   amount: number;
   account_id: string;
-  currency: Currencies;
+  currency: Currency;
 }

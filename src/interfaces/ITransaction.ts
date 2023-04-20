@@ -1,6 +1,6 @@
 import { Record } from 'pocketbase';
 
-import { Currencies } from './ICurrency';
+import { Currency } from './ICurrency';
 
 export interface TransactionStatistics {
   base_currency_value: number;
@@ -10,8 +10,8 @@ export interface TransactionStatistics {
 
 interface TransactionCore extends Record {
   id: string;
-  base_currency: Currencies;
-  quote_currency: Currencies;
+  base_currency: Currency;
+  quote_currency: Currency;
   user_id: string;
   created: string;
   updated: string;

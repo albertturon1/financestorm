@@ -10,7 +10,7 @@ import PageTitle from '@components/PageTitle';
 import { CURRENCIES } from '@constants/currencies';
 import { PADDING_TAILWIND } from '@constants/globals';
 import TodayRatesQuoteCurrencyPicker from '@features/todayRates/components/TodayRatesQuoteCurrencyPicker';
-import { Currencies } from '@interfaces/ICurrency';
+import { Currency } from '@interfaces/ICurrency';
 import { ExchangeRateLatestResponse } from '@interfaces/models/IExchangerate';
 import { useGetTodayCurrencyRatesQuery } from '@src/api/client/CurrenctyRateClientApi';
 import { useTodayRatesQuoteCurrency } from '@src/zustand/todayCurrencyRatesStore';
@@ -19,16 +19,16 @@ const CurrenciesRatesTiles = dynamic(
   () => import('@features/currencies/compoonents/CurrenciesRatesTiles'),
 );
 
-export type CurrenciesPageProps = { currency: Currencies };
+export type CurrenciesPageProps = { currency: Currency };
 
 const CurrenciesPage = () => {
-  const [quoteCurrencyName, setQuoteCurrencyName] = useState<Currencies | null>(
+  const [quoteCurrencyName, setQuoteCurrencyName] = useState<Currency | null>(
     null,
   );
   const quoteCurrency = useTodayRatesQuoteCurrency();
   const { data, isLoading, isError } = useGetTodayCurrencyRatesQuery({
     base_currencies: CURRENCIES,
-    quote_currency: quoteCurrencyName as Currencies,
+    quote_currency: quoteCurrencyName as Currency,
   });
 
   useEffect(() => {
@@ -62,7 +62,7 @@ const Inside = ({
   isLoading: boolean;
   isError: boolean;
   data: ExchangeRateLatestResponse | undefined;
-  quoteCurrencyName: Currencies | null;
+  quoteCurrencyName: Currency | null;
 }) => {
   if (isLoading) return <Loader />;
   if (!data || !quoteCurrencyName || isError) return <div>{'Error...'}</div>;

@@ -3,7 +3,7 @@ import { DateTime } from 'luxon';
 import { SERVER_DATE } from '@constants/dateTime';
 import userCurrenciesAmount from '@features/user/tools/userCurrenciesAmount';
 import { WalletBaseCurrencyValue, WalletDay } from '@interfaces/ICharts';
-import { Currencies } from '@interfaces/ICurrency';
+import { Currency } from '@interfaces/ICurrency';
 import { UserCurrency } from '@interfaces/models/IUser';
 import { CurrencyRatePair } from '@src/api/interfaces/ICurrenctyRateApi';
 import dailyCurrencyTimeseriesYears from '@utils/dailyCurrencyTimeseriesYears';
@@ -63,12 +63,12 @@ const walletValueOverTime = async ({
     const baseCurrencies: WalletBaseCurrencyValue[] = Object.entries(
       day.rates,
     ).map(([currency, rate]) => {
-      const value = cutNumber(rate * currencyAmounts[currency as Currencies]);
+      const value = cutNumber(rate * currencyAmounts[currency as Currency]);
       dayValue = cutNumber(dayValue + value);
 
       return {
-        currency: currency as Currencies,
-        amount: currencyAmounts[currency as Currencies],
+        currency: currency as Currency,
+        amount: currencyAmounts[currency as Currency],
         value,
         rate,
       };

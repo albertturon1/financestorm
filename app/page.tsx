@@ -1,13 +1,20 @@
-import { PADDING_TAILWIND } from '@constants/globals';
-import MainRedirectButton from '@features/main/components/MainRedirectButton';
-import UserFavouriteCurrencyRate from '@features/main/components/UserFavouriteCurrencyRate';
+import dynamic from 'next/dynamic';
+
+import PageMaxWidth from '@components/PageMaxWidth';
+import PagePadding from '@components/PagePadding';
+import PopularCurrencyRates from '@components/PopularCurrencyRates';
+
+// const PopularCurrencyRates = dynamic(
+//   () => import('@components/PopularCurrencyRates'),
+//   { ssr: false },
+// );
 
 const HomePage = () => (
-  <div
-    className={`${PADDING_TAILWIND} grid flex-1 grid-cols-1 gap-2 pb-4 md:grid-cols-2 lg:gap-5`}
-  >
-    <UserFavouriteCurrencyRate />
-    <MainRedirectButton
+  <PageMaxWidth>
+    <PagePadding vertical>
+      <PopularCurrencyRates />
+      {/* <UserFavouriteCurrencyRate /> */}
+      {/* <MainRedirectButton
       image="/assets/images/dashboard.png"
       title="Panel użytkownika"
       subtitle="Zarządzaj swoim kontem i preferencjami za pomocą panelu użytkownika"
@@ -18,14 +25,15 @@ const HomePage = () => (
       title="Dzisiejsze kursy walut"
       subtitle="Sprawdź dzisiejsze kursy walut i bądź na bieżąco z rynkiem walutowym."
       href="currencies"
-    />
-    <MainRedirectButton
+      />
+      <MainRedirectButton
       image="/assets/images/multi-currencies.png"
       title="Historyczne kursy walut"
       subtitle="Przejrzyj archiwalne kursy walut i analizuj zmiany wartości poszczególnych walut w czasie."
       href="/multi-currencies"
-    />
-  </div>
+    /> */}
+    </PagePadding>
+  </PageMaxWidth>
 );
 
 export default HomePage;

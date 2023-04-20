@@ -12,7 +12,9 @@ import {
   YAxis,
 } from 'recharts';
 
+import CurrenciesChecbkoxList from '@components/CurrenciesChecbkoxList';
 import { customLineChartYDomain } from '@components/customLineChart/CustomLineChartHelpers';
+import { CURRENCIES } from '@constants/currencies';
 import { SERVER_DATE } from '@constants/dateTime';
 import { ExchangeRateTimeseriesRatesArray } from '@interfaces/models/IExchangerate';
 import { useDailyCurrencyRatesQuery } from '@src/api/client/CurrenctyRateClientApi';
@@ -72,6 +74,13 @@ const UserFavouriteCurrencyRate = () => {
 
   return (
     <div className="flex flex-col gap-y-2">
+      {/* <CurrenciesChecbkoxList
+        currencies={CURRENCIES}
+        title={'Chuj'}
+        onClick={(v) => {
+          console.log(v);
+        }}
+      /> */}
       <ResponsiveContainer width="100%" height="100%" maxHeight={300}>
         <LineChart
           data={chartData}

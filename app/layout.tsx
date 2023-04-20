@@ -17,9 +17,13 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       </head>
       <body>
         <ReactQueryProvider>
-          <Navbar />
-          <main className={'flex h-screen w-full flex-col pb-2 pt-24'}>
-            {children}
+          <main
+            className={
+              'min-w-screen relative flex min-h-screen flex-col bg-background'
+            }
+          >
+            <Navbar />
+            <div className="flex flex-1 flex-col">{children}</div>
           </main>
         </ReactQueryProvider>
       </body>

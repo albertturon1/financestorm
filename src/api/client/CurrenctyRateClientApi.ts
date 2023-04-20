@@ -3,7 +3,7 @@
 import { useQuery } from '@tanstack/react-query';
 
 import {
-  getDailyCurrencyTimeseriesOneYearQuery,
+  dailyCurrencyRatesQuery,
   getTodayCurrencyRatesQuery,
 } from '../CurrenctyRateApi';
 import {
@@ -24,7 +24,7 @@ export const useDailyCurrencyRatesQuery = (
 ) =>
   useQuery({
     queryKey: CURRENCY_RATE_KEYS.dailyCurrencyTimeseriesOneYear(props),
-    queryFn: () => getDailyCurrencyTimeseriesOneYearQuery(props),
+    queryFn: () => dailyCurrencyRatesQuery(props),
     enabled: !!props.base_currencies.length && !!props.base_currencies,
-    staleTime: 24 * 60 * 1000,
+    staleTime: 60 * 60 * 1000, //3600000 milliseconds = 1hour,
   });

@@ -7,7 +7,7 @@ import PageTitle from '@components/PageTitle';
 import { PADDING_TAILWIND } from '@constants/globals';
 import MultiBaseCurrenciesLineChart from '@features/multi-currencies/components/MultiBaseCurrenciesLineChart';
 import MultiCurrenciesDropdowns from '@features/multi-currencies/components/MultiCurrenciesDropdowns';
-import { Currencies } from '@interfaces/ICurrency';
+import { Currency } from '@interfaces/ICurrency';
 import { useMultiCurrenciesQuoteCurrency } from '@src/zustand/multiCurrenciesStore';
 
 const MultiCurrenciesPage = () => {
@@ -26,7 +26,7 @@ const MultiCurrenciesPage = () => {
           <PageTitle>{'Kursy walut w stosunku do '}</PageTitle>
           {!!name && (
             <FlagCountryCode
-              code={name as Currencies}
+              code={name as Currency}
               className="gap-x-0"
               textClassName="text-xl"
             />
