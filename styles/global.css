@@ -9,10 +9,6 @@
   font-style: normal;
 }
 
-:root {
-  --stark: '#e7dfdd';
-}
-
 html,
 body,
 #__next {
@@ -21,7 +17,6 @@ body,
   min-height: 100vh;
   font-family: 'Work Sans', sans-serif;
   color: white;
-  background-color: #161616;
 }
 
 * {

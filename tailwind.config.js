@@ -14,8 +14,10 @@ module.exports = {
     },
     extend: {
       colors: {
-        stark: '#e7dfdd',
-        navy: '#0B2447',
+        pale: '#e7dfdd',
+        dark_pale: '#b1acab',
+        navy: '#2F4858',
+        dark_navy: '#0E2B54',
         background: '#f6f6f6',
         primaryBlack: '#161616',
         secondaryBlack: '#242424',

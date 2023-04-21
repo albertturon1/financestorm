@@ -40,26 +40,26 @@ export const PopularCurrencyRatesItem = ({
       <div className={currencyStyle}>
         <FlagCountryCode code={currencyRates.base_currency} />
       </div>
+      {/* Lastest vale */}
       <p className={amountStyle}>{currencyRates.rates.slice(-1)[0].value}</p>
+      {/* Change */}
       <p
         className={changeStyle}
         style={{
           color: chartColor(values),
         }}
       >{`${differenceInPercentage}%`}</p>
+      {/* Chart */}
       <div className={`${chartStyle} h-full w-full`}>
         <PopularCurrencyRatesItemChart rates={currencyRates.rates} />
       </div>
-      <div className="col-span-1 flex h-full w-full items-center justify-end">
-        <Link
-          href={`/`}
-          className="flex h-full items-center justify-center px-3"
-        >
-          <button className="flex flex-1 items-center justify-center">
-            <ChevronRight color="#0B2447" size={25} />
-          </button>
-        </Link>
-      </div>
+      {/* Button to selected currency */}
+      <Link
+        href={`/`}
+        className="col-span-1 flex h-full w-full items-center justify-end pr-1 xs:pr-2 sm:pr-3"
+      >
+        <ChevronRight color="#0B2447" size={25} />
+      </Link>
     </div>
   );
 };
