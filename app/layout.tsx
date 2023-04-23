@@ -2,22 +2,30 @@ import '@styles/global.css';
 import { ReactNode } from 'react';
 
 import Navbar from './Navbar';
-import ReactQueryWrapper from './ReactQueryWrapper';
+import ReactQueryProvider from '../src/utils/providers/ReactQueryProvider';
+
+export const metadata = {
+  title: 'FinanceStorm',
+  description: `Albert Turoń's engineers thesis refactored`,
+};
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html>
       <head>
-        <title>{'Projekt inżynierski'}</title>
+        <title>{'FinanceStorm'}</title>
       </head>
       <body>
-        <ReactQueryWrapper>
-          {/* @ts-expect-error Server Component */}
-          <Navbar />
-          <main className={'flex h-screen w-full flex-col pt-24 pb-2'}>
-            {children}
+        <ReactQueryProvider>
+          <main
+            className={
+              'min-w-screen relative flex min-h-screen flex-col bg-background'
+            }
+          >
+            <Navbar />
+            <div className="flex flex-1 flex-col">{children}</div>
           </main>
-        </ReactQueryWrapper>
+        </ReactQueryProvider>
       </body>
     </html>
   );

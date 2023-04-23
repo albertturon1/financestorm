@@ -1,8 +1,11 @@
 import { isValidElement, ReactElement } from 'react';
 
+import clsx from 'clsx';
 import { PartialShallow, some } from 'lodash';
 import { DateTime } from 'luxon';
 import QueryString from 'query-string';
+import { twMerge } from 'tailwind-merge';
+import { ClassNameValue } from 'tailwind-merge/dist/lib/tw-join';
 
 import { AnyObject } from '@interfaces/IUtility';
 
@@ -90,3 +93,14 @@ export const xAxisInterval = (monthsDiff: number) => {
   // eslint-disable-next-line sonarjs/prefer-immediate-return
   return Math.pow(2, Math.round(Math.log(diff) / Math.log(2)));
 };
+
+export function valuesDifferenceInPercentage(rates: number[]) {
+  const [oldestValue] = rates;
+  const [newestValue] = rates.slice(-1);
+
+  return ((newestValue - oldestValue) / oldestValue) * 100;
+}
+
+export function cn(...inputs: ClassNameValue[]) {
+  return twMerge(clsx(inputs));
+}

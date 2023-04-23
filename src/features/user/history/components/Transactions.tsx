@@ -3,7 +3,7 @@ import {
   BsFillArrowRightSquareFill,
 } from 'react-icons/bs';
 
-import { Currencies } from '@interfaces/ICurrency';
+import { Currency } from '@interfaces/ICurrency';
 import { Transaction, TransactionType } from '@interfaces/ITransaction';
 
 import TransactionsFlagCountry from './TransactionsFlagCountry';
@@ -15,7 +15,7 @@ const Transactions = ({
   transactions,
   arrows,
 }: {
-  quoteCurrency: Currencies;
+  quoteCurrency: Currency;
   transactions: Transaction[] | undefined;
   arrows?: boolean;
 }) => (

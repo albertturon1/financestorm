@@ -1,6 +1,6 @@
 import { CHART_RANGES } from '@constants/chart';
 
-import { Currencies } from './ICurrency';
+import { Currency } from './ICurrency';
 import { AnyObject } from './IUtility';
 
 export interface RechartsData {
@@ -10,13 +10,13 @@ export interface RechartsData {
   baseValue: number;
 }
 
-export interface DateValue {
-  label: string;
+export interface LabelValue {
+  date: string;
   value: number;
 }
 
 export type WalletQuoteCurrencyValue = {
-  currency: Currencies;
+  currency: Currency;
   value: number;
 };
 
@@ -25,7 +25,7 @@ export type WalletBaseCurrencyValue = {
   rate: number;
 } & WalletQuoteCurrencyValue;
 
-export interface WalletDay extends DateValue {
+export interface WalletDay extends LabelValue {
   baseCurrencies: WalletBaseCurrencyValue[];
   quoteCurrency: WalletQuoteCurrencyValue;
 }

@@ -11,7 +11,7 @@ const TooltipWrapper = ({
 }) => (
   <div
     className={twMerge(
-      'flex max-w-xs sm:max-w-lg flex-col flex-wrap rounded border-2 border-slate-500 bg-secondaryBlack px-5 py-3 text-lg',
+      'flex max-w-xs flex-col flex-wrap rounded border-2 border-slate-500 bg-muted px-4 py-2 text-lg sm:max-w-lg md:px-5 md:py-3',
       className,
     )}
   >

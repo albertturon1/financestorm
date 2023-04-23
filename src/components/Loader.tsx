@@ -1,6 +1,6 @@
-const Loader = () => (
+const Loader = ({ message }: { message?: string }) => (
   <div className="flex flex-1 items-center justify-center">
-    <p>{'Loading...'}</p>
+    {message ?? <p>{'Loading...'}</p>}
   </div>
 );
 

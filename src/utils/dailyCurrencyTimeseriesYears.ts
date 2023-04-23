@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon';
 
 import { SERVER_DATE } from '@constants/dateTime';
-import { Currencies } from '@interfaces/ICurrency';
+import { Currency } from '@interfaces/ICurrency';
 import { ExchangeRateTimeseries } from '@interfaces/models/IExchangerate';
 import { getDailyCurrencyTimeseriesOneYearQuery } from '@src/api/CurrenctyRateApi';
 import {
@@ -16,7 +16,7 @@ export type DailyMultiCurrencyDataProps = Omit<
 > & {
   start_date?: string;
   end_date?: string;
-  base_currencies: Currencies[];
+  base_currencies: Currency[];
   years?: number;
 };
 

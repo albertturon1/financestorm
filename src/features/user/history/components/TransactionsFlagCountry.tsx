@@ -1,5 +1,5 @@
 import FlagCountryCode from '@components/FlagCountryCode';
-import { Currencies } from '@interfaces/ICurrency';
+import { Currency } from '@interfaces/ICurrency';
 
 const TransactionsFlagCountry = ({
   currency,
@@ -9,7 +9,7 @@ const TransactionsFlagCountry = ({
   className?: string;
 }) => (
   <FlagCountryCode
-    code={currency.toUpperCase() as Currencies}
+    code={currency.toUpperCase() as Currency}
     boldName={false}
     flagStyle={{
       width: currency.toUpperCase() === 'CHF' ? 22 : 25, //TODO

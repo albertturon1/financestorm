@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic';
 import ClientScrollbars from '@components/ClientScrollbars';
 import PageTitle from '@components/PageTitle';
 import UserWalletBalances from '@components/userWalletBalances';
+import WorkInProgress from '@components/WorkInProgress';
 import { PADDING_TAILWIND } from '@constants/globals';
 // import inflationWalletOverTimeValue from '@features/walletHistory/tools/inflationWalletOverTimeValue';
 import walletValueOverTime from '@features/walletHistory/tools/walletValueOverTime';
@@ -37,20 +38,21 @@ const WalletHistoryPage = async () => {
   ] as const;
 
   return (
-    <div className={`${PADDING_TAILWIND} flex h-full w-full flex-col pb-4`}>
-      <PageTitle className="pb-3">
-        {'Wartość portfela walutowego w czasie'}
-      </PageTitle>
-      <ClientScrollbars className="h-20">
-        {/* @ts-expect-error Server Component */}
-        <UserWalletBalances
-          containerClassName="flex-row w-max"
-          itemClassName="py-1.5 w-48"
-          onlyBalance
-        />
-      </ClientScrollbars>
-      <WalletOverTimeCharts chartData={chartData} />
-    </div>
+    <WorkInProgress />
+    // <div className={`${PADDING_TAILWIND} flex h-full w-full flex-col pb-4`}>
+    //   <PageTitle className="pb-3">
+    //     {'Wartość portfela walutowego w czasie'}
+    //   </PageTitle>
+    //   <ClientScrollbars className="h-20">
+    //     {/* @ts-expect-error Server Component */}
+    //     <UserWalletBalances
+    //       containerClassName="flex-row w-max"
+    //       itemClassName="py-1.5 w-48"
+    //       onlyBalance
+    //     />
+    //   </ClientScrollbars>
+    //   <WalletOverTimeCharts chartData={chartData} />
+    // </div>
   );
 };
 

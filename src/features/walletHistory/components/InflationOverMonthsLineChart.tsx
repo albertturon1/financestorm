@@ -21,7 +21,7 @@ const InflationOverMonthsLineChart = ({
 }: {
   data: NormalizedCurrencyExchangeRate[];
 }) => {
-  const lastRangeMonth = DateTime.fromISO(data.slice(-1)[0].label).toFormat(
+  const lastRangeMonth = DateTime.fromISO(data.slice(-1)[0].date).toFormat(
     'LLL yyyy',
     { locale: 'pl' },
   );

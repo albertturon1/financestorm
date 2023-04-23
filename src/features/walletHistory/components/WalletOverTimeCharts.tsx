@@ -26,7 +26,7 @@ const dataKeyExtractor = (item: ChartMultiData<ChartDataType>) =>
   nameOfKey(item.data[0], (x) => x.value);
 
 const xAxisLabelExtractor = (item: ChartMultiData<ChartDataType>) =>
-  nameOfKey(item.data[0], (x) => x.label);
+  nameOfKey(item.data[0], (x) => x.date);
 
 // const inflationNameExtractor = () => 'Skumulowana inflacja';
 

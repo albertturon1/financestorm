@@ -1,11 +1,11 @@
 import { CURRENCIES } from '@constants/currencies';
-import { Currencies } from '@interfaces/ICurrency';
+import { Currency } from '@interfaces/ICurrency';
 import { UserModel } from '@interfaces/models/IUser';
 import { getTodayCurrencyRatesQuery } from '@src/api/CurrenctyRateApi';
 import { cutNumber } from '@utils/misc';
 
 export interface QuoteCurrencyWalletValue {
-  currency: Currencies;
+  currency: Currency;
   amount: number;
   accountID: string;
   percentage: number;
@@ -24,7 +24,7 @@ export const isBaseCurrencyWalletValue = (
 const todayWalletValue = async (user: UserModel) => {
   const userBaseCurrencies = user.currencies.filter(
     (c) =>
-      CURRENCIES.includes(c.currency.toUpperCase() as Currencies) &&
+      CURRENCIES.includes(c.currency.toUpperCase() as Currency) &&
       c.currency !== user.quote_currency,
   );
 

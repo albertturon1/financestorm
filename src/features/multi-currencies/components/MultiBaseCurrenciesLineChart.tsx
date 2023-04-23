@@ -39,7 +39,7 @@ const tooltip = (props: TooltipProps<number, string>) => (
 
 const xAxisLabelExtractor = (
   item: ChartMultiData<NormalizedCurrencyExchangeRate>,
-) => nameOfKey(item.data[0], (x) => x.label);
+) => nameOfKey(item.data[0], (x) => x.date);
 
 const MultiBaseCurrenciesLineChart = () => {
   const quoteCurrency = useMultiCurrenciesQuoteCurrency();

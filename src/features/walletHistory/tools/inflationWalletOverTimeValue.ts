@@ -1,12 +1,12 @@
 import { DateTime } from 'luxon';
 
-import { DateValue } from '@interfaces/ICharts';
+import { LabelValue } from '@interfaces/ICharts';
 import { cutNumber } from '@utils/misc';
 
 import monthlyCPIData from './monthlyCPIData';
 import { WalletValueOverTime } from './walletValueOverTime';
 
-export interface InflationWalletOverTimeValue extends DateValue {
+export interface InflationWalletOverTimeValue extends LabelValue {
   cumulativeInflation: number;
   monthlyInflation: number;
   inflationLoss: number;
@@ -24,11 +24,11 @@ interface MonthlyInflation {
 const inflationFromCPI = (currentMonthCPI: number, pastMonthCPI: number) =>
   ((currentMonthCPI - pastMonthCPI) / pastMonthCPI) * 100;
 
-const inflationSumPerMonth = (monthlyCPI: DateValue[]) => {
+const inflationSumPerMonth = (monthlyCPI: LabelValue[]) => {
   const data: Record<string, MonthlyInflation> = {};
 
   for (let i = 0; i < monthlyCPI.length - 1; i++) {
-    const { label: currentLoopMonth, value: currentLoopCPIValue } =
+    const { date: currentLoopMonth, value: currentLoopCPIValue } =
       monthlyCPI[i];
 
     const { value: pastMonthLoopCPIValue } = monthlyCPI[i + 1];
@@ -55,10 +55,11 @@ const inflationSumPerMonth = (monthlyCPI: DateValue[]) => {
 const inflationWalletOverTimeValue = async (
   dailyWalletValues: WalletValueOverTime,
 ) => {
-  const [year, month] = DateTime.fromISO(dailyWalletValues.startDate)
-    .minus({ months: 1 })
-    .toISODate()
-    .split('-');
+  const [year, month] = (
+    DateTime.fromISO(dailyWalletValues.startDate)
+      .minus({ months: 1 })
+      .toISODate() as string
+  ).split('-');
   const startPeriod = `${year}-${month}-01`; //data from previous month of start date is needed for calculations
 
   const monthlyCPINormalize = await monthlyCPIData({
@@ -70,10 +71,10 @@ const inflationWalletOverTimeValue = async (
 
   const inflationSums = inflationSumPerMonth(monthlyCPI);
 
-  return dailyWalletValues.values.map(({ label, value }) => {
-    const yearMonth = DateTime.fromISO(label).toFormat('yyyy-MM');
+  return dailyWalletValues.values.map(({ date, value }) => {
+    const yearMonth = DateTime.fromISO(date).toFormat('yyyy-MM');
     const d: InflationWalletOverTimeValue = {
-      label,
+      date,
       baseValue: value,
       value,
       monthlyInflation: 0,

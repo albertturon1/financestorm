@@ -3,7 +3,7 @@
 import Link from 'next/link';
 
 import FlagCountryCode from '@components/FlagCountryCode';
-import { Currencies, CurrenciesPair } from '@interfaces/ICurrency';
+import { Currency, CurrenciesPair } from '@interfaces/ICurrency';
 
 const CurrencyTile = ({
   currenciesPair,
@@ -13,8 +13,8 @@ const CurrencyTile = ({
   rate: number;
 }) => {
   const [base, quote] = (currenciesPair as string).split('-') as [
-    Currencies,
-    Currencies,
+    Currency,
+    Currency,
   ];
   return (
     <Link href={`/currencies/${base.toLowerCase()}-${quote.toLowerCase()}`}>

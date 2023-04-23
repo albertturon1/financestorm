@@ -73,7 +73,7 @@ const CustomLineChart = <T, Y>({
   xAxisInterval,
   ...props
 }: CustomLineChartProps<T, Y>) => {
-  const { width } = useWindowSize();
+  const { screenWidth } = useWindowSize();
 
   return (
     <div className="relative flex h-full w-full">
@@ -84,9 +84,10 @@ const CustomLineChart = <T, Y>({
             dataKey={xAxisLabelExtractor(data[0])}
             interval={
               xAxisInterval ??
-              Math.ceil(
-                dataExtractor(data[0], 0).length / xAxisIntervalDivider(width),
-              )
+              xAxisIntervalDivider({
+                screenWidth,
+                itemsLength: dataExtractor(data[0], 0).length,
+              })
             }
             dy={20}
             height={40}

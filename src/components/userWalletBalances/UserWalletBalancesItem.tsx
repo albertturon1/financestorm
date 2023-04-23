@@ -3,7 +3,7 @@ import { ReactNode } from 'react';
 import { twMerge } from 'tailwind-merge';
 
 import FlagCountryCode from '@components/FlagCountryCode';
-import { Currencies } from '@interfaces/ICurrency';
+import { Currency } from '@interfaces/ICurrency';
 
 import UserWalletBalancesRowWrapper from './UserWalletBalancesRowWrapper';
 
@@ -18,7 +18,7 @@ const UserWalletBalancesItem = ({
   children?: ReactNode;
   className?: string;
   onClick?: () => void;
-  currency: Currencies;
+  currency: Currency;
   walletID: string;
   hideAccountID?: boolean;
 }) => (
