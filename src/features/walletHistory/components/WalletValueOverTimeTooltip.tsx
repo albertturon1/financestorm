@@ -29,9 +29,9 @@ const WalletValueOverTimeTooltip = ({
         <p>{'Dzisiejsza wartość portfela: '}</p>
         <p>{`${currentWalletValue} PLN`}</p>
       </TooltipRowWrapper>
-      <div className="mt-1 mb-1.5 h-0.5 w-full border-b border-slate-50" />
+      <div className="mb-1.5 mt-1 h-0.5 w-full border-b border-slate-50" />
       <p style={{ color: CHART_THEME[0] }}>{`Dzień: ${DateTime.fromISO(
-        data[0].payload.label,
+        data[0].payload.date,
       ).toLocaleString(DateTime.DATE_FULL)}`}</p>
       {data.map(({ payload: values }, index) => (
         // eslint-disable-next-line react/no-array-index-key

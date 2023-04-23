@@ -4,12 +4,16 @@ import { DateTime } from 'luxon';
 import { twMerge } from 'tailwind-merge';
 
 import FlagCountryCode from '@components/FlagCountryCode';
+import PagePadding from '@components/PagePadding';
+import SectionTitle from '@components/SectionTitle';
 import { SERVER_DATE } from '@constants/dateTime';
 import { Currency } from '@interfaces/ICurrency';
 import { useDailyCurrencyRatesQuery } from '@src/api/client/CurrenctyRateClientApi';
 import { separateToDailyCurrencyRates } from '@utils/convertRatesToQuoteCurrency';
 
+import PopularCurrencyRatesButton from './PopularCurrencyRatesButton';
 import { PopularCurrencyRatesItem } from './PopularCurrencyRatesItem';
+import PopularCurrencyRatesLoader from './PopularCurrencyRatesLoader';
 
 const DAYS_BACK = 30;
 
@@ -26,7 +30,7 @@ export const PopularCurrencyRates = () => {
     end_date: DateTime.now().toFormat(SERVER_DATE),
   });
 
-  if (isLoading) return <p>Loading</p>;
+  if (isLoading) return <PopularCurrencyRatesLoader />;
   if (isError || !data) return <p>Error</p>;
   const separateDailyCurrencyRates = separateToDailyCurrencyRates(data);
 
@@ -39,23 +43,21 @@ export const PopularCurrencyRates = () => {
   const currencyStyle = 'col-span-2';
 
   return (
-    <div className="flex flex-col gap-y-2 pt-2">
-      <h1 className="pl-2 xs:pl-3 sm:pl-4 text-lg sm:text-xl font-extrabold lowercase underline underline-offset-2 text-dark_navy">
-        {'Popular currency pairs'}
-      </h1>
+    <div className="flex flex-col gap-y-2">
+      <PagePadding>
+        <SectionTitle>{'Popular currency pairs'}</SectionTitle>
+      </PagePadding>
       {/* Legend */}
-      <div className="flex flex-1 flex-col font-bold">
+      <div className="flex flex-1 flex-col px-2 xs:px-1.5 sm:px-4">
         {/* Legend */}
-        <div
-          className={twMerge(
-            columnsStyle,
-            'h-12 border-0 xs:h-14',
-          )}
-        >
+        <div className={twMerge(columnsStyle, 'h-12 border-0 xs:h-14')}>
           <p className={currencyStyle}>{'Currency'}</p>
           <p className={amountStyle}>{'Amount'}</p>
           <p className={changeStyle}>{`Change (${DAYS_BACK}d)`}</p>
           <p className={chartStyle}>{`Chart (${DAYS_BACK}d)`}</p>
+          <PopularCurrencyRatesButton href={'/currencies'}>
+            <p>{'All'}</p>
+          </PopularCurrencyRatesButton>
         </div>
         {/* Quote currency */}
         <div

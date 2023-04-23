@@ -20,7 +20,7 @@ const MultiCurrenciesLineChartTooltip = ({
   return (
     <TooltipWrapper className="px-0 pb-0">
       <div className="flex flex-col px-5">
-        <p>{`Dzień: ${DateTime.fromISO(data[0].payload.label).toFormat(
+        <p>{`Dzień: ${DateTime.fromISO(data[0].payload.date).toFormat(
           'dd MMM, yyyy',
           { locale: 'pl' },
         )}`}</p>{' '}

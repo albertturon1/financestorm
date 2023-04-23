@@ -28,7 +28,7 @@ const InflationOverMonthsTooltip = ({
       <div className="mb-1 mt-0.5 h-0.5 w-full border-b border-slate-50" />
       <TooltipRowWrapper>
         <p style={{ color: CHART_THEME[0] }}>{`Miesiąc: ${DateTime.fromISO(
-          p.label,
+          p.date,
         ).toFormat('LLL yyyy', { locale: 'pl' })}`}</p>
       </TooltipRowWrapper>
       <TooltipRowWrapper>

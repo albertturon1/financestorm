@@ -11,7 +11,7 @@ const normalizeOECDData = (data: OECDResponse): LabelValue[] => {
   const series = Object.values(observations).map((e) => e[0]);
 
   return values.map((label, index) => ({
-    label: label.id,
+    date: label.id,
     value: series[index],
   }));
 };

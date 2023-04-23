@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon';
 
-export const xAxisIntervalDivider = (width: number) => {
+export const xAxisIntervalDivider = ({screenWidth, itemsLength} : {screenWidth: number; itemsLength: number}) => {
   const sizes = [
     { size: 586, interval: 3 },
     { size: 768, interval: 6 },
@@ -8,9 +8,9 @@ export const xAxisIntervalDivider = (width: number) => {
     { size: 1280, interval: 10 },
     { size: 1536, interval: 14 },
   ];
-  const z = sizes.find((s) => width < s.size);
-  if (!z) return 16;
-  return z.interval;
+  const z = sizes.find((s) => screenWidth < s.size);
+  if (!z) return Math.ceil(itemsLength / 16);
+  return Math.ceil(itemsLength / z.interval);
 };
 
 export const xAxisDateTickFormatter = (v: string) =>

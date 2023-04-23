@@ -1,3 +1,5 @@
+import { dehydrate } from '@tanstack/react-query';
+
 import {
   ExchangeRateLatestResponse,
   ExchangeRateTimeseriesResponse,
@@ -66,12 +68,16 @@ export const getTodayCurrencyRatesQuery = async (
   return convertLastestRatesToQuoteCurrency(data);
 };
 
-export const prefetchDailyCurrencyTimeseriesOneYearQuery = async (
+export const prefetchDailyCurrencyRatesQuery = async (
   props: DailyCurrencyRatesTimeseriesRequest,
 ) => {
   const queryClient = getQueryClient();
   await queryClient.prefetchQuery({
     queryKey: CURRENCY_RATE_KEYS.dailyCurrencyTimeseriesOneYear(props),
-    queryFn: () => getDailyCurrencyTimeseriesOneYearQuery(props),
+    queryFn: () => dailyCurrencyRatesQuery(props),
+  });
+
+  return dehydrate(queryClient, {
+    shouldDehydrateQuery: () => true,
   });
 };

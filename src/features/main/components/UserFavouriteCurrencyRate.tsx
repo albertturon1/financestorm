@@ -3,23 +3,11 @@
 import { useEffect, useState } from 'react';
 
 import { DateTime } from 'luxon';
-import {
-  Line,
-  LineChart,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from 'recharts';
 
-import CurrenciesChecbkoxList from '@components/CurrenciesChecbkoxList';
-import { customLineChartYDomain } from '@components/customLineChart/CustomLineChartHelpers';
-import { CURRENCIES } from '@constants/currencies';
 import { SERVER_DATE } from '@constants/dateTime';
 import { ExchangeRateTimeseriesRatesArray } from '@interfaces/models/IExchangerate';
 import { useDailyCurrencyRatesQuery } from '@src/api/client/CurrenctyRateClientApi';
 
-import UserFavouriteCurrencyRateTooltip from './UserFavouriteCurrencyRateTooltip';
 
 const formatDate = (tickValue: string) => {
   const date = new Date(tickValue);
@@ -63,14 +51,14 @@ const UserFavouriteCurrencyRate = () => {
   if (isLoading) return <p>Loading</p>;
   if (isError || !data) return <p>Error</p>;
 
-  const ticksCount = getTicksCount(width, data.rates_array);
-  const chartData = data.rates_array.map((d) => ({
-    label: d.date,
-    value: d.rates[baseCurrency],
-  }));
-  const chartDataValues = data.rates_array.map((d) => d.rates[baseCurrency]);
+  // const ticksCount = getTicksCount(width, data.rates_array);
+  // const chartData = data.rates_array.map((d) => ({
+  //   label: d.date,
+  //   value: d.rates[baseCurrency],
+  // }));
+  // const chartDataValues = data.rates_array.map((d) => d.rates[baseCurrency]);
 
-  const yDomain = customLineChartYDomain(chartDataValues);
+  // const yDomain = customLineChartYDomain(chartDataValues);
 
   return (
     <div className="flex flex-col gap-y-2">
@@ -81,7 +69,7 @@ const UserFavouriteCurrencyRate = () => {
           console.log(v);
         }}
       /> */}
-      <ResponsiveContainer width="100%" height="100%" maxHeight={300}>
+      {/* <ResponsiveContainer width="100%" height="100%" maxHeight={300}>
         <LineChart
           data={chartData}
           margin={{
@@ -105,7 +93,7 @@ const UserFavouriteCurrencyRate = () => {
           />
           <Tooltip content={UserFavouriteCurrencyRateTooltip} cursor={false} />
         </LineChart>
-      </ResponsiveContainer>
+      </ResponsiveContainer> */}
     </div>
   );
 };

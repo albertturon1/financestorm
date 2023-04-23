@@ -1,4 +1,3 @@
-import { LabelValue } from '@interfaces/ICharts';
 import { Currency } from '@interfaces/ICurrency';
 import {
   CurrenciesRates,

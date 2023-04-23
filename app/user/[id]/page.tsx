@@ -4,6 +4,7 @@ import { AiOutlineLineChart } from 'react-icons/ai';
 
 import PageTitle from '@components/PageTitle';
 import UserPhoto from '@components/UserPhoto';
+import WorkInProgress from '@components/WorkInProgress';
 import { CHART_THEME } from '@constants/chart';
 import { PADDING_TAILWIND } from '@constants/globals';
 import UserBalancePercentage from '@features/user/components/currencyBalancePercentage/UserBalancePercentage';
@@ -26,40 +27,32 @@ const User = async () => {
   // const transactions = await getUserCurrencyTransactions();
 
   return (
-    <div className={`${PADDING_TAILWIND} flex h-full w-full flex-col pb-6`}>
-      {/*Header */}
-      <div className="flex items-center">
-        <PageTitle className="mr-3">{`Witaj, ${user.name}`}</PageTitle>
-        {user.photo && <UserPhoto photo={user.photo} alt={user.name} />}
-      </div>
-      {/*User balance*/}
-      <div className="mt-1 lg:mt-3 mb-10 flex flex-col lg:flex-row">
-        <div className="lg:mr-16">
-          {/* @ts-expect-error Server Component */}
-          <UserBalance user={user} />
-          <Link href={`/user/${user.id}/wallet-history`}>
-            <div className=" mt-3 mb-10 flex h-11 w-96 items-center justify-center gap-x-4 self-center rounded border border-gray-500 bg-gray-700 font-bold lg:mb-0">
-              <p>{'Wartość portfela w czasie'}</p>
-              <AiOutlineLineChart size={25} color={CHART_THEME[0]} />
-            </div>
-          </Link>
-        </div>
-        {!!walletValue && (
-          <div className="flex grow mb-10 ">
-            <UserBalancePercentage currencies={walletValue.currencies} />
-          </div>
-        )}
-      </div>
-      {/* {!!transactions.length && (
-        <div className="flex flex-col gap-y-10">
-          <UserLastTransactions
-            transactions={transactions}
-            quoteCurrency={user.quote_currency}
-          />
-          <UserCurrencyPairSummary transactions={transactions} />
-        </div>
-      )} */}
-    </div>
+    <WorkInProgress />
+    // <div className={`${PADDING_TAILWIND} flex h-full w-full flex-col pb-6`}>
+    //   {/*Header */}
+    //   <div className="flex items-center">
+    //     <PageTitle className="mr-3">{`Witaj, ${user.name}`}</PageTitle>
+    //     {user.photo && <UserPhoto photo={user.photo} alt={user.name} />}
+    //   </div>
+    //   {/*User balance*/}
+    //   <div className="mt-1 lg:mt-3 mb-10 flex flex-col lg:flex-row">
+    //     <div className="lg:mr-16">
+    //       {/* @ts-expect-error Server Component */}
+    //       <UserBalance user={user} />
+    //       <Link href={`/user/${user.id}/wallet-history`}>
+    //         <div className=" mt-3 mb-10 flex h-11 w-96 items-center justify-center gap-x-4 self-center rounded border border-gray-500 bg-gray-700 font-bold lg:mb-0">
+    //           <p>{'Wartość portfela w czasie'}</p>
+    //           <AiOutlineLineChart size={25} color={CHART_THEME[0]} />
+    //         </div>
+    //       </Link>
+    //     </div>
+    //     {!!walletValue && (
+    //       <div className="flex grow mb-10 ">
+    //         <UserBalancePercentage currencies={walletValue.currencies} />
+    //       </div>
+    //     )}
+    //   </div>
+    // </div>
   );
 };
 

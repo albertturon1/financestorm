@@ -78,7 +78,7 @@ const walletValueOverTime = async ({
     if (maxValue === -1 || dayValue > maxValue) maxValue = dayValue;
 
     acc.push({
-      label: day.date,
+      date: day.date,
       baseCurrencies,
       quoteCurrency: {
         currency: quote_currency,

@@ -18,7 +18,7 @@ const PagePadding = ({
   <div
     className={twMerge(
       `flex flex-col ${horizontal ? 'px-2 xs:px-3 sm:px-8 lg:px-12' : ''} ${
-        vertical ? 'py-3 sm:py-8 lg:py-12' : ''
+        vertical ? 'py-3 sm:py-8 lg:py-10' : ''
       } ${flex ? 'flex-1' : ''}`,
       className,
     )}

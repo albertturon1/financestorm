@@ -17,7 +17,7 @@ const convertDailyCurrencyTimeseriesToChartData = (
         base_currency: currency as Currency,
         quote_currency: data.quote_currency,
         value,
-        label: date,
+        date,
       };
 
       if (currencyIndexInAcc === -1)

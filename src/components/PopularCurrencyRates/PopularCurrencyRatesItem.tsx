@@ -1,10 +1,8 @@
-import { ChevronRight } from 'lucide-react';
-import Link from 'next/link';
-
 import FlagCountryCode from '@components/FlagCountryCode';
 import { SeparateDailyCurrencyRates } from '@interfaces/models/IExchangerate';
 import { cutNumber, valuesDifferenceInPercentage } from '@utils/misc';
 
+import PopularCurrencyRatesButton from './PopularCurrencyRatesButton';
 import PopularCurrencyRatesItemChart from './PopularCurrencyRatesItemChart';
 
 export function chartColor(rates: number[]) {
@@ -54,12 +52,9 @@ export const PopularCurrencyRatesItem = ({
         <PopularCurrencyRatesItemChart rates={currencyRates.rates} />
       </div>
       {/* Button to selected currency */}
-      <Link
-        href={`/`}
-        className="col-span-1 flex h-full w-full items-center justify-end pr-1 xs:pr-2 sm:pr-3"
-      >
-        <ChevronRight color="#0B2447" size={25} />
-      </Link>
+      <PopularCurrencyRatesButton
+        href={`/currencies/${currencyRates.base_currency}-${currencyRates.quote_currency}`}
+      />
     </div>
   );
 };
