@@ -1,6 +1,8 @@
 import '@styles/global.css';
 import { ReactNode } from 'react';
 
+import { Analytics } from '@vercel/analytics/react';
+
 import Navbar from './Navbar';
 import ReactQueryProvider from '../src/utils/providers/ReactQueryProvider';
 
@@ -26,6 +28,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <div className="flex flex-1 flex-col">{children}</div>
           </main>
         </ReactQueryProvider>
+        <Analytics />
       </body>
     </html>
   );
