@@ -53,7 +53,9 @@ export const PopularCurrencyRatesItem = ({
       </div>
       {/* Button to selected currency */}
       <PopularCurrencyRatesButton
-        href={`/currencies/${currencyRates.base_currency}-${currencyRates.quote_currency}`}
+        href={{
+          pathname: `/currencies/${currencyRates.base_currency}-${currencyRates.quote_currency}`,
+        }}
       />
     </div>
   );

@@ -11,7 +11,7 @@ const PopularCurrencyRatesButton = ({
 }: {
   children?: ReactNode;
   className?: string;
-  href: string;
+  href: Partial<URL>;
 }) => (
   <Link
     href={href}
