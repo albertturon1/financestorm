@@ -51,7 +51,7 @@ const CurrenciesPairSelectors = ({
           const reversedPair = pair.split('-').reverse().join('-');
           void router.replace(`/currencies/${reversedPair}`);
         }}
-        className="-mb-1 flex rounded-full border p-3"
+        className="flex rounded-full border p-2"
       >
         <ArrowLeftRight size={20} color={Theme.colors.blue} />
       </button>
