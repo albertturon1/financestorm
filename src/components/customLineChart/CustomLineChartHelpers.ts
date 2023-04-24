@@ -2,6 +2,7 @@ import { DateTime } from 'luxon';
 
 export const xAxisIntervalDivider = ({screenWidth, itemsLength} : {screenWidth: number; itemsLength: number}) => {
   const sizes = [
+    { size: 375, interval: 2 },
     { size: 586, interval: 3 },
     { size: 768, interval: 6 },
     { size: 1024, interval: 8 },

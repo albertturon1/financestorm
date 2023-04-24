@@ -2,7 +2,7 @@ import { Button } from '@components/ui/Button';
 import CHART_TIMESPANS, { ChartTimespan } from '@constants/chartTimespan';
 import { cn } from '@utils/misc';
 
-const CurrenciesBaseQuoteChartTimespanPicker = ({
+const CurrenciesPairTimespanPicker = ({
   onSelect,
   active,
 }: {
@@ -14,7 +14,7 @@ const CurrenciesBaseQuoteChartTimespanPicker = ({
       <Button
         className={cn(
           'rounded-full ',
-          active === timespan && 'bg-blue text-white',
+          active === timespan ? 'bg-blue text-white' : 'border',
         )}
         key={timespan}
         onClick={() => {
@@ -27,4 +27,4 @@ const CurrenciesBaseQuoteChartTimespanPicker = ({
   </div>
 );
 
-export default CurrenciesBaseQuoteChartTimespanPicker;
+export default CurrenciesPairTimespanPicker;

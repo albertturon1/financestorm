@@ -25,7 +25,7 @@ const CurrenciesSelectList = ({
   onValueChange: (currency: Currency) => void;
 }) => (
   <Select {...props}>
-    <SelectTrigger className="w-full max-w-[250px]">
+    <SelectTrigger className="w-full">
       {typeof title === 'string' ? title : title()}
     </SelectTrigger>
     <SelectContent>

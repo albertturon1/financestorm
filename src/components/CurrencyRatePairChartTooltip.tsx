@@ -18,7 +18,6 @@ const CurrencyRatePairChartTooltip = ({
 }) => {
   if (!active || !payload?.length) return null;
   const [{ payload: p }] = payload as unknown as Payload1;
-  const userLocale = navigator.language;
 
   const date = new Date(p.date);
   const options = {
@@ -27,7 +26,7 @@ const CurrencyRatePairChartTooltip = ({
     day: 'numeric',
     year: 'numeric',
   } satisfies DateTimeFormatOptions;
-  const localDateString = date.toLocaleDateString(userLocale, options);
+  const localDateString = date.toLocaleDateString('en-US', options);
 
   return (
     <TooltipWrapper className="text-sm font-bold">

@@ -27,8 +27,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <Navbar />
             <div className="flex flex-1 flex-col">{children}</div>
           </main>
+          <Analytics />
         </ReactQueryProvider>
-        <Analytics />
       </body>
     </html>
   );

@@ -4,7 +4,7 @@ import PageMaxWidth from '@components/PageMaxWidth';
 import PagePadding from '@components/PagePadding';
 
 const Navbar = () => (
-  <div className="sticky top-0 z-50 flex h-20 w-full border-b bg-dark_pale">
+  <div className="sticky top-0 z-50 flex h-[4.5rem] w-full border-b bg-dark_pale lg:h-20">
     <PageMaxWidth>
       <PagePadding flex>
         <div className="flex flex-1 items-center justify-between">
@@ -17,14 +17,6 @@ const Navbar = () => (
               {'Storm'}
             </h1>
           </Link>
-          {/* <Link href={`/user/${process.env.NEXT_PUBLIC_USER_ID ?? ''}`}>
-              <div className="flex h-full cursor-pointer items-center">
-                <h1 className="mr-3 text-lg font-semibold">{'Profil'}</h1>
-                {user?.photo && (
-                  <UserPhoto photo={user.photo} alt={user.name} />
-                )}
-              </div>
-            </Link> */}
         </div>
       </PagePadding>
     </PageMaxWidth>
