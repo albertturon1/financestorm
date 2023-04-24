@@ -2,10 +2,14 @@ import dynamic from 'next/dynamic';
 
 import PageMaxWidth from '@components/PageMaxWidth';
 import PagePadding from '@components/PagePadding';
+import CurrenciesPairSelectors from '@features/currencies-pair/components/CurrenciesPairSelectors';
 import { Currency, CurrenciesPair } from '@interfaces/ICurrency';
 
 const CurrenciesBaseQuoteChart = dynamic(
-  () => import('@features/currencies/compoonents/CurrenciesBaseQuoteChart'),
+  () =>
+    import(
+      '@features/currencies-pair/components/CurrenciesPairChartAndTimespan'
+    ),
 );
 
 export type CurrenciesPairPageProps = {
@@ -25,10 +29,16 @@ const CurrenciesPairPage = ({
   return (
     <PageMaxWidth flex>
       <PagePadding vertical flex>
-        <CurrenciesBaseQuoteChart
-          baseCurrency={baseCurrency}
-          quoteCurrency={quoteCurrency}
-        />
+        <div className="flex w-full flex-1 flex-col gap-y-8">
+          <CurrenciesPairSelectors
+            baseCurrency={baseCurrency}
+            quoteCurrency={quoteCurrency}
+          />
+          <CurrenciesBaseQuoteChart
+            baseCurrency={baseCurrency}
+            quoteCurrency={quoteCurrency}
+          />
+        </div>
       </PagePadding>
     </PageMaxWidth>
   );

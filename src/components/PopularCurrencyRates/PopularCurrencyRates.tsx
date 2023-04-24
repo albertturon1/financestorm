@@ -54,7 +54,11 @@ export const PopularCurrencyRates = () => {
           <p className={amountStyle}>{'Amount'}</p>
           <p className={changeStyle}>{`Change (${DAYS_BACK}d)`}</p>
           <p className={chartStyle}>{`Chart (${DAYS_BACK}d)`}</p>
-          <PopularCurrencyRatesButton href={'/currencies'}>
+          <PopularCurrencyRatesButton
+            href={{
+              pathname: '/currencies',
+            }}
+          >
             <p>{'All'}</p>
           </PopularCurrencyRatesButton>
         </div>

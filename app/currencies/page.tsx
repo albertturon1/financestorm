@@ -8,7 +8,7 @@ import SectionTitle from '@components/SectionTitle';
 import { Currency } from '@interfaces/ICurrency';
 
 // const CurrenciesRatesTiles = dynamic(
-//   () => import('@features/currencies/compoonents/CurrenciesRatesTiles'),
+//   () => import('@features/currencies/components/CurrenciesRatesTiles'),
 // );
 
 export type CurrenciesPageProps = { currency: Currency };
