@@ -4,7 +4,7 @@ import { ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import { twMerge } from 'tailwind-merge';
 
-const PopularCurrencyRatesButton = ({
+const CurrencyRatesListButton = ({
   children,
   className,
   href,
@@ -25,4 +25,4 @@ const PopularCurrencyRatesButton = ({
   </Link>
 );
 
-export default PopularCurrencyRatesButton;
+export default CurrencyRatesListButton;
