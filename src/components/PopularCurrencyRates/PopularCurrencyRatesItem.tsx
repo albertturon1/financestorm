@@ -14,14 +14,14 @@ export function chartColor(rates: number[]) {
 
 export const PopularCurrencyRatesItem = ({
   currencyRates,
-  columnsStyle,
+  rowStyle,
   changeStyle,
   chartStyle,
   amountStyle,
   currencyStyle,
 }: {
   currencyRates: SeparateDailyCurrencyRates;
-  columnsStyle: string;
+  rowStyle: string;
   changeStyle: string;
   chartStyle: string;
   amountStyle: string;
@@ -34,7 +34,7 @@ export const PopularCurrencyRatesItem = ({
   );
 
   return (
-    <div className={columnsStyle}>
+    <div className={rowStyle}>
       <div className={currencyStyle}>
         <FlagCountryCode code={currencyRates.base_currency} />
       </div>
