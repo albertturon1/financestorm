@@ -3,13 +3,9 @@ import { Line, LineChart, ResponsiveContainer, YAxis } from 'recharts';
 import { customLineChartYDomain } from '@components/customLineChart/CustomLineChartHelpers';
 import { LabelValue } from '@interfaces/ICharts';
 
-import { chartColor } from './PopularCurrencyRatesItem';
+import { chartColor } from './CurrencyRatesListItem';
 
-const PopularCurrencyRatesItemChart = ({
-  rates,
-}: {
-  rates: LabelValue[];
-}) => {
+const CurrencyRatesListItemChart = ({ rates }: { rates: LabelValue[] }) => {
   const values = rates.map((r) => r.value);
   const yDomain = customLineChartYDomain(values, 1);
 
@@ -38,4 +34,4 @@ const PopularCurrencyRatesItemChart = ({
     </ResponsiveContainer>
   );
 };
-export default PopularCurrencyRatesItemChart;
+export default CurrencyRatesListItemChart;

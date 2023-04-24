@@ -1,7 +1,7 @@
 import PagePadding from '@components/PagePadding';
 import SkeletonLoader from '@components/SkeletonLoader';
 
-const PopularCurrencyRatesLoader = () => (
+const CurrencyRatesListSkeletonLoader = () => (
   <PagePadding>
     <div className="flex flex-col">
       <SkeletonLoader className="mb-2 h-4 w-[200px] xs:h-7" />
@@ -17,4 +17,4 @@ const PopularCurrencyRatesLoader = () => (
   </PagePadding>
 );
 
-export default PopularCurrencyRatesLoader;
+export default CurrencyRatesListSkeletonLoader;

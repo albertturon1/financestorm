@@ -11,15 +11,19 @@ import { Currency } from '@interfaces/ICurrency';
 import { useDailyCurrencyRatesQuery } from '@src/api/client/CurrenctyRateClientApi';
 import { separateToDailyCurrencyRates } from '@utils/convertRatesToQuoteCurrency';
 
-import PopularCurrencyRatesButton from './PopularCurrencyRatesButton';
-import { PopularCurrencyRatesItem } from './PopularCurrencyRatesItem';
-import PopularCurrencyRatesLoader from './PopularCurrencyRatesLoader';
+import CurrencyRatesListButton from './CurrencyRatesListButton';
+import CurrencyRatesListItem from './CurrencyRatesListItem';
+import CurrencyRatesListSkeletonLoader from './CurrencyRatesListSkeletonLoader';
 
 const DAYS_BACK = 30;
 const quoteCurrency = 'PLN';
 const baseCurrencies = ['USD', 'EUR', 'GBP', 'CHF'] satisfies Currency[];
 
-export const PopularCurrencyRates = () => {
+export const CurrencyRatesList = ({
+  showGoToAllButton = false,
+}: {
+  showGoToAllButton?: boolean;
+}) => {
   const { data, isError, isLoading } = useDailyCurrencyRatesQuery({
     quote_currency: quoteCurrency,
     base_currencies: baseCurrencies,
@@ -29,7 +33,7 @@ export const PopularCurrencyRates = () => {
     end_date: DateTime.now().toFormat(SERVER_DATE),
   });
 
-  if (isLoading) return <PopularCurrencyRatesLoader />;
+  if (isLoading) return <CurrencyRatesListSkeletonLoader />;
   if (isError || !data) return <p>Error</p>;
   const separateDailyCurrencyRates = separateToDailyCurrencyRates(data);
 
@@ -54,13 +58,15 @@ export const PopularCurrencyRates = () => {
           <p className={amountStyle}>{'Amount'}</p>
           <p className={changeStyle}>{`Change (${DAYS_BACK}d)`}</p>
           <p className={chartStyle}>{`Chart (${DAYS_BACK}d)`}</p>
-          <PopularCurrencyRatesButton
-            href={{
-              pathname: '/currencies',
-            }}
-          >
-            <p>{'All'}</p>
-          </PopularCurrencyRatesButton>
+          {showGoToAllButton && (
+            <CurrencyRatesListButton
+              href={{
+                pathname: '/currencies',
+              }}
+            >
+              <p>{'All'}</p>
+            </CurrencyRatesListButton>
+          )}
         </div>
         {/* Quote currency */}
         <div
@@ -72,7 +78,7 @@ export const PopularCurrencyRates = () => {
           <p className={amountStyle}>{'1'}</p>
         </div>
         {separateDailyCurrencyRates.rates_array.map((currencyRates) => (
-          <PopularCurrencyRatesItem
+          <CurrencyRatesListItem
             key={`${currencyRates.base_currency}-${currencyRates.quote_currency}`}
             currencyRates={currencyRates}
             rowStyle={rowStyle}

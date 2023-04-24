@@ -2,8 +2,8 @@ import FlagCountryCode from '@components/FlagCountryCode';
 import { SeparateDailyCurrencyRates } from '@interfaces/models/IExchangerate';
 import { cutNumber, valuesDifferenceInPercentage } from '@utils/misc';
 
-import PopularCurrencyRatesButton from './PopularCurrencyRatesButton';
-import PopularCurrencyRatesItemChart from './PopularCurrencyRatesItemChart';
+import CurrencyRatesListButton from './CurrencyRatesListButton';
+import CurrencyRatesListItemChart from './CurrencyRatesListItemChart';
 
 export function chartColor(rates: number[]) {
   const differenceInPercentage = valuesDifferenceInPercentage(rates);
@@ -12,7 +12,7 @@ export function chartColor(rates: number[]) {
   return 'rgb(55 65 81)';
 }
 
-export const PopularCurrencyRatesItem = ({
+const CurrencyRatesListItem = ({
   currencyRates,
   rowStyle,
   changeStyle,
@@ -49,10 +49,10 @@ export const PopularCurrencyRatesItem = ({
       >{`${differenceInPercentage}%`}</p>
       {/* Chart */}
       <div className={`${chartStyle} h-full w-full`}>
-        <PopularCurrencyRatesItemChart rates={currencyRates.rates} />
+        <CurrencyRatesListItemChart rates={currencyRates.rates} />
       </div>
       {/* Button to selected currency */}
-      <PopularCurrencyRatesButton
+      <CurrencyRatesListButton
         href={{
           pathname: `/currencies/${currencyRates.base_currency}-${currencyRates.quote_currency}`,
         }}
@@ -60,3 +60,5 @@ export const PopularCurrencyRatesItem = ({
     </div>
   );
 };
+
+export default CurrencyRatesListItem;
