@@ -1,12 +1,12 @@
 import {
-  DailyCurrencyRatesTimeseriesRequest,
+  DailyCurrencyRatesRequest,
   MultiCurrenciesRate,
 } from '../interfaces/ICurrenctyRateApi';
 
 export const CURRENCY_RATE_KEYS = {
   all: ['CURRENCY_RATE_KEYS'] as const,
   dailyCurrencyTimeseriesOneYear: (
-    props: DailyCurrencyRatesTimeseriesRequest,
+    props: DailyCurrencyRatesRequest,
   ) =>
     [
       ...CURRENCY_RATE_KEYS.all,

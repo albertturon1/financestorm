@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import { DateTime, DateTimeFormatOptions } from 'luxon';
+import { DateTimeFormatOptions } from 'luxon';
 import {
   Area,
   CartesianGrid,
@@ -21,10 +21,10 @@ import CurrencyRatePairChartTooltip from '@components/CurrencyRatePairChartToolt
 import { xAxisIntervalDivider } from '@components/customLineChart/CustomLineChartHelpers';
 import DataLoader from '@components/ui/DataLoader';
 import CHART_TIMESPANS, { ChartTimespan } from '@constants/chartTimespan';
-import { SERVER_DATE } from '@constants/dateTime';
 import useWindowSize from '@hooks/useWindowSize';
 import { Currency } from '@interfaces/ICurrency';
 import { useDailyCurrencyRatesQuery } from '@src/api/client/CurrenctyRateClientApi';
+import { PrefetchDailyCurrencyRatesRequest } from '@src/api/interfaces/ICurrenctyRateApi';
 import Theme from '@src/Theme';
 import { separateToDailyCurrencyRates } from '@utils/convertRatesToQuoteCurrency';
 import { cutNumber } from '@utils/misc';
@@ -33,18 +33,21 @@ import CurrenciesBaseQuoteChartTimespanPicker from './CurrenciesPairTimespanPick
 
 const CurrenciesPairChartAndTimespan = ({
   quoteCurrency,
-  baseCurrency,
+  defaultChartTimespan,
+  queryProps,
 }: {
   quoteCurrency: Currency;
-  baseCurrency: Currency;
+  defaultChartTimespan: ChartTimespan;
+  queryProps: PrefetchDailyCurrencyRatesRequest;
 }) => {
-  const [timespan, setTimespan] = useState<ChartTimespan>('1Y');
+  const [timespan, setTimespan] = useState<ChartTimespan>(defaultChartTimespan);
 
   const { data, error, isLoading } = useDailyCurrencyRatesQuery({
-    quote_currency: quoteCurrency,
-    base_currencies: [baseCurrency],
-    start_date: CHART_TIMESPANS[timespan],
-    end_date: DateTime.now().toFormat(SERVER_DATE),
+    ...queryProps,
+    queryParams: {
+      ...queryProps.queryParams,
+      start_date: CHART_TIMESPANS[timespan],
+    },
   });
 
   const { screenWidth } = useWindowSize();

@@ -7,8 +7,8 @@ import {
   getTodayCurrencyRatesQuery,
 } from '../CurrenctyRateApi';
 import {
-  DailyCurrencyRatesTimeseriesRequest,
   MultiCurrenciesRate,
+  PrefetchDailyCurrencyRatesRequest,
 } from '../interfaces/ICurrenctyRateApi';
 import { CURRENCY_RATE_KEYS } from '../queryKeys/CurrencyRateKeys';
 
@@ -19,12 +19,12 @@ export const useGetTodayCurrencyRatesQuery = (props: MultiCurrenciesRate) =>
     { enabled: !!props.base_currencies.length && !!props.base_currencies },
   );
 
-export const useDailyCurrencyRatesQuery = (
-  props: DailyCurrencyRatesTimeseriesRequest,
-) =>
+export const useDailyCurrencyRatesQuery = ({
+  queryParams,
+  queryOptions,
+}: PrefetchDailyCurrencyRatesRequest) =>
   useQuery({
-    queryKey: CURRENCY_RATE_KEYS.dailyCurrencyTimeseriesOneYear(props),
-    queryFn: () => dailyCurrencyRatesQuery(props),
-    enabled: !!props.base_currencies.length && !!props.base_currencies,
-    staleTime: 60 * 60 * 1000, //3600000 milliseconds = 1hour,
+    queryKey: CURRENCY_RATE_KEYS.dailyCurrencyTimeseriesOneYear(queryParams),
+    queryFn: () => dailyCurrencyRatesQuery(queryParams),
+    ...queryOptions,
   });

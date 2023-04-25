@@ -13,8 +13,9 @@ import getQueryClient from '@utils/getQueryClient';
 import { genQueryString } from '@utils/misc';
 
 import {
-  DailyCurrencyRatesTimeseriesRequest,
+  DailyCurrencyRatesRequest,
   MultiCurrenciesRate,
+  PrefetchDailyCurrencyRatesRequest,
 } from './interfaces/ICurrenctyRateApi';
 import { CURRENCY_RATE_KEYS } from './queryKeys/CurrencyRateKeys';
 
@@ -23,7 +24,7 @@ export const getDailyCurrencyTimeseriesOneYearQuery = async ({
   start_date,
   end_date,
   quote_currency,
-}: DailyCurrencyRatesTimeseriesRequest) => {
+}: DailyCurrencyRatesRequest) => {
   const url = `${process.env.NEXT_PUBLIC_EXCHANGERATE_URL ?? ''}/timeseries?`;
   const params = genQueryString({
     start_date,
@@ -42,7 +43,7 @@ export const dailyCurrencyRatesQuery = async ({
   start_date,
   end_date,
   quote_currency,
-}: DailyCurrencyRatesTimeseriesRequest) => {
+}: DailyCurrencyRatesRequest) => {
   const url = `${process.env.NEXT_PUBLIC_EXCHANGERATE_URL ?? ''}/timeseries?`;
   const params = genQueryString({
     start_date,
@@ -68,16 +69,16 @@ export const getTodayCurrencyRatesQuery = async (
   return convertLastestRatesToQuoteCurrency(data);
 };
 
-export const prefetchDailyCurrencyRatesQuery = async (
-  props: DailyCurrencyRatesTimeseriesRequest,
-) => {
+export const prefetchDailyCurrencyRatesQuery = async ({
+  queryParams,
+  queryOptions,
+}: PrefetchDailyCurrencyRatesRequest) => {
   const queryClient = getQueryClient();
   await queryClient.prefetchQuery({
-    queryKey: CURRENCY_RATE_KEYS.dailyCurrencyTimeseriesOneYear(props),
-    queryFn: () => dailyCurrencyRatesQuery(props),
+    queryKey: CURRENCY_RATE_KEYS.dailyCurrencyTimeseriesOneYear(queryParams),
+    queryFn: () => dailyCurrencyRatesQuery(queryParams),
+    ...queryOptions,
   });
 
-  return dehydrate(queryClient, {
-    shouldDehydrateQuery: () => true,
-  });
+  return dehydrate(queryClient);
 };
