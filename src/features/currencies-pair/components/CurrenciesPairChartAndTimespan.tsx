@@ -107,8 +107,9 @@ const CurrenciesPairChartAndTimespan = ({
                 />
                 <Brush
                   dataKey="date"
-                  height={30}
+                  height={40}
                   stroke={Theme.colors.dark_navy}
+                  travellerWidth={15}
                 />
                 <Tooltip
                   content={(props: TooltipProps<ValueType, NameType>) => (
