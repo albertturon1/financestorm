@@ -2,13 +2,7 @@
 
 import { useState, useEffect } from 'react';
 
-import FlagCountryCode from '@components/FlagCountryCode';
-import PageTitle from '@components/PageTitle';
 import WorkInProgress from '@components/WorkInProgress';
-import { PADDING_TAILWIND } from '@constants/globals';
-import MultiBaseCurrenciesLineChart from '@features/multi-currencies/components/MultiBaseCurrenciesLineChart';
-import MultiCurrenciesDropdowns from '@features/multi-currencies/components/MultiCurrenciesDropdowns';
-import { Currency } from '@interfaces/ICurrency';
 import { useMultiCurrenciesQuoteCurrency } from '@src/zustand/multiCurrenciesStore';
 
 const MultiCurrenciesPage = () => {
@@ -34,7 +28,6 @@ const MultiCurrenciesPage = () => {
     //         />
     //       )}
     //     </div>
-    //     <MultiCurrenciesDropdowns />
     //   </div>
     //   {!!name && <MultiBaseCurrenciesLineChart />}
     // </div>
