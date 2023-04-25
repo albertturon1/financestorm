@@ -10,6 +10,9 @@ const CurrenciesBaseQuoteChart = dynamic(
     import(
       '@features/currencies-pair/components/CurrenciesPairChartAndTimespan'
     ),
+  {
+    ssr: false,
+  },
 );
 
 export type CurrenciesPairPageProps = {

@@ -1,10 +1,6 @@
 import dynamic from 'next/dynamic';
 
-import ClientScrollbars from '@components/ClientScrollbars';
-import PageTitle from '@components/PageTitle';
-import UserWalletBalances from '@components/userWalletBalances';
 import WorkInProgress from '@components/WorkInProgress';
-import { PADDING_TAILWIND } from '@constants/globals';
 // import inflationWalletOverTimeValue from '@features/walletHistory/tools/inflationWalletOverTimeValue';
 import walletValueOverTime from '@features/walletHistory/tools/walletValueOverTime';
 import { getUser } from '@src/api/UserApi';

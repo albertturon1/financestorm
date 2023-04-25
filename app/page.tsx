@@ -8,6 +8,7 @@ const CurrencyRatesList = dynamic(
   () => import('@components/currencyRatesList'),
   {
     loading: () => <CurrencyRatesListSkeletonLoader />,
+    ssr: false
   },
 );
 
