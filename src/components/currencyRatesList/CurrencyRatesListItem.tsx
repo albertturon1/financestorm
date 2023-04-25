@@ -1,9 +1,17 @@
+import dynamic from 'next/dynamic';
+
 import FlagCountryCode from '@components/FlagCountryCode';
 import { SeparateDailyCurrencyRates } from '@interfaces/models/IExchangerate';
 import { cutNumber, valuesDifferenceInPercentage } from '@utils/misc';
 
 import CurrencyRatesListButton from './CurrencyRatesListButton';
-import CurrencyRatesListItemChart from './CurrencyRatesListItemChart';
+
+const CurrencyRatesListItemChart = dynamic(
+  () => import('./CurrencyRatesListItemChart'),
+  {
+    ssr: false,
+  },
+);
 
 export function chartColor(rates: number[]) {
   const differenceInPercentage = valuesDifferenceInPercentage(rates);

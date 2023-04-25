@@ -1,3 +1,7 @@
+import { FetchQueryOptions } from '@tanstack/react-query';
+
+import { AnyObject } from './IUtility';
+
 export interface PaginatedDataResponse<T> extends DataResponse<T> {
   meta: Pagination;
 }
@@ -32,3 +36,17 @@ export interface MessageDataResponse<T>
 }
 
 export type QueryError = APIError | undefined;
+
+export type PrefetchRequest<T extends AnyObject<T>> = {
+  queryParams: T;
+  queryOptions?: Omit<
+    FetchQueryOptions,
+    | 'initialData'
+    | 'queryKey'
+    | 'queryFn'
+    | 'isDataEqual'
+    | 'behavior'
+    | 'queryHash'
+    | 'structuralSharing'
+  >;
+};

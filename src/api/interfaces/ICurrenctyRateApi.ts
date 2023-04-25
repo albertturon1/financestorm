@@ -1,3 +1,4 @@
+import { PrefetchRequest } from '@interfaces/IApi';
 import { Currency } from '@interfaces/ICurrency';
 
 export interface CurrencyRatePair {
@@ -13,5 +14,8 @@ export interface CurrencyRateRange {
   end_date: string;
 }
 
-export type DailyCurrencyRatesTimeseriesRequest = CurrencyRateRange &
+export type DailyCurrencyRatesRequest = CurrencyRateRange &
   MultiCurrenciesRate;
+
+export type PrefetchDailyCurrencyRatesRequest =
+  PrefetchRequest<DailyCurrencyRatesRequest>;

@@ -1,14 +1,12 @@
 'use client';
 
-import { DateTime } from 'luxon';
 import { twMerge } from 'tailwind-merge';
 
 import FlagCountryCode from '@components/FlagCountryCode';
 import PagePadding from '@components/PagePadding';
 import SectionTitle from '@components/SectionTitle';
-import { SERVER_DATE } from '@constants/dateTime';
-import { Currency } from '@interfaces/ICurrency';
 import { useDailyCurrencyRatesQuery } from '@src/api/client/CurrenctyRateClientApi';
+import { PrefetchDailyCurrencyRatesRequest } from '@src/api/interfaces/ICurrenctyRateApi';
 import { separateToDailyCurrencyRates } from '@utils/convertRatesToQuoteCurrency';
 
 import CurrencyRatesListButton from './CurrencyRatesListButton';
@@ -16,22 +14,15 @@ import CurrencyRatesListItem from './CurrencyRatesListItem';
 import CurrencyRatesListSkeletonLoader from './CurrencyRatesListSkeletonLoader';
 
 const DAYS_BACK = 30;
-const quoteCurrency = 'PLN';
-const baseCurrencies = ['USD', 'EUR', 'GBP', 'CHF'] satisfies Currency[];
 
 export const CurrencyRatesList = ({
   showGoToAllButton = false,
+  queryProps,
 }: {
   showGoToAllButton?: boolean;
+  queryProps: PrefetchDailyCurrencyRatesRequest;
 }) => {
-  const { data, isError, isLoading } = useDailyCurrencyRatesQuery({
-    quote_currency: quoteCurrency,
-    base_currencies: baseCurrencies,
-    start_date: DateTime.now()
-      .minus({ days: DAYS_BACK - 1 })
-      .toFormat(SERVER_DATE),
-    end_date: DateTime.now().toFormat(SERVER_DATE),
-  });
+  const { data, isError, isLoading } = useDailyCurrencyRatesQuery(queryProps);
 
   if (isLoading) return <CurrencyRatesListSkeletonLoader />;
   if (isError || !data) return <p>Error</p>;
