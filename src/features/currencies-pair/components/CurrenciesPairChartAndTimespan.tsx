@@ -6,13 +6,13 @@ import { DateTimeFormatOptions } from 'luxon';
 import {
   Area,
   CartesianGrid,
-  ComposedChart,
   ResponsiveContainer,
   Tooltip,
   TooltipProps,
   XAxis,
   YAxis,
   Brush,
+  AreaChart,
 } from 'recharts';
 import { NameType } from 'recharts/types/component/DefaultTooltipContent';
 import { ValueType } from 'tailwindcss/types/config';
@@ -50,7 +50,9 @@ const CurrenciesPairChartAndTimespan = ({
     },
   });
 
-  const { screenWidth } = useWindowSize();
+  const { screenWidth, screenHeight } = useWindowSize();
+
+  const reversedScreenAspectRatio = screenWidth / screenHeight;
 
   const options = {
     month: 'short',
@@ -75,11 +77,15 @@ const CurrenciesPairChartAndTimespan = ({
           });
 
           return (
-            <ResponsiveContainer width="100%" height="100%" minHeight={'500px'}>
-              <ComposedChart
+            <ResponsiveContainer
+              width={'100%'}
+              aspect={reversedScreenAspectRatio * 1.7}
+            >
+              <AreaChart
                 data={currencyRates.rates}
                 margin={{
                   left: -10,
+                  right: 5,
                 }}
               >
                 <XAxis
@@ -109,7 +115,7 @@ const CurrenciesPairChartAndTimespan = ({
                   dataKey="date"
                   height={40}
                   stroke={Theme.colors.dark_navy}
-                  travellerWidth={15}
+                  travellerWidth={screenWidth < 768 ? 20 : 15} //easier to handle on mobile when value is higher
                 />
                 <Tooltip
                   content={(props: TooltipProps<ValueType, NameType>) => (
@@ -120,7 +126,7 @@ const CurrenciesPairChartAndTimespan = ({
                   )}
                   cursor={false}
                 />
-              </ComposedChart>
+              </AreaChart>
             </ResponsiveContainer>
           );
         }}
