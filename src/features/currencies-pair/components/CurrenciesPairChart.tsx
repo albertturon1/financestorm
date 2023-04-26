@@ -1,7 +1,5 @@
 'use client';
 
-import { useState } from 'react';
-
 import { DateTimeFormatOptions } from 'luxon';
 import {
   Area,
@@ -18,12 +16,10 @@ import { NameType } from 'recharts/types/component/DefaultTooltipContent';
 import { ValueType } from 'tailwindcss/types/config';
 
 import CurrencyRatePairChartTooltip from '@components/CurrencyRatePairChartTooltip';
-import DataLoader from '@components/ui/DataLoader';
-import CHART_TIMESPANS, { ChartTimespan } from '@constants/chartTimespan';
+import DataLoader, { DataLoaderQueryProps } from '@components/ui/DataLoader';
 import useWindowSize from '@hooks/useWindowSize';
 import { Currency } from '@interfaces/ICurrency';
-import { useDailyCurrencyRatesQuery } from '@src/api/client/CurrenctyRateClientApi';
-import { PrefetchDailyCurrencyRatesRequest } from '@src/api/interfaces/ICurrenctyRateApi';
+import { ExchangeRateTimeseriesResponse } from '@interfaces/models/IExchangerate';
 import Theme from '@src/Theme';
 import {
   chartMarginLeft,
@@ -32,27 +28,12 @@ import {
 } from '@utils/chartHelpers';
 import { separateToDailyCurrencyRates } from '@utils/convertRatesToQuoteCurrency';
 
-import CurrenciesPairTimespanPicker from './CurrenciesPairTimespanPicker';
-
-const CurrenciesPairChartAndTimespan = ({
-  quoteCurrency,
-  defaultChartTimespan,
-  queryProps,
-}: {
-  quoteCurrency: Currency;
-  defaultChartTimespan: ChartTimespan;
-  queryProps: PrefetchDailyCurrencyRatesRequest;
-}) => {
-  const [timespan, setTimespan] = useState<ChartTimespan>(defaultChartTimespan);
-
-  const { data, error, isLoading } = useDailyCurrencyRatesQuery({
-    ...queryProps,
-    queryParams: {
-      ...queryProps.queryParams,
-      start_date: CHART_TIMESPANS[timespan],
-    },
-  });
-
+const CurrenciesPairChart = (
+  props: {
+    quoteCurrency: Currency;
+    baseCurrency: Currency;
+  } & DataLoaderQueryProps<ExchangeRateTimeseriesResponse | undefined>,
+) => {
   const { screenWidth } = useWindowSize();
 
   const options = {
@@ -61,29 +42,29 @@ const CurrenciesPairChartAndTimespan = ({
     year: '2-digit',
   } satisfies DateTimeFormatOptions;
 
+  //data loader makes no sens when data is prefetched on server - best thing you can do is to handle errors and show fallback when loading --- dont forget to set ssr: false
   return (
-    <div className="flex w-full flex-1 flex-col gap-y-4 lg:gap-y-6">
-      <CurrenciesPairTimespanPicker active={timespan} onSelect={setTimespan} />
-      <DataLoader error={error} isLoading={isLoading} data={data}>
-        {(data) => {
-          const dailyCurrencyRates = separateToDailyCurrencyRates(data);
-          const [currencyRates] = dailyCurrencyRates.rates_array;
+    <DataLoader {...props}>
+      {(data) => {
+        const dailyCurrencyRates = separateToDailyCurrencyRates(data);
+        const [currencyRates] = dailyCurrencyRates.rates_array;
 
-          const interval = xAxisIntervalDivider({
-            screenWidth,
-            itemsLength: currencyRates.rates.length,
-          });
-          const setMinValue = Math.min(
-            ...currencyRates.rates.map((r) => r.value),
-          );
+        const interval = xAxisIntervalDivider({
+          screenWidth,
+          itemsLength: currencyRates.rates.length,
+        });
+        const datasetMinValue = Math.min(
+          ...currencyRates.rates.map((r) => r.value),
+        );
 
-          return (
+        return (
+          <div className="flex flex-col gap-y-10">
             <div className="h-[60vh] w-full">
               <ResponsiveContainer width={'100%'} height={'100%'}>
                 <AreaChart
                   data={currencyRates.rates}
                   margin={{
-                    left: chartMarginLeft(setMinValue),
+                    left: chartMarginLeft(datasetMinValue),
                     right: 5,
                   }}
                 >
@@ -96,7 +77,10 @@ const CurrenciesPairChartAndTimespan = ({
                       new Date(tick).toLocaleDateString('en-US', options)
                     }
                   />
-                  <YAxis domain={yAxisDomainFormatter} tickCount={8} />
+                  <YAxis
+                    domain={yAxisDomainFormatter}
+                    tickCount={8}
+                  />
                   <CartesianGrid vertical={false} />
                   <Area
                     type="monotone"
@@ -111,10 +95,12 @@ const CurrenciesPairChartAndTimespan = ({
                     travellerWidth={screenWidth < 768 ? 20 : 15} //easier to handle on mobile when value is higher
                   />
                   <Tooltip
-                    content={(props: TooltipProps<ValueType, NameType>) => (
+                    content={(
+                      tooltipProps: TooltipProps<ValueType, NameType>,
+                    ) => (
                       <CurrencyRatePairChartTooltip
-                        quoteCurrency={quoteCurrency}
                         {...props}
+                        {...tooltipProps}
                       />
                     )}
                     cursor={false}
@@ -122,11 +108,11 @@ const CurrenciesPairChartAndTimespan = ({
                 </AreaChart>
               </ResponsiveContainer>
             </div>
-          );
-        }}
-      </DataLoader>
-    </div>
+          </div>
+        );
+      }}
+    </DataLoader>
   );
 };
 
-export default CurrenciesPairChartAndTimespan;
+export default CurrenciesPairChart;

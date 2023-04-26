@@ -1,12 +1,11 @@
 import { Hydrate } from '@tanstack/react-query';
 import { DateTime } from 'luxon';
-import dynamic from 'next/dynamic';
 
-import Loader from '@components/Loader';
 import PageMaxWidth from '@components/PageMaxWidth';
 import PagePadding from '@components/PagePadding';
 import CHART_TIMESPANS, { ChartTimespan } from '@constants/chartTimespan';
 import { SERVER_DATE } from '@constants/dateTime';
+import CurrenciesPairHydrated from '@features/currencies-pair/components/CurrenciesPairHydrated';
 import CurrenciesPairSelectors from '@features/currencies-pair/components/CurrenciesPairSelectors';
 import { Currency, CurrenciesPair } from '@interfaces/ICurrency';
 import { prefetchDailyCurrencyRatesQuery } from '@src/api/CurrenctyRateApi';
@@ -14,16 +13,6 @@ import {
   DailyCurrencyRatesRequest,
   PrefetchDailyCurrencyRatesRequest,
 } from '@src/api/interfaces/ICurrenctyRateApi';
-
-const CurrenciesPairChartAndTimespan = dynamic(
-  () =>
-    import(
-      '@features/currencies-pair/components/CurrenciesPairChartAndTimespan'
-    ),
-  {
-    loading: () => <Loader />,
-  },
-);
 
 export type CurrenciesPairPageProps = {
   pair: CurrenciesPair;
@@ -64,8 +53,9 @@ const CurrenciesPairPage = async ({
               baseCurrency={baseCurrency}
               quoteCurrency={quoteCurrency}
             />
-            <CurrenciesPairChartAndTimespan
+            <CurrenciesPairHydrated
               quoteCurrency={quoteCurrency}
+              baseCurrency={baseCurrency}
               defaultChartTimespan={CURRENCIES_PAIR_DEFAULT_TIMESPAN}
               queryProps={QUERY_PROPS}
             />

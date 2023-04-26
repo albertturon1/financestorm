@@ -14,7 +14,7 @@ const CurrenciesPairTimespanPicker = ({
       <Button
         className={cn(
           'rounded-full ',
-          active === timespan ? 'bg-blue text-white' : 'border',
+          active === timespan ? 'bg-electric_blue text-white' : 'border',
         )}
         key={timespan}
         onClick={() => {

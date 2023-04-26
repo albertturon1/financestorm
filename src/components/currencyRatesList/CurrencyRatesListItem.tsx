@@ -1,6 +1,9 @@
+import '@styles/global.css';
+
 import dynamic from 'next/dynamic';
 
 import FlagCountryCode from '@components/FlagCountryCode';
+import SkeletonLoader from '@components/SkeletonLoader';
 import { SeparateDailyCurrencyRates } from '@interfaces/models/IExchangerate';
 import { cutNumber, valuesDifferenceInPercentage } from '@utils/misc';
 
@@ -10,6 +13,11 @@ const CurrencyRatesListItemChart = dynamic(
   () => import('./CurrencyRatesListItemChart'),
   {
     ssr: false,
+    loading: () => (
+      <div className="flex h-full w-full items-center p-4">
+        <SkeletonLoader className="h-[3px] w-full -rotate-12" />
+      </div>
+    ),
   },
 );
 
