@@ -63,7 +63,7 @@ const CurrenciesPairSelectors = ({
               `/currencies/${baseCurrency}-${newQuoteCurrency}`,
             );
           }}
-          value={baseCurrency}
+          value={quoteCurrency}
           currencies={quoteCurrenciesAvailable}
           title={() => <FlagCountryCode code={quoteCurrency} />}
         />

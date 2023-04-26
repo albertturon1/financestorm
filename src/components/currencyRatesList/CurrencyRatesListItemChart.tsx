@@ -1,7 +1,7 @@
 import { Line, LineChart, ResponsiveContainer, YAxis } from 'recharts';
 
-import { customLineChartYDomain } from '@components/customLineChart/CustomLineChartHelpers';
 import { LabelValue } from '@interfaces/ICharts';
+import { customLineChartYDomain } from '@utils/chartHelpers';
 
 import { chartColor } from './CurrencyRatesListItem';
 

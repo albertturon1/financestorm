@@ -6,10 +6,6 @@ import { useQuery } from '@tanstack/react-query';
 import { TooltipProps } from 'recharts';
 
 import CustomLineChart from '@components/customLineChart/CustomLineChart';
-import {
-  customLineChartYDomain,
-  xAxisDateTickFormatter,
-} from '@components/customLineChart/CustomLineChartHelpers';
 import Loader from '@components/Loader';
 import { ChartMultiData } from '@interfaces/ICharts';
 import { NormalizedCurrencyExchangeRate } from '@interfaces/models/IExchangerate';
@@ -17,6 +13,10 @@ import {
   useMultiCurrenciesQuoteCurrency,
   useMultiCurrenciesBaseCurrenciesNames,
 } from '@src/zustand/multiCurrenciesStore';
+import {
+  customLineChartYDomain,
+  xAxisDateTickFormatter,
+} from '@utils/chartHelpers';
 import convertDailyCurrencyTimeseriesToChartData from '@utils/convertDailyCurrencyTimeseriesToChartData';
 import dailyCurrencyTimeseriesYears from '@utils/dailyCurrencyTimeseriesYears';
 import { nameOfKey } from '@utils/misc';

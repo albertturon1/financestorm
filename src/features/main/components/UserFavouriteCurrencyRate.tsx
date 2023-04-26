@@ -1,33 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+// const formatDate = (tickValue: string) => {
+//   const date = new Date(tickValue);
+//   const month = date.toLocaleString('default', { month: 'short' });
+//   return `${month}`;
+// };
 
-import { DateTime } from 'luxon';
-
-import { SERVER_DATE } from '@constants/dateTime';
-import { ExchangeRateTimeseriesRatesArray } from '@interfaces/models/IExchangerate';
-import { useDailyCurrencyRatesQuery } from '@src/api/client/CurrenctyRateClientApi';
-
-
-const formatDate = (tickValue: string) => {
-  const date = new Date(tickValue);
-  const month = date.toLocaleString('default', { month: 'short' });
-  return `${month}`;
-};
-const getTicksCount = (
-  width: number,
-  data: ExchangeRateTimeseriesRatesArray[],
-) => {
-  if (width < 400) {
-    return 5;
-  } else if (width < 800) {
-    return 8;
-  } else if (width < 1200) {
-    return 12;
-  } else {
-    return Math.round(data.length / 4);
-  }
-};
 
 // eslint-disable-next-line arrow-body-style
 const UserFavouriteCurrencyRate = () => {
@@ -52,7 +30,6 @@ const UserFavouriteCurrencyRate = () => {
   // if (isLoading) return <p>Loading</p>;
   // if (isError || !data) return <p>Error</p>;
 
-  // const ticksCount = getTicksCount(width, data.rates_array);
   // const chartData = data.rates_array.map((d) => ({
   //   label: d.date,
   //   value: d.rates[baseCurrency],
@@ -82,7 +59,6 @@ const UserFavouriteCurrencyRate = () => {
           <XAxis
             dataKey="label"
             tickFormatter={formatDate}
-            tickCount={ticksCount}
           />
           <YAxis domain={yDomain} />
           <Line

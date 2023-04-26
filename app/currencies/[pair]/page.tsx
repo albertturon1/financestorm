@@ -15,7 +15,7 @@ import {
   PrefetchDailyCurrencyRatesRequest,
 } from '@src/api/interfaces/ICurrenctyRateApi';
 
-const CurrenciesBaseQuoteChart = dynamic(
+const CurrenciesPairChartAndTimespan = dynamic(
   () =>
     import(
       '@features/currencies-pair/components/CurrenciesPairChartAndTimespan'
@@ -59,12 +59,12 @@ const CurrenciesPairPage = async ({
     <Hydrate state={hydratedState}>
       <PageMaxWidth flex>
         <PagePadding vertical flex>
-          <div className="flex w-full flex-1 flex-col gap-y-8">
+          <div className="flex w-full flex-1 flex-col gap-y-4 lg:gap-y-8">
             <CurrenciesPairSelectors
               baseCurrency={baseCurrency}
               quoteCurrency={quoteCurrency}
             />
-            <CurrenciesBaseQuoteChart
+            <CurrenciesPairChartAndTimespan
               quoteCurrency={quoteCurrency}
               defaultChartTimespan={CURRENCIES_PAIR_DEFAULT_TIMESPAN}
               queryProps={QUERY_PROPS}
