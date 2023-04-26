@@ -22,7 +22,7 @@ import { AxisDomain } from 'recharts/types/util/types';
 import { CHART_THEME } from '@constants/chart';
 import useWindowSize from '@hooks/useWindowSize';
 
-import { xAxisIntervalDivider } from './CustomLineChartHelpers';
+import { xAxisIntervalDivider } from '../../utils/chartHelpers';
 
 export type CustomLineChartProps<T, Y> = {
   dataKeyExtractor: (item: T) => string;

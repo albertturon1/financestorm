@@ -6,12 +6,12 @@ import { useCallback } from 'react';
 import { TooltipProps } from 'recharts';
 
 import CustomLineChart from '@components/customLineChart';
+import { ChartMultiData, WalletDay } from '@interfaces/ICharts';
 import {
   customLineChartYDomain,
   xAxisDateTickFormatter,
-} from '@components/customLineChart/CustomLineChartHelpers';
+} from '@utils/chartHelpers';
 // import { CHART_THEME } from '@constants/Chart';
-import { ChartMultiData, WalletDay } from '@interfaces/ICharts';
 import { nameOfKey } from '@utils/misc';
 
 // import InflationOverMonthsTooltip from './InflationOverMonthsTooltip';
