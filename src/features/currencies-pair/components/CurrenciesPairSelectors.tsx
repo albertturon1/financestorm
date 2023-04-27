@@ -5,8 +5,8 @@ import { useMemo } from 'react';
 import { ArrowLeftRight } from 'lucide-react';
 import { useRouter, usePathname } from 'next/navigation';
 
-import CurrenciesSelectList from '@components/CurrenciesSelectList';
-import FlagCountryCode from '@components/FlagCountryCode';
+import CurrenciesSelectList from '@components/misc/CurrenciesSelectList';
+import FlagCountryCode from '@components/misc/FlagCountryCode';
 import { CURRENCIES } from '@constants/currencies';
 import { Currency } from '@interfaces/ICurrency';
 import Theme from '@src/Theme';

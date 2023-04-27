@@ -1,5 +1,5 @@
-import PagePadding from '@components/PagePadding';
-import SkeletonLoader from '@components/SkeletonLoader';
+import PagePadding from '@components/misc/PagePadding';
+import SkeletonLoader from '@components/ui/SkeletonLoader';
 
 const CurrencyRatesListSkeletonLoader = () => (
   <PagePadding>
@@ -7,7 +7,7 @@ const CurrencyRatesListSkeletonLoader = () => (
       <SkeletonLoader className="mb-2 h-4 w-[200px] xs:h-7" />
       <div className="flex flex-col gap-y-2">
         <SkeletonLoader className="h-12 w-full xs:h-14" />
-        <SkeletonLoader className="h-12 w-full rounded-lg xs:h-14 py-1" />
+        <SkeletonLoader className="h-12 w-full rounded-lg py-1 xs:h-14" />
         <SkeletonLoader className="h-12 w-full xs:h-14" />
         <SkeletonLoader className="h-12 w-full xs:h-14" />
         <SkeletonLoader className="h-12 w-full xs:h-14" />

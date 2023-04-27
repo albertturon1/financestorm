@@ -2,8 +2,8 @@ import { Hydrate } from '@tanstack/react-query';
 import { DateTime } from 'luxon';
 
 import CurrencyRatesList from '@components/currencyRatesList';
-import PageMaxWidth from '@components/PageMaxWidth';
-import PagePadding from '@components/PagePadding';
+import PageMaxWidth from '@components/misc/PageMaxWidth';
+import PagePadding from '@components/misc/PagePadding';
 import { SERVER_DATE } from '@constants/dateTime';
 import { Currency } from '@interfaces/ICurrency';
 import { prefetchDailyCurrencyRatesQuery } from '@src/api/CurrenctyRateApi';

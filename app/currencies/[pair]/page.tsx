@@ -1,8 +1,8 @@
 import { Hydrate } from '@tanstack/react-query';
 import { DateTime } from 'luxon';
 
-import PageMaxWidth from '@components/PageMaxWidth';
-import PagePadding from '@components/PagePadding';
+import PageMaxWidth from '@components/misc/PageMaxWidth';
+import PagePadding from '@components/misc/PagePadding';
 import CHART_TIMESPANS, { ChartTimespan } from '@constants/chartTimespan';
 import { SERVER_DATE } from '@constants/dateTime';
 import CurrenciesPairHydrated from '@features/currencies-pair/components/CurrenciesPairHydrated';

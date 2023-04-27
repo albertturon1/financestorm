@@ -2,9 +2,10 @@
 
 // import dynamic from 'next/dynamic';
 
-import PageMaxWidth from '@components/PageMaxWidth';
-import PagePadding from '@components/PagePadding';
-import SectionTitle from '@components/SectionTitle';
+
+import PageMaxWidth from '@components/misc/PageMaxWidth';
+import PagePadding from '@components/misc/PagePadding';
+import SectionTitle from '@components/misc/SectionTitle';
 import { Currency } from '@interfaces/ICurrency';
 
 // const CurrenciesRatesTiles = dynamic(

@@ -1,9 +1,9 @@
 import { DateTime } from 'luxon';
 import { TooltipProps } from 'recharts';
 
-import FlagCountryCode from '@components/FlagCountryCode';
-import TooltipRowWrapper from '@components/TooltipRowWrapper';
-import TooltipWrapper from '@components/TooltipWrapper';
+import FlagCountryCode from '@components/misc/FlagCountryCode';
+import TooltipRowWrapper from '@components/tooltip/TooltipRowWrapper';
+import TooltipWrapper from '@components/tooltip/TooltipWrapper';
 import { CHART_THEME } from '@constants/chart';
 import { CustomTooltipProps } from '@interfaces/ICharts';
 import { NormalizedCurrencyExchangeRate } from '@interfaces/models/IExchangerate';

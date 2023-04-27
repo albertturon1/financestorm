@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import dynamic from 'next/dynamic';
 
-import SkeletonLoader from '@components/SkeletonLoader';
+import SkeletonLoader from '@components/ui/SkeletonLoader';
 import CHART_TIMESPANS, { ChartTimespan } from '@constants/chartTimespan';
 import { Currency } from '@interfaces/ICurrency';
 import { useDailyCurrencyRatesQuery } from '@src/api/client/CurrenctyRateClientApi';

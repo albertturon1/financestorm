@@ -2,7 +2,7 @@
 
 import { useState, ChangeEvent } from 'react';
 
-import FlagCountryCode from '@components/FlagCountryCode';
+import FlagCountryCode from '@components/misc/FlagCountryCode';
 import { Input } from '@components/ui/Input';
 import { Currency } from '@interfaces/ICurrency';
 import { ExchangeRateTimeseriesResponseRates } from '@interfaces/models/IExchangerate';

@@ -1,10 +1,10 @@
-import FlagCountryCode from '@components/FlagCountryCode';
-import PageTitle from '@components/PageTitle';
-import WorkInProgress from '@components/WorkInProgress';
-import { PADDING_TAILWIND } from '@constants/globals';
-import Transactions from '@features/user/history/components/Transactions';
+// import FlagCountryCode from '@components/misc/FlagCountryCode';
+// import PageTitle from '@components/misc/PageTitle';
+import WorkInProgress from '@components/misc/WorkInProgress';
+// import { PADDING_TAILWIND } from '@constants/globals';
+// import Transactions from '@features/user/history/components/Transactions';
 import { Currency } from '@interfaces/ICurrency';
-import { getUserCurrencyTransactions } from 'src/api/UserApi';
+// import { getUserCurrencyTransactions } from 'src/api/UserApi';
 
 import { UserParams } from '../../page';
 
@@ -12,12 +12,13 @@ type CurrencyHistoryProps = {
   currency: Currency;
 } & UserParams;
 
-const CurrencyHistory = async ({
+const CurrencyHistory = ({
   params,
 }: {
   params: CurrencyHistoryProps;
+  // eslint-disable-next-line arrow-body-style
 }) => {
-  const history = await getUserCurrencyTransactions();
+  // const history = await getUserCurrencyTransactions();
 
   return (
     <WorkInProgress />

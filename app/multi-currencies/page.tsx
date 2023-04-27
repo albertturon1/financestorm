@@ -1,17 +1,18 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+// import { useState, useEffect } from 'react';
 
-import WorkInProgress from '@components/WorkInProgress';
-import { useMultiCurrenciesQuoteCurrency } from '@src/zustand/multiCurrenciesStore';
+import WorkInProgress from '@components/misc/WorkInProgress';
+// import { useMultiCurrenciesQuoteCurrency } from '@src/zustand/multiCurrenciesStore';
 
+// eslint-disable-next-line arrow-body-style
 const MultiCurrenciesPage = () => {
-  const [name, setName] = useState('');
-  const quoteCurrency = useMultiCurrenciesQuoteCurrency();
+  // const [name, setName] = useState('');
+  // const quoteCurrency = useMultiCurrenciesQuoteCurrency();
 
-  useEffect(() => {
-    setName(quoteCurrency.name);
-  }, [quoteCurrency.name]);
+  // useEffect(() => {
+  //   setName(quoteCurrency.name);
+  // }, [quoteCurrency.name]);
 
   return (
     <WorkInProgress />

@@ -6,7 +6,7 @@ import { useQuery } from '@tanstack/react-query';
 import { TooltipProps } from 'recharts';
 
 import CustomLineChart from '@components/customLineChart/CustomLineChart';
-import Loader from '@components/Loader';
+import Loader from '@components/misc/Loader';
 import { ChartMultiData } from '@interfaces/ICharts';
 import { NormalizedCurrencyExchangeRate } from '@interfaces/models/IExchangerate';
 import {

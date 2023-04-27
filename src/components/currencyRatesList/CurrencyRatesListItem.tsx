@@ -2,8 +2,8 @@ import '@styles/global.css';
 
 import dynamic from 'next/dynamic';
 
-import FlagCountryCode from '@components/FlagCountryCode';
-import SkeletonLoader from '@components/SkeletonLoader';
+import FlagCountryCode from '@components/misc/FlagCountryCode';
+import SkeletonLoader from '@components/ui/SkeletonLoader';
 import { SeparateDailyCurrencyRates } from '@interfaces/models/IExchangerate';
 import { cutNumber, valuesDifferenceInPercentage } from '@utils/misc';
 
