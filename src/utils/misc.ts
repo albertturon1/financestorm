@@ -104,3 +104,8 @@ export function valuesDifferenceInPercentage(rates: number[]) {
 export function cn(...inputs: ClassNameValue[]) {
   return twMerge(clsx(inputs));
 }
+
+export function inverseCurrecyRate(rate: number) {
+  const newValue = rate ** -1;
+  return cutNumber(newValue, newValue < 1 ? 5 : 3);
+}

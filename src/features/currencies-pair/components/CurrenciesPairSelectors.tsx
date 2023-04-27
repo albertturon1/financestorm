@@ -53,7 +53,7 @@ const CurrenciesPairSelectors = ({
         }}
         className="flex rounded-full border p-2"
       >
-        <ArrowLeftRight size={20} color={Theme.colors.blue} />
+        <ArrowLeftRight size={20} color={Theme.colors.electric_blue} />
       </button>
       <div className="flex flex-1 flex-col gap-y-1">
         <p className="font-medium">{'To'}</p>

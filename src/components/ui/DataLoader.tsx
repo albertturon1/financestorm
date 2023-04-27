@@ -3,14 +3,17 @@ import { memo, ReactElement } from 'react';
 import ErrorMessage from '@components/ErrorMessage';
 import Loader from '@components/Loader';
 
-export type LoadingDecoratorProps<T> = {
+export type DataLoaderProps<T> = {
+  className?: string;
+  children: ((data: NonNullable<T>) => ReactElement | null) | ReactElement;
+  customLoader?: ReactElement;
+} & DataLoaderQueryProps<T>;
+
+export type DataLoaderQueryProps<T> = {
   isLoading: boolean;
   isFetching?: boolean;
   data: T;
-  className?: string;
   error?: unknown;
-  children: ((data: NonNullable<T>) => ReactElement | null) | ReactElement;
-  customLoader?: ReactElement;
 };
 
 const DataLoader = <T,>({
@@ -20,7 +23,7 @@ const DataLoader = <T,>({
   error,
   isFetching,
   customLoader,
-}: LoadingDecoratorProps<T>) => {
+}: DataLoaderProps<T>) => {
   const renderChildren = () =>
     typeof children === 'function'
       ? children(data as NonNullable<T>)

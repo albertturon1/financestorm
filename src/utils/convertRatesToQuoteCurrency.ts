@@ -8,17 +8,12 @@ import {
   SeparateDailyCurrencyRates,
 } from '@interfaces/models/IExchangerate';
 
-import { cutNumber } from './misc';
+import { inverseCurrecyRate } from './misc';
 
 export const isExchangeRateTimeseriesResponse = (
   data: ExchangeRateLatestResponse | ExchangeRateTimeseriesResponse,
 ): data is ExchangeRateTimeseriesResponse =>
   (data as ExchangeRateTimeseriesResponse).timeseries !== undefined;
-
-function inverseCurrecyRate(rate: number) {
-  const newValue = rate ** -1;
-  return cutNumber(newValue, newValue < 1 ? 5 : 3);
-}
 
 const convertDayRates = (day: CurrenciesRates, quoteCurrency: Currency) =>
   Object.entries(day).reduce((acc, rate) => {

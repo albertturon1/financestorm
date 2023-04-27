@@ -16,7 +16,7 @@ module.exports = {
       colors: {
         pale: 'var(--pale)',
         dark_pale: 'var(--dark_pale)',
-        blue: 'var(--blue)',
+        electric_blue: 'var(--electric_blue)',
         border: 'var(--border)',
         navy: 'var(--navy)',
         dark_navy: 'var(--dark_navy)',
@@ -32,6 +32,9 @@ module.exports = {
       blur: {
         10: '10px',
       },
+      fontFamily: {
+        bebas_neue: ['Bebas Neue', 'sans-serif']
+      }
     },
   },
 };

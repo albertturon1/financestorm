@@ -16,7 +16,7 @@ const CurrencyRatesListButton = ({
   <Link
     href={href}
     className={twMerge(
-      'mt-1 flex h-full w-full items-center justify-end gap-x-1 pr-1 text-blue xs:pr-2 sm:pr-3',
+      'mt-1 flex h-full w-full items-center justify-end gap-x-1 pr-1 text-electric_blue xs:pr-2 sm:pr-3',
       className,
     )}
   >
