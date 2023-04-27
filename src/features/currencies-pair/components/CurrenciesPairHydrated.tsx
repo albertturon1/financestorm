@@ -10,16 +10,12 @@ import { Currency } from '@interfaces/ICurrency';
 import { useDailyCurrencyRatesQuery } from '@src/api/client/CurrenctyRateClientApi';
 import { PrefetchDailyCurrencyRatesRequest } from '@src/api/interfaces/ICurrenctyRateApi';
 
-const CurrenciesPairChartAndConverter = dynamic(
-  () => import('./CurrenciesPairChart'),
-  {
-    loading: () => <SkeletonLoader className="h-[60vh] w-full" />,
-    ssr: false,
-  },
-);
-const CurrenciesPairConverter = dynamic(
-  () => import('./CurrenciesPairConverter'),
-);
+const CurrenciesPairChart = dynamic(() => import('./CurrenciesPairChart'), {
+  loading: () => <SkeletonLoader className="h-[60vh] w-full" />,
+  ssr: false,
+});
+
+import CurrenciesPairConverter from './CurrenciesPairConverter';
 import CurrenciesPairTimespanPicker from './CurrenciesPairTimespanPicker';
 
 const CurrenciesPairHydrated = ({
@@ -43,9 +39,14 @@ const CurrenciesPairHydrated = ({
   });
 
   return (
-    <div className="flex w-full flex-1 flex-col gap-y-4 lg:gap-y-6">
-      <CurrenciesPairTimespanPicker active={timespan} onSelect={setTimespan} />
-      <CurrenciesPairChartAndConverter {...query} {...props} />
+    <div className="flex flex-1 flex-col gap-y-6 lg:gap-y-10">
+      <div className="flex flex-col gap-y-4 lg:gap-y-6">
+        <CurrenciesPairTimespanPicker
+          active={timespan}
+          onSelect={setTimespan}
+        />
+        <CurrenciesPairChart {...query} {...props} />
+      </div>
       <CurrenciesPairConverter {...props} rates={query.data?.rates} />
     </div>
   );

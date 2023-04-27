@@ -22,7 +22,6 @@ import { Currency } from '@interfaces/ICurrency';
 import { ExchangeRateTimeseriesResponse } from '@interfaces/models/IExchangerate';
 import Theme from '@src/Theme';
 import {
-  chartMarginLeft,
   xAxisIntervalDivider,
   yAxisDomainFormatter,
 } from '@utils/chartHelpers';
@@ -53,21 +52,12 @@ const CurrenciesPairChart = (
           screenWidth,
           itemsLength: currencyRates.rates.length,
         });
-        const datasetMinValue = Math.min(
-          ...currencyRates.rates.map((r) => r.value),
-        );
 
         return (
           <div className="flex flex-col gap-y-10">
             <div className="h-[60vh] w-full">
               <ResponsiveContainer width={'100%'} height={'100%'}>
-                <AreaChart
-                  data={currencyRates.rates}
-                  margin={{
-                    left: chartMarginLeft(datasetMinValue),
-                    right: 5,
-                  }}
-                >
+                <AreaChart data={currencyRates.rates}>
                   <XAxis
                     tickMargin={10}
                     height={50}
@@ -79,7 +69,9 @@ const CurrenciesPairChart = (
                   />
                   <YAxis
                     domain={yAxisDomainFormatter}
-                    tickCount={8}
+                    tickCount={5}
+                    mirror
+                    tick={{ fill: Theme.colors.dark_navy }}
                   />
                   <CartesianGrid vertical={false} />
                   <Area

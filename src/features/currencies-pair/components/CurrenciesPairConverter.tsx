@@ -1,13 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, ChangeEvent } from 'react';
 
 import FlagCountryCode from '@components/FlagCountryCode';
 import { Input } from '@components/ui/Input';
-import { Separator } from '@components/ui/Separator';
 import { Currency } from '@interfaces/ICurrency';
 import { ExchangeRateTimeseriesResponseRates } from '@interfaces/models/IExchangerate';
-import { cutNumber } from '@utils/misc';
+import { cn, cutNumber, inverseCurrecyRate } from '@utils/misc';
 
 type CurrenciesPairConverterProps = {
   baseCurrency: Currency;
@@ -22,7 +21,7 @@ function getLatestDayRate(
   let latestDayWithRate: number | undefined = undefined;
   for (const [_, dayRates] of Object.entries(rates)) {
     if (baseCurrency in dayRates) {
-      latestDayWithRate = dayRates[baseCurrency];
+      latestDayWithRate = inverseCurrecyRate(dayRates[baseCurrency]);
     }
   }
   return latestDayWithRate;
@@ -45,6 +44,7 @@ const CurrenciesPairConverter = ({
     </div>
   );
 };
+
 const Rows = ({
   baseCurrency,
   currencyRate,
@@ -57,25 +57,31 @@ const Rows = ({
     baseCurrencyAmount * currencyRate,
   );
 
-  useEffect(() => {
-    setQuoteCurrencyAmount(baseCurrencyAmount * currencyRate);
-  }, [baseCurrencyAmount, currencyRate]);
+  function handleBaseCurrencyChange({ target }: ChangeEvent<HTMLInputElement>) {
+    const { valueAsNumber } = target;
+    setBaseCurrencyAmount(valueAsNumber);
+    setQuoteCurrencyAmount(valueAsNumber * currencyRate);
+  }
 
-  useEffect(() => {
-    setBaseCurrencyAmount(quoteCurrencyAmount / currencyRate);
-  }, [quoteCurrencyAmount, currencyRate]);
+  function handleQuoteCurrencyChange({
+    target,
+  }: ChangeEvent<HTMLInputElement>) {
+    const { valueAsNumber } = target;
+    setQuoteCurrencyAmount(valueAsNumber);
+    setBaseCurrencyAmount(valueAsNumber / currencyRate);
+  }
 
   return (
-    <div className="flex w-full flex-col justify-center gap-y-1">
+    <div className="flex w-full flex-col justify-center gap-y-4">
       <Row
         amount={cutNumber(baseCurrencyAmount, 3)}
         currency={baseCurrency}
-        onChange={setBaseCurrencyAmount}
+        onChange={handleBaseCurrencyChange}
       />
       <Row
         amount={cutNumber(quoteCurrencyAmount, 3)}
         currency={quoteCurrency}
-        onChange={setQuoteCurrencyAmount}
+        onChange={handleQuoteCurrencyChange}
       />
     </div>
   );
@@ -88,24 +94,38 @@ const Row = ({
 }: {
   currency: Currency;
   amount: number;
-  onChange: (value: number) => void;
-}) => (
-  <div className="flex w-full items-center rounded-xl border-2 pr-3 font-medium h-full">
-    <Input
-      showFocus={false}
-      value={amount}
-      onChange={(event) => {
-        // onChange(event.target.value);
-      }}
-      className="w-[10%] min-w-[100px] max-w-[150px] rounded-none border-0 pl-3"
-    />
-    <div className="bg-border h-6 w-[0.5px]" />
-    <div className="flex flex-1 items-center justify-end">
-      <div className="min-w-[80px]">
-        <FlagCountryCode code={currency} />
+  onChange: (value: ChangeEvent<HTMLInputElement>) => void;
+}) => {
+  const [focused, setFocused] = useState(false);
+  return (
+    <div
+      className={cn(
+        'focus-visible:ring-ring flex h-full w-full items-center rounded-xl border-2 pr-3 font-medium hover:border-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
+        focused && 'ring-2 ring-offset-2 hover:border-transparent',
+      )}
+    >
+      <Input
+        type="number"
+        numberHideArrows
+        onFocus={() => {
+          setFocused(true);
+        }}
+        onBlur={() => {
+          setFocused(false);
+        }}
+        showFocus={false}
+        value={isNaN(amount) ? '' : amount.toString()}
+        onChange={onChange}
+        className="w-[10%] min-w-[100px] max-w-[150px] border-0 pl-3 focus:outline-none"
+      />
+      <div className="h-6 w-[0.5px] bg-border" />
+      <div className="flex flex-1 items-center justify-end">
+        <div className="min-w-[80px]">
+          <FlagCountryCode code={currency} />
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default CurrenciesPairConverter;
