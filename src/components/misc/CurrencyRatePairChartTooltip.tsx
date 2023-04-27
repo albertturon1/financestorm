@@ -3,7 +3,7 @@ import { TooltipProps } from 'recharts';
 import { NameType } from 'recharts/types/component/DefaultTooltipContent';
 import { ValueType } from 'tailwindcss/types/config';
 
-import TooltipWrapper from '@components/TooltipWrapper';
+import TooltipWrapper from '@components/tooltip/TooltipWrapper';
 import { CustomTooltipProps, LabelValue } from '@interfaces/ICharts';
 import { Currency } from '@interfaces/ICurrency';
 

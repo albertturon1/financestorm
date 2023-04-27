@@ -1,7 +1,7 @@
 import { memo, ReactElement } from 'react';
 
-import ErrorMessage from '@components/ErrorMessage';
-import Loader from '@components/Loader';
+import ErrorMessage from '@components/misc/ErrorMessage';
+import Loader from '@components/misc/Loader';
 
 export type DataLoaderProps<T> = {
   className?: string;

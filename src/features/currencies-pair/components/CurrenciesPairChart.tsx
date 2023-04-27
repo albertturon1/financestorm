@@ -15,7 +15,7 @@ import {
 import { NameType } from 'recharts/types/component/DefaultTooltipContent';
 import { ValueType } from 'tailwindcss/types/config';
 
-import CurrencyRatePairChartTooltip from '@components/CurrencyRatePairChartTooltip';
+import CurrencyRatePairChartTooltip from '@components/misc/CurrencyRatePairChartTooltip';
 import DataLoader, { DataLoaderQueryProps } from '@components/ui/DataLoader';
 import useWindowSize from '@hooks/useWindowSize';
 import { Currency } from '@interfaces/ICurrency';

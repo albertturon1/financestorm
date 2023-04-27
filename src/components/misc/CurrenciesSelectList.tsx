@@ -5,14 +5,14 @@ import { ReactElement } from 'react';
 import { Currency } from '@interfaces/ICurrency';
 
 import FlagCountryCode from './FlagCountryCode';
-import { ScrollArea, ScrollBar } from './ui/ScrollArea';
+import { ScrollArea, ScrollBar } from '../ui/ScrollArea';
 import {
   Select,
   SelectContent,
   SelectGroup,
   SelectItem,
   SelectTrigger,
-} from './ui/Select';
+} from '../ui/Select';
 
 const CurrenciesSelectList = ({
   title,

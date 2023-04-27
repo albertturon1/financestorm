@@ -2,9 +2,9 @@
 
 import { twMerge } from 'tailwind-merge';
 
-import FlagCountryCode from '@components/FlagCountryCode';
-import PagePadding from '@components/PagePadding';
-import SectionTitle from '@components/SectionTitle';
+import FlagCountryCode from '@components/misc/FlagCountryCode';
+import PagePadding from '@components/misc/PagePadding';
+import SectionTitle from '@components/misc/SectionTitle';
 import { useDailyCurrencyRatesQuery } from '@src/api/client/CurrenctyRateClientApi';
 import { PrefetchDailyCurrencyRatesRequest } from '@src/api/interfaces/ICurrenctyRateApi';
 import { separateToDailyCurrencyRates } from '@utils/convertRatesToQuoteCurrency';

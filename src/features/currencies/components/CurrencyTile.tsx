@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 
-import FlagCountryCode from '@components/FlagCountryCode';
+import FlagCountryCode from '@components/misc/FlagCountryCode';
 import { Currency, CurrenciesPair } from '@interfaces/ICurrency';
 
 const CurrencyTile = ({

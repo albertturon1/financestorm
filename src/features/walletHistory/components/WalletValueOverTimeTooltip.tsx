@@ -1,8 +1,8 @@
 import { DateTime } from 'luxon';
 import { TooltipProps } from 'recharts';
 
-import TooltipRowWrapper from '@components/TooltipRowWrapper';
-import TooltipWrapper from '@components/TooltipWrapper';
+import TooltipRowWrapper from '@components/tooltip/TooltipRowWrapper';
+import TooltipWrapper from '@components/tooltip/TooltipWrapper';
 import { CHART_THEME } from '@constants/chart';
 import { CustomTooltipProps, WalletDay } from '@interfaces/ICharts';
 

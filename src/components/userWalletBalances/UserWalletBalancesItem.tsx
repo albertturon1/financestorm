@@ -2,7 +2,7 @@ import { ReactNode } from 'react';
 
 import { twMerge } from 'tailwind-merge';
 
-import FlagCountryCode from '@components/FlagCountryCode';
+import FlagCountryCode from '@components/misc/FlagCountryCode';
 import { Currency } from '@interfaces/ICurrency';
 
 import UserWalletBalancesRowWrapper from './UserWalletBalancesRowWrapper';

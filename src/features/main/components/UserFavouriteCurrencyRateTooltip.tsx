@@ -1,6 +1,6 @@
 import { TooltipProps } from 'recharts';
 
-import TooltipWrapper from '@components/TooltipWrapper';
+import TooltipWrapper from '@components/tooltip/TooltipWrapper';
 import { CustomTooltipProps } from '@interfaces/ICharts';
 
 type P = [

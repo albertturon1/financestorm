@@ -1,4 +1,4 @@
-import FlagCountryCode from '@components/FlagCountryCode';
+import FlagCountryCode from '@components/misc/FlagCountryCode';
 import { Currency } from '@interfaces/ICurrency';
 
 const TransactionsFlagCountry = ({

@@ -1,16 +1,6 @@
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { AiOutlineLineChart } from 'react-icons/ai';
 
-import PageTitle from '@components/PageTitle';
-import UserPhoto from '@components/UserPhoto';
-import WorkInProgress from '@components/WorkInProgress';
-import { CHART_THEME } from '@constants/chart';
-import { PADDING_TAILWIND } from '@constants/globals';
-import UserBalancePercentage from '@features/user/components/currencyBalancePercentage/UserBalancePercentage';
-import UserBalance from '@features/user/components/UserBalance';
-// import UserCurrencyPairSummary from '@features/user/components/UserCurrencyPairSummary';
-// import UserLastTransactions from '@features/user/components/UserLastTransactions';
+import WorkInProgress from '@components/misc/WorkInProgress';
 import todayWalletValue from '@features/walletHistory/tools/todayWalletValue';
 import { getUser } from 'src/api/UserApi';
 
@@ -23,7 +13,7 @@ const User = async () => {
   if (!user) return null;
   if (!user.id) notFound();
 
-  const walletValue = await todayWalletValue(user);
+  const _walletValue = await todayWalletValue(user);
   // const transactions = await getUserCurrencyTransactions();
 
   return (
@@ -46,11 +36,6 @@ const User = async () => {
     //         </div>
     //       </Link>
     //     </div>
-    //     {!!walletValue && (
-    //       <div className="flex grow mb-10 ">
-    //         <UserBalancePercentage currencies={walletValue.currencies} />
-    //       </div>
-    //     )}
     //   </div>
     // </div>
   );
