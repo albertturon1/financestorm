@@ -1,4 +1,6 @@
 import '@styles/global.css';
+import "@fontsource/bebas-neue"
+
 import { ReactNode } from 'react';
 
 import { Analytics } from '@vercel/analytics/react';

@@ -32,6 +32,9 @@ module.exports = {
       blur: {
         10: '10px',
       },
+      fontFamily: {
+        bebas_neue: ['Bebas Neue', 'sans-serif']
+      }
     },
   },
 };
