@@ -28,17 +28,17 @@ const FlagCountryCode = ({
       className,
     )}
   >
-    <div className={twMerge('mr-1 flex h-5 object-contain', flagClassName)}>
+    <div className={twMerge('flex h-5 object-contain', flagClassName)}>
       <Flag
         alt={`${code} flag`}
         code={code.slice(0, 2).toUpperCase()}
-        className="h-full object-left-top border"
+        className="h-full border object-left-top"
         style={flagStyle}
       />
     </div>
     <p
       className={twMerge(
-        `${reverse ? 'w-10' : ''} ${boldName ? 'font-semibold' : ''}`,
+        `w-max tabular-nums ${boldName ? 'font-semibold' : ''}`,
         textClassName,
       )}
     >

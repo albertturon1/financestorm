@@ -55,7 +55,7 @@ export type CustomLineChartProps<T, Y> = {
  * @returns Component to render generic line charts
  */
 
-const CustomLineChart = <T, Y>({
+const CLineChart = <T, Y>({
   data,
   xAxisLabelExtractor,
   dataKeyExtractor,
@@ -139,5 +139,4 @@ const CustomLineChart = <T, Y>({
   );
 };
 
-const Memo = memo(CustomLineChart);
-export default Memo as typeof CustomLineChart;
+export const CustomLineChart = memo(CLineChart) as typeof CLineChart;

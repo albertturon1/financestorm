@@ -29,7 +29,7 @@ const CurrencyRatePairChartTooltip = ({
   const localDateString = date.toLocaleDateString('en-US', options);
 
   return (
-    <TooltipWrapper className="text-sm font-bold">
+    <TooltipWrapper>
       <p>{localDateString}</p>
       <p>{`Rate: ${p.value} ${quoteCurrency}`}</p>
     </TooltipWrapper>

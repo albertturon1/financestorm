@@ -1,3 +1,5 @@
+import { DateTimeFormatOptions } from 'luxon';
+
 import { ChartRange } from '@interfaces/ICharts';
 
 export const CHART_THEME = [
@@ -28,3 +30,9 @@ export const CHART_RANGES: readonly ChartRange[] = [
   { name: '15Y', type: 'year', value: 15 },
   { name: '20Y', type: 'year', value: 20 },
 ] as const;
+
+export const CHART_X_AXIS_TICK_FORMATTER_OPTIONS = {
+  month: 'short',
+  day: 'numeric',
+  year: '2-digit',
+} satisfies DateTimeFormatOptions;
