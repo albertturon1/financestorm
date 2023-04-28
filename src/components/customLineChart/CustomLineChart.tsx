@@ -139,5 +139,4 @@ const CustomLineChart = <T, Y>({
   );
 };
 
-const Memo = memo(CustomLineChart);
-export default Memo as typeof CustomLineChart;
+export const Memo = memo(CustomLineChart) as typeof CustomLineChart;

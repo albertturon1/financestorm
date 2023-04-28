@@ -1,2 +1,2 @@
-import CustomLineChart from './CustomLineChart';
+import { CustomLineChart } from './CustomLineChart';
 export default CustomLineChart;

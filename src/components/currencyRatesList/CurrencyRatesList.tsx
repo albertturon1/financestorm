@@ -3,6 +3,7 @@
 import { twMerge } from 'tailwind-merge';
 
 import FlagCountryCode from '@components/misc/FlagCountryCode';
+import Loader from '@components/misc/Loader';
 import PagePadding from '@components/misc/PagePadding';
 import SectionTitle from '@components/misc/SectionTitle';
 import { useDailyCurrencyRatesQuery } from '@src/api/client/CurrenctyRateClientApi';
@@ -11,7 +12,6 @@ import { separateToDailyCurrencyRates } from '@utils/convertRatesToQuoteCurrency
 
 import CurrencyRatesListButton from './CurrencyRatesListButton';
 import CurrencyRatesListItem from './CurrencyRatesListItem';
-import CurrencyRatesListSkeletonLoader from './CurrencyRatesListSkeletonLoader';
 
 const DAYS_BACK = 30;
 
@@ -24,7 +24,7 @@ export const CurrencyRatesList = ({
 }) => {
   const { data, isError, isLoading } = useDailyCurrencyRatesQuery(queryProps);
 
-  if (isLoading) return <CurrencyRatesListSkeletonLoader />;
+  if (isLoading) return <Loader />;
   if (isError || !data) return <p>Error</p>;
   const separateDailyCurrencyRates = separateToDailyCurrencyRates(data);
 

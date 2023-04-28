@@ -1,9 +1,11 @@
 import { Hydrate } from '@tanstack/react-query';
 import { DateTime } from 'luxon';
+import dynamic from 'next/dynamic';
 
 import CurrencyRatesList from '@components/currencyRatesList';
 import PageMaxWidth from '@components/misc/PageMaxWidth';
 import PagePadding from '@components/misc/PagePadding';
+import SkeletonLoader from '@components/ui/SkeletonLoader';
 import { SERVER_DATE } from '@constants/dateTime';
 import { Currency } from '@interfaces/ICurrency';
 import { prefetchDailyCurrencyRatesQuery } from '@src/api/CurrenctyRateApi';
@@ -29,6 +31,18 @@ const QUERY_PROPS = {
   },
 } satisfies PrefetchDailyCurrencyRatesRequest;
 
+const MultiCurrenciesChart = dynamic(
+  () => import('@features/main/components/multiCurrenciesChart'),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="flex h-[30vh] w-full items-center">
+        <SkeletonLoader className="h-full w-full" />
+      </div>
+    ),
+  },
+);
+
 const HomePage = async () => {
   const hydratedState = await prefetchDailyCurrencyRatesQuery(QUERY_PROPS);
 
@@ -36,7 +50,15 @@ const HomePage = async () => {
     <Hydrate state={hydratedState}>
       <PageMaxWidth>
         <PagePadding vertical horizontal={false}>
-          <CurrencyRatesList showGoToAllButton queryProps={QUERY_PROPS} />
+          <div className="flex flex-col gap-y-20">
+            <CurrencyRatesList showGoToAllButton queryProps={QUERY_PROPS} />
+            <PagePadding>
+              <MultiCurrenciesChart
+                queryProps={QUERY_PROPS}
+                quoteCurrency={QUOTE_CURRENCY}
+              />
+            </PagePadding>
+          </div>
         </PagePadding>
       </PageMaxWidth>
     </Hydrate>
