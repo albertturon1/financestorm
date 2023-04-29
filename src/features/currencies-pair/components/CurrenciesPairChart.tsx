@@ -55,7 +55,7 @@ const CurrenciesPairChart = (
 
         return (
           <div className="flex flex-col gap-y-10">
-            <div className="h-[60vh] w-full">
+            <div className="h-[55vh] w-full">
               <ResponsiveContainer width={'100%'} height={'100%'}>
                 <AreaChart data={currencyRates.rates}>
                   <XAxis

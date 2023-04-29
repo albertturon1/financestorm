@@ -7,6 +7,7 @@ import PageMaxWidth from '@components/misc/PageMaxWidth';
 import PagePadding from '@components/misc/PagePadding';
 import SkeletonLoader from '@components/ui/SkeletonLoader';
 import { SERVER_DATE } from '@constants/dateTime';
+import LandingHeader from '@features/main/components/LandingHeader';
 import { Currency } from '@interfaces/ICurrency';
 import { prefetchDailyCurrencyRatesQuery } from '@src/api/CurrenctyRateApi';
 import {
@@ -48,9 +49,10 @@ const HomePage = async () => {
 
   return (
     <Hydrate state={hydratedState}>
+      <LandingHeader />
       <PageMaxWidth>
         <PagePadding vertical horizontal={false}>
-          <div className="flex flex-col gap-y-20">
+          <div className="flex flex-col gap-y-8 lg:gap-y-16">
             <CurrencyRatesList showGoToAllButton queryProps={QUERY_PROPS} />
             <PagePadding>
               <MultiCurrenciesChart

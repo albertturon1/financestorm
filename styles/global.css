@@ -4,13 +4,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-  font-family: 'BebasNeue-Regular';
-  src: url('~public/fonts/BebasNeue/BebasNeue-Regular.ttf') format('truetype');
-  font-weight: 400;
-  font-style: normal;
-}
-
 @layer base {
   :root {
     --pale: #e7dfdd;
@@ -19,6 +12,7 @@
     --border: #e2e8f0;
     --navy: #2f4858;
     --dark_navy: #0e2b54;
+    --beige: #f7f3e3;
     --background: #f6f6f6;
     --primaryBlack: #161616;
     --secondaryBlack: #242424;
