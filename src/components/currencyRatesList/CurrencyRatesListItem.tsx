@@ -52,7 +52,10 @@ const CurrencyRatesListItem = ({
   return (
     <div className={rowStyle}>
       <div className={currencyStyle}>
-        <FlagCountryCode code={currencyRates.base_currency} />
+        <FlagCountryCode
+          code={currencyRates.base_currency}
+          flagClassName="w-7 w-9"
+        />
       </div>
       {/* Lastest vale */}
       <p className={amountStyle}>{currencyRates.rates.slice(-1)[0].value}</p>

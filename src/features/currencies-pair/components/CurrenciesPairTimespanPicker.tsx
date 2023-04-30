@@ -1,5 +1,6 @@
 import { Button } from '@components/ui/Button';
-import CHART_TIMESPANS, { ChartTimespan } from '@constants/chartTimespan';
+import { CHART_TIMESPANS } from '@constants/chart';
+import { ChartTimespan } from '@interfaces/ICharts';
 import { cn } from '@utils/misc';
 
 const CurrenciesPairTimespanPicker = ({

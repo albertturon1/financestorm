@@ -4,20 +4,23 @@ import { useQuery } from '@tanstack/react-query';
 
 import {
   dailyCurrencyRatesQuery,
-  getTodayCurrencyRatesQuery,
-} from '../CurrenctyRateApi';
+  todayCurrencyRatesQuery,
+} from '../CurrencyRateApi';
 import {
-  MultiCurrenciesRate,
   PrefetchDailyCurrencyRatesRequest,
-} from '../interfaces/ICurrenctyRateApi';
+  PrefetchTodayCurrencyRatesRequest,
+} from '../interfaces/ICurrencyRateApi';
 import { CURRENCY_RATE_KEYS } from '../queryKeys/CurrencyRateKeys';
 
-export const useGetTodayCurrencyRatesQuery = (props: MultiCurrenciesRate) =>
-  useQuery(
-    ['todayCurrencyRates', props],
-    () => getTodayCurrencyRatesQuery(props),
-    { enabled: !!props.base_currencies.length && !!props.base_currencies },
-  );
+export const useTodayCurrencyRatesQuery = ({
+  queryParams,
+  queryOptions,
+}: PrefetchTodayCurrencyRatesRequest) =>
+  useQuery({
+    queryKey: CURRENCY_RATE_KEYS.todayCurrencyRates(queryParams),
+    queryFn: () => todayCurrencyRatesQuery(queryParams),
+    ...queryOptions,
+  });
 
 export const useDailyCurrencyRatesQuery = ({
   queryParams,

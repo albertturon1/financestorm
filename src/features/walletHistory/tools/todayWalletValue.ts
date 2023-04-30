@@ -1,7 +1,7 @@
 import { CURRENCIES } from '@constants/currencies';
 import { Currency } from '@interfaces/ICurrency';
 import { UserModel } from '@interfaces/models/IUser';
-import { getTodayCurrencyRatesQuery } from '@src/api/CurrenctyRateApi';
+import { getTodayCurrencyRatesQuery } from '@src/api/CurrencyRateApi';
 import { cutNumber } from '@utils/misc';
 
 export interface QuoteCurrencyWalletValue {

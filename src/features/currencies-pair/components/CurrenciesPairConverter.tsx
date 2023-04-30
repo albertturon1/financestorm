@@ -20,8 +20,10 @@ function getLatestDayRate(
   if (!rates) return undefined;
   let latestDayWithRate: number | undefined = undefined;
   for (const [_, dayRates] of Object.entries(rates)) {
-    if (baseCurrency in dayRates) {
-      latestDayWithRate = inverseCurrecyRate(dayRates[baseCurrency]);
+    if (baseCurrency.toUpperCase() in dayRates) {
+      latestDayWithRate = inverseCurrecyRate(
+        dayRates[baseCurrency.toUpperCase() as Currency],
+      );
     }
   }
   return latestDayWithRate;

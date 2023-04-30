@@ -8,11 +8,11 @@ import PagePadding from '@components/misc/PagePadding';
 import SkeletonLoader from '@components/ui/SkeletonLoader';
 import { SERVER_DATE } from '@constants/dateTime';
 import { Currency } from '@interfaces/ICurrency';
-import { prefetchDailyCurrencyRatesQuery } from '@src/api/CurrenctyRateApi';
+import { prefetchDailyCurrencyRatesQuery } from '@src/api/CurrencyRateApi';
 import {
   DailyCurrencyRatesRequest,
   PrefetchDailyCurrencyRatesRequest,
-} from '@src/api/interfaces/ICurrenctyRateApi';
+} from '@src/api/interfaces/ICurrencyRateApi';
 
 const HOMEPAGE_CHART_DAYS_BACK = 30;
 const QUOTE_CURRENCY = 'PLN' as Currency;

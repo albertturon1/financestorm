@@ -2,23 +2,46 @@ import { Currency } from '@interfaces/ICurrency';
 import { ExchangeRateLatestResponse } from '@interfaces/models/IExchangerate';
 
 import CurrencyTile from './CurrencyTile';
+import DataLoader, { DataLoaderQueryProps } from '@components/ui/DataLoader';
 
 const CurrenciesRatesTiles = ({
-  data,
-  quoteCurrencyName,
+  currenciesRates,
+  quoteCurrency,
+  ...props
 }: {
-  data: ExchangeRateLatestResponse;
-  quoteCurrencyName: Currency;
-}) => (
-  <div className="grid auto-cols-max grid-cols-1 gap-y-3 lg:gap-5 pt-3 pb-2 lg:pb-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-    {Object.entries(data.rates).map(([baseCurrency, rate]) => (
-      <CurrencyTile
-        currenciesPair={`${baseCurrency as Currency}-${quoteCurrencyName}`}
-        rate={rate}
-        key={baseCurrency}
-      />
-    ))}
-  </div>
+  currenciesRates: ExchangeRateLatestResponse | undefined;
+  quoteCurrency: Currency;
+} & DataLoaderQueryProps<ExchangeRateLatestResponse | undefined>) => (
+  <DataLoader {...props} data={currenciesRates}>
+    {(data) => (
+      <div className="flex flex-col gap-y-2 pl-0.5">
+        <p className="font-medium">{'From'}</p>
+        {Object.keys(data.rates).length ? (
+          <div className="grid auto-cols-max grid-cols-1 sm:grid-cols-2 sm:gap-x-10 lg:grid-cols-3">
+            {Object.entries(data.rates).map(
+              ([baseCurrency, rate], index, array) => (
+                <CurrencyTile
+                  baseCurrency={baseCurrency as Currency}
+                  quoteCurrency={quoteCurrency}
+                  rate={rate}
+                  key={baseCurrency}
+                  className={`border ${index === 0 && 'rounded-t-lg'} ${
+                    index === 1 && 'sm:rounded-t-lg'
+                  } ${index === 2 && 'lg:rounded-t-lg'} ${
+                    index === array.length - 3 && 'lg:rounded-b-lg'
+                  } ${index === array.length - 2 && 'sm:rounded-b-lg'} ${
+                    index === array.length - 1 && 'rounded-b-lg'
+                  }`}
+                />
+              ),
+            )}
+          </div>
+        ) : (
+          <div>{'No matches'}</div>
+        )}
+      </div>
+    )}
+  </DataLoader>
 );
 
 export default CurrenciesRatesTiles;

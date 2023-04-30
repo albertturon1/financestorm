@@ -7,7 +7,7 @@ import Loader from '@components/misc/Loader';
 import PagePadding from '@components/misc/PagePadding';
 import SectionTitle from '@components/misc/SectionTitle';
 import { useDailyCurrencyRatesQuery } from '@src/api/client/CurrenctyRateClientApi';
-import { PrefetchDailyCurrencyRatesRequest } from '@src/api/interfaces/ICurrenctyRateApi';
+import { PrefetchDailyCurrencyRatesRequest } from '@src/api/interfaces/ICurrencyRateApi';
 import { separateToDailyCurrencyRates } from '@utils/convertRatesToQuoteCurrency';
 
 import CurrencyRatesListButton from './CurrencyRatesListButton';
@@ -34,7 +34,7 @@ export const CurrencyRatesList = ({
   const amountStyle = 'pl-2 col-span-2';
   const changeStyle = 'hidden sm:flex col-span-2';
   const chartStyle = 'hidden xs:flex col-span-2 col-span-2';
-  const currencyStyle = 'col-span-2';
+  const currencyStyle = 'col-span-2 text-sm sm:text-base';
 
   return (
     <div className="flex flex-col gap-y-2">
@@ -45,7 +45,7 @@ export const CurrencyRatesList = ({
       <div className="flex flex-1 flex-col px-1 xs:px-1.5 sm:px-4 lg:px-8">
         {/* Legend */}
         <div className={twMerge(rowStyle, 'h-12 border-0 xs:h-14')}>
-          <p className={currencyStyle}>{'Currency'}</p>
+          <p className={twMerge(currencyStyle, 'text-base')}>{'Currency'}</p>
           <p className={amountStyle}>{'Amount'}</p>
           <p className={changeStyle}>{`Change (${DAYS_BACK}d)`}</p>
           <p className={chartStyle}>{`Chart (${DAYS_BACK}d)`}</p>
@@ -55,7 +55,7 @@ export const CurrencyRatesList = ({
                 pathname: '/currencies',
               }}
             >
-              <p>{'All'}</p>
+              {'All'}
             </CurrencyRatesListButton>
           )}
         </div>
@@ -64,7 +64,10 @@ export const CurrencyRatesList = ({
           className={twMerge(rowStyle, 'overflow-hidden rounded-lg bg-pale')}
         >
           <div className={currencyStyle}>
-            <FlagCountryCode code={separateDailyCurrencyRates.quote_currency} />
+            <FlagCountryCode
+              code={separateDailyCurrencyRates.quote_currency}
+              flagClassName="w-7 lg:w-9"
+            />
           </div>
           <p className={amountStyle}>{'1'}</p>
         </div>

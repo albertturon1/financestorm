@@ -6,7 +6,7 @@ export interface CurrencyRatePair {
   quote_currency: Currency;
 }
 export interface MultiCurrenciesRate {
-  base_currencies: readonly Currency[];
+  base_currencies: Currency[];
   quote_currency: Currency;
 }
 export interface CurrencyRateRange {
@@ -17,5 +17,8 @@ export interface CurrencyRateRange {
 export type DailyCurrencyRatesRequest = CurrencyRateRange &
   MultiCurrenciesRate;
 
-export type PrefetchDailyCurrencyRatesRequest =
+export type PrefetchTodayCurrencyRatesRequest =
+  PrefetchRequest<MultiCurrenciesRate>;
+
+  export type PrefetchDailyCurrencyRatesRequest =
   PrefetchRequest<DailyCurrencyRatesRequest>;
