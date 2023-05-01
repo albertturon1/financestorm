@@ -5,7 +5,8 @@ import { ReactNode } from 'react';
 
 import { Analytics } from '@vercel/analytics/react';
 
-import Navbar from './Navbar';
+import Navbar from '@components/navbar';
+
 import ReactQueryProvider from '../src/utils/providers/ReactQueryProvider';
 
 export const metadata = {
