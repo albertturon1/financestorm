@@ -62,7 +62,7 @@ export const todayCurrencyRatesQuery = async (props: MultiCurrenciesRate) => {
     base: props.quote_currency,
     symbols: props.base_currencies?.join(',')?.toUpperCase(), //comma separated values
   });
-
+  
   return await api.get<ExchangeRateLatestResponse>(`${url}?${params}`);
 };
 

@@ -7,9 +7,7 @@ import { useRouter } from 'next/navigation';
 import CurrenciesSelectList from '@components/misc/CurrenciesSelectList';
 import { Input } from '@components/ui/Input';
 import { Currency } from '@interfaces/ICurrency';
-import {
-  CurrenciesRates,
-} from '@interfaces/models/IExchangerate';
+import { CurrenciesRates } from '@interfaces/models/IExchangerate';
 import { useTodayCurrencyRatesQuery } from '@src/api/client/CurrenctyRateClientApi';
 import { PrefetchTodayCurrencyRatesRequest } from '@src/api/interfaces/ICurrencyRateApi';
 
@@ -31,6 +29,8 @@ const CurrenciesHydrated = ({
       ...queryProps.queryParams,
     },
   });
+
+  //state to hold filtered currencies from input
   const [filteredCurrenciesRates, setFilteredCurrenciesRates] = useState(
     query.data,
   );
@@ -45,7 +45,7 @@ const CurrenciesHydrated = ({
         const aLow = a.toLowerCase();
         const bLow = b.toLowerCase();
 
-        //filter to prioritize by first letter from input
+        //prioritize by first letter from input
         if (aLow.startsWith(search[0]) && !bLow.startsWith(search[0])) {
           return -1;
         } else if (!aLow.startsWith(search[0]) && bLow.startsWith(search[0])) {
@@ -57,7 +57,7 @@ const CurrenciesHydrated = ({
       .reduce(
         (acc, key) =>
           Object.assign(acc, {
-            [key]: query.data.rates[key as Currency],
+            [key]: query.data?.rates[key as Currency],
           }),
         {} as CurrenciesRates,
       );
@@ -69,11 +69,16 @@ const CurrenciesHydrated = ({
     });
   };
 
+  const dataFrom = query.data?.date;
+
   return (
     <div className="flex flex-1 flex-col gap-y-6 lg:gap-y-10">
-      <h1 className="text-lg font-bold sm:text-xl">
-        {'Latest exchange rates'}
-      </h1>
+      <div className="flex flex-col gap-y-1">
+        <h1 className="text-lg font-bold sm:text-xl">
+          {'Latest exchange rates'}
+        </h1>
+        <p className="text-sm">{dataFrom && `Data from ${dataFrom}`}</p>
+      </div>
       <div className="grid grid-cols-1 gap-x-10 gap-y-3 sm:grid-cols-2">
         <div className="flex flex-col gap-y-1">
           <h1 className="pl-0.5 font-medium">{'To'}</h1>

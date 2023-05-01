@@ -2,7 +2,6 @@ import { Hydrate } from '@tanstack/react-query';
 
 import PageMaxWidth from '@components/misc/PageMaxWidth';
 import PagePadding from '@components/misc/PagePadding';
-import SectionTitle from '@components/misc/SectionTitle';
 import { CURRENCIES } from '@constants/currencies';
 import CurrenciesHydrated from '@features/currencies/components/CurrenciesHydrated';
 import { Currency } from '@interfaces/ICurrency';
@@ -28,7 +27,7 @@ const CurrenciesPage = async ({
       base_currencies: baseCurrencies,
     } satisfies MultiCurrenciesRate,
     queryOptions: {
-      staleTime: 1000 * 60 * 60 * 24, //24hour
+      staleTime: 1000 * 60 * 30, //30mins
     },
   } satisfies PrefetchTodayCurrencyRatesRequest;
 
@@ -36,16 +35,13 @@ const CurrenciesPage = async ({
 
   return (
     <Hydrate state={hydratedState}>
-      <PageMaxWidth flex>
+      <PageMaxWidth>
         <PagePadding flex vertical>
-          <div className="flex flex-1 flex-col gap-y-6">
-            {/* <SectionTitle>{'All currency pairs'}</SectionTitle> */}
-            <CurrenciesHydrated
-              queryProps={QUERY_PROPS}
-              defaultCurrency={defaultQuoteCurrency}
-              baseCurrencies={baseCurrencies}
-            />
-          </div>
+          <CurrenciesHydrated
+            queryProps={QUERY_PROPS}
+            defaultCurrency={defaultQuoteCurrency}
+            baseCurrencies={baseCurrencies}
+          />
         </PagePadding>
       </PageMaxWidth>
     </Hydrate>
