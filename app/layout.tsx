@@ -1,5 +1,5 @@
 import '@styles/global.css';
-import "@fontsource/bebas-neue"
+import '@fontsource/bebas-neue';
 
 import { ReactNode } from 'react';
 

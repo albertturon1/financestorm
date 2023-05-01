@@ -1,7 +1,7 @@
 import {
   DailyCurrencyRatesRequest,
   MultiCurrenciesRate,
-} from '../interfaces/ICurrenctyRateApi';
+} from '../interfaces/ICurrencyRateApi';
 
 export const CURRENCY_RATE_KEYS = {
   all: ['CURRENCY_RATE_KEYS'] as const,

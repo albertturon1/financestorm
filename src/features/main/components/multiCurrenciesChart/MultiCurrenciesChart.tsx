@@ -20,7 +20,7 @@ import {
 import useWindowSize from '@hooks/useWindowSize';
 import { Currency } from '@interfaces/ICurrency';
 import { useDailyCurrencyRatesQuery } from '@src/api/client/CurrenctyRateClientApi';
-import { PrefetchDailyCurrencyRatesRequest } from '@src/api/interfaces/ICurrenctyRateApi';
+import { PrefetchDailyCurrencyRatesRequest } from '@src/api/interfaces/ICurrencyRateApi';
 import Theme from '@src/Theme';
 import {
   xAxisIntervalDivider,

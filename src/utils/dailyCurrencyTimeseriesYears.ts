@@ -3,11 +3,11 @@ import { DateTime } from 'luxon';
 import { SERVER_DATE } from '@constants/dateTime';
 import { Currency } from '@interfaces/ICurrency';
 import { ExchangeRateTimeseries } from '@interfaces/models/IExchangerate';
-import { getDailyCurrencyTimeseriesOneYearQuery } from '@src/api/CurrenctyRateApi';
+import { getDailyCurrencyTimeseriesOneYearQuery } from '@src/api/CurrencyRateApi';
 import {
   CurrencyRateRange,
   CurrencyRatePair,
-} from '@src/api/interfaces/ICurrenctyRateApi';
+} from '@src/api/interfaces/ICurrencyRateApi';
 import { dateDiff } from '@utils/misc';
 
 export type DailyMultiCurrencyDataProps = Omit<

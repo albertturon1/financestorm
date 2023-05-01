@@ -1,6 +1,6 @@
 import { LabelValue } from '@interfaces/ICharts';
 import { Currency } from '@interfaces/ICurrency';
-import { CurrencyRatePair } from '@src/api/interfaces/ICurrenctyRateApi';
+import { CurrencyRatePair } from '@src/api/interfaces/ICurrencyRateApi';
 
 export type CurrenciesRates = Record<Currency, number>;
 export type LabeledRates = CurrenciesRates & LabelValue;

@@ -1,4 +1,4 @@
-import { CHART_RANGES } from '@constants/chart';
+import { CHART_RANGES, CHART_TIMESPANS } from '@constants/chart';
 
 import { Currency } from './ICurrency';
 import { AnyObject } from './IUtility';
@@ -51,3 +51,4 @@ export type ChartType = 'bar' | 'pie' | 'line';
 export type ChartRangeType = 'day' | 'week' | 'month' | 'year';
 export type ChartRange = { name: string; type: ChartRangeType; value: number };
 export type ChartRanges = (typeof CHART_RANGES)[number];
+export type ChartTimespan = keyof typeof CHART_TIMESPANS;

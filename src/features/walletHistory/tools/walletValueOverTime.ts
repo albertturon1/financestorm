@@ -5,7 +5,7 @@ import userCurrenciesAmount from '@features/user/tools/userCurrenciesAmount';
 import { WalletBaseCurrencyValue, WalletDay } from '@interfaces/ICharts';
 import { Currency } from '@interfaces/ICurrency';
 import { UserCurrency } from '@interfaces/models/IUser';
-import { CurrencyRatePair } from '@src/api/interfaces/ICurrenctyRateApi';
+import { CurrencyRatePair } from '@src/api/interfaces/ICurrencyRateApi';
 import dailyCurrencyTimeseriesYears from '@utils/dailyCurrencyTimeseriesYears';
 import { cutNumber } from '@utils/misc';
 
