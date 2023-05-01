@@ -28,6 +28,14 @@ export function chartColor(rates: number[]) {
   return 'rgb(55 65 81)';
 }
 
+export type CurrencyRatesListItemStyleProps = {
+  rowStyle: string;
+  changeStyle: string;
+  chartStyle: string;
+  amountStyle: string;
+  currencyStyle: string;
+};
+
 const CurrencyRatesListItem = ({
   currencyRates,
   rowStyle,
@@ -37,12 +45,7 @@ const CurrencyRatesListItem = ({
   currencyStyle,
 }: {
   currencyRates: SeparateDailyCurrencyRates;
-  rowStyle: string;
-  changeStyle: string;
-  chartStyle: string;
-  amountStyle: string;
-  currencyStyle: string;
-}) => {
+} & CurrencyRatesListItemStyleProps) => {
   const values = currencyRates.rates.map((r) => r.value);
   const differenceInPercentage = cutNumber(
     valuesDifferenceInPercentage(values),
