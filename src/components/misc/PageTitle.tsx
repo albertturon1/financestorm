@@ -1,15 +1,18 @@
 import { twMerge } from 'tailwind-merge';
 
 const PageTitle = ({
-  children,
+  title,
+  subtitle,
   className = '',
 }: {
-  children: string;
+  title: string;
+  subtitle?: string;
   className?: string;
 }) => (
-  <h1 className={twMerge('text-lg lg:text-xl font-semibold tracking-wide', className)}>
-    {children}
-  </h1>
+  <div className={twMerge('flex flex-col gap-y-1', className)}>
+    <h1 className="text-lg font-bold sm:text-xl">{title}</h1>
+    {subtitle && <p className="text-sm">{subtitle}</p>}
+  </div>
 );
 
 export default PageTitle;

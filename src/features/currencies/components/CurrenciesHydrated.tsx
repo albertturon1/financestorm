@@ -5,6 +5,7 @@ import { useState, ChangeEvent } from 'react';
 import { useRouter } from 'next/navigation';
 
 import CurrenciesSelectList from '@components/misc/CurrenciesSelectList';
+import PageTitle from '@components/misc/PageTitle';
 import { Input } from '@components/ui/Input';
 import { Currency } from '@interfaces/ICurrency';
 import { CurrenciesRates } from '@interfaces/models/IExchangerate';
@@ -73,12 +74,10 @@ const CurrenciesHydrated = ({
 
   return (
     <div className="flex flex-1 flex-col gap-y-6 lg:gap-y-10">
-      <div className="flex flex-col gap-y-1">
-        <h1 className="text-lg font-bold sm:text-xl">
-          {'Latest exchange rates'}
-        </h1>
-        <p className="text-sm">{dataFrom && `Data from ${dataFrom}`}</p>
-      </div>
+      <PageTitle
+        title="Latest exchange rates"
+        subtitle={dataFrom && `Data from ${dataFrom}`}
+      />
       <div className="grid grid-cols-1 gap-x-10 gap-y-3 sm:grid-cols-2">
         <div className="flex flex-col gap-y-1">
           <h1 className="pl-0.5 font-medium">{'To'}</h1>
