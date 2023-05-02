@@ -6,7 +6,6 @@ import { ArrowLeftRight } from 'lucide-react';
 import { useRouter, usePathname } from 'next/navigation';
 
 import CurrenciesSelectList from '@components/misc/CurrenciesSelectList';
-import FlagCountryCode from '@components/misc/FlagCountryCode';
 import { CURRENCIES } from '@constants/currencies';
 import { Currency } from '@interfaces/ICurrency';
 import Theme from '@src/Theme';
@@ -42,7 +41,6 @@ const CurrenciesPairSelectors = ({
           }}
           value={baseCurrency}
           currencies={baseCurrenciesAvailable}
-          title={() => <FlagCountryCode code={baseCurrency} />}
         />
       </div>
       <button
@@ -65,7 +63,6 @@ const CurrenciesPairSelectors = ({
           }}
           value={quoteCurrency}
           currencies={quoteCurrenciesAvailable}
-          title={() => <FlagCountryCode code={quoteCurrency} />}
         />
       </div>
     </div>

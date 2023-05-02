@@ -3,16 +3,17 @@ import { DateTime } from 'luxon';
 
 import PageMaxWidth from '@components/misc/PageMaxWidth';
 import PagePadding from '@components/misc/PagePadding';
-import CHART_TIMESPANS, { ChartTimespan } from '@constants/chartTimespan';
+import { CHART_TIMESPANS } from '@constants/chart';
 import { SERVER_DATE } from '@constants/dateTime';
 import CurrenciesPairHydrated from '@features/currencies-pair/components/CurrenciesPairHydrated';
 import CurrenciesPairSelectors from '@features/currencies-pair/components/CurrenciesPairSelectors';
+import { ChartTimespan } from '@interfaces/ICharts';
 import { Currency, CurrenciesPair } from '@interfaces/ICurrency';
-import { prefetchDailyCurrencyRatesQuery } from '@src/api/CurrenctyRateApi';
+import { prefetchDailyCurrencyRatesQuery } from '@src/api/CurrencyRateApi';
 import {
   DailyCurrencyRatesRequest,
   PrefetchDailyCurrencyRatesRequest,
-} from '@src/api/interfaces/ICurrenctyRateApi';
+} from '@src/api/interfaces/ICurrencyRateApi';
 
 export type CurrenciesPairPageProps = {
   pair: CurrenciesPair;

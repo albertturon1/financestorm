@@ -5,10 +5,11 @@ import { useState } from 'react';
 import dynamic from 'next/dynamic';
 
 import SkeletonLoader from '@components/ui/SkeletonLoader';
-import CHART_TIMESPANS, { ChartTimespan } from '@constants/chartTimespan';
+import { CHART_TIMESPANS } from '@constants/chart';
+import { ChartTimespan } from '@interfaces/ICharts';
 import { Currency } from '@interfaces/ICurrency';
 import { useDailyCurrencyRatesQuery } from '@src/api/client/CurrenctyRateClientApi';
-import { PrefetchDailyCurrencyRatesRequest } from '@src/api/interfaces/ICurrenctyRateApi';
+import { PrefetchDailyCurrencyRatesRequest } from '@src/api/interfaces/ICurrencyRateApi';
 
 const CurrenciesPairChart = dynamic(() => import('./CurrenciesPairChart'), {
   loading: () => <SkeletonLoader className="h-[60vh] w-full" />,

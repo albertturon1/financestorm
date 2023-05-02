@@ -28,6 +28,14 @@ export function chartColor(rates: number[]) {
   return 'rgb(55 65 81)';
 }
 
+export type CurrencyRatesListItemStyleProps = {
+  rowStyle: string;
+  changeStyle: string;
+  chartStyle: string;
+  amountStyle: string;
+  currencyStyle: string;
+};
+
 const CurrencyRatesListItem = ({
   currencyRates,
   rowStyle,
@@ -37,12 +45,7 @@ const CurrencyRatesListItem = ({
   currencyStyle,
 }: {
   currencyRates: SeparateDailyCurrencyRates;
-  rowStyle: string;
-  changeStyle: string;
-  chartStyle: string;
-  amountStyle: string;
-  currencyStyle: string;
-}) => {
+} & CurrencyRatesListItemStyleProps) => {
   const values = currencyRates.rates.map((r) => r.value);
   const differenceInPercentage = cutNumber(
     valuesDifferenceInPercentage(values),
@@ -52,7 +55,10 @@ const CurrencyRatesListItem = ({
   return (
     <div className={rowStyle}>
       <div className={currencyStyle}>
-        <FlagCountryCode code={currencyRates.base_currency} />
+        <FlagCountryCode
+          code={currencyRates.base_currency}
+          flagClassName="w-7 w-9"
+        />
       </div>
       {/* Lastest vale */}
       <p className={amountStyle}>{currencyRates.rates.slice(-1)[0].value}</p>

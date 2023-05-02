@@ -1,21 +1,19 @@
 import { Hydrate } from '@tanstack/react-query';
 import { DateTime } from 'luxon';
-import dynamic from 'next/dynamic';
 
-import CurrencyRatesList from '@components/currencyRatesList';
 import PageMaxWidth from '@components/misc/PageMaxWidth';
 import PagePadding from '@components/misc/PagePadding';
-import SkeletonLoader from '@components/ui/SkeletonLoader';
 import { SERVER_DATE } from '@constants/dateTime';
 import LandingHeader from '@features/main/components/LandingHeader';
+import HomepageHydrated from '@features/main/components/HomepageHydrated';
 import { Currency } from '@interfaces/ICurrency';
-import { prefetchDailyCurrencyRatesQuery } from '@src/api/CurrenctyRateApi';
+import { prefetchDailyCurrencyRatesQuery } from '@src/api/CurrencyRateApi';
 import {
   DailyCurrencyRatesRequest,
   PrefetchDailyCurrencyRatesRequest,
-} from '@src/api/interfaces/ICurrenctyRateApi';
+} from '@src/api/interfaces/ICurrencyRateApi';
 
-const HOMEPAGE_CHART_DAYS_BACK = 30;
+const DATA_TIMESPAN = 30;
 const QUOTE_CURRENCY = 'PLN' as Currency;
 const BASE_CURRENCIES = ['USD', 'EUR', 'GBP', 'CHF'] satisfies Currency[];
 const QUERY_PROPS = {
@@ -23,7 +21,7 @@ const QUERY_PROPS = {
     quote_currency: QUOTE_CURRENCY,
     base_currencies: BASE_CURRENCIES,
     start_date: DateTime.now()
-      .minus({ days: HOMEPAGE_CHART_DAYS_BACK - 1 })
+      .minus({ days: DATA_TIMESPAN - 1 })
       .toFormat(SERVER_DATE),
     end_date: DateTime.now().toFormat(SERVER_DATE),
   } satisfies DailyCurrencyRatesRequest,
@@ -32,35 +30,19 @@ const QUERY_PROPS = {
   },
 } satisfies PrefetchDailyCurrencyRatesRequest;
 
-const MultiCurrenciesChart = dynamic(
-  () => import('@features/main/components/multiCurrenciesChart'),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="flex h-[30vh] w-full items-center">
-        <SkeletonLoader className="h-full w-full" />
-      </div>
-    ),
-  },
-);
-
 const HomePage = async () => {
   const hydratedState = await prefetchDailyCurrencyRatesQuery(QUERY_PROPS);
 
   return (
     <Hydrate state={hydratedState}>
       <LandingHeader />
-      <PageMaxWidth>
-        <PagePadding vertical horizontal={false}>
-          <div className="flex flex-col gap-y-8 lg:gap-y-16">
-            <CurrencyRatesList showGoToAllButton queryProps={QUERY_PROPS} />
-            <PagePadding>
-              <MultiCurrenciesChart
-                queryProps={QUERY_PROPS}
-                quoteCurrency={QUOTE_CURRENCY}
-              />
-            </PagePadding>
-          </div>
+      <PageMaxWidth flex>
+        <PagePadding flex vertical horizontal={false}>
+          <HomepageHydrated
+            queryProps={QUERY_PROPS}
+            quoteCurrency={QUOTE_CURRENCY}
+            dataTimespan={DATA_TIMESPAN}
+          />
         </PagePadding>
       </PageMaxWidth>
     </Hydrate>

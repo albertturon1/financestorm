@@ -1,31 +1,45 @@
 'use client';
 
+import { ChevronRight } from 'lucide-react';
 import Link from 'next/link';
+import { twMerge } from 'tailwind-merge';
 
 import FlagCountryCode from '@components/misc/FlagCountryCode';
-import { Currency, CurrenciesPair } from '@interfaces/ICurrency';
+import { Currency } from '@interfaces/ICurrency';
+import { cutNumber, inverseCurrecyRate } from '@utils/misc';
 
 const CurrencyTile = ({
-  currenciesPair,
+  quoteCurrency,
+  baseCurrency,
   rate,
+  className,
 }: {
-  currenciesPair: CurrenciesPair;
+  quoteCurrency: Currency;
+  baseCurrency: Currency;
   rate: number;
-}) => {
-  const [base, quote] = (currenciesPair as string).split('-') as [
-    Currency,
-    Currency,
-  ];
-  return (
-    <Link href={`/currencies/${base.toLowerCase()}-${quote.toLowerCase()}`}>
-      <div className="flex items-center justify-between gap-x-4 rounded-lg border-gray-500 bg-secondaryBlack px-4 py-2">
-        <FlagCountryCode code={base} />
-        <div className="flex text-lg font-semibold">
-          <p>{`${rate} ${quote.toUpperCase()}`}</p>
+  className: string;
+}) => (
+  <Link
+    href={`/currencies/${baseCurrency.toLowerCase()}-${quoteCurrency.toLowerCase()}`}
+  >
+    <div
+      className={twMerge(
+        'flex items-center justify-between gap-x-4 px-4 py-4',
+        className,
+      )}
+    >
+      <FlagCountryCode code={baseCurrency} />
+      <div className="flex">
+        <div className="flex font-medium">
+          <p>{`${cutNumber(
+            inverseCurrecyRate(rate),
+            4,
+          )} ${quoteCurrency.toUpperCase()}`}</p>
         </div>
+        <ChevronRight size={25} strokeWidth={1} />
       </div>
-    </Link>
-  );
-};
+    </div>
+  </Link>
+);
 
 export default CurrencyTile;

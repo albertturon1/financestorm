@@ -1,7 +1,5 @@
 'use client';
 
-import { ReactElement } from 'react';
-
 import { Currency } from '@interfaces/ICurrency';
 
 import FlagCountryCode from './FlagCountryCode';
@@ -15,18 +13,16 @@ import {
 } from '../ui/Select';
 
 const CurrenciesSelectList = ({
-  title,
   currencies,
   ...props
 }: {
-  title: string | (() => ReactElement);
   value: Currency;
   currencies: readonly Currency[];
   onValueChange: (currency: Currency) => void;
 }) => (
   <Select {...props}>
     <SelectTrigger className="w-full">
-      {typeof title === 'string' ? title : title()}
+      {props.value && <FlagCountryCode code={props.value} />}
     </SelectTrigger>
     <SelectContent>
       <ScrollArea
