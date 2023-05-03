@@ -2,7 +2,6 @@
 
 import dynamic from 'next/dynamic';
 
-import CurrencyRatesList from '@components/currencyRatesList';
 import NavigationButton from '@components/misc/NavigationButton';
 import PagePadding from '@components/misc/PagePadding';
 import PageTitle from '@components/misc/PageTitle';
@@ -10,6 +9,10 @@ import SkeletonLoader from '@components/ui/SkeletonLoader';
 import { Currency } from '@interfaces/ICurrency';
 import { useDailyCurrencyRatesQuery } from '@src/api/client/CurrenctyRateClientApi';
 import { PrefetchDailyCurrencyRatesRequest } from '@src/api/interfaces/ICurrencyRateApi';
+
+const CurrencyRatesList = dynamic(
+  () => import('@components/currencyRatesList'),
+);
 
 const MultiCurrenciesChart = dynamic(
   () => import('@components/multiCurrenciesChart'),

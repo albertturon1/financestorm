@@ -14,6 +14,9 @@ const nextConfig = {
       },
     ],
   },
+  optimization: {
+    mergeDuplicateChunks: true,
+  },
 };
 
 module.exports = nextConfig;

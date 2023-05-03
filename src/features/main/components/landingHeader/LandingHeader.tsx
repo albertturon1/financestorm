@@ -4,7 +4,7 @@ import Image from 'next/image';
 
 import PageMaxWidth from '@components/misc/PageMaxWidth';
 import PagePadding from '@components/misc/PagePadding';
-import LandingPhone from 'public/assets/images/landing-phone.png';
+import LandingPhone from 'public/assets/images/landing-phone.webp';
 
 import LandingHeaderTextsAndArrow from './LandingHeaderTextsAndArrow';
 
