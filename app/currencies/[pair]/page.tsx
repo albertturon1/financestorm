@@ -1,12 +1,15 @@
 import { Hydrate } from '@tanstack/react-query';
 import { DateTime } from 'luxon';
+import dynamic from 'next/dynamic';
 
 import PageMaxWidth from '@components/misc/PageMaxWidth';
 import PagePadding from '@components/misc/PagePadding';
 import { CHART_TIMESPANS } from '@constants/chart';
 import { SERVER_DATE } from '@constants/dateTime';
 import CurrenciesPairHydrated from '@features/currencies-pair/components/CurrenciesPairHydrated';
-import CurrenciesPairSelectors from '@features/currencies-pair/components/CurrenciesPairSelectors';
+const CurrenciesPairSelectors = dynamic(
+  () => import('@features/currencies-pair/components/CurrenciesPairSelectors'),
+);
 import { ChartTimespan } from '@interfaces/ICharts';
 import { Currency, CurrenciesPair } from '@interfaces/ICurrency';
 import { prefetchDailyCurrencyRatesQuery } from '@src/api/CurrencyRateApi';

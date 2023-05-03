@@ -2,6 +2,7 @@
 
 import { useState, ChangeEvent } from 'react';
 
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 
 import CurrenciesSelectList from '@components/misc/CurrenciesSelectList';
@@ -12,7 +13,7 @@ import { CurrenciesRates } from '@interfaces/models/IExchangerate';
 import { useTodayCurrencyRatesQuery } from '@src/api/client/CurrenctyRateClientApi';
 import { PrefetchTodayCurrencyRatesRequest } from '@src/api/interfaces/ICurrencyRateApi';
 
-import CurrenciesRatesTiles from './CurrenciesRatesTiles';
+const CurrenciesRatesTiles = dynamic(() => import('./CurrenciesRatesTiles'));
 
 const CurrenciesHydrated = ({
   queryProps,

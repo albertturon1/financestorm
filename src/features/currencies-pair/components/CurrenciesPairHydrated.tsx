@@ -15,9 +15,11 @@ const CurrenciesPairChart = dynamic(() => import('./CurrenciesPairChart'), {
   loading: () => <SkeletonLoader className="h-[45vh] w-full" />,
   ssr: false,
 });
+const CurrenciesPairTimespanPicker = dynamic(
+  () => import('./CurrenciesPairTimespanPicker'),
+);
 
 import CurrenciesPairConverter from './CurrenciesPairConverter';
-import CurrenciesPairTimespanPicker from './CurrenciesPairTimespanPicker';
 
 const CurrenciesPairHydrated = ({
   defaultChartTimespan,
