@@ -1,8 +1,8 @@
+import DataLoader, { DataLoaderQueryProps } from '@components/ui/DataLoader';
 import { Currency } from '@interfaces/ICurrency';
 import { ExchangeRateLatestResponse } from '@interfaces/models/IExchangerate';
 
 import CurrencyTile from './CurrencyTile';
-import DataLoader, { DataLoaderQueryProps } from '@components/ui/DataLoader';
 
 const CurrenciesRatesTiles = ({
   currenciesRates,

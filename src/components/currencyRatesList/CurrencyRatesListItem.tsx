@@ -7,7 +7,7 @@ import SkeletonLoader from '@components/ui/SkeletonLoader';
 import { SeparateDailyCurrencyRates } from '@interfaces/models/IExchangerate';
 import { cutNumber, valuesDifferenceInPercentage } from '@utils/misc';
 
-import CurrencyRatesListButton from './CurrencyRatesListButton';
+import NavigationButton from '../misc/NavigationButton';
 
 const CurrencyRatesListItemChart = dynamic(
   () => import('./CurrencyRatesListItemChart'),
@@ -55,10 +55,7 @@ const CurrencyRatesListItem = ({
   return (
     <div className={rowStyle}>
       <div className={currencyStyle}>
-        <FlagCountryCode
-          code={currencyRates.base_currency}
-          flagClassName="w-7 w-9"
-        />
+        <FlagCountryCode code={currencyRates.base_currency} />
       </div>
       {/* Lastest vale */}
       <p className={amountStyle}>{currencyRates.rates.slice(-1)[0].value}</p>
@@ -74,9 +71,11 @@ const CurrencyRatesListItem = ({
         <CurrencyRatesListItemChart rates={currencyRates.rates} />
       </div>
       {/* Button to selected currency */}
-      <CurrencyRatesListButton
+      <NavigationButton
+        className="w-full"
         href={{
-          pathname: `/currencies/${currencyRates.base_currency}-${currencyRates.quote_currency}`,
+          pathname: `/currencies`,
+          query: `${currencyRates.base_currency}`,
         }}
       />
     </div>

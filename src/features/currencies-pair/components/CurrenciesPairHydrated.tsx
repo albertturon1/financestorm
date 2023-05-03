@@ -12,7 +12,7 @@ import { useDailyCurrencyRatesQuery } from '@src/api/client/CurrenctyRateClientA
 import { PrefetchDailyCurrencyRatesRequest } from '@src/api/interfaces/ICurrencyRateApi';
 
 const CurrenciesPairChart = dynamic(() => import('./CurrenciesPairChart'), {
-  loading: () => <SkeletonLoader className="h-[60vh] w-full" />,
+  loading: () => <SkeletonLoader className="h-[45vh] w-full" />,
   ssr: false,
 });
 

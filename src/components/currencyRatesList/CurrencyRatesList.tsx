@@ -21,7 +21,7 @@ export const CurrencyRatesList = ({
   //everything besides button takes 2 cols, button takes 1
   const styles = {
     rowStyle:
-      'sm:grid-cols-9 grid h-14 w-full grid-cols-5 items-center gap-x-2.5 border-b-[1.5px] border-pale pl-1 text-navy xs:h-16 xs:grid-cols-7 xs:pl-1.5 sm:pl-4',
+      'sm:grid-cols-9 grid h-14 w-full grid-cols-5 items-center gap-x-2.5 border-b-[1.5px] border-pale px-1 text-navy xs:h-16 xs:grid-cols-7 xs:px-1.5 sm:px-4',
     amountStyle: 'pl-2 col-span-2',
     changeStyle: 'hidden sm:flex col-span-2',
     chartStyle: 'hidden xs:flex col-span-2 col-span-2',
@@ -50,7 +50,6 @@ export const CurrencyRatesList = ({
               <div className={styles.currencyStyle}>
                 <FlagCountryCode
                   code={separateDailyCurrencyRates.quote_currency}
-                  flagClassName="w-7 lg:w-9"
                 />
               </div>
               <p className={styles.amountStyle}>{'1'}</p>

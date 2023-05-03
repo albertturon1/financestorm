@@ -1,7 +1,7 @@
 import { twMerge } from 'tailwind-merge';
 
-import CurrencyRatesListButton from './CurrencyRatesListButton';
 import { CurrencyRatesListItemStyleProps } from './CurrencyRatesListItem';
+import NavigationButton from '../misc/NavigationButton';
 
 const CurrencyRatesListLegend = ({
   rowStyle,
@@ -21,13 +21,11 @@ const CurrencyRatesListLegend = ({
     <p className={changeStyle}>{`Change (${dataTimespan}d)`}</p>
     <p className={chartStyle}>{`Chart (${dataTimespan}d)`}</p>
     {showGoToAllButton && (
-      <CurrencyRatesListButton
-        href={{
-          pathname: '/currencies',
-        }}
-      >
-        {'All'}
-      </CurrencyRatesListButton>
+      <div className='flex flex-1 h-full justify-end'>
+        <NavigationButton href="/currencies">
+          {'All'}
+        </NavigationButton>
+      </div>
     )}
   </div>
 );

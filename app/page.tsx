@@ -5,6 +5,7 @@ import PageMaxWidth from '@components/misc/PageMaxWidth';
 import PagePadding from '@components/misc/PagePadding';
 import { SERVER_DATE } from '@constants/dateTime';
 import HomepageHydrated from '@features/main/components/HomepageHydrated';
+import LandingHeader from '@features/main/components/landingHeader';
 import { Currency } from '@interfaces/ICurrency';
 import { prefetchDailyCurrencyRatesQuery } from '@src/api/CurrencyRateApi';
 import {
@@ -34,6 +35,7 @@ const HomePage = async () => {
 
   return (
     <Hydrate state={hydratedState}>
+      <LandingHeader />
       <PageMaxWidth flex>
         <PagePadding flex vertical horizontal={false}>
           <HomepageHydrated

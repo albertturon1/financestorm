@@ -19,6 +19,7 @@ module.exports = {
         electric_blue: 'var(--electric_blue)',
         border: 'var(--border)',
         navy: 'var(--navy)',
+        beige: 'var(--beige)',
         dark_navy: 'var(--dark_navy)',
         background: 'var(--background)',
         muted: 'var(--muted)',

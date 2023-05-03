@@ -28,11 +28,11 @@ const FlagCountryCode = ({
       className,
     )}
   >
-    <div className={twMerge('flex h-5 object-contain', flagClassName)}>
+    <div className={twMerge('flex h-5', flagClassName)}>
       <Flag
         alt={`${code} flag`}
         code={code.slice(0, 2).toUpperCase()}
-        className="w-7 lg:w-9 object-left-top"
+        className="w-[28px] lg:w-[36px] object-contain object-left"
         style={flagStyle}
       />
     </div>
