@@ -41,7 +41,7 @@ const CurrenciesPairChart = (
     year: '2-digit',
   } satisfies DateTimeFormatOptions;
 
-  //data loader makes no sens when data is prefetched on server - best thing you can do is to handle errors and show fallback when loading --- dont forget to set ssr: false
+  //data loader makes sense when data is being refetch on client - best thing you can do is to handle errors and show fallback when loading --- dont forget to set ssr: false
   return (
     <DataLoader {...props}>
       {(data) => {
@@ -55,7 +55,7 @@ const CurrenciesPairChart = (
 
         return (
           <div className="flex flex-col gap-y-10">
-            <div className="h-[55vh] w-full">
+            <div className="h-[45vh] w-full">
               <ResponsiveContainer width={'100%'} height={'100%'}>
                 <AreaChart data={currencyRates.rates}>
                   <XAxis
@@ -71,7 +71,7 @@ const CurrenciesPairChart = (
                     domain={yAxisDomainFormatter}
                     tickCount={5}
                     mirror
-                    tick={{ fill: Theme.colors.dark_navy }}
+                    tick={{ fill: Theme.colors.dark_navy, markerHeight: 10 }}
                   />
                   <CartesianGrid vertical={false} />
                   <Area

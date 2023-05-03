@@ -4,8 +4,8 @@ import { DateTime } from 'luxon';
 import PageMaxWidth from '@components/misc/PageMaxWidth';
 import PagePadding from '@components/misc/PagePadding';
 import { SERVER_DATE } from '@constants/dateTime';
-import LandingHeader from '@features/main/components/LandingHeader';
 import HomepageHydrated from '@features/main/components/HomepageHydrated';
+import LandingHeader from '@features/main/components/landingHeader';
 import { Currency } from '@interfaces/ICurrency';
 import { prefetchDailyCurrencyRatesQuery } from '@src/api/CurrencyRateApi';
 import {

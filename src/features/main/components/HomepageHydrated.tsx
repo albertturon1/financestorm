@@ -1,10 +1,9 @@
 'use client';
 
-import { ChevronRight } from 'lucide-react';
 import dynamic from 'next/dynamic';
-import Link from 'next/link';
 
 import CurrencyRatesList from '@components/currencyRatesList';
+import NavigationButton from '@components/misc/NavigationButton';
 import PagePadding from '@components/misc/PagePadding';
 import PageTitle from '@components/misc/PageTitle';
 import SkeletonLoader from '@components/ui/SkeletonLoader';
@@ -51,9 +50,11 @@ const HomepageHydrated = ({
         <div className="flex h-[35vh] flex-col gap-y-1">
           <div className="flex items-center justify-between">
             <PageTitle title="Exchange rates comparisons" />
-            <Link href="/multi-currencies" className='text-electric_blue pl-2 pb-2 pt-2.5'>
-              <ChevronRight size={25} strokeWidth={1} />
-            </Link>
+            <div className="mt-0.5 flex h-full flex-1 justify-end">
+              <NavigationButton className="w-max" href={'/multi-currencies'}>
+                {'More'}
+              </NavigationButton>
+            </div>
           </div>
           <MultiCurrenciesChart {...query} quoteCurrency={quoteCurrency} />
         </div>

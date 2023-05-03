@@ -31,7 +31,7 @@ const CurrencyRatePairChartTooltip = ({
   return (
     <TooltipWrapper>
       <p>{localDateString}</p>
-      <p>{`Rate: ${p.value} ${quoteCurrency}`}</p>
+      <p>{`Rate: ${p.value} ${quoteCurrency.toUpperCase()}`}</p>
     </TooltipWrapper>
   );
 };

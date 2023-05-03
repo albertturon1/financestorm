@@ -10,7 +10,7 @@ const PageTitle = ({
   className?: string;
 }) => (
   <div className={twMerge('flex flex-col gap-y-1', className)}>
-    <h1 className="text-lg font-bold sm:text-xl">{title}</h1>
+    <h1 className="text-lg font-bold sm:text-xl w-max">{title}</h1>
     {subtitle && <p className="text-sm">{subtitle}</p>}
   </div>
 );
