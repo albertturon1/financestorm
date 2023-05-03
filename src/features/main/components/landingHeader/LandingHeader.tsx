@@ -15,7 +15,7 @@ export const LandingHeader = () => (
         <PagePadding flex>
           <div className="flex h-full w-full flex-col justify-between gap-x-1 gap-y-6 sm:flex-row sm:gap-x-3 lg:pr-[10%]">
             <LandingHeaderTextsAndArrow />
-            <div className="relative flex h-[350px] w-[180px] items-center justify-center self-center sm:mt-[5%] sm:h-[430px] sm:w-[200px] sm:self-start md:h-[510px] md:w-[215px] lg:h-[550px]">
+            <div className="relative flex h-[330px] w-[150px] items-center justify-center self-center sm:mt-[5%] sm:h-[430px] sm:w-[200px] sm:self-start md:h-[510px] md:w-[215px] lg:h-[550px]">
               <Image
                 src={LandingPhone}
                 alt="LandingPhone"

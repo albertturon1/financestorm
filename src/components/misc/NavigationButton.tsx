@@ -18,7 +18,7 @@ const NavigationButton = ({
   <Link
     href={href}
     className={twMerge(
-      'flex h-full w-max items-center justify-end pl-1 text-electric_blue xs:pl-2 sm:gap-x-1',
+      'flex h-full w-max items-center justify-end pl-1 text-electric_blue xs:pl-2 sm:gap-x-1 min-h-[40px]',
       className,
     )}
   >

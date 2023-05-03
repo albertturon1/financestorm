@@ -48,13 +48,11 @@ const HomepageHydrated = ({
       </div>
       <PagePadding>
         <div className="flex h-[35vh] flex-col gap-y-1">
-          <div className="flex items-center justify-between">
+          <div className="flex h-min w-full flex-wrap items-center justify-between">
             <PageTitle title="Exchange rates comparisons" />
-            <div className="mt-0.5 flex h-full flex-1 justify-end">
-              <NavigationButton className="w-max" href={'/multi-currencies'}>
-                {'More'}
-              </NavigationButton>
-            </div>
+            <NavigationButton href={'/multi-currencies'} className="mt-0.5">
+              {'More'}
+            </NavigationButton>
           </div>
           <MultiCurrenciesChart {...query} quoteCurrency={quoteCurrency} />
         </div>
