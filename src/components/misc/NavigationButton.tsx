@@ -1,24 +1,23 @@
-import { UrlObject } from 'url';
-
 import { ReactNode } from 'react';
 
 import { ChevronRight } from 'lucide-react';
+import { Route } from 'next';
 import Link from 'next/link';
 import { twMerge } from 'tailwind-merge';
 
-const NavigationButton = ({
+const NavigationButton = <T extends string>({
   children,
   className,
   href,
 }: {
   children?: ReactNode;
   className?: string;
-  href: UrlObject | __next_route_internal_types__.RouteImpl<UrlObject>;
+  href: Route<T>;
 }) => (
   <Link
     href={href}
     className={twMerge(
-      'flex h-full w-max items-center justify-end pl-1 text-electric_blue xs:pl-2 sm:gap-x-1 min-h-[40px]',
+      'flex h-full min-h-[40px] w-max items-center justify-end pl-1 text-electric_blue xs:pl-2 sm:gap-x-1',
       className,
     )}
   >

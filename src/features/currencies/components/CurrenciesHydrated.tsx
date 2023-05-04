@@ -8,12 +8,30 @@ import { useRouter } from 'next/navigation';
 import CurrenciesSelectList from '@components/misc/CurrenciesSelectList';
 import PageTitle from '@components/misc/PageTitle';
 import { Input } from '@components/ui/Input';
+import SkeletonLoader from '@components/ui/SkeletonLoader';
+import { CURRENCIES } from '@constants/currencies';
 import { Currency } from '@interfaces/ICurrency';
 import { CurrenciesRates } from '@interfaces/models/IExchangerate';
 import { useTodayCurrencyRatesQuery } from '@src/api/client/CurrenctyRateClientApi';
 import { PrefetchTodayCurrencyRatesRequest } from '@src/api/interfaces/ICurrencyRateApi';
 
-const CurrenciesRatesTiles = dynamic(() => import('./CurrenciesRatesTiles'));
+const CurrenciesRatesTiles = dynamic(() => import('./CurrenciesRatesTiles'), {
+  ssr: false,
+  loading: () => (
+    <div className="flex flex-col gap-y-3">
+      <SkeletonLoader className="mt-1 h-6 w-10" />
+      <div className="grid w-full auto-cols-max grid-cols-1 gap-y-[2px] sm:grid-cols-2 sm:gap-x-10 lg:grid-cols-3">
+        {Array.from({ length: CURRENCIES.length - 1 }, (_, i) => (
+          <SkeletonLoader
+            key={i}
+            className="h-14 w-full rounded-lg"
+            style={{ animationDelay: `${i * 0.05}s`, animationDuration: '1s' }}
+          />
+        ))}
+      </div>
+    </div>
+  ),
+});
 
 const CurrenciesHydrated = ({
   queryProps,

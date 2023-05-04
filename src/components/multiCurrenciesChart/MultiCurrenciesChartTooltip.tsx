@@ -27,7 +27,7 @@ const MultiCurrenciesChartTooltip = ({
 
   const date = new Date(currencyRates[0].payload.date);
   const options = {
-    weekday: 'long',
+    weekday: 'short',
     month: 'long',
     day: 'numeric',
     year: 'numeric',

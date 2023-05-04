@@ -30,13 +30,11 @@ const CurrencyTile = ({
     >
       <FlagCountryCode code={baseCurrency} />
       <div className="flex">
-        <div className="flex font-medium">
-          <p>{`${cutNumber(
-            inverseCurrecyRate(rate),
-            4,
-          )} ${quoteCurrency.toUpperCase()}`}</p>
-        </div>
-        <ChevronRight size={25} strokeWidth={1} />
+        <p>{`${cutNumber(
+          inverseCurrecyRate(rate),
+          4,
+        )} ${quoteCurrency.toUpperCase()}`}</p>
+        <ChevronRight size={25} strokeWidth={1} className="-mr-2" />
       </div>
     </div>
   </Link>
