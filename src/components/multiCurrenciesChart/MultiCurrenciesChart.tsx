@@ -63,9 +63,7 @@ export const MultiCurrenciesChart = ({
             <LineChart>
               <XAxis
                 tickMargin={10}
-                height={50}
                 dataKey="date"
-                type="category"
                 allowDuplicatedCategory={false}
                 interval={interval}
                 tickFormatter={(tick: string) =>
@@ -77,6 +75,7 @@ export const MultiCurrenciesChart = ({
               />
               <YAxis
                 domain={yAxisDomainFormatter}
+                type="number"
                 tickCount={5}
                 mirror
                 tick={{ fill: Theme.colors.dark_navy }}

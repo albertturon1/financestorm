@@ -71,7 +71,7 @@ const CurrenciesPairChart = (
                     domain={yAxisDomainFormatter}
                     tickCount={5}
                     mirror
-                    tick={{ fill: Theme.colors.dark_navy, markerHeight: 10 }}
+                    tick={{ fill: Theme.colors.dark_navy }}
                   />
                   <CartesianGrid vertical={false} />
                   <Area

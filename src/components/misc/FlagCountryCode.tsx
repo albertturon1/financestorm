@@ -22,7 +22,7 @@ const FlagCountryCode = ({
 }) => (
   <div
     className={twMerge(
-      `flex items-center gap-x-1.5 xs:gap-x-2 tabular-nums ${
+      `flex items-center gap-x-1.5 tabular-nums xs:gap-x-2 ${
         reverse ? 'flex-row-reverse' : 'flex-row'
       }`,
       className,
@@ -32,13 +32,13 @@ const FlagCountryCode = ({
       <Flag
         alt={`${code} flag`}
         code={code.slice(0, 2).toUpperCase()}
-        className="w-[28px] lg:w-[36px] object-contain object-left"
+        className="w-[28px] object-contain object-left lg:w-[36px]"
         style={flagStyle}
       />
     </div>
     <p
       className={twMerge(
-        `w-max tabular-nums ${boldName ? 'font-semibold' : ''}`,
+        `w-max tabular-nums ${boldName ? 'font-medium' : ''}`,
         textClassName,
       )}
     >

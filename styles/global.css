@@ -35,27 +35,29 @@ body,
 }
 
 @keyframes changeColor {
-  0% {
+  0%,
+  100% {
     background-color: var(--electric_blue);
   }
-  25% {
+  20% {
     background-color: #ff6d00;
   }
   50% {
     background-color: #9c27b0;
   }
-  75% {
+  80% {
     background-color: #00bcd4;
-  }
-  100% {
-    background-color: var(--electric_blue);
   }
 }
 
 .landing-header {
-  background-color: #2997ff;
+  background-color: var(--electric_blue);
   opacity: 0.8;
-  background-image: radial-gradient(circle at 65% center, #0e2b54, #2997ff),
+  background-image: radial-gradient(
+      circle at 65% center,
+      #0e2b54,
+      var(--electric_blue)
+    ),
     repeating-radial-gradient(
       circle at 80% center,
       #0e2b54,
@@ -64,13 +66,17 @@ body,
       transparent 20px,
       transparent 10px
     );
-  animation: changeColor 15s infinite;
+  animation: changeColor 10s infinite;
   background-blend-mode: multiply;
 }
 
 @media only screen and (max-width: 640px) {
   .landing-header {
-    background-image: radial-gradient(circle at center center, #0e2b54, #2997ff),
+    background-image: radial-gradient(
+        circle at center center,
+        #0e2b54,
+        var(--electric_blue)
+      ),
       repeating-radial-gradient(
         circle at center center,
         #0e2b54,
@@ -84,7 +90,11 @@ body,
 
 @media only screen and (min-width: 1536px) {
   .landing-header {
-    background-image: radial-gradient(circle at 70% center, #0e2b54, #2997ff),
+    background-image: radial-gradient(
+        circle at 70% center,
+        #0e2b54,
+        var(--electric_blue)
+      ),
       repeating-radial-gradient(
         circle at 70% center,
         #0e2b54,
@@ -98,7 +108,11 @@ body,
 
 @media only screen and (min-width: 2000px) {
   .landing-header {
-    background-image: radial-gradient(circle at 65% center, #0e2b54, #2997ff),
+    background-image: radial-gradient(
+        circle at 65% center,
+        #0e2b54,
+        var(--electric_blue)
+      ),
       repeating-radial-gradient(
         circle at 65% center,
         #0e2b54,
