@@ -77,12 +77,12 @@ const Rows = ({
     <div className="flex w-full flex-col justify-center gap-y-4">
       <Row
         amount={cutNumber(baseCurrencyAmount, 3)}
-        currency={baseCurrency}
+        currency={baseCurrency.toUpperCase() as Currency}
         onChange={handleBaseCurrencyChange}
       />
       <Row
         amount={cutNumber(quoteCurrencyAmount, 3)}
-        currency={quoteCurrency}
+        currency={quoteCurrency.toUpperCase() as Currency}
         onChange={handleQuoteCurrencyChange}
       />
     </div>

@@ -19,9 +19,7 @@ const CurrencyTile = ({
   rate: number;
   className: string;
 }) => (
-  <Link
-    href={`/currencies/${baseCurrency.toLowerCase()}-${quoteCurrency.toLowerCase()}`}
-  >
+  <Link href={`/currencies/${baseCurrency}-${quoteCurrency}`}>
     <div
       className={twMerge(
         'flex items-center justify-between gap-x-4 px-4 py-4',

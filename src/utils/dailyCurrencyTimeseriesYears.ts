@@ -21,7 +21,7 @@ export type DailyMultiCurrencyDataProps = Omit<
 };
 
 const dailyCurrencyTimeseriesYears = async ({
-  base_currencies, //waluty od których liczysz wartości np EUR/PLN
+  base_currencies, //waluty od których liczysz wartości np eur/PLN
   quote_currency,
   start_date,
   years = 1,

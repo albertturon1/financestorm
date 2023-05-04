@@ -10,10 +10,6 @@ import Loader from '@components/misc/Loader';
 import { ChartMultiData } from '@interfaces/ICharts';
 import { NormalizedCurrencyExchangeRate } from '@interfaces/models/IExchangerate';
 import {
-  useMultiCurrenciesQuoteCurrency,
-  useMultiCurrenciesBaseCurrenciesNames,
-} from '@src/zustand/multiCurrenciesStore';
-import {
   customLineChartYDomain,
   xAxisDateTickFormatter,
 } from '@utils/chartHelpers';
@@ -41,39 +37,40 @@ const xAxisLabelExtractor = (
   item: ChartMultiData<NormalizedCurrencyExchangeRate>,
 ) => nameOfKey(item.data[0], (x) => x.date);
 
+// eslint-disable-next-line arrow-body-style
 const MultiCurrenciesChart = () => {
-  const quoteCurrency = useMultiCurrenciesQuoteCurrency();
-  const baseCurrencies = useMultiCurrenciesBaseCurrenciesNames();
+  // const quoteCurrency = useMultiCurrenciesQuoteCurrency();
+  // const baseCurrencies = useMultiCurrenciesBaseCurrenciesNames();
 
-  const props = {
-    quote_currency: quoteCurrency.name,
-    base_currencies: baseCurrencies,
-    years: 1,
-  };
+  // const props = {
+  //   quote_currency: quoteCurrency.name,
+  //   base_currencies: baseCurrencies,
+  //   years: 1,
+  // };
 
-  const { data, isLoading } = useQuery(
-    ['dailyCurrencyTimeseriesYears', props],
-    () => dailyCurrencyTimeseriesYears(props),
-  );
+  // const { data, isLoading } = useQuery(
+  //   ['dailyCurrencyTimeseriesYears', props],
+  //   () => dailyCurrencyTimeseriesYears(props),
+  // );
 
-  const chartData = useMemo(
-    () => convertDailyCurrencyTimeseriesToChartData(data),
-    [data],
-  );
+  // const chartData = useMemo(
+  //   () => convertDailyCurrencyTimeseriesToChartData(data),
+  //   [data],
+  // );
 
-  const yDomain = useMemo(
-    () =>
-      customLineChartYDomain(
-        chartData.flatMap((c) => c.data.map((d) => d.value)),
-        2,
-      ),
-    [chartData],
-  );
+  // const yDomain = useMemo(
+  //   () =>
+  //     customLineChartYDomain(
+  //       chartData.flatMap((c) => c.data.map((d) => d.value)),
+  //       2,
+  //     ),
+  //   [chartData],
+  // );
 
-  if (isLoading) return <Loader />;
+  // if (isLoading) return <Loader />;
   return (
     <div className="flex flex-1">
-      <CustomLineChart
+      {/* <CustomLineChart
         margin={{ top: 5, left: -20 }}
         data={chartData}
         dataKeyExtractor={dataKeyExtractor}
@@ -85,7 +82,7 @@ const MultiCurrenciesChart = () => {
         xAxisLabel="label"
         tooltip={tooltip}
         xAxisTickFormatter={xAxisDateTickFormatter}
-      />
+      /> */}
     </div>
   );
 };

@@ -9,7 +9,7 @@ import CurrenciesSelectList from '@components/misc/CurrenciesSelectList';
 import PageTitle from '@components/misc/PageTitle';
 import { Input } from '@components/ui/Input';
 import SkeletonLoader from '@components/ui/SkeletonLoader';
-import { CURRENCIES } from '@constants/currencies';
+import { CURRENCIES, DEFAULT_QUOTE_CURRENCY } from '@constants/currencies';
 import { Currency } from '@interfaces/ICurrency';
 import { CurrenciesRates } from '@interfaces/models/IExchangerate';
 import { useTodayCurrencyRatesQuery } from '@src/api/client/CurrenctyRateClientApi';
@@ -60,18 +60,15 @@ const CurrenciesHydrated = ({
     if (!query.data) return;
 
     const filteredRates = Object.keys(query.data.rates)
-      .filter((currency) => currency.toLowerCase().includes(search))
+      .filter((currency) => currency.includes(search))
       .sort((a, b) => {
-        const aLow = a.toLowerCase();
-        const bLow = b.toLowerCase();
-
         //prioritize by first letter from input
-        if (aLow.startsWith(search[0]) && !bLow.startsWith(search[0])) {
+        if (a.startsWith(search[0]) && !b.startsWith(search[0])) {
           return -1;
-        } else if (!aLow.startsWith(search[0]) && bLow.startsWith(search[0])) {
+        } else if (!a.startsWith(search[0]) && b.startsWith(search[0])) {
           return 1;
         } else {
-          return aLow.localeCompare(bLow);
+          return a.localeCompare(b);
         }
       })
       .reduce(
@@ -104,10 +101,13 @@ const CurrenciesHydrated = ({
             currencies={baseCurrencies}
             value={defaultCurrency}
             onValueChange={(newDefaultCurrency) => {
-              newDefaultCurrency === 'PLN'
-                ? void router.replace(`/currencies`)
-                : void router.replace(
+              newDefaultCurrency === DEFAULT_QUOTE_CURRENCY
+                ? void router.push(`/currencies`, {
+                    forceOptimisticNavigation: true,
+                  })
+                : void router.push(
                     `/currencies?default_currency=${newDefaultCurrency}`,
+                    { forceOptimisticNavigation: true },
                   );
             }}
           />

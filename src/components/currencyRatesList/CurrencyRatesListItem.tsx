@@ -73,7 +73,7 @@ const CurrencyRatesListItem = ({
       {/* Button to selected currency */}
       <NavigationButton
         className="w-full"
-        href={`/currencies/${currencyRates.base_currency.toLowerCase()}-${currencyRates.quote_currency.toLowerCase()}`}
+        href={`/currencies/${currencyRates.base_currency}-${currencyRates.quote_currency}`}
       />
     </div>
   );

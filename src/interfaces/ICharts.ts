@@ -48,7 +48,5 @@ export type CustomTooltipProps<T extends AnyObject<T>> = {
 };
 
 export type ChartType = 'bar' | 'pie' | 'line';
-export type ChartRangeType = 'day' | 'week' | 'month' | 'year';
-export type ChartRange = { name: string; type: ChartRangeType; value: number };
 export type ChartRanges = (typeof CHART_RANGES)[number];
 export type ChartTimespan = keyof typeof CHART_TIMESPANS;

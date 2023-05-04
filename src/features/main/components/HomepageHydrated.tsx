@@ -19,7 +19,7 @@ const MultiCurrenciesChart = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="flex h-[25vh] w-full items-center">
+      <div className="flex h-[31vh] w-full items-center mt-4">
         <SkeletonLoader className="h-full w-full" />
       </div>
     ),

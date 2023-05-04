@@ -5,7 +5,10 @@ import PageMaxWidth from '@components/misc/PageMaxWidth';
 import PagePadding from '@components/misc/PagePadding';
 import PageTitle from '@components/misc/PageTitle';
 import { CHART_TIMESPANS } from '@constants/chart';
-import { DEFAULT_QUOTE_CURRENCY } from '@constants/currencies';
+import {
+  DEFAULT_BASE_CURRENCIES,
+  DEFAULT_QUOTE_CURRENCY,
+} from '@constants/currencies';
 import { SERVER_DATE } from '@constants/dateTime';
 import MultiCurrenciesHydrated from '@features/multi-currencies/components/MultiCurrenciesHydrated';
 import MultiCurrenciesPairSelectors from '@features/multi-currencies/components/MultiCurrenciesPairSelectors';
@@ -19,12 +22,6 @@ import {
 import { baseCurrenciesFromQuery } from '@utils/misc';
 
 const DATA_TIMESPAN = '1Y' satisfies ChartTimespan;
-const DEFAULT_BASE_CURRENCIES = [
-  'USD',
-  'EUR',
-  'GBP',
-  'CHF',
-] satisfies Currency[];
 
 export type MultiCurrenciesPageProps = {
   quote?: Currency;

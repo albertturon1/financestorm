@@ -33,7 +33,7 @@ const MultiCurrenciesPairSelectors = ({
       const params = new URLSearchParams(searchParams);
       params.set(name, value);
 
-      return params.toString().replace(/%2C/g, ','); //replacing %2C from , 
+      return params.toString().replace(/%2C/g, ','); //replacing %2C from ,
     },
     [searchParams],
   );
@@ -46,21 +46,23 @@ const MultiCurrenciesPairSelectors = ({
           onValueChange={(baseCurrency) => {
             //remove from params list
             if (baseCurrencies.includes(baseCurrency))
-              void router.replace(
+              void router.push(
                 `/multi-currencies?${createQueryString(
                   'base',
                   baseCurrencies.filter((c) => c !== baseCurrency).join(','),
                 )}`,
+                { forceOptimisticNavigation: true },
               );
             else
-              void router.replace(
+              void router.push(
                 `/multi-currencies?${createQueryString(
                   'base',
                   [baseCurrencies, baseCurrency].sort().join(','),
                 )}`,
+                { forceOptimisticNavigation: true },
               );
           }}
-          values={baseCurrencies}
+          values={baseCurrencies.map((c) => c.toUpperCase()) as Currency[]}
           currencies={baseCurrenciesAvailable}
           selectedCurrencies={baseCurrencies}
         />
@@ -71,20 +73,22 @@ const MultiCurrenciesPairSelectors = ({
           onValueChange={(newQuoteCurrency) => {
             //when new quote currency has already been on the list of base currencies
             if (baseCurrencies.includes(newQuoteCurrency))
-              void router.replace(
+              void router.push(
                 `/multi-currencies?quote=${newQuoteCurrency}&base=${baseCurrencies
                   .filter((c) => c !== newQuoteCurrency)
                   .join(',')}`,
+                { forceOptimisticNavigation: true },
               );
             else
-              void router.replace(
+              void router.push(
                 `/multi-currencies?${createQueryString(
                   'quote',
                   newQuoteCurrency,
                 )}`,
+                { forceOptimisticNavigation: true },
               );
           }}
-          value={quoteCurrency}
+          value={quoteCurrency.toUpperCase() as Currency}
           currencies={quoteCurrenciesAvailable}
         />
       </div>
