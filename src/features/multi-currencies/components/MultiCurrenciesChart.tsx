@@ -21,7 +21,7 @@ import convertDailyCurrencyTimeseriesToChartData from '@utils/convertDailyCurren
 import dailyCurrencyTimeseriesYears from '@utils/dailyCurrencyTimeseriesYears';
 import { nameOfKey } from '@utils/misc';
 
-import MultiCurrenciesLineChartTooltip from './MultiCurrenciesLineChartTooltip';
+import MultiCurrenciesChartTooltip from './MultiCurrenciesChartTooltip';
 
 const nameExtractor = (item: ChartMultiData<NormalizedCurrencyExchangeRate>) =>
   item.name;
@@ -34,14 +34,14 @@ const dataKeyExtractor = (
 ) => nameOfKey(item.data[0], (x) => x.value);
 
 const tooltip = (props: TooltipProps<number, string>) => (
-  <MultiCurrenciesLineChartTooltip {...props} />
+  <MultiCurrenciesChartTooltip {...props} />
 );
 
 const xAxisLabelExtractor = (
   item: ChartMultiData<NormalizedCurrencyExchangeRate>,
 ) => nameOfKey(item.data[0], (x) => x.date);
 
-const MultiBaseCurrenciesLineChart = () => {
+const MultiCurrenciesChart = () => {
   const quoteCurrency = useMultiCurrenciesQuoteCurrency();
   const baseCurrencies = useMultiCurrenciesBaseCurrenciesNames();
 
@@ -90,5 +90,5 @@ const MultiBaseCurrenciesLineChart = () => {
   );
 };
 
-const Memo = memo(MultiBaseCurrenciesLineChart);
+const Memo = memo(MultiCurrenciesChart);
 export default Memo;

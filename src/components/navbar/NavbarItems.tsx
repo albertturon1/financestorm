@@ -28,6 +28,14 @@ const NavbarItems = ({ onItemClick }: { onItemClick?: () => void }) => (
       <p className="w-max">{'Rates comparisons'}</p>
       <ChevronRight size={25} strokeWidth={1} className="sm:hidden" />
     </Link>
+    <Link
+      onClick={onItemClick}
+      href="/wallet"
+      className="flex w-full grow items-center justify-between border-b border-border py-3 sm:h-full sm:border-none sm:py-0"
+    >
+      <p className="w-max">{'Multicurrency wallet'}</p>
+      <ChevronRight size={25} strokeWidth={1} className="sm:hidden" />
+    </Link>
   </div>
 );
 
