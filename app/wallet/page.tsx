@@ -5,10 +5,12 @@ import PageMaxWidth from '@components/misc/PageMaxWidth';
 import PagePadding from '@components/misc/PagePadding';
 import PageTitle from '@components/misc/PageTitle';
 import { CHART_TIMESPANS } from '@constants/chart';
-import { DEFAULT_QUOTE_CURRENCY } from '@constants/currencies';
+import {
+  DEFAULT_BASE_CURRENCIES,
+  DEFAULT_QUOTE_CURRENCY,
+} from '@constants/currencies';
 import { SERVER_DATE } from '@constants/dateTime';
-import MultiCurrenciesHydrated from '@features/multi-currencies/components/MultiCurrenciesHydrated';
-import MultiCurrenciesPairSelectors from '@features/multi-currencies/components/MultiCurrenciesPairSelectors';
+import WalletHydrated from '@features/wallet/components/WalletHydrated';
 import { ChartTimespan } from '@interfaces/ICharts';
 import { Currency } from '@interfaces/ICurrency';
 import { prefetchDailyCurrencyRatesQuery } from '@src/api/CurrencyRateApi';
@@ -19,22 +21,16 @@ import {
 import { baseCurrenciesFromQuery } from '@utils/misc';
 
 const DATA_TIMESPAN = '1Y' satisfies ChartTimespan;
-const DEFAULT_BASE_CURRENCIES = [
-  'USD',
-  'EUR',
-  'GBP',
-  'CHF',
-] satisfies Currency[];
 
-export type MultiCurrenciesPageProps = {
+export type WalletPageProps = {
   quote?: Currency;
   base?: string;
 };
 
-const MultiCurrenciesPage = async ({
+const WalletPage = async ({
   searchParams,
 }: {
-  searchParams: MultiCurrenciesPageProps;
+  searchParams: WalletPageProps;
 }) => {
   const { quote, base } = searchParams;
   const quoteCurrency = quote ?? DEFAULT_QUOTE_CURRENCY;
@@ -62,14 +58,10 @@ const MultiCurrenciesPage = async ({
         <PagePadding vertical>
           <div className="flex w-full flex-1 flex-col gap-y-6 lg:gap-y-8">
             <PageTitle
-              title="Exchange rates comparisons"
-              subtitle="Track currency fluctuations with exchange rate chart"
+              title="Multicurrency wallet"
+              subtitle="Track wallet value fluctuations with multicurrency wallet data"
             />
-            <MultiCurrenciesPairSelectors
-              baseCurrencies={baseCurrencies}
-              quoteCurrency={quoteCurrency}
-            />
-            <MultiCurrenciesHydrated
+            <WalletHydrated
               queryProps={QUERY_PROPS}
               quoteCurrency={quoteCurrency}
               dataTimespan={DATA_TIMESPAN}
@@ -81,4 +73,4 @@ const MultiCurrenciesPage = async ({
   );
 };
 
-export default MultiCurrenciesPage;
+export default WalletPage;

@@ -1,4 +1,4 @@
-import { Currency } from '@interfaces/ICurrency';
+import { Currency, CurrencyExceptDefault } from '@interfaces/ICurrency';
 
 export const CURRENCIES = <const>[
   'AED',
@@ -164,4 +164,10 @@ export const CURRENCIES = <const>[
   'ZWL',
 ];
 
-export const DEFAULT_GLOBAL_CURRENCY = 'USD' satisfies Currency;
+export const DEFAULT_QUOTE_CURRENCY = 'PLN' satisfies Currency;
+export const DEFAULT_BASE_CURRENCIES = [
+  'USD',
+  'EUR',
+  'GBP',
+  'CHF',
+] satisfies CurrencyExceptDefault[];

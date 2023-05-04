@@ -7,6 +7,7 @@ import QueryString from 'query-string';
 import { twMerge } from 'tailwind-merge';
 import { ClassNameValue } from 'tailwind-merge/dist/lib/tw-join';
 
+import { Currency } from '@interfaces/ICurrency';
 import { AnyObject } from '@interfaces/IUtility';
 
 export const genQueryString = (params: object | undefined): string => {
@@ -108,4 +109,16 @@ export function cn(...inputs: ClassNameValue[]) {
 export function inverseCurrecyRate(rate: number) {
   const newValue = rate ** -1;
   return cutNumber(newValue, newValue < 1 ? 5 : 3);
+}
+
+export function baseCurrenciesFromQuery(
+  base: string | undefined,
+  quoteCurrency: Currency,
+) {
+  return base && base.length > 0
+    ? (base
+        .split(',')
+        .filter((c) => c !== quoteCurrency) //remove quote currency from results
+        .map((c) => c.trim()) as Currency[])
+    : undefined;
 }
