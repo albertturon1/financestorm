@@ -3,10 +3,11 @@ import { DateTime } from 'luxon';
 
 import PageMaxWidth from '@components/misc/PageMaxWidth';
 import PagePadding from '@components/misc/PagePadding';
+import { DEFAULT_GLOBAL_CURRENCY } from '@constants/currencies';
 import { SERVER_DATE } from '@constants/dateTime';
 import HomepageHydrated from '@features/main/components/HomepageHydrated';
 import LandingHeader from '@features/main/components/landingHeader';
-import { Currency } from '@interfaces/ICurrency';
+import { CurrencyExceptDefault } from '@interfaces/ICurrency';
 import { prefetchDailyCurrencyRatesQuery } from '@src/api/CurrencyRateApi';
 import {
   DailyCurrencyRatesRequest,
@@ -14,11 +15,15 @@ import {
 } from '@src/api/interfaces/ICurrencyRateApi';
 
 const DATA_TIMESPAN = 30;
-const QUOTE_CURRENCY = 'PLN' as Currency;
-const BASE_CURRENCIES = ['USD', 'EUR', 'GBP', 'CHF'] satisfies Currency[];
+const BASE_CURRENCIES = [
+  'PLN',
+  'EUR',
+  'GBP',
+  'CHF',
+] satisfies CurrencyExceptDefault[];
 const QUERY_PROPS = {
   queryParams: {
-    quote_currency: QUOTE_CURRENCY,
+    quote_currency: DEFAULT_GLOBAL_CURRENCY,
     base_currencies: BASE_CURRENCIES,
     start_date: DateTime.now()
       .minus({ days: DATA_TIMESPAN - 1 })
@@ -40,7 +45,7 @@ const HomePage = async () => {
         <PagePadding flex vertical horizontal={false}>
           <HomepageHydrated
             queryProps={QUERY_PROPS}
-            quoteCurrency={QUOTE_CURRENCY}
+            quoteCurrency={DEFAULT_GLOBAL_CURRENCY}
             dataTimespan={DATA_TIMESPAN}
           />
         </PagePadding>

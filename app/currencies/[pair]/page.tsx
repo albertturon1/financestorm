@@ -29,7 +29,7 @@ const CurrenciesPairPage = async ({
 }: {
   params: CurrenciesPairPageProps;
 }) => {
-  const [baseCurrency, quoteCurrency] = (params.pair as string).split('-') as [
+  const [baseCurrency, quoteCurrency] = params.pair.split('-') as [
     Currency,
     Currency,
   ];

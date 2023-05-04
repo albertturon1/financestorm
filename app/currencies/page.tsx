@@ -2,7 +2,7 @@ import { Hydrate } from '@tanstack/react-query';
 
 import PageMaxWidth from '@components/misc/PageMaxWidth';
 import PagePadding from '@components/misc/PagePadding';
-import { CURRENCIES } from '@constants/currencies';
+import { CURRENCIES, DEFAULT_GLOBAL_CURRENCY } from '@constants/currencies';
 import CurrenciesHydrated from '@features/currencies/components/CurrenciesHydrated';
 import { Currency } from '@interfaces/ICurrency';
 import { prefetchTodayCurrencyRatesQuery } from '@src/api/CurrencyRateApi';
@@ -18,7 +18,8 @@ const CurrenciesPage = async ({
 }: {
   searchParams: CurrenciesPageProps;
 }) => {
-  const defaultQuoteCurrency = searchParams.default_currency ?? 'PLN';
+  const defaultQuoteCurrency =
+    searchParams.default_currency ?? DEFAULT_GLOBAL_CURRENCY;
   const baseCurrencies = CURRENCIES.filter((c) => c !== defaultQuoteCurrency);
 
   const QUERY_PROPS = {

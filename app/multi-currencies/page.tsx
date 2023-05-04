@@ -5,6 +5,7 @@ import PageMaxWidth from '@components/misc/PageMaxWidth';
 import PagePadding from '@components/misc/PagePadding';
 import PageTitle from '@components/misc/PageTitle';
 import { CHART_TIMESPANS } from '@constants/chart';
+import { DEFAULT_GLOBAL_CURRENCY } from '@constants/currencies';
 import { SERVER_DATE } from '@constants/dateTime';
 import MultiCurrenciesHydrated from '@features/multi-currencies/components/MultiCurrenciesHydrated';
 import MultiCurrenciesPairSelectors from '@features/multi-currencies/components/MultiCurrenciesPairSelectors';
@@ -17,7 +18,6 @@ import {
 } from '@src/api/interfaces/ICurrencyRateApi';
 
 const DATA_TIMESPAN = '1Y' satisfies ChartTimespan;
-const DEFAULT_QUOTE_CURRENCY = 'PLN' satisfies Currency;
 const DEFAULT_BASE_CURRENCIES = [
   'USD',
   'EUR',
@@ -36,7 +36,7 @@ const MultiCurrenciesPage = async ({
   searchParams: MultiCurrenciesPageProps;
 }) => {
   const { quote, base } = searchParams;
-  const quoteCurrency = (quote ?? DEFAULT_QUOTE_CURRENCY) satisfies Currency;
+  const quoteCurrency = quote ?? DEFAULT_GLOBAL_CURRENCY;
   const baseCurrenciesFromString =
     base && base.length > 0
       ? (base

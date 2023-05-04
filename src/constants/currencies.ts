@@ -1,3 +1,5 @@
+import { Currency } from '@interfaces/ICurrency';
+
 export const CURRENCIES = <const>[
   'AED',
   'AFN',
@@ -161,3 +163,5 @@ export const CURRENCIES = <const>[
   'ZMW',
   'ZWL',
 ];
+
+export const DEFAULT_GLOBAL_CURRENCY = 'USD' satisfies Currency;
