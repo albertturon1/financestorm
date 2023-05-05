@@ -9,6 +9,7 @@ import { ClassNameValue } from 'tailwind-merge/dist/lib/tw-join';
 
 import { Currency } from '@interfaces/ICurrency';
 import { AnyObject } from '@interfaces/IUtility';
+import { ReadonlyURLSearchParams } from 'next/navigation';
 
 export const genQueryString = (params: object | undefined): string => {
   if (!params || !Object.keys(params).length) return '';
@@ -121,4 +122,19 @@ export function baseCurrenciesFromQuery(
         .filter((c) => c !== quoteCurrency) //remove quote currency from results
         .map((c) => c.trim()) as Currency[])
     : undefined;
+}
+
+export function createQueryString({
+  param,
+  value,
+  searchParams,
+}: {
+  param: string;
+  value: string;
+  searchParams: ReadonlyURLSearchParams;
+}) {
+  const params = new URLSearchParams(searchParams);
+  params.set(param, value);
+
+  return params.toString().replace(/%2C/g, ','); //replacing %2C from ,
 }

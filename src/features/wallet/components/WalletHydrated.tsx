@@ -1,35 +1,37 @@
 'use client';
 
-import { useState } from 'react';
+// import dynamic from 'next/dynamic';
 
-import dynamic from 'next/dynamic';
-
-import SkeletonLoader from '@components/ui/SkeletonLoader';
 import { CHART_TIMESPANS } from '@constants/chart';
 import CurrenciesPairTimespanPicker from '@features/currencies-pair/components/CurrenciesPairTimespanPicker';
-import { ChartTimespan } from '@interfaces/ICharts';
-import { Currency } from '@interfaces/ICurrency';
 import { useDailyCurrencyRatesQuery } from '@src/api/client/CurrenctyRateClientApi';
 import { PrefetchDailyCurrencyRatesRequest } from '@src/api/interfaces/ICurrencyRateApi';
+import {
+  useWalletActions,
+  useWalletBaseCurrencies,
+  useWalletQuoteCurrency,
+  useWalletQuoteCurrencyName,
+  useWalletTimespan,
+} from '@src/zustand/walletStore';
+import useWalletQueryParamsUpdate from '../hooks/useWalletQueryParamsUpdate';
+import SkeletonLoader from '@components/ui/SkeletonLoader';
+import WalletCurrenciesSelectors from './WalletCurrenciesSelectors';
 
-const MultiCurrenciesChart = dynamic(
-  () => import('@components/multiCurrenciesChart'),
-  {
-    loading: () => <SkeletonLoader className="h-[55vh] w-full mt-5" />,
-    ssr: false,
-  },
-);
+// const WalletChart = dynamic(() => import('./WalletChart'), {
+//   loading: () => <SkeletonLoader className="mt-5 h-[55vh] w-full" />,
+//   ssr: false,
+// });
 
-const MultiCurrenciesHydrated = ({
+const WalletHydrated = ({
   queryProps,
-  quoteCurrency,
-  dataTimespan,
 }: {
   queryProps: PrefetchDailyCurrencyRatesRequest;
-  quoteCurrency: Currency;
-  dataTimespan: ChartTimespan;
 }) => {
-  const [timespan, setTimespan] = useState<ChartTimespan>(dataTimespan);
+  const timespan = useWalletTimespan();
+  const quoteWalletCurrency = useWalletQuoteCurrency();
+  const baseWalletCurrencies = useWalletBaseCurrencies();
+
+  const { setWalletTimespan } = useWalletActions();
   const query = useDailyCurrencyRatesQuery({
     ...queryProps,
     queryParams: {
@@ -38,14 +40,20 @@ const MultiCurrenciesHydrated = ({
     },
   });
 
+  useWalletQueryParamsUpdate();
+
   return (
-    <div className="flex w-full flex-col gap-y-2 h-[65vh]">
-      <CurrenciesPairTimespanPicker active={timespan} onSelect={setTimespan} />
-      <div className="flex flex-1">
-        <MultiCurrenciesChart {...query} quoteCurrency={quoteCurrency} />
-      </div>
+    <div className="flex h-[65vh] w-full flex-col gap-y-2">
+      <CurrenciesPairTimespanPicker
+        active={timespan}
+        onSelect={setWalletTimespan}
+      />
+      <WalletCurrenciesSelectors
+        baseWalletCurrencies={baseWalletCurrencies}
+        quoteWalletCurrency={quoteWalletCurrency}
+      />
     </div>
   );
 };
 
-export default MultiCurrenciesHydrated;
+export default WalletHydrated;

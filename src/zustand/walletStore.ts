@@ -16,6 +16,7 @@ export type WalletCurrency = { amount: number } & IndexCurrency;
 interface Actions {
   setWalletBaseCurrencies: (value: WalletCurrency[]) => void;
   setWalletQuoteCurrency: (value: WalletCurrency) => void;
+  setWalletTimespan: (value: ChartTimespan) => void;
 }
 
 interface WalletStoreState {
@@ -54,6 +55,10 @@ const useWalletStore = create<WalletStoreState>()(
           set(() => ({
             quoteCurrency: params,
           })),
+        setWalletTimespan: (params) =>
+          set(() => ({
+            timespan: params,
+          })),
       },
     }),
     {
@@ -73,8 +78,8 @@ export const useWalletBaseCurrenciesNames = () =>
 export const useWalletQuoteCurrency = () =>
   useWalletStore((state) => state.quoteCurrency, shallow);
 export const useWalletQuoteCurrencyName = () =>
-  useWalletStore((state) => state.quoteCurrency.name, shallow);
-export const useWalletChartRange = () =>
+  useWalletStore((state) => state.quoteCurrency.name);
+export const useWalletTimespan = () =>
   useWalletStore((state) => state.timespan);
 
 export const useWalletActions = () => useWalletStore((state) => state.actions);
