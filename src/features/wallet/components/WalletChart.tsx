@@ -1,5 +1,7 @@
 'use client';
 
+import { useEffect } from 'react';
+
 import { DateTimeFormatOptions } from 'luxon';
 import {
   Area,
@@ -18,33 +20,75 @@ import { ValueType } from 'tailwindcss/types/config';
 import CurrencyRatePairChartTooltip from '@components/misc/CurrencyRatePairChartTooltip';
 import DataLoader, { DataLoaderQueryProps } from '@components/ui/DataLoader';
 import useWindowSize from '@hooks/useWindowSize';
+import { LabelValue } from '@interfaces/ICharts';
 import { Currency } from '@interfaces/ICurrency';
-import { ExchangeRateTimeseriesResponse } from '@interfaces/models/IExchangerate';
+import {
+  ExchangeRateTimeseriesRatesArray,
+  ExchangeRateTimeseriesResponse,
+} from '@interfaces/models/IExchangerate';
 import Theme from '@src/Theme';
+import { WalletCurrency } from '@src/zustand/walletStore';
 import {
   xAxisIntervalDivider,
   yAxisDomainFormatter,
 } from '@utils/chartHelpers';
-import { separateToDailyCurrencyRates } from '@utils/currencyRateApiHelpers';
+import { dailyCurrencyRatesToArray } from '@utils/currencyRateApiHelpers';
+import { cutNumber } from '@utils/misc';
 
-// function getData({
-//   data,
-//   walletQuoteCurrency,
-//   walletBaseCurrencies,
-// }: {
-//   data: ExchangeRateTimeseriesResponseRates;
-//   walletQuoteCurrency: WalletCurrency;
-//   walletBaseCurrencies: WalletCurrency[];
-// }) {
-//   return Object.entries(data.rates).map(([day, dayRate]) => {
+import WalletChartTooltip from './WalletChartTooltip';
 
-//   });
-// }
+type WalletDayCurrency = {
+  currency: Currency;
+  rate: number;
+  amount: number;
+  converted_amount: number;
+};
+
+type WalletDayRates = { baseCurrenciesInfo: WalletDayCurrency[] } & LabelValue;
+
+function getData({
+  ratesArray,
+  walletQuoteCurrency,
+  walletBaseCurrencies,
+}: {
+  ratesArray: ExchangeRateTimeseriesRatesArray[];
+  walletQuoteCurrency: WalletCurrency;
+  walletBaseCurrencies: WalletCurrency[];
+}) {
+  return ratesArray.map((day) => {
+    const a = Object.entries(day.rates).reduce(
+      (acc, [currency, rate]) => {
+        const currencyItem = walletBaseCurrencies.find(
+          (c) =>
+            // console.log('c.name: ', c.name);
+            c.name === (currency.toLowerCase() as Currency), //currency is uppercase
+        );
+        if (!currencyItem) return acc;
+        const converted_amount = cutNumber((currencyItem.amount ?? 0) * rate);
+        // eslint-disable-next-line no-param-reassign
+        acc.value += converted_amount;
+        acc.baseCurrenciesInfo.push({
+          amount: currencyItem.amount ?? 0,
+          converted_amount,
+          rate,
+          currency: currency as Currency,
+        });
+        return acc;
+      },
+      { value: walletQuoteCurrency.amount, baseCurrenciesInfo: [] } as Omit<
+        WalletDayRates,
+        'date'
+      >,
+    );
+
+    return { ...day, ...a, value: cutNumber(a.value) };
+  }) satisfies WalletDayRates[];
+}
 
 const WalletChart = (
   props: {
-    quoteCurrency: Currency;
-    baseCurrencies: Currency[];
+    walletBaseCurrencies: WalletCurrency[];
+    walletQuoteCurrency: WalletCurrency;
   } & DataLoaderQueryProps<ExchangeRateTimeseriesResponse | undefined>,
 ) => {
   const { screenWidth } = useWindowSize();
@@ -59,24 +103,27 @@ const WalletChart = (
   return (
     <DataLoader {...props}>
       {(data) => {
-        const dailyCurrencyRates = separateToDailyCurrencyRates(data);
-        const [currencyRates] = dailyCurrencyRates.rates_array;
-
-        const interval = xAxisIntervalDivider({
-          screenWidth,
-          itemsLength: currencyRates.rates.length,
+        const dailyCurrencyRatesArray = dailyCurrencyRatesToArray(
+          data.rates,
+          props.walletQuoteCurrency.name,
+        );
+        const chartRates = getData({
+          ratesArray: dailyCurrencyRatesArray,
+          ...props,
         });
 
         return (
           <div className="flex flex-col gap-y-10">
-            <div className="h-[45vh] w-full">
+            <div className="h-[40vh] w-full">
               <ResponsiveContainer width={'100%'} height={'100%'}>
-                <AreaChart data={currencyRates.rates}>
+                <AreaChart data={chartRates}>
                   <XAxis
                     tickMargin={10}
+                    tick={{ fontSize: 15, letterSpacing: -0.5 }}
                     height={50}
                     dataKey="date"
-                    interval={interval}
+                    allowDuplicatedCategory={false}
+                    // interval={interval}
                     tickFormatter={(tick: string) =>
                       new Date(tick).toLocaleDateString('en-US', options)
                     }
@@ -85,7 +132,7 @@ const WalletChart = (
                     domain={yAxisDomainFormatter}
                     tickCount={5}
                     mirror
-                    tick={{ fill: Theme.colors.dark_navy }}
+                    tick={{ fill: Theme.colors.primaryBlack }}
                   />
                   <CartesianGrid vertical={false} />
                   <Area
@@ -100,17 +147,18 @@ const WalletChart = (
                     stroke={Theme.colors.dark_navy}
                     travellerWidth={screenWidth < 768 ? 20 : 15} //easier to handle on mobile when value is higher
                   />
-                  <Tooltip
+                  {/* <Tooltip
                     content={(
                       tooltipProps: TooltipProps<ValueType, NameType>,
                     ) => (
-                      <CurrencyRatePairChartTooltip
+                      <WalletChartTooltip
                         {...props}
                         {...tooltipProps}
+                        quoteCurrency={props.walletQuoteCurrency.name}
                       />
                     )}
                     cursor={false}
-                  />
+                  /> */}
                 </AreaChart>
               </ResponsiveContainer>
             </div>

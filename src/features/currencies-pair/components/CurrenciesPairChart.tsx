@@ -25,7 +25,7 @@ import {
   xAxisIntervalDivider,
   yAxisDomainFormatter,
 } from '@utils/chartHelpers';
-import { separateToDailyCurrencyRates } from '@utils/currencyRateApiHelpers';
+import { separateDailyCurrencyRates } from '@utils/currencyRateApiHelpers';
 
 const CurrenciesPairChart = (
   props: {
@@ -45,7 +45,7 @@ const CurrenciesPairChart = (
   return (
     <DataLoader {...props}>
       {(data) => {
-        const dailyCurrencyRates = separateToDailyCurrencyRates(data);
+        const dailyCurrencyRates = separateDailyCurrencyRates(data);
         const [currencyRates] = dailyCurrencyRates.rates_array;
 
         const interval = xAxisIntervalDivider({
@@ -60,6 +60,7 @@ const CurrenciesPairChart = (
                 <AreaChart data={currencyRates.rates}>
                   <XAxis
                     tickMargin={10}
+                    tick={{ fontSize: 15, letterSpacing: -0.5 }}
                     height={50}
                     dataKey="date"
                     interval={interval}

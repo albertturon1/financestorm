@@ -5,6 +5,7 @@ import PageMaxWidth from '@components/misc/PageMaxWidth';
 import PagePadding from '@components/misc/PagePadding';
 import PageTitle from '@components/misc/PageTitle';
 import {
+  CURRENCIES,
   DEFAULT_BASE_CURRENCIES,
   DEFAULT_CURRENCY_AMOUNT,
   DEFAULT_QUOTE_CURRENCY,
@@ -14,7 +15,7 @@ import { DEFAULT_TIMESPAN, TIMESPANS } from '@constants/timespans';
 import WalletHydrated from '@features/wallet/components/WalletHydrated';
 import { ChartTimespan } from '@interfaces/ICharts';
 import { Currency } from '@interfaces/ICurrency';
-import { prefetchDailyCurrencyRatesQuery } from '@src/api/CurrencyRateApi';
+import { prefetchDailyCurrencyRatesOverYearQuery } from '@src/api/CurrencyRateApi';
 import {
   DailyCurrencyRatesRequest,
   PrefetchDailyCurrencyRatesRequest,
@@ -24,7 +25,11 @@ import { baseCurrenciesFromQuery } from '@utils/misc';
 
 function walletCurrencyFromString(param: string) {
   const matches = param.match(/^(\d+)(\D+)$/);
-
+  if (CURRENCIES.includes(param))
+    return {
+      amount: NaN,
+      name: param as Currency,
+    } satisfies WalletCurrency;
   if (!matches) return;
   const [_, amount, currency] = matches;
   return {
@@ -59,7 +64,10 @@ const WalletPage = async ({
     baseCurrenciesFromString && baseCurrenciesFromString.length
       ? baseCurrenciesFromString
           .map((c) => walletCurrencyFromString(c))
-          .filter(Boolean)
+          .filter((c) => {
+            console.log('caaaaa', c);
+            return Boolean(c);
+          })
       : DEFAULT_BASE_CURRENCIES.map((c) => ({
           name: c,
           amount: DEFAULT_CURRENCY_AMOUNT,
@@ -82,7 +90,10 @@ const WalletPage = async ({
       staleTime: 1000 * 60 * 30, //30minutes
     },
   } satisfies PrefetchDailyCurrencyRatesRequest;
-  const hydratedState = await prefetchDailyCurrencyRatesQuery(QUERY_PROPS);
+
+  const hydratedState = await prefetchDailyCurrencyRatesOverYearQuery(
+    QUERY_PROPS,
+  );
 
   return (
     <Hydrate state={hydratedState}>

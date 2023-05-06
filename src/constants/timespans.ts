@@ -4,12 +4,24 @@ import { ChartTimespan } from '@interfaces/ICharts';
 
 import { SERVER_DATE } from './dateTime';
 
+const yearsTimespan = (years: number) =>
+  DateTime.now().minus({ years }).plus({ days: 1 }).toFormat(SERVER_DATE);
+
 export const TIMESPANS = {
-  '1W': DateTime.now().minus({ weeks: 1 }).toFormat(SERVER_DATE),
-  '1M': DateTime.now().minus({ months: 1 }).toFormat(SERVER_DATE),
-  '1Y': DateTime.now().minus({ years: 1 }).toFormat(SERVER_DATE),
-  // '2Y': DateTime.now().minus({ years: 2 }).toFormat(SERVER_DATE),
-  // '5Y': DateTime.now().minus({ years: 5 }).toFormat(SERVER_DATE),
-  // '10Y': DateTime.now().minus({ years: 10 }).toFormat(SERVER_DATE),
+  '1w': DateTime.now()
+    .minus({ weeks: 1 })
+    .plus({ days: 1 })
+    .toFormat(SERVER_DATE),
+  '1m': DateTime.now()
+    .minus({ months: 1 })
+    .plus({ days: 1 })
+    .toFormat(SERVER_DATE),
+  '1y': DateTime.now()
+    .minus({ years: 1 })
+    .plus({ days: 1 })
+    .toFormat(SERVER_DATE),
+  '2y': yearsTimespan(2),
+  '5y': yearsTimespan(5),
+  '10y': yearsTimespan(10),
 };
-export const DEFAULT_TIMESPAN = '1Y' satisfies ChartTimespan;
+export const DEFAULT_TIMESPAN = '1y' satisfies ChartTimespan;

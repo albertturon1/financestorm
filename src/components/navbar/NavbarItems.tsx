@@ -6,7 +6,7 @@ import NavbarLink from './NavbarLink';
 const NavbarWalletLink = dynamic(() => import('./NavbarWalletLink'), {
   ssr: false,
   loading: () => (
-    <div className='h-full flex items-center w-20'>
+    <div className="flex h-full w-20 items-center">
       <SkeletonLoader className="h-6 w-24" />
     </div>
   ),

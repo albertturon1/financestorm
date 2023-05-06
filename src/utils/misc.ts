@@ -116,11 +116,11 @@ export function baseCurrenciesFromQuery(
   base: string | undefined,
   quoteCurrency: Currency,
 ) {
-  if (!base || !base.length) return;
+  if (!base || !base.length || typeof base !== 'string') return;
   return base
     .split(',')
     .filter((c) => c !== quoteCurrency) //remove quote currency from results
-    .map((c) => c.trim());
+    .map((c) => c.trim()) as Currency[];
 }
 
 export function createQueryString({

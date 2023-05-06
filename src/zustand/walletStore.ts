@@ -7,6 +7,7 @@ import {
   DEFAULT_BASE_CURRENCIES,
   DEFAULT_QUOTE_CURRENCY,
 } from '@constants/currencies';
+import { DEFAULT_TIMESPAN } from '@constants/timespans';
 import { ChartTimespan } from '@interfaces/ICharts';
 import { Currency } from '@interfaces/ICurrency';
 
@@ -43,7 +44,7 @@ const useWalletStore = create<WalletStoreState>()(
     (set) => ({
       baseCurrencies: DEFAULT_WALLET_BASE_CURRENCIES,
       quoteCurrency: DEFAULT_WALLET_QUOTE_CURRENCY,
-      timespan: '1Y',
+      timespan: DEFAULT_TIMESPAN,
       actions: {
         resetBaseCurrencies: () => {
           set(() => ({ baseCurrencies: DEFAULT_WALLET_BASE_CURRENCIES }));

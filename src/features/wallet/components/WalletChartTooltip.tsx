@@ -10,7 +10,7 @@ import { NormalizedCurrencyExchangeRate } from '@interfaces/models/IExchangerate
 
 type TooltipPayload = CustomTooltipProps<NormalizedCurrencyExchangeRate>[];
 
-const MultiCurrenciesChartTooltip = ({
+const WalletChartTooltip = ({
   active,
   payload,
 }: TooltipProps<number, string>) => {
@@ -63,4 +63,4 @@ const MultiCurrenciesChartTooltip = ({
     </TooltipWrapper>
   );
 };
-export default MultiCurrenciesChartTooltip;
+export default WalletChartTooltip;

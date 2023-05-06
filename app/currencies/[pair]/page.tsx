@@ -5,12 +5,8 @@ import dynamic from 'next/dynamic';
 import PageMaxWidth from '@components/misc/PageMaxWidth';
 import PagePadding from '@components/misc/PagePadding';
 import { SERVER_DATE } from '@constants/dateTime';
-import { TIMESPANS } from '@constants/timespans';
+import { DEFAULT_TIMESPAN, TIMESPANS } from '@constants/timespans';
 import CurrenciesPairHydrated from '@features/currencies-pair/components/CurrenciesPairHydrated';
-const CurrenciesPairSelectors = dynamic(
-  () => import('@features/currencies-pair/components/CurrenciesPairSelectors'),
-);
-import { ChartTimespan } from '@interfaces/ICharts';
 import { Currency, CurrenciesPair } from '@interfaces/ICurrency';
 import { prefetchDailyCurrencyRatesQuery } from '@src/api/CurrencyRateApi';
 import {
@@ -18,11 +14,13 @@ import {
   PrefetchDailyCurrencyRatesRequest,
 } from '@src/api/interfaces/ICurrencyRateApi';
 
+const CurrenciesPairSelectors = dynamic(
+  () => import('@features/currencies-pair/components/CurrenciesPairSelectors'),
+);
+
 export type CurrenciesPairPageProps = {
   pair: CurrenciesPair;
 };
-
-const CURRENCIES_PAIR_DEFAULT_TIMESPAN = '1Y' satisfies ChartTimespan;
 
 const CurrenciesPairPage = async ({
   params,
@@ -38,7 +36,7 @@ const CurrenciesPairPage = async ({
     queryParams: {
       quote_currency: quoteCurrency,
       base_currencies: [baseCurrency],
-      start_date: TIMESPANS[CURRENCIES_PAIR_DEFAULT_TIMESPAN],
+      start_date: TIMESPANS[DEFAULT_TIMESPAN],
       end_date: DateTime.now().toFormat(SERVER_DATE),
     } satisfies DailyCurrencyRatesRequest,
     queryOptions: {
@@ -60,7 +58,7 @@ const CurrenciesPairPage = async ({
             <CurrenciesPairHydrated
               quoteCurrency={quoteCurrency}
               baseCurrency={baseCurrency}
-              defaultChartTimespan={CURRENCIES_PAIR_DEFAULT_TIMESPAN}
+              defaultChartTimespan={DEFAULT_TIMESPAN}
               queryProps={QUERY_PROPS}
             />
           </div>

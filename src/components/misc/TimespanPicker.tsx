@@ -22,7 +22,7 @@ const TimespanPicker = ({
           onSelect(timespan as ChartTimespan);
         }}
       >
-        {timespan}
+        {timespan.toUpperCase()}
       </Button>
     ))}
   </div>

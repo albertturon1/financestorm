@@ -5,7 +5,7 @@ import { twMerge } from 'tailwind-merge';
 import FlagCountryCode from '@components/misc/FlagCountryCode';
 import DataLoader, { DataLoaderQueryProps } from '@components/ui/DataLoader';
 import { ExchangeRateTimeseriesResponse } from '@interfaces/models/IExchangerate';
-import { separateToDailyCurrencyRates } from '@utils/currencyRateApiHelpers';
+import { separateDailyCurrencyRates } from '@utils/currencyRateApiHelpers';
 
 import CurrencyRatesListItem from './CurrencyRatesListItem';
 import CurrencyRatesListLegend from './CurrencyRatesListLegend';
@@ -31,7 +31,7 @@ export const CurrencyRatesList = ({
   return (
     <DataLoader {...props}>
       {(data) => {
-        const separateDailyCurrencyRates = separateToDailyCurrencyRates(data);
+        const dailyCurrencyRates = separateDailyCurrencyRates(data);
         return (
           <div className="flex flex-1 flex-col px-1 xs:px-1.5 sm:px-4 lg:px-8">
             <CurrencyRatesListLegend
@@ -49,12 +49,12 @@ export const CurrencyRatesList = ({
             >
               <div className={styles.currencyStyle}>
                 <FlagCountryCode
-                  code={separateDailyCurrencyRates.quote_currency}
+                  code={dailyCurrencyRates.quote_currency}
                 />
               </div>
               <p className={styles.amountStyle}>{'1'}</p>
             </div>
-            {separateDailyCurrencyRates.rates_array.map((currencyRates) => (
+            {dailyCurrencyRates.rates_array.map((currencyRates) => (
               <CurrencyRatesListItem
                 key={`${currencyRates.base_currency}-${currencyRates.quote_currency}`}
                 currencyRates={currencyRates}

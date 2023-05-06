@@ -5,14 +5,10 @@ import {
 
 export const CURRENCY_RATE_KEYS = {
   all: ['CURRENCY_RATE_KEYS'] as const,
-  dailyCurrencyRates: (
-    props: DailyCurrencyRatesRequest,
-  ) =>
-    [
-      ...CURRENCY_RATE_KEYS.all,
-      'dailyCurrencyRates',
-      props,
-    ] as const,
+  dailyCurrencyRates: (props: DailyCurrencyRatesRequest) =>
+    [...CURRENCY_RATE_KEYS.all, 'dailyCurrencyRates', props] as const,
+  dailyCurrencyRatesOverYear: (props: DailyCurrencyRatesRequest) =>
+    [...CURRENCY_RATE_KEYS.all, 'dailyCurrencyRatesOverYear', props] as const,
   todayCurrencyRates: (props: MultiCurrenciesRate) =>
     [...CURRENCY_RATE_KEYS.all, 'todayCurrencyRates', props] as const,
 };

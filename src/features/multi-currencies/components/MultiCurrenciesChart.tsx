@@ -14,7 +14,6 @@ import {
   xAxisDateTickFormatter,
 } from '@utils/chartHelpers';
 import { convertDailyCurrencyTimeseriesToChartData } from '@utils/currencyRateApiHelpers';
-import dailyCurrencyTimeseriesYears from '@utils/dailyCurrencyTimeseriesYears';
 import { nameOfKey } from '@utils/misc';
 
 import MultiCurrenciesChartTooltip from './MultiCurrenciesChartTooltip';

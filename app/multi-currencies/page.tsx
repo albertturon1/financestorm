@@ -9,10 +9,9 @@ import {
   DEFAULT_QUOTE_CURRENCY,
 } from '@constants/currencies';
 import { SERVER_DATE } from '@constants/dateTime';
-import { TIMESPANS } from '@constants/timespans';
+import { DEFAULT_TIMESPAN, TIMESPANS } from '@constants/timespans';
 import MultiCurrenciesHydrated from '@features/multi-currencies/components/MultiCurrenciesHydrated';
 import MultiCurrenciesPairSelectors from '@features/multi-currencies/components/MultiCurrenciesPairSelectors';
-import { ChartTimespan } from '@interfaces/ICharts';
 import { Currency } from '@interfaces/ICurrency';
 import { prefetchDailyCurrencyRatesQuery } from '@src/api/CurrencyRateApi';
 import {
@@ -20,8 +19,6 @@ import {
   PrefetchDailyCurrencyRatesRequest,
 } from '@src/api/interfaces/ICurrencyRateApi';
 import { baseCurrenciesFromQuery } from '@utils/misc';
-
-const DATA_TIMESPAN = '1Y' satisfies ChartTimespan;
 
 export type MultiCurrenciesPageProps = {
   quote?: Currency;
@@ -44,7 +41,7 @@ const MultiCurrenciesPage = async ({
     queryParams: {
       quote_currency: quoteCurrency,
       base_currencies: baseCurrencies,
-      start_date: TIMESPANS[DATA_TIMESPAN],
+      start_date: TIMESPANS[DEFAULT_TIMESPAN],
       end_date: DateTime.now().toFormat(SERVER_DATE),
     } satisfies DailyCurrencyRatesRequest,
     queryOptions: {
@@ -69,7 +66,7 @@ const MultiCurrenciesPage = async ({
             <MultiCurrenciesHydrated
               queryProps={QUERY_PROPS}
               quoteCurrency={quoteCurrency}
-              dataTimespan={DATA_TIMESPAN}
+              dataTimespan={DEFAULT_TIMESPAN}
             />
           </div>
         </PagePadding>

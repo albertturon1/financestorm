@@ -11,6 +11,11 @@ import {
 } from '@src/zustand/walletStore';
 import { createQueryString } from '@utils/misc';
 
+function substitueNaN(value: number) {
+  if (isNaN(value)) return '';
+  return value;
+}
+
 const useWalletQueryParamsUpdate = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -28,7 +33,9 @@ const useWalletQueryParamsUpdate = () => {
     void router.replace(
       `/wallet?${toQueryString(
         'quote',
-        `${walletQuoteCurrency.amount}${walletQuoteCurrency.name}`,
+        `${substitueNaN(walletQuoteCurrency.amount)}${
+          walletQuoteCurrency.name
+        }`,
       )}`,
       {
         forceOptimisticNavigation: true,
@@ -38,7 +45,7 @@ const useWalletQueryParamsUpdate = () => {
 
   useEffect(() => {
     const base = walletBaseCurrencies
-      .map((c) => `${c.amount}${c.name}`)
+      .map((c) => `${substitueNaN(c.amount)}${c.name}`)
       .join(',');
 
     void router.replace(`/wallet?${toQueryString('base', base)}`, {

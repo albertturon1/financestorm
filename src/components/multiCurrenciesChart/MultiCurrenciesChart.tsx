@@ -24,7 +24,7 @@ import {
   xAxisIntervalDivider,
   yAxisDomainFormatter,
 } from '@utils/chartHelpers';
-import { separateToDailyCurrencyRates } from '@utils/currencyRateApiHelpers';
+import { separateDailyCurrencyRates } from '@utils/currencyRateApiHelpers';
 
 import MultiCurrenciesChartTooltip from './MultiCurrenciesChartTooltip';
 
@@ -40,16 +40,16 @@ export const MultiCurrenciesChart = ({
   return (
     <DataLoader {...props}>
       {(data) => {
-        const separateDailyCurrencyRates = separateToDailyCurrencyRates(data);
+        const dailyCurrencyRates = separateDailyCurrencyRates(data);
 
         const interval = xAxisIntervalDivider({
           screenWidth,
-          itemsLength: separateDailyCurrencyRates.rates_array[0].rates.length,
+          itemsLength: dailyCurrencyRates.rates_array[0].rates.length,
         });
 
         //array of original index for matching tooltip colors with chart
         const originalIndexesOfCurrencies =
-          separateDailyCurrencyRates.rates_array.reduce((acc, item, index) => {
+          dailyCurrencyRates.rates_array.reduce((acc, item, index) => {
             acc.push({ name: item.base_currency, index });
             return acc;
           }, [] as CurrencyNameAndArrayIndex[]);
@@ -63,6 +63,7 @@ export const MultiCurrenciesChart = ({
             <LineChart>
               <XAxis
                 tickMargin={10}
+                tick={{ fontSize: 15, letterSpacing: -0.5 }}
                 dataKey="date"
                 allowDuplicatedCategory={false}
                 interval={interval}
@@ -84,7 +85,7 @@ export const MultiCurrenciesChart = ({
                 verticalAlign="top"
                 wrapperStyle={{ lineHeight: '40px' }}
               />
-              {separateDailyCurrencyRates.rates_array.map((currencyRates) => (
+              {dailyCurrencyRates.rates_array.map((currencyRates) => (
                 <Line
                   strokeWidth={2}
                   dataKey="value"

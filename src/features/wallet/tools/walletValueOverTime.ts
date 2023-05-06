@@ -6,7 +6,6 @@
 // import { Currency } from '@interfaces/ICurrency';
 // import { UserCurrency } from '@interfaces/models/IUser';
 // import { CurrencyRatePair } from '@src/api/interfaces/ICurrencyRateApi';
-// import dailyCurrencyTimeseriesYears from '@utils/dailyCurrencyTimeseriesYears';
 // import { cutNumber } from '@utils/misc';
 // import { ExchangeRateTimeseriesResponseRates } from '@interfaces/models/IExchangerate';
 // import { WalletCurrency } from '@src/zustand/walletStore';

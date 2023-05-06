@@ -62,6 +62,7 @@ const Rows = ({
     const { valueAsNumber } = target;
     setBaseCurrencyAmount(valueAsNumber);
     setQuoteCurrencyAmount(valueAsNumber * currencyRate);
+    console.log(valueAsNumber)
   }
 
   function handleQuoteCurrencyChange({

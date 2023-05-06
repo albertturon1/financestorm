@@ -1,17 +1,18 @@
 'use client';
 
+import { TransitionStartFunction } from 'react';
+
 import FlagInput from '@components/misc/FlagInput';
-import {
-  WalletCurrency,
-  useWalletActions,
-} from '@src/zustand/walletStore';
+import { WalletCurrency, useWalletActions } from '@src/zustand/walletStore';
 
 const WalletCurrenciesSelectors = ({
   walletBaseCurrencies,
   walletQuoteCurrency,
+  startCurrenciesTransition,
 }: {
   walletBaseCurrencies: WalletCurrency[];
   walletQuoteCurrency: WalletCurrency;
+  startCurrenciesTransition: TransitionStartFunction;
 }) => {
   const { patchWalletQuoteCurrency, patchWalletBaseCurrency } =
     useWalletActions();
@@ -22,7 +23,6 @@ const WalletCurrenciesSelectors = ({
         amount={walletQuoteCurrency.amount}
         currency={walletQuoteCurrency.name}
         onChange={({ target }) => {
-          if (isNaN(target.valueAsNumber)) return;
           patchWalletQuoteCurrency({
             ...walletQuoteCurrency,
             amount: target.valueAsNumber,
@@ -35,7 +35,6 @@ const WalletCurrenciesSelectors = ({
           amount={walletCurrency.amount}
           currency={walletCurrency.name}
           onChange={({ target }) => {
-            if (isNaN(target.valueAsNumber)) return;
             patchWalletBaseCurrency({
               ...walletCurrency,
               amount: target.valueAsNumber,

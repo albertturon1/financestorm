@@ -13,7 +13,7 @@ const FlagInput = ({
   onChange,
 }: {
   currency: Currency;
-  amount: number | undefined;
+  amount: number | undefined | null;
   onChange: (value: ChangeEvent<HTMLInputElement>) => void;
 }) => {
   const [focused, setFocused] = useState(false);
