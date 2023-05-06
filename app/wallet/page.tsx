@@ -4,13 +4,13 @@ import { DateTime } from 'luxon';
 import PageMaxWidth from '@components/misc/PageMaxWidth';
 import PagePadding from '@components/misc/PagePadding';
 import PageTitle from '@components/misc/PageTitle';
-import { CHART_TIMESPANS } from '@constants/chart';
 import {
   DEFAULT_BASE_CURRENCIES,
   DEFAULT_CURRENCY_AMOUNT,
   DEFAULT_QUOTE_CURRENCY,
 } from '@constants/currencies';
 import { SERVER_DATE } from '@constants/dateTime';
+import { DEFAULT_TIMESPAN, TIMESPANS } from '@constants/timespans';
 import WalletHydrated from '@features/wallet/components/WalletHydrated';
 import { ChartTimespan } from '@interfaces/ICharts';
 import { Currency } from '@interfaces/ICurrency';
@@ -21,8 +21,6 @@ import {
 } from '@src/api/interfaces/ICurrencyRateApi';
 import { WalletCurrency } from '@src/zustand/walletStore';
 import { baseCurrenciesFromQuery } from '@utils/misc';
-
-const DATA_TIMESPAN = '1Y' satisfies ChartTimespan;
 
 function walletCurrencyFromString(param: string) {
   const matches = param.match(/^(\d+)(\D+)$/);
@@ -69,15 +67,15 @@ const WalletPage = async ({
 
   const walletBaseCurrenciesNames = walletBaseCurrencies.map((c) => c.name);
 
-  const timespan = Object.keys(CHART_TIMESPANS).includes(queryTimespan)
+  const timespan = Object.keys(TIMESPANS).includes(queryTimespan)
     ? queryTimespan
-    : DATA_TIMESPAN;
+    : DEFAULT_TIMESPAN;
 
   const QUERY_PROPS = {
     queryParams: {
       quote_currency: walletQuoteCurrency.name,
       base_currencies: walletBaseCurrenciesNames,
-      start_date: CHART_TIMESPANS[timespan],
+      start_date: TIMESPANS[timespan],
       end_date: DateTime.now().toFormat(SERVER_DATE),
     } satisfies DailyCurrencyRatesRequest,
     queryOptions: {

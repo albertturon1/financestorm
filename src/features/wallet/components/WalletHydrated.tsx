@@ -6,7 +6,7 @@ import dynamic from 'next/dynamic';
 
 import TimespanPicker from '@components/misc/TimespanPicker';
 import SkeletonLoader from '@components/ui/SkeletonLoader';
-import { CHART_TIMESPANS } from '@constants/chart';
+import { TIMESPANS } from '@constants/timespans';
 import { ChartTimespan } from '@interfaces/ICharts';
 import { useDailyCurrencyRatesQuery } from '@src/api/client/CurrenctyRateClientApi';
 import { PrefetchDailyCurrencyRatesRequest } from '@src/api/interfaces/ICurrencyRateApi';
@@ -68,7 +68,7 @@ const WalletHydrated = ({
       ...queryProps.queryParams,
       quote_currency: props.walletQuoteCurrency.name,
       base_currencies: baseCurrenciesNames,
-      start_date: CHART_TIMESPANS[timespan],
+      start_date: TIMESPANS[timespan],
     },
   });
 
@@ -78,11 +78,11 @@ const WalletHydrated = ({
     <div className="flex h-[65vh] w-full flex-col gap-y-6 lg:gap-y-8">
       <TimespanPicker active={timespan} onSelect={setWalletTimespan} />
       <WalletCurrenciesSelectors {...props} />
-      {/* <WalletChart
+      <WalletChart
         {...query}
         quoteCurrency={props.walletQuoteCurrency.name}
         baseCurrencies={baseCurrenciesNames}
-      /> */}
+      />
     </div>
   );
 };

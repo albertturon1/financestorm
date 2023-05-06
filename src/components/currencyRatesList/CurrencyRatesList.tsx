@@ -5,7 +5,7 @@ import { twMerge } from 'tailwind-merge';
 import FlagCountryCode from '@components/misc/FlagCountryCode';
 import DataLoader, { DataLoaderQueryProps } from '@components/ui/DataLoader';
 import { ExchangeRateTimeseriesResponse } from '@interfaces/models/IExchangerate';
-import { separateToDailyCurrencyRates } from '@utils/convertRatesToQuoteCurrency';
+import { separateToDailyCurrencyRates } from '@utils/currencyRateApiHelpers';
 
 import CurrencyRatesListItem from './CurrencyRatesListItem';
 import CurrencyRatesListLegend from './CurrencyRatesListLegend';

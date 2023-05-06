@@ -1,5 +1,5 @@
 import { Button } from '@components/ui/Button';
-import { CHART_TIMESPANS } from '@constants/chart';
+import { TIMESPANS } from '@constants/timespans';
 import { ChartTimespan } from '@interfaces/ICharts';
 import { cn } from '@utils/misc';
 
@@ -11,7 +11,7 @@ const TimespanPicker = ({
   active: ChartTimespan;
 }) => (
   <div className="flex  w-full items-center justify-center gap-x-0.5 xs:gap-x-2 sm:gap-x-3">
-    {Object.keys(CHART_TIMESPANS).map((timespan) => (
+    {Object.keys(TIMESPANS).map((timespan) => (
       <Button
         className={cn(
           'rounded-full ',

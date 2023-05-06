@@ -4,8 +4,8 @@ import dynamic from 'next/dynamic';
 
 import PageMaxWidth from '@components/misc/PageMaxWidth';
 import PagePadding from '@components/misc/PagePadding';
-import { CHART_TIMESPANS } from '@constants/chart';
 import { SERVER_DATE } from '@constants/dateTime';
+import { TIMESPANS } from '@constants/timespans';
 import CurrenciesPairHydrated from '@features/currencies-pair/components/CurrenciesPairHydrated';
 const CurrenciesPairSelectors = dynamic(
   () => import('@features/currencies-pair/components/CurrenciesPairSelectors'),
@@ -38,7 +38,7 @@ const CurrenciesPairPage = async ({
     queryParams: {
       quote_currency: quoteCurrency,
       base_currencies: [baseCurrency],
-      start_date: CHART_TIMESPANS[CURRENCIES_PAIR_DEFAULT_TIMESPAN],
+      start_date: TIMESPANS[CURRENCIES_PAIR_DEFAULT_TIMESPAN],
       end_date: DateTime.now().toFormat(SERVER_DATE),
     } satisfies DailyCurrencyRatesRequest,
     queryOptions: {

@@ -1,7 +1,6 @@
 // import FlagCountryCode from '@components/misc/FlagCountryCode';
 // import PageTitle from '@components/misc/PageTitle';
 import WorkInProgress from '@components/misc/WorkInProgress';
-// import { PADDING_TAILWIND } from '@constants/globals';
 // import Transactions from '@features/user/history/components/Transactions';
 import { Currency } from '@interfaces/ICurrency';
 // import { getUserCurrencyTransactions } from 'src/api/UserApi';
@@ -22,7 +21,7 @@ const CurrencyHistory = ({
 
   return (
     <WorkInProgress />
-    // <div className={`${PADDING_TAILWIND} h-full w-full bg-primaryBlack`}>
+    // <div className={` h-full w-full bg-primaryBlack`}>
     //   <div className="flex gap-x-2">
     //     <PageTitle>{'Historia transakcji'}</PageTitle>
     //     <FlagCountryCode code={params.currency} reverse className="text-2xl" />

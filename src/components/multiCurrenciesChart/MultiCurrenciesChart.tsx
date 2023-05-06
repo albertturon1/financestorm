@@ -24,7 +24,7 @@ import {
   xAxisIntervalDivider,
   yAxisDomainFormatter,
 } from '@utils/chartHelpers';
-import { separateToDailyCurrencyRates } from '@utils/convertRatesToQuoteCurrency';
+import { separateToDailyCurrencyRates } from '@utils/currencyRateApiHelpers';
 
 import MultiCurrenciesChartTooltip from './MultiCurrenciesChartTooltip';
 

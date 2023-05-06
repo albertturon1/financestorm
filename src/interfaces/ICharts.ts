@@ -1,4 +1,4 @@
-import { CHART_RANGES, CHART_TIMESPANS } from '@constants/chart';
+import { TIMESPANS } from '@constants/timespans';
 
 import { Currency } from './ICurrency';
 import { AnyObject } from './IUtility';
@@ -48,5 +48,4 @@ export type CustomTooltipProps<T extends AnyObject<T>> = {
 };
 
 export type ChartType = 'bar' | 'pie' | 'line';
-export type ChartRanges = (typeof CHART_RANGES)[number];
-export type ChartTimespan = keyof typeof CHART_TIMESPANS;
+export type ChartTimespan = keyof typeof TIMESPANS;

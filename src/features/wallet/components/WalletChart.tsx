@@ -25,7 +25,7 @@ import {
   xAxisIntervalDivider,
   yAxisDomainFormatter,
 } from '@utils/chartHelpers';
-import { separateToDailyCurrencyRates } from '@utils/convertRatesToQuoteCurrency';
+import { separateToDailyCurrencyRates } from '@utils/currencyRateApiHelpers';
 
 // function getData({
 //   data,

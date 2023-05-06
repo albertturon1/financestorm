@@ -5,7 +5,7 @@ import { useState } from 'react';
 import dynamic from 'next/dynamic';
 
 import SkeletonLoader from '@components/ui/SkeletonLoader';
-import { CHART_TIMESPANS } from '@constants/chart';
+import { TIMESPANS } from '@constants/timespans';
 import { ChartTimespan } from '@interfaces/ICharts';
 import { Currency } from '@interfaces/ICurrency';
 import { useDailyCurrencyRatesQuery } from '@src/api/client/CurrenctyRateClientApi';
@@ -35,7 +35,7 @@ const CurrenciesPairHydrated = ({
     ...queryProps,
     queryParams: {
       ...queryProps.queryParams,
-      start_date: CHART_TIMESPANS[timespan],
+      start_date: TIMESPANS[timespan],
     },
   });
 

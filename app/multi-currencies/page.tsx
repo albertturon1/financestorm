@@ -4,12 +4,12 @@ import { DateTime } from 'luxon';
 import PageMaxWidth from '@components/misc/PageMaxWidth';
 import PagePadding from '@components/misc/PagePadding';
 import PageTitle from '@components/misc/PageTitle';
-import { CHART_TIMESPANS } from '@constants/chart';
 import {
   DEFAULT_BASE_CURRENCIES,
   DEFAULT_QUOTE_CURRENCY,
 } from '@constants/currencies';
 import { SERVER_DATE } from '@constants/dateTime';
+import { TIMESPANS } from '@constants/timespans';
 import MultiCurrenciesHydrated from '@features/multi-currencies/components/MultiCurrenciesHydrated';
 import MultiCurrenciesPairSelectors from '@features/multi-currencies/components/MultiCurrenciesPairSelectors';
 import { ChartTimespan } from '@interfaces/ICharts';
@@ -44,7 +44,7 @@ const MultiCurrenciesPage = async ({
     queryParams: {
       quote_currency: quoteCurrency,
       base_currencies: baseCurrencies,
-      start_date: CHART_TIMESPANS[DATA_TIMESPAN],
+      start_date: TIMESPANS[DATA_TIMESPAN],
       end_date: DateTime.now().toFormat(SERVER_DATE),
     } satisfies DailyCurrencyRatesRequest,
     queryOptions: {
