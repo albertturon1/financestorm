@@ -164,6 +164,7 @@ export const CURRENCIES = <const>[
   'zwl',
 ];
 
+export const DEFAULT_CURRENCY_AMOUNT = 100;
 export const DEFAULT_QUOTE_CURRENCY = 'pln' satisfies Currency;
 export const DEFAULT_BASE_CURRENCIES = [
   'usd',

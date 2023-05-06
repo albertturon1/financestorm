@@ -7,6 +7,7 @@ import PageTitle from '@components/misc/PageTitle';
 import { CHART_TIMESPANS } from '@constants/chart';
 import {
   DEFAULT_BASE_CURRENCIES,
+  DEFAULT_CURRENCY_AMOUNT,
   DEFAULT_QUOTE_CURRENCY,
 } from '@constants/currencies';
 import { SERVER_DATE } from '@constants/dateTime';
@@ -18,14 +19,26 @@ import {
   DailyCurrencyRatesRequest,
   PrefetchDailyCurrencyRatesRequest,
 } from '@src/api/interfaces/ICurrencyRateApi';
+import { WalletCurrency } from '@src/zustand/walletStore';
 import { baseCurrenciesFromQuery } from '@utils/misc';
 
 const DATA_TIMESPAN = '1Y' satisfies ChartTimespan;
 
+function walletCurrencyFromString(param: string) {
+  const matches = param.match(/^(\d+)(\D+)$/);
+
+  if (!matches) return;
+  const [_, amount, currency] = matches;
+  return {
+    amount: Number(amount),
+    name: currency as Currency,
+  } satisfies WalletCurrency;
+}
+
 export type WalletPageProps = {
-  quote?: Currency;
-  base?: string;
-  timespan?: ChartTimespan;
+  quote: Currency;
+  base: string;
+  timespan: ChartTimespan;
 };
 
 const WalletPage = async ({
@@ -33,19 +46,38 @@ const WalletPage = async ({
 }: {
   searchParams: WalletPageProps;
 }) => {
-  const { quote, base, timespan } = searchParams;
-  const quoteCurrency = quote ?? DEFAULT_QUOTE_CURRENCY;
-  const baseCurrenciesFromString = baseCurrenciesFromQuery(base, quoteCurrency);
-  const DEFALT_TIMESPAN = timespan ?? DATA_TIMESPAN;
+  const { quote, base, timespan: queryTimespan } = searchParams;
+  const walletQuoteCurrency = (walletCurrencyFromString(quote) ?? {
+    name: DEFAULT_QUOTE_CURRENCY,
+    amount: DEFAULT_CURRENCY_AMOUNT,
+  }) satisfies WalletCurrency;
 
-  const baseCurrencies = (baseCurrenciesFromString ??
-    DEFAULT_BASE_CURRENCIES) satisfies Currency[];
+  const baseCurrenciesFromString = baseCurrenciesFromQuery(
+    base,
+    walletQuoteCurrency.name,
+  );
+
+  const walletBaseCurrencies =
+    baseCurrenciesFromString && baseCurrenciesFromString.length
+      ? baseCurrenciesFromString
+          .map((c) => walletCurrencyFromString(c))
+          .filter(Boolean)
+      : DEFAULT_BASE_CURRENCIES.map((c) => ({
+          name: c,
+          amount: DEFAULT_CURRENCY_AMOUNT,
+        }));
+
+  const walletBaseCurrenciesNames = walletBaseCurrencies.map((c) => c.name);
+
+  const timespan = Object.keys(CHART_TIMESPANS).includes(queryTimespan)
+    ? queryTimespan
+    : DATA_TIMESPAN;
 
   const QUERY_PROPS = {
     queryParams: {
-      quote_currency: quoteCurrency,
-      base_currencies: baseCurrencies,
-      start_date: CHART_TIMESPANS[DEFALT_TIMESPAN],
+      quote_currency: walletQuoteCurrency.name,
+      base_currencies: walletBaseCurrenciesNames,
+      start_date: CHART_TIMESPANS[timespan],
       end_date: DateTime.now().toFormat(SERVER_DATE),
     } satisfies DailyCurrencyRatesRequest,
     queryOptions: {
@@ -63,7 +95,12 @@ const WalletPage = async ({
               title="Multicurrency wallet"
               subtitle="Track wallet value fluctuations with multicurrency wallet data"
             />
-            <WalletHydrated queryProps={QUERY_PROPS} />
+            <WalletHydrated
+              queryProps={QUERY_PROPS}
+              timespan={timespan}
+              walletBaseCurrencies={walletBaseCurrencies}
+              walletQuoteCurrency={walletQuoteCurrency}
+            />
           </div>
         </PagePadding>
       </PageMaxWidth>

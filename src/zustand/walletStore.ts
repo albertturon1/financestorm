@@ -7,16 +7,16 @@ import {
   DEFAULT_BASE_CURRENCIES,
   DEFAULT_QUOTE_CURRENCY,
 } from '@constants/currencies';
-import currenciesWithIndex from '@features/multi-currencies/tools/currenciesWithIndex';
 import { ChartTimespan } from '@interfaces/ICharts';
-import { IndexCurrency } from '@interfaces/ICurrency';
+import { Currency } from '@interfaces/ICurrency';
 
-export type WalletCurrency = { amount: number } & IndexCurrency;
+export type WalletCurrency = { amount: number; name: Currency };
 
 interface Actions {
-  setWalletBaseCurrencies: (value: WalletCurrency[]) => void;
-  setWalletQuoteCurrency: (value: WalletCurrency) => void;
+  patchWalletBaseCurrency: (value: WalletCurrency) => void;
+  patchWalletQuoteCurrency: (value: WalletCurrency) => void;
   setWalletTimespan: (value: ChartTimespan) => void;
+  resetBaseCurrencies: () => void;
 }
 
 interface WalletStoreState {
@@ -28,15 +28,13 @@ interface WalletStoreState {
 
 const DEFAULT_AMOUNT = 100;
 
-const DEFAULT_WALLET_BASE_CURRENCIES = currenciesWithIndex(
-  DEFAULT_BASE_CURRENCIES,
-).map((acc) => ({
-  ...acc,
+const DEFAULT_WALLET_BASE_CURRENCIES = DEFAULT_BASE_CURRENCIES.map((acc) => ({
+  name: acc,
   amount: DEFAULT_AMOUNT,
 })) satisfies WalletCurrency[];
 
 const DEFAULT_WALLET_QUOTE_CURRENCY = {
-  ...currenciesWithIndex([DEFAULT_QUOTE_CURRENCY])[0],
+  name: DEFAULT_QUOTE_CURRENCY,
   amount: DEFAULT_AMOUNT,
 } satisfies WalletCurrency;
 
@@ -47,17 +45,25 @@ const useWalletStore = create<WalletStoreState>()(
       quoteCurrency: DEFAULT_WALLET_QUOTE_CURRENCY,
       timespan: '1Y',
       actions: {
-        setWalletBaseCurrencies: (params) =>
+        resetBaseCurrencies: () => {
+          set(() => ({ baseCurrencies: DEFAULT_WALLET_BASE_CURRENCIES }));
+        },
+        patchWalletBaseCurrency: (payload) =>
+          set((state) => {
+            const currencies = [...state.baseCurrencies]; //https://github.com/pmndrs/zustand/discussions/713
+            const currencyIndex = currencies.findIndex(
+              (c) => c.name === payload.name,
+            );
+            currencies[currencyIndex] = payload;
+            return { baseCurrencies: currencies };
+          }),
+        patchWalletQuoteCurrency: (payload) =>
           set(() => ({
-            baseCurrencies: params,
+            quoteCurrency: payload,
           })),
-        setWalletQuoteCurrency: (params) =>
+        setWalletTimespan: (payload) =>
           set(() => ({
-            quoteCurrency: params,
-          })),
-        setWalletTimespan: (params) =>
-          set(() => ({
-            timespan: params,
+            timespan: payload,
           })),
       },
     }),
@@ -84,12 +90,12 @@ export const useWalletTimespan = () =>
 
 export const useWalletActions = () => useWalletStore((state) => state.actions);
 
-export const useWalletActionsReset = () => {
-  const { setWalletBaseCurrencies, setWalletQuoteCurrency } =
-    useWalletActions();
+export const useWalletReset = () => {
+  const { patchWalletQuoteCurrency, resetBaseCurrencies } = useWalletActions();
+
   return () => {
-    setWalletBaseCurrencies(DEFAULT_WALLET_BASE_CURRENCIES);
-    setWalletQuoteCurrency(DEFAULT_WALLET_QUOTE_CURRENCY);
+    patchWalletQuoteCurrency(DEFAULT_WALLET_QUOTE_CURRENCY);
+    resetBaseCurrencies();
   };
 };
 

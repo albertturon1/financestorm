@@ -15,9 +15,7 @@ const CurrenciesPairChart = dynamic(() => import('./CurrenciesPairChart'), {
   loading: () => <SkeletonLoader className="h-[45vh] w-full" />,
   ssr: false,
 });
-const CurrenciesPairTimespanPicker = dynamic(
-  () => import('./CurrenciesPairTimespanPicker'),
-);
+const TimespanPicker = dynamic(() => import('@components/misc/TimespanPicker'));
 
 import CurrenciesPairConverter from './CurrenciesPairConverter';
 
@@ -44,10 +42,7 @@ const CurrenciesPairHydrated = ({
   return (
     <div className="flex flex-1 flex-col gap-y-6 lg:gap-y-10">
       <div className="flex flex-col gap-y-4 lg:gap-y-6">
-        <CurrenciesPairTimespanPicker
-          active={timespan}
-          onSelect={setTimespan}
-        />
+        <TimespanPicker active={timespan} onSelect={setTimespan} />
         <CurrenciesPairChart {...query} {...props} />
       </div>
       <CurrenciesPairConverter {...props} rates={query.data?.rates} />

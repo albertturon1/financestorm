@@ -27,7 +27,7 @@ export const useDailyCurrencyRatesQuery = ({
   queryOptions,
 }: PrefetchDailyCurrencyRatesRequest) =>
   useQuery({
-    queryKey: CURRENCY_RATE_KEYS.dailyCurrencyTimeseriesOneYear(queryParams),
+    queryKey: CURRENCY_RATE_KEYS.dailyCurrencyRates(queryParams),
     queryFn: () => dailyCurrencyRatesQuery(queryParams),
     ...queryOptions,
   });

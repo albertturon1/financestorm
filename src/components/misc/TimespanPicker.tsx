@@ -3,7 +3,7 @@ import { CHART_TIMESPANS } from '@constants/chart';
 import { ChartTimespan } from '@interfaces/ICharts';
 import { cn } from '@utils/misc';
 
-const CurrenciesPairTimespanPicker = ({
+const TimespanPicker = ({
   onSelect,
   active,
 }: {
@@ -28,4 +28,4 @@ const CurrenciesPairTimespanPicker = ({
   </div>
 );
 
-export default CurrenciesPairTimespanPicker;
+export default TimespanPicker;

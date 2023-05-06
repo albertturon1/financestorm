@@ -100,7 +100,7 @@ export const prefetchDailyCurrencyRatesQuery = async ({
 }: PrefetchDailyCurrencyRatesRequest) => {
   const queryClient = getQueryClient();
   await queryClient.prefetchQuery({
-    queryKey: CURRENCY_RATE_KEYS.dailyCurrencyTimeseriesOneYear(queryParams),
+    queryKey: CURRENCY_RATE_KEYS.dailyCurrencyRates(queryParams),
     queryFn: () => dailyCurrencyRatesQuery(queryParams),
     ...queryOptions,
   });

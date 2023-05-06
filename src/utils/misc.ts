@@ -3,13 +3,13 @@ import { isValidElement, ReactElement } from 'react';
 import clsx from 'clsx';
 import { PartialShallow, some } from 'lodash';
 import { DateTime } from 'luxon';
+import { ReadonlyURLSearchParams } from 'next/navigation';
 import QueryString from 'query-string';
 import { twMerge } from 'tailwind-merge';
 import { ClassNameValue } from 'tailwind-merge/dist/lib/tw-join';
 
 import { Currency } from '@interfaces/ICurrency';
 import { AnyObject } from '@interfaces/IUtility';
-import { ReadonlyURLSearchParams } from 'next/navigation';
 
 export const genQueryString = (params: object | undefined): string => {
   if (!params || !Object.keys(params).length) return '';
@@ -116,12 +116,11 @@ export function baseCurrenciesFromQuery(
   base: string | undefined,
   quoteCurrency: Currency,
 ) {
-  return base && base.length > 0
-    ? (base
-        .split(',')
-        .filter((c) => c !== quoteCurrency) //remove quote currency from results
-        .map((c) => c.trim()) as Currency[])
-    : undefined;
+  if (!base || !base.length) return;
+  return base
+    .split(',')
+    .filter((c) => c !== quoteCurrency) //remove quote currency from results
+    .map((c) => c.trim());
 }
 
 export function createQueryString({

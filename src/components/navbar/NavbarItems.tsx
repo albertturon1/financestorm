@@ -1,31 +1,26 @@
-import useWalletStore from '@src/zustand/walletStore';
-import NavbarLink from './NavbarLink';
+import dynamic from 'next/dynamic';
 
-const NavbarItems = (props: { onClick?: () => void }) => {
-  const walletQuoteCurrency = useWalletStore.getState().quoteCurrency.name;
-  const walletBaseCurrencies = useWalletStore
-    .getState()
-    .baseCurrencies.map((c) => c.name)
-    .join(',') satisfies string;
-  const walletTimespan = useWalletStore.getState().timespan;
-  
-  return (
-    <div className="flex max-h-full flex-col sm:flex-row sm:gap-x-5 sm:text-[0.95rem] lg:gap-x-6">
-      {/*homepage hidden on mobile */}
-      <NavbarLink {...props} title="Homepage" href="/" />
-      <NavbarLink {...props} title="Exchange rates" href="/currencies" />
-      <NavbarLink
-        {...props}
-        title="Rates comparisons"
-        href="/multi-currencies"
-      />
-      <NavbarLink
-        {...props}
-        title="Multicurrency wallet"
-        href={`/wallet?quote=${walletQuoteCurrency}&base=${walletBaseCurrencies}&timespan=${walletTimespan}`}
-      />
+import SkeletonLoader from '@components/ui/SkeletonLoader';
+
+import NavbarLink from './NavbarLink';
+const NavbarWalletLink = dynamic(() => import('./NavbarWalletLink'), {
+  ssr: false,
+  loading: () => (
+    <div className='h-full flex items-center w-20'>
+      <SkeletonLoader className="h-6 w-24" />
     </div>
-  );
-};
+  ),
+});
+
+const NavbarItems = (props: { onClick?: () => void }) => (
+  <div className="flex max-h-full flex-col sm:flex-row sm:gap-x-5 sm:text-[0.95rem] lg:gap-x-6">
+    {/*homepage hidden on mobile */}
+    <NavbarLink {...props} title="Homepage" href="/" className="sm:hidden" />
+    <NavbarLink {...props} title="Exchange rates" href="/currencies" />
+    <NavbarLink {...props} title="Rates comparisons" href="/multi-currencies" />
+    {/* to prevent hydration error  */}
+    <NavbarWalletLink />
+  </div>
+);
 
 export default NavbarItems;

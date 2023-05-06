@@ -27,10 +27,24 @@ import {
 } from '@utils/chartHelpers';
 import { separateToDailyCurrencyRates } from '@utils/convertRatesToQuoteCurrency';
 
+// function getData({
+//   data,
+//   walletQuoteCurrency,
+//   walletBaseCurrencies,
+// }: {
+//   data: ExchangeRateTimeseriesResponseRates;
+//   walletQuoteCurrency: WalletCurrency;
+//   walletBaseCurrencies: WalletCurrency[];
+// }) {
+//   return Object.entries(data.rates).map(([day, dayRate]) => {
+
+//   });
+// }
+
 const WalletChart = (
   props: {
     quoteCurrency: Currency;
-    baseCurrency: Currency;
+    baseCurrencies: Currency[];
   } & DataLoaderQueryProps<ExchangeRateTimeseriesResponse | undefined>,
 ) => {
   const { screenWidth } = useWindowSize();

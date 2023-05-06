@@ -1,20 +1,22 @@
 'use client';
 
+import { useCallback, useEffect } from 'react';
+
+import { useRouter, useSearchParams } from 'next/navigation';
+
 import {
   useWalletTimespan,
-  useWalletQuoteCurrencyName,
-  useWalletBaseCurrenciesNames,
+  useWalletQuoteCurrency,
+  useWalletBaseCurrencies,
 } from '@src/zustand/walletStore';
 import { createQueryString } from '@utils/misc';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useCallback, useEffect } from 'react';
 
 const useWalletQueryParamsUpdate = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const timespan = useWalletTimespan();
-  const walletQuoteCurrency = useWalletQuoteCurrencyName();
-  const walletBaseCurrencies = useWalletBaseCurrenciesNames();
+  const walletQuoteCurrency = useWalletQuoteCurrency();
+  const walletBaseCurrencies = useWalletBaseCurrencies();
 
   const toQueryString = useCallback(
     (param: string, value: string) =>
@@ -23,26 +25,32 @@ const useWalletQueryParamsUpdate = () => {
   );
 
   useEffect(() => {
-    void router.push(`/wallet?${toQueryString('quote', walletQuoteCurrency)}`, {
-      forceOptimisticNavigation: true,
-    });
-  }, [walletQuoteCurrency]);
-
-  useEffect(() => {
-    void router.push(
-      `/wallet?${toQueryString('base', walletBaseCurrencies.join(','))}`,
+    void router.replace(
+      `/wallet?${toQueryString(
+        'quote',
+        `${walletQuoteCurrency.amount}${walletQuoteCurrency.name}`,
+      )}`,
       {
         forceOptimisticNavigation: true,
       },
     );
-  }, [walletBaseCurrencies]);
+  }, [router, toQueryString, walletQuoteCurrency]);
 
   useEffect(() => {
-    console.log('timespan: ', timespan);
-    void router.push(`/wallet?${toQueryString('timespan', timespan)}`, {
+    const base = walletBaseCurrencies
+      .map((c) => `${c.amount}${c.name}`)
+      .join(',');
+
+    void router.replace(`/wallet?${toQueryString('base', base)}`, {
       forceOptimisticNavigation: true,
     });
-  }, [timespan]);
+  }, [router, toQueryString, walletBaseCurrencies]);
+
+  useEffect(() => {
+    void router.replace(`/wallet?${toQueryString('timespan', timespan)}`, {
+      forceOptimisticNavigation: true,
+    });
+  }, [router, timespan, toQueryString]);
 };
 
 export default useWalletQueryParamsUpdate;
