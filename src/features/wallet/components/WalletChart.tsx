@@ -1,24 +1,18 @@
 'use client';
 
-import { useEffect } from 'react';
-
-import { DateTimeFormatOptions } from 'luxon';
 import {
   Area,
   CartesianGrid,
   ResponsiveContainer,
   Tooltip,
-  TooltipProps,
   XAxis,
   YAxis,
   Brush,
   AreaChart,
 } from 'recharts';
-import { NameType } from 'recharts/types/component/DefaultTooltipContent';
-import { ValueType } from 'tailwindcss/types/config';
 
-import CurrencyRatePairChartTooltip from '@components/misc/CurrencyRatePairChartTooltip';
 import DataLoader, { DataLoaderQueryProps } from '@components/ui/DataLoader';
+import { CHART_X_AXIS_TICK_FORMATTER_OPTIONS } from '@constants/chart';
 import useWindowSize from '@hooks/useWindowSize';
 import { LabelValue } from '@interfaces/ICharts';
 import { Currency } from '@interfaces/ICurrency';
@@ -28,14 +22,10 @@ import {
 } from '@interfaces/models/IExchangerate';
 import Theme from '@src/Theme';
 import { WalletCurrency } from '@src/zustand/walletStore';
-import {
-  xAxisIntervalDivider,
-  yAxisDomainFormatter,
-} from '@utils/chartHelpers';
+import { yAxisDomainFormatter } from '@utils/chartHelpers';
 import { dailyCurrencyRatesToArray } from '@utils/currencyRateApiHelpers';
-import { cutNumber } from '@utils/misc';
+import { cutNumber, substitueNaNToZero } from '@utils/misc';
 
-import WalletChartTooltip from './WalletChartTooltip';
 
 type WalletDayCurrency = {
   currency: Currency;
@@ -64,21 +54,21 @@ function getData({
             c.name === (currency.toLowerCase() as Currency), //currency is uppercase
         );
         if (!currencyItem) return acc;
-        const converted_amount = cutNumber((currencyItem.amount ?? 0) * rate);
+        const converted_amount = cutNumber(currencyItem.amount * rate);
         // eslint-disable-next-line no-param-reassign
         acc.value += converted_amount;
         acc.baseCurrenciesInfo.push({
-          amount: currencyItem.amount ?? 0,
+          amount: currencyItem.amount,
           converted_amount,
           rate,
           currency: currency as Currency,
         });
         return acc;
       },
-      { value: walletQuoteCurrency.amount, baseCurrenciesInfo: [] } as Omit<
-        WalletDayRates,
-        'date'
-      >,
+      {
+        value: substitueNaNToZero(walletQuoteCurrency.amount),
+        baseCurrenciesInfo: [],
+      } as Omit<WalletDayRates, 'date'>,
     );
 
     return { ...day, ...a, value: cutNumber(a.value) };
@@ -92,12 +82,10 @@ const WalletChart = (
   } & DataLoaderQueryProps<ExchangeRateTimeseriesResponse | undefined>,
 ) => {
   const { screenWidth } = useWindowSize();
-
-  const options = {
-    month: 'short',
-    day: 'numeric',
-    year: '2-digit',
-  } satisfies DateTimeFormatOptions;
+  // const reset = useWalletReset();
+  // useEffect(() => {
+  //   reset();
+  // }, [reset]);
 
   //data loader makes sense when data is being refetch on client - best thing you can do is to handle errors and show fallback when loading --- dont forget to set ssr: false
   return (
@@ -116,23 +104,25 @@ const WalletChart = (
           <div className="flex flex-col gap-y-10">
             <div className="h-[40vh] w-full">
               <ResponsiveContainer width={'100%'} height={'100%'}>
-                <AreaChart data={chartRates}>
+                <AreaChart data={chartRates} margin={{ top: 20 }}>
                   <XAxis
                     tickMargin={10}
                     tick={{ fontSize: 15, letterSpacing: -0.5 }}
                     height={50}
                     dataKey="date"
                     allowDuplicatedCategory={false}
-                    // interval={interval}
                     tickFormatter={(tick: string) =>
-                      new Date(tick).toLocaleDateString('en-US', options)
+                      new Date(tick).toLocaleDateString(
+                        'en-US',
+                        CHART_X_AXIS_TICK_FORMATTER_OPTIONS,
+                      )
                     }
                   />
                   <YAxis
                     domain={yAxisDomainFormatter}
                     tickCount={5}
                     mirror
-                    tick={{ fill: Theme.colors.primaryBlack }}
+                    tick={{ fill: Theme.colors.primaryBlack, dy: -11 }}
                   />
                   <CartesianGrid vertical={false} />
                   <Area
@@ -147,6 +137,7 @@ const WalletChart = (
                     stroke={Theme.colors.dark_navy}
                     travellerWidth={screenWidth < 768 ? 20 : 15} //easier to handle on mobile when value is higher
                   />
+                  <Tooltip />
                   {/* <Tooltip
                     content={(
                       tooltipProps: TooltipProps<ValueType, NameType>,

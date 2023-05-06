@@ -21,8 +21,8 @@ const CurrencyRatePairChartTooltip = ({
 
   const date = new Date(p.date);
   const options = {
-    weekday: 'long',
-    month: 'long',
+    weekday: 'short',
+    month: 'short',
     day: 'numeric',
     year: 'numeric',
   } satisfies DateTimeFormatOptions;

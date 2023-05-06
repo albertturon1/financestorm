@@ -22,6 +22,6 @@ export const TIMESPANS = {
     .toFormat(SERVER_DATE),
   '2y': yearsTimespan(2),
   '5y': yearsTimespan(5),
-  '10y': yearsTimespan(10),
+  // '10y': yearsTimespan(10),
 };
 export const DEFAULT_TIMESPAN = '1y' satisfies ChartTimespan;

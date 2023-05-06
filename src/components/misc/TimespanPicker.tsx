@@ -10,7 +10,7 @@ const TimespanPicker = ({
   onSelect: (timespan: ChartTimespan) => void;
   active: ChartTimespan;
 }) => (
-  <div className="flex  w-full items-center justify-center gap-x-0.5 xs:gap-x-2 sm:gap-x-3">
+  <div className="flex w-full items-center justify-center gap-x-0.5 xs:gap-x-2 sm:gap-x-3">
     {Object.keys(TIMESPANS).map((timespan) => (
       <Button
         className={cn(

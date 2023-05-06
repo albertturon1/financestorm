@@ -137,3 +137,8 @@ export function createQueryString({
 
   return params.toString().replace(/%2C/g, ','); //replacing %2C from ,
 }
+
+export function substitueNaNToZero(value: number) {
+  if (isNaN(value)) return 0;
+  return value;
+}

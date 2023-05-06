@@ -16,6 +16,7 @@ export type WalletCurrency = { amount: number; name: Currency };
 interface Actions {
   patchWalletBaseCurrency: (value: WalletCurrency) => void;
   patchWalletQuoteCurrency: (value: WalletCurrency) => void;
+  deleteWalletQuoteCurrency: (currency: Currency) => void;
   setWalletTimespan: (value: ChartTimespan) => void;
   resetBaseCurrencies: () => void;
 }
@@ -58,6 +59,14 @@ const useWalletStore = create<WalletStoreState>()(
             currencies[currencyIndex] = payload;
             return { baseCurrencies: currencies };
           }),
+        deleteWalletQuoteCurrency: (payload) =>
+          set((state) => {
+            const currencies = [...state.baseCurrencies];
+            const currenciesFiltered = currencies.filter(
+              (c) => c.name !== payload,
+            );
+            return { baseCurrencies: currenciesFiltered };
+          }),
         patchWalletQuoteCurrency: (payload) =>
           set(() => ({
             quoteCurrency: payload,
@@ -69,7 +78,7 @@ const useWalletStore = create<WalletStoreState>()(
       },
     }),
     {
-      name: 'multiCurrenciesStore',
+      name: 'walletStore',
       storage: createJSONStorage(() => sessionStorage),
       merge: (persistedState, currentState) =>
         mergeDeepLeft(persistedState as object, currentState), //to prevent from rewriting actions on persist

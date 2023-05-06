@@ -1,4 +1,3 @@
-import dailyCurrencyTimeseriesYears from '@utils/dailyCurrencyTimeseriesYears';
 import { DateTime } from 'luxon';
 
 import { SERVER_DATE } from '@constants/dateTime';
@@ -26,7 +25,7 @@ export interface WalletValueOverTime {
   values: WalletDay[];
 }
 
-const walletValueOverTime = async ({
+const walletValueOverTime = ({
   currencies,
   quote_currency,
   end_date,
@@ -46,7 +45,6 @@ const walletValueOverTime = async ({
   const endDate = DateTime.fromJSDate(
     end_date ? new Date(end_date) : new Date(),
   ).toFormat(SERVER_DATE);
-
 
   const currencyAmounts = userCurrenciesAmount(currencies);
   const minValue = -1;

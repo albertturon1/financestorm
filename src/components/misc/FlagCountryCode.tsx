@@ -38,7 +38,9 @@ const FlagCountryCode = ({
     </div>
     <p
       className={twMerge(
-        `w-max tabular-nums ${boldName ? 'font-medium' : ''}`,
+        `w-max text-sm tabular-nums ${
+          boldName ? 'font-medium' : ''
+        }`,
         textClassName,
       )}
     >

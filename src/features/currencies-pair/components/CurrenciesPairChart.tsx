@@ -1,6 +1,5 @@
 'use client';
 
-import { DateTimeFormatOptions } from 'luxon';
 import {
   Area,
   CartesianGrid,
@@ -17,14 +16,12 @@ import { ValueType } from 'tailwindcss/types/config';
 
 import CurrencyRatePairChartTooltip from '@components/misc/CurrencyRatePairChartTooltip';
 import DataLoader, { DataLoaderQueryProps } from '@components/ui/DataLoader';
+import { CHART_X_AXIS_TICK_FORMATTER_OPTIONS } from '@constants/chart';
 import useWindowSize from '@hooks/useWindowSize';
 import { Currency } from '@interfaces/ICurrency';
 import { ExchangeRateTimeseriesResponse } from '@interfaces/models/IExchangerate';
 import Theme from '@src/Theme';
-import {
-  xAxisIntervalDivider,
-  yAxisDomainFormatter,
-} from '@utils/chartHelpers';
+import { yAxisDomainFormatter } from '@utils/chartHelpers';
 import { separateDailyCurrencyRates } from '@utils/currencyRateApiHelpers';
 
 const CurrenciesPairChart = (
@@ -35,12 +32,6 @@ const CurrenciesPairChart = (
 ) => {
   const { screenWidth } = useWindowSize();
 
-  const options = {
-    month: 'short',
-    day: 'numeric',
-    year: '2-digit',
-  } satisfies DateTimeFormatOptions;
-
   //data loader makes sense when data is being refetch on client - best thing you can do is to handle errors and show fallback when loading --- dont forget to set ssr: false
   return (
     <DataLoader {...props}>
@@ -48,31 +39,28 @@ const CurrenciesPairChart = (
         const dailyCurrencyRates = separateDailyCurrencyRates(data);
         const [currencyRates] = dailyCurrencyRates.rates_array;
 
-        const interval = xAxisIntervalDivider({
-          screenWidth,
-          itemsLength: currencyRates.rates.length,
-        });
-
         return (
           <div className="flex flex-col gap-y-10">
             <div className="h-[45vh] w-full">
               <ResponsiveContainer width={'100%'} height={'100%'}>
-                <AreaChart data={currencyRates.rates}>
+                <AreaChart data={currencyRates.rates} margin={{ top: 20 }}>
                   <XAxis
                     tickMargin={10}
                     tick={{ fontSize: 15, letterSpacing: -0.5 }}
                     height={50}
                     dataKey="date"
-                    interval={interval}
                     tickFormatter={(tick: string) =>
-                      new Date(tick).toLocaleDateString('en-US', options)
+                      new Date(tick).toLocaleDateString(
+                        'en-US',
+                        CHART_X_AXIS_TICK_FORMATTER_OPTIONS,
+                      )
                     }
                   />
                   <YAxis
                     domain={yAxisDomainFormatter}
                     tickCount={5}
                     mirror
-                    tick={{ fill: Theme.colors.dark_navy }}
+                    tick={{ fill: Theme.colors.primaryBlack, dy: -11 }}
                   />
                   <CartesianGrid vertical={false} />
                   <Area
@@ -96,7 +84,6 @@ const CurrenciesPairChart = (
                         {...tooltipProps}
                       />
                     )}
-                    cursor={false}
                   />
                 </AreaChart>
               </ResponsiveContainer>

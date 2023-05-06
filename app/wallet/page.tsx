@@ -23,11 +23,12 @@ import {
 import { WalletCurrency } from '@src/zustand/walletStore';
 import { baseCurrenciesFromQuery } from '@utils/misc';
 
-function walletCurrencyFromString(param: string) {
+function walletCurrencyFromString(param: string | undefined) {
+  if (!param) return;
   const matches = param.match(/^(\d+)(\D+)$/);
   if (CURRENCIES.includes(param))
     return {
-      amount: NaN,
+      amount: 0,
       name: param as Currency,
     } satisfies WalletCurrency;
   if (!matches) return;
@@ -39,9 +40,9 @@ function walletCurrencyFromString(param: string) {
 }
 
 export type WalletPageProps = {
-  quote: Currency;
-  base: string;
-  timespan: ChartTimespan;
+  quote?: Currency;
+  base?: string;
+  timespan?: ChartTimespan;
 };
 
 const WalletPage = async ({
@@ -64,10 +65,7 @@ const WalletPage = async ({
     baseCurrenciesFromString && baseCurrenciesFromString.length
       ? baseCurrenciesFromString
           .map((c) => walletCurrencyFromString(c))
-          .filter((c) => {
-            console.log('caaaaa', c);
-            return Boolean(c);
-          })
+          .filter(Boolean)
       : DEFAULT_BASE_CURRENCIES.map((c) => ({
           name: c,
           amount: DEFAULT_CURRENCY_AMOUNT,
@@ -75,9 +73,10 @@ const WalletPage = async ({
 
   const walletBaseCurrenciesNames = walletBaseCurrencies.map((c) => c.name);
 
-  const timespan = Object.keys(TIMESPANS).includes(queryTimespan)
-    ? queryTimespan
-    : DEFAULT_TIMESPAN;
+  const timespan =
+    queryTimespan && Object.keys(TIMESPANS).includes(queryTimespan)
+      ? queryTimespan
+      : DEFAULT_TIMESPAN;
 
   const QUERY_PROPS = {
     queryParams: {
@@ -104,12 +103,7 @@ const WalletPage = async ({
               title="Multicurrency wallet"
               subtitle="Track wallet value fluctuations with multicurrency wallet data"
             />
-            <WalletHydrated
-              queryProps={QUERY_PROPS}
-              timespan={timespan}
-              walletBaseCurrencies={walletBaseCurrencies}
-              walletQuoteCurrency={walletQuoteCurrency}
-            />
+            <WalletHydrated queryProps={QUERY_PROPS} />
           </div>
         </PagePadding>
       </PageMaxWidth>

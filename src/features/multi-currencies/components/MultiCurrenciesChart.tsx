@@ -13,7 +13,6 @@ import {
   customLineChartYDomain,
   xAxisDateTickFormatter,
 } from '@utils/chartHelpers';
-import { convertDailyCurrencyTimeseriesToChartData } from '@utils/currencyRateApiHelpers';
 import { nameOfKey } from '@utils/misc';
 
 import MultiCurrenciesChartTooltip from './MultiCurrenciesChartTooltip';

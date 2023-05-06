@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, TransitionStartFunction } from 'react';
 
 import { useRouter, useSearchParams } from 'next/navigation';
 
@@ -9,14 +9,11 @@ import {
   useWalletQuoteCurrency,
   useWalletBaseCurrencies,
 } from '@src/zustand/walletStore';
-import { createQueryString } from '@utils/misc';
+import { createQueryString, substitueNaNToZero } from '@utils/misc';
 
-function substitueNaN(value: number) {
-  if (isNaN(value)) return '';
-  return value;
-}
-
-const useWalletQueryParamsUpdate = () => {
+const useWalletQueryParamsUpdate = (
+  startCurrenciesTransition: TransitionStartFunction,
+) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const timespan = useWalletTimespan();
@@ -30,34 +27,40 @@ const useWalletQueryParamsUpdate = () => {
   );
 
   useEffect(() => {
-    void router.replace(
-      `/wallet?${toQueryString(
-        'quote',
-        `${substitueNaN(walletQuoteCurrency.amount)}${
-          walletQuoteCurrency.name
-        }`,
-      )}`,
-      {
+    startCurrenciesTransition(() => {
+      void router.replace(
+        `/wallet?${toQueryString(
+          'quote',
+          `${substitueNaNToZero(walletQuoteCurrency.amount)}${
+            walletQuoteCurrency.name
+          }`,
+        )}`,
+        {
+          forceOptimisticNavigation: true,
+        },
+      );
+    });
+  }, [router, toQueryString, walletQuoteCurrency, startCurrenciesTransition]);
+
+  useEffect(() => {
+    startCurrenciesTransition(() => {
+      const base = walletBaseCurrencies
+        .map((c) => `${substitueNaNToZero(c.amount)}${c.name}`)
+        .join(',');
+
+      void router.replace(`/wallet?${toQueryString('base', base)}`, {
         forceOptimisticNavigation: true,
-      },
-    );
-  }, [router, toQueryString, walletQuoteCurrency]);
+      });
+    });
+  }, [startCurrenciesTransition, router, toQueryString, walletBaseCurrencies]);
 
   useEffect(() => {
-    const base = walletBaseCurrencies
-      .map((c) => `${substitueNaN(c.amount)}${c.name}`)
-      .join(',');
-
-    void router.replace(`/wallet?${toQueryString('base', base)}`, {
-      forceOptimisticNavigation: true,
+    startCurrenciesTransition(() => {
+      void router.replace(`/wallet?${toQueryString('timespan', timespan)}`, {
+        forceOptimisticNavigation: true,
+      });
     });
-  }, [router, toQueryString, walletBaseCurrencies]);
-
-  useEffect(() => {
-    void router.replace(`/wallet?${toQueryString('timespan', timespan)}`, {
-      forceOptimisticNavigation: true,
-    });
-  }, [router, timespan, toQueryString]);
+  }, [startCurrenciesTransition, router, timespan, toQueryString]);
 };
 
 export default useWalletQueryParamsUpdate;

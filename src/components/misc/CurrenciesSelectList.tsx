@@ -1,6 +1,7 @@
 'use client';
 
 import { Currency } from '@interfaces/ICurrency';
+import { cn } from '@utils/misc';
 
 import FlagCountryCode from './FlagCountryCode';
 import { ScrollArea, ScrollBar } from '../ui/ScrollArea';
@@ -14,14 +15,21 @@ import {
 
 const CurrenciesSelectList = ({
   currencies,
+  triggerClassName,
+  showTriggerFocus,
   ...props
 }: {
   value: Currency;
   currencies: readonly Currency[];
   onValueChange: (currency: Currency) => void;
+  triggerClassName?: string;
+  showTriggerFocus?: boolean;
 }) => (
   <Select {...props}>
-    <SelectTrigger className="w-full">
+    <SelectTrigger
+      className={cn('w-full', triggerClassName)}
+      showFocus={showTriggerFocus}
+    >
       {props.value && <FlagCountryCode code={props.value} />}
     </SelectTrigger>
     <SelectContent>

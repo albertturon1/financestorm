@@ -4,16 +4,30 @@ import { useMemo, useTransition } from 'react';
 
 import dynamic from 'next/dynamic';
 
-import TimespanPicker from '@components/misc/TimespanPicker';
+import SkeletonLoader from '@components/ui/SkeletonLoader';
 import { TIMESPANS } from '@constants/timespans';
-import { ChartTimespan } from '@interfaces/ICharts';
 import { useDailyCurrencyRatesOverYearQuery } from '@src/api/client/CurrenctyRateClientApi';
 import { PrefetchDailyCurrencyRatesRequest } from '@src/api/interfaces/ICurrencyRateApi';
-import { WalletCurrency, useWalletActions } from '@src/zustand/walletStore';
+import {
+  useWalletActions,
+  useWalletBaseCurrencies,
+  useWalletQuoteCurrency,
+  useWalletTimespan,
+} from '@src/zustand/walletStore';
 
 import WalletChartLoader from './loaders/WalletChartLoader';
 import WalletCurrenciesSelectorsLoader from './loaders/WalletCurrenciesSelectorsLoader';
 import useWalletQueryParamsUpdate from '../hooks/useWalletQueryParamsUpdate';
+
+const TimespanPicker = dynamic(
+  () => import('@components/misc/TimespanPicker'),
+  {
+    loading: () => (
+      <SkeletonLoader className="h-24 w-[250px] max-w-full self-center" />
+    ),
+    ssr: false,
+  },
+);
 
 const WalletCurrenciesSelectors = dynamic(
   () => import('./WalletCurrenciesSelectors'),
@@ -30,46 +44,46 @@ const WalletChart = dynamic(() => import('./WalletChart'), {
 
 const WalletHydrated = ({
   queryProps,
-  timespan,
   ...props
 }: {
   queryProps: PrefetchDailyCurrencyRatesRequest;
-  timespan: ChartTimespan;
-  walletQuoteCurrency: WalletCurrency;
-  walletBaseCurrencies: WalletCurrency[];
 }) => {
+  const [_, startCurrenciesTransition] = useTransition();
   const { setWalletTimespan } = useWalletActions();
+  const walletQuoteCurrency = useWalletQuoteCurrency();
+  const walletBaseCurrencies = useWalletBaseCurrencies();
+  const timespan = useWalletTimespan();
 
   const baseCurrenciesNames = useMemo(
-    () => props.walletBaseCurrencies.map((c) => c.name),
-    [props.walletBaseCurrencies],
+    () => walletBaseCurrencies.map((c) => c.name),
+    [walletBaseCurrencies],
   );
 
   const query = useDailyCurrencyRatesOverYearQuery({
     ...queryProps,
     queryParams: {
       ...queryProps.queryParams,
-      quote_currency: props.walletQuoteCurrency.name,
+      quote_currency: walletQuoteCurrency.name,
       base_currencies: baseCurrenciesNames,
       start_date: TIMESPANS[timespan],
     },
   });
 
-  useWalletQueryParamsUpdate();
-  const [isCurrenciesPending, startCurrenciesTransition] = useTransition();
+  useWalletQueryParamsUpdate(startCurrenciesTransition);
 
   return (
     <div className="flex h-[65vh] w-full flex-col gap-y-6 lg:gap-y-8">
       <TimespanPicker active={timespan} onSelect={setWalletTimespan} />
       <WalletCurrenciesSelectors
         {...props}
-        startCurrenciesTransition={startCurrenciesTransition}
+        walletQuoteCurrency={walletQuoteCurrency}
+        walletBaseCurrencies={walletBaseCurrencies}
       />
-      {!isCurrenciesPending ? (
-        <WalletChart {...query} {...props} />
-      ) : (
-        <WalletChartLoader />
-      )}
+      <WalletChart
+        {...query}
+        walletQuoteCurrency={walletQuoteCurrency}
+        walletBaseCurrencies={walletBaseCurrencies}
+      />
     </div>
   );
 };
