@@ -24,7 +24,7 @@ import Theme from '@src/Theme';
 import { WalletCurrency } from '@src/zustand/walletStore';
 import { yAxisDomainFormatter } from '@utils/chartHelpers';
 import { dailyCurrencyRatesToArray } from '@utils/currencyRateApiHelpers';
-import { cutNumber, substitueNaNToZero } from '@utils/misc';
+import { cutNumber, substituePotentialNaNToZero } from '@utils/misc';
 
 
 type WalletDayCurrency = {
@@ -66,7 +66,7 @@ function getData({
         return acc;
       },
       {
-        value: substitueNaNToZero(walletQuoteCurrency.amount),
+        value: substituePotentialNaNToZero(walletQuoteCurrency.amount),
         baseCurrenciesInfo: [],
       } as Omit<WalletDayRates, 'date'>,
     );
@@ -82,10 +82,6 @@ const WalletChart = (
   } & DataLoaderQueryProps<ExchangeRateTimeseriesResponse | undefined>,
 ) => {
   const { screenWidth } = useWindowSize();
-  // const reset = useWalletReset();
-  // useEffect(() => {
-  //   reset();
-  // }, [reset]);
 
   //data loader makes sense when data is being refetch on client - best thing you can do is to handle errors and show fallback when loading --- dont forget to set ssr: false
   return (

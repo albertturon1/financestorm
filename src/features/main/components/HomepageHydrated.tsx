@@ -19,7 +19,7 @@ const MultiCurrenciesChart = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="flex h-[31vh] w-full items-center mt-4">
+      <div className="flex max-h-[37vh] h-[350px] w-full items-center mt-4">
         <SkeletonLoader className="h-full w-full" />
       </div>
     ),
@@ -50,7 +50,7 @@ const HomepageHydrated = ({
         />
       </div>
       <PagePadding>
-        <div className="flex h-[35vh] flex-col gap-y-1">
+        <div className="flex max-h-[40vh] h-[400px] flex-col gap-y-1">
           <div className="flex h-min w-full flex-wrap items-center justify-between">
             <PageTitle title="Exchange rates comparisons" />
             <NavigationButton href={'/multi-currencies'} className="mt-0.5">

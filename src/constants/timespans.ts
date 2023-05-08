@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon';
 
-import { ChartTimespan } from '@interfaces/ICharts';
+import { Timespan } from '@interfaces/ICharts';
 
 import { SERVER_DATE } from './dateTime';
 
@@ -24,4 +24,4 @@ export const TIMESPANS = {
   '5y': yearsTimespan(5),
   // '10y': yearsTimespan(10),
 };
-export const DEFAULT_TIMESPAN = '1y' satisfies ChartTimespan;
+export const DEFAULT_TIMESPAN = '1y' satisfies Timespan;

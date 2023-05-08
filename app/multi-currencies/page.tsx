@@ -13,7 +13,7 @@ import { DEFAULT_TIMESPAN, TIMESPANS } from '@constants/timespans';
 import MultiCurrenciesHydrated from '@features/multi-currencies/components/MultiCurrenciesHydrated';
 import MultiCurrenciesPairSelectors from '@features/multi-currencies/components/MultiCurrenciesPairSelectors';
 import { Currency } from '@interfaces/ICurrency';
-import { prefetchDailyCurrencyRatesQuery } from '@src/api/CurrencyRateApi';
+import { prefetchDailyCurrencyRatesOverYearQuery } from '@src/api/CurrencyRateApi';
 import {
   DailyCurrencyRatesRequest,
   PrefetchDailyCurrencyRatesRequest,
@@ -48,7 +48,7 @@ const MultiCurrenciesPage = async ({
       staleTime: 1000 * 60 * 30, //30minutes
     },
   } satisfies PrefetchDailyCurrencyRatesRequest;
-  const hydratedState = await prefetchDailyCurrencyRatesQuery(QUERY_PROPS);
+  const hydratedState = await prefetchDailyCurrencyRatesOverYearQuery(QUERY_PROPS);
 
   return (
     <Hydrate state={hydratedState}>

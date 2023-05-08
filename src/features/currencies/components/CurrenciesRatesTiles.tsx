@@ -14,14 +14,13 @@ const CurrenciesRatesTiles = ({
 } & DataLoaderQueryProps<ExchangeRateLatestResponse | undefined>) => (
   <DataLoader {...props} data={currenciesRates}>
     {(data) => (
-      <div className="flex flex-col gap-y-2 pl-0.5">
-        <p className="font-medium">{'From'}</p>
+      <div className="flex flex-col gap-y-2 ">
         {Object.keys(data.rates).length ? (
           <div className="grid auto-cols-max grid-cols-1 sm:grid-cols-2 sm:gap-x-10 lg:grid-cols-3">
             {Object.entries(data.rates).map(
               ([baseCurrency, rate], index, array) => (
                 <CurrencyTile
-                  baseCurrency={baseCurrency as Currency}
+                  baseCurrency={baseCurrency.toLowerCase() as Currency}
                   quoteCurrency={quoteCurrency}
                   rate={rate}
                   key={baseCurrency}

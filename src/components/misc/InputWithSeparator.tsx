@@ -1,22 +1,19 @@
 'use client';
 
-import { useState, ChangeEvent, ReactNode } from 'react';
+import { useState, ReactNode } from 'react';
 
-import { Input } from '@components/ui/Input';
+import { Input, InputProps } from '@components/ui/Input';
 import { cn } from '@utils/misc';
 
 export type InputWithSeparatorProps = {
-  amount: number | undefined | null;
-  onChange: (value: ChangeEvent<HTMLInputElement>) => void;
   children: ReactNode;
   className?: string;
-};
+} & InputProps;
 
 const InputWithSeparator = ({
-  amount,
-  onChange,
   children,
   className,
+  ...props
 }: InputWithSeparatorProps) => {
   const [focused, setFocused] = useState(false);
   return (
@@ -29,6 +26,7 @@ const InputWithSeparator = ({
     >
       <Input
         type="number"
+        {...props}
         numberHideArrows
         onFocus={() => {
           setFocused(true);
@@ -37,8 +35,6 @@ const InputWithSeparator = ({
           setFocused(false);
         }}
         showFocus={false}
-        value={!amount || isNaN(amount) ? '' : amount.toString()}
-        onChange={onChange}
         className="w-[10%] min-w-[100px] max-w-[150px] border-0 pl-3 focus:outline-none"
       />
       <div className="h-6 w-[1.2px] bg-border" />

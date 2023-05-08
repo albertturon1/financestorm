@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // import FlagCountryCode from '@components/misc/FlagCountryCode';
 // import PageTitle from '@components/misc/PageTitle';
 import WorkInProgress from '@components/misc/WorkInProgress';

@@ -62,7 +62,6 @@ const Rows = ({
     const { valueAsNumber } = target;
     setBaseCurrencyAmount(valueAsNumber);
     setQuoteCurrencyAmount(valueAsNumber * currencyRate);
-    console.log(valueAsNumber)
   }
 
   function handleQuoteCurrencyChange({
@@ -76,12 +75,12 @@ const Rows = ({
   return (
     <div className="flex w-full flex-col justify-center gap-y-4">
       <FlagInput
-        amount={cutNumber(baseCurrencyAmount, 3)}
+        defaultValue={cutNumber(baseCurrencyAmount, 3)}
         currency={baseCurrency.toUpperCase() as Currency}
         onChange={handleBaseCurrencyChange}
       />
       <FlagInput
-        amount={cutNumber(quoteCurrencyAmount, 3)}
+        defaultValue={cutNumber(quoteCurrencyAmount, 3)}
         currency={quoteCurrency.toUpperCase() as Currency}
         onChange={handleQuoteCurrencyChange}
       />

@@ -48,4 +48,4 @@ export type CustomTooltipProps<T extends AnyObject<T>> = {
 };
 
 export type ChartType = 'bar' | 'pie' | 'line';
-export type ChartTimespan = keyof typeof TIMESPANS;
+export type Timespan = keyof typeof TIMESPANS;

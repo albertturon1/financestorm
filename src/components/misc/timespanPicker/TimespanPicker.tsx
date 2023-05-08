@@ -1,14 +1,14 @@
 import { Button } from '@components/ui/Button';
 import { TIMESPANS } from '@constants/timespans';
-import { ChartTimespan } from '@interfaces/ICharts';
+import { Timespan } from '@interfaces/ICharts';
 import { cn } from '@utils/misc';
 
-const TimespanPicker = ({
-  onSelect,
+export const TimespanPicker = ({
   active,
+  onSelect,
 }: {
-  onSelect: (timespan: ChartTimespan) => void;
-  active: ChartTimespan;
+  active: Timespan;
+  onSelect: (newTimespan: Timespan) => void;
 }) => (
   <div className="flex w-full items-center justify-center gap-x-0.5 xs:gap-x-2 sm:gap-x-3">
     {Object.keys(TIMESPANS).map((timespan) => (
@@ -19,7 +19,7 @@ const TimespanPicker = ({
         )}
         key={timespan}
         onClick={() => {
-          onSelect(timespan as ChartTimespan);
+          onSelect(timespan as Timespan);
         }}
       >
         {timespan.toUpperCase()}
@@ -27,5 +27,3 @@ const TimespanPicker = ({
     ))}
   </div>
 );
-
-export default TimespanPicker;

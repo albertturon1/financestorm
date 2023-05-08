@@ -8,16 +8,24 @@ import {
   DEFAULT_QUOTE_CURRENCY,
 } from '@constants/currencies';
 import { DEFAULT_TIMESPAN } from '@constants/timespans';
-import { ChartTimespan } from '@interfaces/ICharts';
+import { Timespan } from '@interfaces/ICharts';
 import { Currency } from '@interfaces/ICurrency';
+import { substituePotentialNaNToZero } from '@utils/misc';
 
 export type WalletCurrency = { amount: number; name: Currency };
 
 interface Actions {
-  patchWalletBaseCurrency: (value: WalletCurrency) => void;
+  patchWalletBaseCurrencies: (value: WalletCurrency[]) => void;
+  patchWalletBaseCurrency: ({
+    currency,
+    newValue,
+  }: {
+    currency: WalletCurrency;
+    newValue: number;
+  }) => void;
   patchWalletQuoteCurrency: (value: WalletCurrency) => void;
-  deleteWalletQuoteCurrency: (currency: Currency) => void;
-  setWalletTimespan: (value: ChartTimespan) => void;
+  deleteWalletBaseCurrency: (currency: Currency) => void;
+  patchWalletTimespan: (value: Timespan) => void;
   resetBaseCurrencies: () => void;
 }
 
@@ -25,7 +33,7 @@ interface WalletStoreState {
   baseCurrencies: WalletCurrency[];
   quoteCurrency: WalletCurrency;
   actions: Actions;
-  timespan: ChartTimespan;
+  timespan: Timespan;
 }
 
 const DEFAULT_AMOUNT = 100;
@@ -50,16 +58,26 @@ const useWalletStore = create<WalletStoreState>()(
         resetBaseCurrencies: () => {
           set(() => ({ baseCurrencies: DEFAULT_WALLET_BASE_CURRENCIES }));
         },
-        patchWalletBaseCurrency: (payload) =>
-          set((state) => {
-            const currencies = [...state.baseCurrencies]; //https://github.com/pmndrs/zustand/discussions/713
-            const currencyIndex = currencies.findIndex(
-              (c) => c.name === payload.name,
-            );
-            currencies[currencyIndex] = payload;
-            return { baseCurrencies: currencies };
-          }),
-        deleteWalletQuoteCurrency: (payload) =>
+        // patchWalletBaseCurrency: (payload) =>
+        //   set((state) => {
+        //     const currencies = [...state.baseCurrencies]; //https://github.com/pmndrs/zustand/discussions/713
+        //     const currencyIndex = currencies.findIndex(
+        //       (c) => c.name === payload.name,
+        //     );
+        //     currencies[currencyIndex] = payload;
+        //     return { baseCurrencies: currencies };
+        //   }),
+        patchWalletBaseCurrency: ({ currency, newValue }) =>
+          set((state) => ({
+            baseCurrencies: state.baseCurrencies.map((c) => {
+              if (c.name !== currency.name) return c;
+              return {
+                ...currency,
+                amount: substituePotentialNaNToZero(newValue),
+              };
+            }),
+          })),
+        deleteWalletBaseCurrency: (payload) =>
           set((state) => {
             const currencies = [...state.baseCurrencies];
             const currenciesFiltered = currencies.filter(
@@ -71,7 +89,11 @@ const useWalletStore = create<WalletStoreState>()(
           set(() => ({
             quoteCurrency: payload,
           })),
-        setWalletTimespan: (payload) =>
+        patchWalletBaseCurrencies: (payload) =>
+          set(() => ({
+            baseCurrencies: payload,
+          })),
+        patchWalletTimespan: (payload) =>
           set(() => ({
             timespan: payload,
           })),

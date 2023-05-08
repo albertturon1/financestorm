@@ -6,7 +6,6 @@ import { cn } from '@utils/misc';
 
 const NavbarLink = <T extends string>({
   title,
-  onClick,
   className,
   ...props
 }: {

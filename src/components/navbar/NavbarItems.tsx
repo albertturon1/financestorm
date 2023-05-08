@@ -19,7 +19,7 @@ const NavbarItems = (props: { onClick?: () => void }) => (
     <NavbarLink {...props} title="Exchange rates" href="/currencies" />
     <NavbarLink {...props} title="Rates comparisons" href="/multi-currencies" />
     {/* to prevent hydration error  */}
-    <NavbarWalletLink />
+    <NavbarWalletLink {...props} />
   </div>
 );
 

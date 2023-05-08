@@ -17,8 +17,9 @@ const WalletQuoteCurrencyInputSelect = ({
   onCurrencyChange: (newQuoteCurrency: Currency) => void;
   currency: Currency;
 } & Omit<InputWithSeparatorProps, 'onChange' | 'children'>) => (
-  <InputWithSeparator {...props} onChange={onInputChange}>
+  <InputWithSeparator onChange={onInputChange} {...props}>
     <CurrenciesSelectList
+      {...props}
       showTriggerFocus={false}
       triggerClassName="border-0 pr-0 w-full pl-10 self-end justify-end"
       value={currency}

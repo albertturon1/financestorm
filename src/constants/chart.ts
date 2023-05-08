@@ -20,3 +20,10 @@ export const CHART_X_AXIS_TICK_FORMATTER_OPTIONS = {
   day: 'numeric',
   year: '2-digit',
 } satisfies DateTimeFormatOptions;
+
+export const CHART_TOOLTIP_DATE_OPTIONS = {
+  weekday: 'short',
+  month: 'short',
+  day: 'numeric',
+  year: 'numeric',
+} satisfies DateTimeFormatOptions;

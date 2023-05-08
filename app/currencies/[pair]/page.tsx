@@ -8,7 +8,7 @@ import { SERVER_DATE } from '@constants/dateTime';
 import { DEFAULT_TIMESPAN, TIMESPANS } from '@constants/timespans';
 import CurrenciesPairHydrated from '@features/currencies-pair/components/CurrenciesPairHydrated';
 import { Currency, CurrenciesPair } from '@interfaces/ICurrency';
-import { prefetchDailyCurrencyRatesQuery } from '@src/api/CurrencyRateApi';
+import { prefetchDailyCurrencyRatesOverYearQuery } from '@src/api/CurrencyRateApi';
 import {
   DailyCurrencyRatesRequest,
   PrefetchDailyCurrencyRatesRequest,
@@ -44,7 +44,9 @@ const CurrenciesPairPage = async ({
     },
   } satisfies PrefetchDailyCurrencyRatesRequest;
 
-  const hydratedState = await prefetchDailyCurrencyRatesQuery(QUERY_PROPS);
+  const hydratedState = await prefetchDailyCurrencyRatesOverYearQuery(
+    QUERY_PROPS,
+  );
 
   return (
     <Hydrate state={hydratedState}>
@@ -55,7 +57,7 @@ const CurrenciesPairPage = async ({
               baseCurrency={baseCurrency}
               quoteCurrency={quoteCurrency}
             />
-            <CurrenciesPairHydrated
+          <CurrenciesPairHydrated
               quoteCurrency={quoteCurrency}
               baseCurrency={baseCurrency}
               defaultChartTimespan={DEFAULT_TIMESPAN}

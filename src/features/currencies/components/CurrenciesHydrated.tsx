@@ -18,17 +18,14 @@ import { PrefetchTodayCurrencyRatesRequest } from '@src/api/interfaces/ICurrency
 const CurrenciesRatesTiles = dynamic(() => import('./CurrenciesRatesTiles'), {
   ssr: false,
   loading: () => (
-    <div className="flex flex-col gap-y-3">
-      <SkeletonLoader className="mt-1 h-6 w-10" />
-      <div className="grid w-full auto-cols-max grid-cols-1 gap-y-[2px] sm:grid-cols-2 sm:gap-x-10 lg:grid-cols-3">
-        {Array.from({ length: CURRENCIES.length - 1 }, (_, i) => (
-          <SkeletonLoader
-            key={i}
-            className="h-14 w-full rounded-lg"
-            style={{ animationDelay: `${i * 0.05}s`, animationDuration: '1s' }}
-          />
-        ))}
-      </div>
+    <div className="grid w-full auto-cols-max grid-cols-1 gap-y-[2px] sm:grid-cols-2 sm:gap-x-10 lg:grid-cols-3">
+      {Array.from({ length: CURRENCIES.length - 1 }, (_, i) => (
+        <SkeletonLoader
+          key={i}
+          className="h-14 w-full rounded-lg"
+          style={{ animationDelay: `${i * 0.05}s`, animationDuration: '1s' }}
+        />
+      ))}
     </div>
   ),
 });
@@ -120,11 +117,14 @@ const CurrenciesHydrated = ({
           />
         </div>
       </div>
-      <CurrenciesRatesTiles
-        {...query}
-        currenciesRates={filteredCurrenciesRates}
-        quoteCurrency={defaultCurrency}
-      />
+      <div className="flex flex-col gap-y-2 pl-0.5">
+        <p className="font-medium">{'From'}</p>
+        <CurrenciesRatesTiles
+          {...query}
+          currenciesRates={filteredCurrenciesRates}
+          quoteCurrency={defaultCurrency}
+        />
+      </div>
     </div>
   );
 };

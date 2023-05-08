@@ -1,4 +1,3 @@
-import { ChartMultiData } from '@interfaces/ICharts';
 import { Currency } from '@interfaces/ICurrency';
 import {
   CurrenciesRates,
@@ -7,7 +6,6 @@ import {
   ExchangeRateTimeseriesResponse,
   ExchangeRateTimeseries,
   SeparateDailyCurrencyRates,
-  NormalizedCurrencyExchangeRate,
   ExchangeRateTimeseriesResponseRates,
 } from '@interfaces/models/IExchangerate';
 

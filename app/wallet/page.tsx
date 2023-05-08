@@ -13,7 +13,7 @@ import {
 import { SERVER_DATE } from '@constants/dateTime';
 import { DEFAULT_TIMESPAN, TIMESPANS } from '@constants/timespans';
 import WalletHydrated from '@features/wallet/components/WalletHydrated';
-import { ChartTimespan } from '@interfaces/ICharts';
+import { Timespan } from '@interfaces/ICharts';
 import { Currency } from '@interfaces/ICurrency';
 import { prefetchDailyCurrencyRatesOverYearQuery } from '@src/api/CurrencyRateApi';
 import {
@@ -42,7 +42,7 @@ function walletCurrencyFromString(param: string | undefined) {
 export type WalletPageProps = {
   quote?: Currency;
   base?: string;
-  timespan?: ChartTimespan;
+  timespan?: Timespan;
 };
 
 const WalletPage = async ({
@@ -100,10 +100,15 @@ const WalletPage = async ({
         <PagePadding vertical>
           <div className="flex w-full flex-1 flex-col gap-y-6 lg:gap-y-8">
             <PageTitle
-              title="Multicurrency wallet"
-              subtitle="Track wallet value fluctuations with multicurrency wallet data"
+              title="Multicurrency wallet (WORK IN PROGRESS)"
+              subtitle="Track wallet value fluctuations with virtual wallet."
             />
-            <WalletHydrated queryProps={QUERY_PROPS} />
+            <WalletHydrated
+              queryProps={QUERY_PROPS}
+              timespan={timespan}
+              walletQuoteCurrency={walletQuoteCurrency}
+              walletBaseCurrencies={walletBaseCurrencies}
+            />
           </div>
         </PagePadding>
       </PageMaxWidth>

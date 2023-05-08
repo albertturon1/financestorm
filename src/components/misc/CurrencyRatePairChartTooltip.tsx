@@ -1,9 +1,9 @@
-import { DateTimeFormatOptions } from 'luxon';
 import { TooltipProps } from 'recharts';
 import { NameType } from 'recharts/types/component/DefaultTooltipContent';
 import { ValueType } from 'tailwindcss/types/config';
 
 import TooltipWrapper from '@components/tooltip/TooltipWrapper';
+import { CHART_TOOLTIP_DATE_OPTIONS } from '@constants/chart';
 import { CustomTooltipProps, LabelValue } from '@interfaces/ICharts';
 import { Currency } from '@interfaces/ICurrency';
 
@@ -20,13 +20,10 @@ const CurrencyRatePairChartTooltip = ({
   const [{ payload: p }] = payload as unknown as Payload1;
 
   const date = new Date(p.date);
-  const options = {
-    weekday: 'short',
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  } satisfies DateTimeFormatOptions;
-  const localDateString = date.toLocaleDateString('en-US', options);
+  const localDateString = date.toLocaleDateString(
+    'en-US',
+    CHART_TOOLTIP_DATE_OPTIONS,
+  );
 
   return (
     <TooltipWrapper>
