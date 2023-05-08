@@ -31,7 +31,6 @@ import MultiCurrenciesChartTooltip from './MultiCurrenciesChartTooltip';
 export type CurrencyNameAndArrayIndex = { name: Currency; index: number };
 
 export const MultiCurrenciesChart = ({
-  quoteCurrency,
   ...props
 }: {
   quoteCurrency: Currency;
@@ -104,10 +103,10 @@ export const MultiCurrenciesChart = ({
                 />
               ))}
               <Tooltip
-                content={(props: TooltipProps<number, string>) => (
+                content={(tooltipProps: TooltipProps<number, string>) => (
                   <MultiCurrenciesChartTooltip
+                    {...tooltipProps}
                     {...props}
-                    quoteCurrency={quoteCurrency}
                     originalIndexesOfCurrencies={originalIndexesOfCurrencies}
                   />
                 )}
