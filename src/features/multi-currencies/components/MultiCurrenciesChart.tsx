@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
 import { memo, useMemo } from 'react';
@@ -10,18 +11,12 @@ import Loader from '@components/misc/Loader';
 import { ChartMultiData } from '@interfaces/ICharts';
 import { NormalizedCurrencyExchangeRate } from '@interfaces/models/IExchangerate';
 import {
-  useMultiCurrenciesQuoteCurrency,
-  useMultiCurrenciesBaseCurrenciesNames,
-} from '@src/zustand/multiCurrenciesStore';
-import {
   customLineChartYDomain,
   xAxisDateTickFormatter,
 } from '@utils/chartHelpers';
-import convertDailyCurrencyTimeseriesToChartData from '@utils/convertDailyCurrencyTimeseriesToChartData';
-import dailyCurrencyTimeseriesYears from '@utils/dailyCurrencyTimeseriesYears';
 import { nameOfKey } from '@utils/misc';
 
-import MultiCurrenciesLineChartTooltip from './MultiCurrenciesLineChartTooltip';
+import MultiCurrenciesChartTooltip from './MultiCurrenciesChartTooltip';
 
 const nameExtractor = (item: ChartMultiData<NormalizedCurrencyExchangeRate>) =>
   item.name;
@@ -34,46 +29,47 @@ const dataKeyExtractor = (
 ) => nameOfKey(item.data[0], (x) => x.value);
 
 const tooltip = (props: TooltipProps<number, string>) => (
-  <MultiCurrenciesLineChartTooltip {...props} />
+  <MultiCurrenciesChartTooltip {...props} />
 );
 
 const xAxisLabelExtractor = (
   item: ChartMultiData<NormalizedCurrencyExchangeRate>,
 ) => nameOfKey(item.data[0], (x) => x.date);
 
-const MultiBaseCurrenciesLineChart = () => {
-  const quoteCurrency = useMultiCurrenciesQuoteCurrency();
-  const baseCurrencies = useMultiCurrenciesBaseCurrenciesNames();
+// eslint-disable-next-line arrow-body-style
+const MultiCurrenciesChart = () => {
+  // const quoteCurrency = useMultiCurrenciesQuoteCurrency();
+  // const baseCurrencies = useMultiCurrenciesBaseCurrenciesNames();
 
-  const props = {
-    quote_currency: quoteCurrency.name,
-    base_currencies: baseCurrencies,
-    years: 1,
-  };
+  // const props = {
+  //   quote_currency: quoteCurrency.name,
+  //   base_currencies: baseCurrencies,
+  //   years: 1,
+  // };
 
-  const { data, isLoading } = useQuery(
-    ['dailyCurrencyTimeseriesYears', props],
-    () => dailyCurrencyTimeseriesYears(props),
-  );
+  // const { data, isLoading } = useQuery(
+  //   ['dailyCurrencyTimeseriesYears', props],
+  //   () => dailyCurrencyTimeseriesYears(props),
+  // );
 
-  const chartData = useMemo(
-    () => convertDailyCurrencyTimeseriesToChartData(data),
-    [data],
-  );
+  // const chartData = useMemo(
+  //   () => convertDailyCurrencyTimeseriesToChartData(data),
+  //   [data],
+  // );
 
-  const yDomain = useMemo(
-    () =>
-      customLineChartYDomain(
-        chartData.flatMap((c) => c.data.map((d) => d.value)),
-        2,
-      ),
-    [chartData],
-  );
+  // const yDomain = useMemo(
+  //   () =>
+  //     customLineChartYDomain(
+  //       chartData.flatMap((c) => c.data.map((d) => d.value)),
+  //       2,
+  //     ),
+  //   [chartData],
+  // );
 
-  if (isLoading) return <Loader />;
+  // if (isLoading) return <Loader />;
   return (
     <div className="flex flex-1">
-      <CustomLineChart
+      {/* <CustomLineChart
         margin={{ top: 5, left: -20 }}
         data={chartData}
         dataKeyExtractor={dataKeyExtractor}
@@ -85,10 +81,10 @@ const MultiBaseCurrenciesLineChart = () => {
         xAxisLabel="label"
         tooltip={tooltip}
         xAxisTickFormatter={xAxisDateTickFormatter}
-      />
+      /> */}
     </div>
   );
 };
 
-const Memo = memo(MultiBaseCurrenciesLineChart);
+const Memo = memo(MultiCurrenciesChart);
 export default Memo;

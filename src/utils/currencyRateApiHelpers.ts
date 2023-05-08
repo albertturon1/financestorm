@@ -6,14 +6,10 @@ import {
   ExchangeRateTimeseriesResponse,
   ExchangeRateTimeseries,
   SeparateDailyCurrencyRates,
+  ExchangeRateTimeseriesResponseRates,
 } from '@interfaces/models/IExchangerate';
 
 import { inverseCurrecyRate } from './misc';
-
-export const isExchangeRateTimeseriesResponse = (
-  data: ExchangeRateLatestResponse | ExchangeRateTimeseriesResponse,
-): data is ExchangeRateTimeseriesResponse =>
-  (data as ExchangeRateTimeseriesResponse).timeseries !== undefined;
 
 const convertDayRates = (day: CurrenciesRates, quoteCurrency: Currency) =>
   Object.entries(day).reduce((acc, rate) => {
@@ -24,37 +20,23 @@ const convertDayRates = (day: CurrenciesRates, quoteCurrency: Currency) =>
     return acc;
   }, {} as CurrenciesRates);
 
-export const convertLastestRatesToQuoteCurrency = (
-  data: ExchangeRateLatestResponse,
-): ExchangeRateLatestResponse => {
-  const rates = convertDayRates(data.rates, data.base);
-  return { ...data, rates };
-};
-
-export const convertTimeseriesRatesToQuoteCurrency = (
-  data: ExchangeRateTimeseriesResponse,
-): ExchangeRateTimeseries => {
-  const rates = Object.entries(data.rates).reduce((acc, day) => {
+//rates object to array with infersions of daily rates
+export const dailyCurrencyRatesToArray = (
+  rates: ExchangeRateTimeseriesResponseRates,
+  quoteCurrency: Currency,
+) =>
+  Object.entries(rates).reduce((acc, day) => {
     const [dayLabel, dayRates] = day;
     if (!Object.keys(dayRates).length) return acc; //return when there's no data for the day
-
-    acc.push({ date: dayLabel, rates: convertDayRates(dayRates, data.base) });
+    acc.push({
+      date: dayLabel,
+      rates: convertDayRates(dayRates, quoteCurrency),
+    });
     return acc;
   }, [] as ExchangeRateTimeseriesRatesArray[]);
 
-  const base_currencies = Object.keys(rates[0].rates) as Currency[];
-
-  const { base, motd, success, ...rest } = data;
-
-  return {
-    ...rest,
-    quote_currency: data.base,
-    base_currencies,
-    rates_array: rates,
-  };
-};
-
-export const separateToDailyCurrencyRates = (
+//rates object to separate arrays of currencies with infersions of daily rates
+export const separateDailyCurrencyRates = (
   data: ExchangeRateTimeseriesResponse,
 ) => {
   const rates = Object.entries(data.rates[data.start_date]).map(
@@ -99,4 +81,48 @@ export const separateToDailyCurrencyRates = (
     base_currencies,
     rates_array: rates,
   };
+};
+
+//TODO: delete
+export const convertLastestRatesToQuoteCurrency = (
+  data: ExchangeRateLatestResponse,
+): ExchangeRateLatestResponse => {
+  const rates = convertDayRates(data.rates, data.base);
+  return { ...data, rates };
+};
+
+export const convertDailyCurrencyTimeseriesToChartData = (
+  data: ExchangeRateTimeseries | undefined,
+) => {
+  if (!data) return [];
+  // return data.rates_array.reduce((acc, day) => {
+  //   const { date, rates } = day;
+  //   Object.entries(rates).forEach(([currency, value]) => {
+  //     const currencyIndexInAcc = acc.findIndex((c) => c.name === currency);
+  //     const obj: NormalizedCurrencyExchangeRate = {
+  //       base_currency: currency as Currency,
+  //       quote_currency: data.quote_currency,
+  //       value,
+  //       date,
+  //     };
+
+  //     if (currencyIndexInAcc === -1)
+  //       acc.push({
+  //         name: currency,
+  //         //minValue: value,
+  //         //maxValue: value,
+  //         data: [obj],
+  //       });
+  //     else {
+  //       ////set minValue
+  //       //if (value > acc[currencyIndexInAcc].maxValue)
+  //       //  acc[currencyIndexInAcc].maxValue = value;
+  //       ////set maxValue
+  //       //if (value < acc[currencyIndexInAcc].minValue)
+  //       //  acc[currencyIndexInAcc].minValue = value;
+  //       acc[currencyIndexInAcc].data = [...acc[currencyIndexInAcc].data, obj];
+  //     }
+  //   });
+  //   return acc;
+  // }, [] as ChartMultiData<NormalizedCurrencyExchangeRate>[]);
 };

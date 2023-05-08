@@ -7,7 +7,7 @@ import { Analytics } from '@vercel/analytics/react';
 
 import Navbar from '@components/navbar';
 
-import ReactQueryProvider from '../src/utils/providers/ReactQueryProvider';
+import ReactQueryProvider from '../src/components/providers/ReactQueryProvider';
 
 export const metadata = {
   title: 'FinanceStorm',

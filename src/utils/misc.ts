@@ -3,10 +3,12 @@ import { isValidElement, ReactElement } from 'react';
 import clsx from 'clsx';
 import { PartialShallow, some } from 'lodash';
 import { DateTime } from 'luxon';
+import { ReadonlyURLSearchParams } from 'next/navigation';
 import QueryString from 'query-string';
 import { twMerge } from 'tailwind-merge';
 import { ClassNameValue } from 'tailwind-merge/dist/lib/tw-join';
 
+import { Currency } from '@interfaces/ICurrency';
 import { AnyObject } from '@interfaces/IUtility';
 
 export const genQueryString = (params: object | undefined): string => {
@@ -108,4 +110,35 @@ export function cn(...inputs: ClassNameValue[]) {
 export function inverseCurrecyRate(rate: number) {
   const newValue = rate ** -1;
   return cutNumber(newValue, newValue < 1 ? 5 : 3);
+}
+
+export function baseCurrenciesFromQuery(
+  base: string | undefined,
+  quoteCurrency: Currency,
+) {
+  if (!base || !base.length || typeof base !== 'string') return;
+  return base
+    .split(',')
+    .filter((c) => c !== quoteCurrency) //remove quote currency from results
+    .map((c) => c.trim()) as Currency[];
+}
+
+export function createQueryString({
+  param,
+  value,
+  searchParams,
+}: {
+  param: string;
+  value: string;
+  searchParams: ReadonlyURLSearchParams;
+}) {
+  const params = new URLSearchParams(searchParams);
+  params.set(param, value);
+
+  return params.toString().replace(/%2C/g, ','); //replacing %2C from ,
+}
+
+export function substituePotentialNaNToZero(value: number) {
+  if (isNaN(value)) return 0;
+  return value;
 }

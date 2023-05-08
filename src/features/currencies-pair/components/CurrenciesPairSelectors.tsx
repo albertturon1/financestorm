@@ -20,13 +20,12 @@ const CurrenciesPairSelectors = ({
   const router = useRouter();
   const pathname = usePathname();
 
-  const baseCurrenciesAvailable = useMemo(
-    () => CURRENCIES.filter((currency) => currency !== baseCurrency),
-    [baseCurrency],
-  );
-  const quoteCurrenciesAvailable = useMemo(
-    () => CURRENCIES.filter((currency) => currency !== quoteCurrency),
-    [quoteCurrency],
+  const currenciesAvailable = useMemo(
+    () =>
+      CURRENCIES.filter(
+        (currency) => currency !== quoteCurrency && currency !== baseCurrency,
+      ),
+    [baseCurrency, quoteCurrency],
   );
 
   return (
@@ -35,12 +34,13 @@ const CurrenciesPairSelectors = ({
         <p className="font-medium">{'From'}</p>
         <CurrenciesSelectList
           onValueChange={(newBaseCurrency) => {
-            void router.replace(
+            void router.push(
               `/currencies/${newBaseCurrency}-${quoteCurrency}`,
+              { forceOptimisticNavigation: true },
             );
           }}
-          value={baseCurrency}
-          currencies={baseCurrenciesAvailable}
+          value={baseCurrency.toUpperCase() as Currency}
+          currencies={currenciesAvailable}
         />
       </div>
       <button
@@ -57,12 +57,13 @@ const CurrenciesPairSelectors = ({
         <p className="font-medium">{'To'}</p>
         <CurrenciesSelectList
           onValueChange={(newQuoteCurrency) => {
-            void router.replace(
+            void router.push(
               `/currencies/${baseCurrency}-${newQuoteCurrency}`,
+              { forceOptimisticNavigation: true },
             );
           }}
-          value={quoteCurrency}
-          currencies={quoteCurrenciesAvailable}
+          value={quoteCurrency.toUpperCase() as Currency}
+          currencies={currenciesAvailable}
         />
       </div>
     </div>

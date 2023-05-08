@@ -45,7 +45,7 @@ export const Navbar = () => {
             />
             <NavbarItemsMobile
               open={open}
-              onItemClick={() => {
+              onClick={() => {
                 setOpen(false);
               }}
             />

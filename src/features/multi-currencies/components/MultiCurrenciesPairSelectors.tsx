@@ -8,6 +8,7 @@ import CurrenciesSelectList from '@components/misc/CurrenciesSelectList';
 import MultiCurrenciesSelectList from '@components/misc/MultiCurrenciesSelectList';
 import { CURRENCIES } from '@constants/currencies';
 import { Currency } from '@interfaces/ICurrency';
+import { createQueryString } from '@utils/misc';
 
 const MultiCurrenciesPairSelectors = ({
   baseCurrencies,
@@ -28,13 +29,9 @@ const MultiCurrenciesPairSelectors = ({
     [quoteCurrency],
   );
 
-  const createQueryString = useCallback(
-    (name: string, value: string) => {
-      const params = new URLSearchParams(searchParams);
-      params.set(name, value);
-
-      return params.toString().replace(/%2C/g, ','); //replacing %2C from , 
-    },
+  const toQueryString = useCallback(
+    (param: string, value: string) =>
+      createQueryString({ param, value, searchParams }),
     [searchParams],
   );
 
@@ -46,21 +43,23 @@ const MultiCurrenciesPairSelectors = ({
           onValueChange={(baseCurrency) => {
             //remove from params list
             if (baseCurrencies.includes(baseCurrency))
-              void router.replace(
-                `/multi-currencies?${createQueryString(
+              void router.push(
+                `/multi-currencies?${toQueryString(
                   'base',
                   baseCurrencies.filter((c) => c !== baseCurrency).join(','),
                 )}`,
+                { forceOptimisticNavigation: true },
               );
             else
-              void router.replace(
-                `/multi-currencies?${createQueryString(
+              void router.push(
+                `/multi-currencies?${toQueryString(
                   'base',
                   [baseCurrencies, baseCurrency].sort().join(','),
                 )}`,
+                { forceOptimisticNavigation: true },
               );
           }}
-          values={baseCurrencies}
+          values={baseCurrencies.map((c) => c.toUpperCase()) as Currency[]}
           currencies={baseCurrenciesAvailable}
           selectedCurrencies={baseCurrencies}
         />
@@ -71,20 +70,19 @@ const MultiCurrenciesPairSelectors = ({
           onValueChange={(newQuoteCurrency) => {
             //when new quote currency has already been on the list of base currencies
             if (baseCurrencies.includes(newQuoteCurrency))
-              void router.replace(
+              void router.push(
                 `/multi-currencies?quote=${newQuoteCurrency}&base=${baseCurrencies
                   .filter((c) => c !== newQuoteCurrency)
                   .join(',')}`,
+                { forceOptimisticNavigation: true },
               );
             else
-              void router.replace(
-                `/multi-currencies?${createQueryString(
-                  'quote',
-                  newQuoteCurrency,
-                )}`,
+              void router.push(
+                `/multi-currencies?${toQueryString('quote', newQuoteCurrency)}`,
+                { forceOptimisticNavigation: true },
               );
           }}
-          value={quoteCurrency}
+          value={quoteCurrency.toUpperCase() as Currency}
           currencies={quoteCurrenciesAvailable}
         />
       </div>

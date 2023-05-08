@@ -1,6 +1,4 @@
-import { DateTime, DateTimeFormatOptions } from 'luxon';
-
-import { ChartRange } from '@interfaces/ICharts';
+import { DateTimeFormatOptions } from 'luxon';
 
 export const CHART_THEME = [
   '#36a2eb',
@@ -17,33 +15,15 @@ export const CHART_THEME = [
   '#b33dc6',
 ];
 
-export const CHART_RANGES: readonly ChartRange[] = [
-  { name: '1D', type: 'day', value: 1 },
-  { name: '1W', type: 'week', value: 1 },
-  { name: '1M', type: 'month', value: 1 },
-  { name: '3M', type: 'month', value: 3 },
-  { name: '6M', type: 'month', value: 6 },
-  { name: '1Y', type: 'year', value: 1 },
-  { name: '3Y', type: 'year', value: 3 },
-  { name: '5Y', type: 'year', value: 5 },
-  { name: '10Y', type: 'year', value: 10 },
-  { name: '15Y', type: 'year', value: 15 },
-  { name: '20Y', type: 'year', value: 20 },
-] as const;
-
 export const CHART_X_AXIS_TICK_FORMATTER_OPTIONS = {
   month: 'short',
   day: 'numeric',
   year: '2-digit',
 } satisfies DateTimeFormatOptions;
 
-import { SERVER_DATE } from './dateTime';
-
-export const CHART_TIMESPANS = {
-  '1W': DateTime.now().minus({ weeks: 1 }).toFormat(SERVER_DATE),
-  '1M': DateTime.now().minus({ months: 1 }).toFormat(SERVER_DATE),
-  '1Y': DateTime.now().minus({ years: 1 }).toFormat(SERVER_DATE),
-  // '2Y': DateTime.now().minus({ years: 2 }).toFormat(SERVER_DATE),
-  // '5Y': DateTime.now().minus({ years: 5 }).toFormat(SERVER_DATE),
-  // '10Y': DateTime.now().minus({ years: 10 }).toFormat(SERVER_DATE),
-};
+export const CHART_TOOLTIP_DATE_OPTIONS = {
+  weekday: 'short',
+  month: 'short',
+  day: 'numeric',
+  year: 'numeric',
+} satisfies DateTimeFormatOptions;

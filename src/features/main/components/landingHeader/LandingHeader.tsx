@@ -20,6 +20,7 @@ export const LandingHeader = () => (
                 src={LandingPhone}
                 alt="LandingPhone"
                 fill
+                sizes=''
                 className="h-full w-full object-contain"
               />
             </div>

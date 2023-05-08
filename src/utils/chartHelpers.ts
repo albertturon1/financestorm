@@ -10,8 +10,8 @@ export const xAxisIntervalDivider = ({
   itemsLength: number;
 }) => {
   const sizes = [
-    { size: 375, interval: 2 },
-    { size: 586, interval: 3 },
+    { size: 375, interval: 3 },
+    { size: 586, interval: 4 },
     { size: 768, interval: 6 },
     { size: 1024, interval: 8 },
     { size: 1280, interval: 10 },

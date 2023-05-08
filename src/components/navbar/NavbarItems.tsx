@@ -1,33 +1,25 @@
-import { ChevronRight } from 'lucide-react';
-import Link from 'next/link';
+import dynamic from 'next/dynamic';
 
-const NavbarItems = ({ onItemClick }: { onItemClick?: () => void }) => (
+import SkeletonLoader from '@components/ui/SkeletonLoader';
+
+import NavbarLink from './NavbarLink';
+const NavbarWalletLink = dynamic(() => import('./NavbarWalletLink'), {
+  ssr: false,
+  loading: () => (
+    <div className="flex h-full w-20 items-center">
+      <SkeletonLoader className="h-6 w-24" />
+    </div>
+  ),
+});
+
+const NavbarItems = (props: { onClick?: () => void }) => (
   <div className="flex max-h-full flex-col sm:flex-row sm:gap-x-5 sm:text-[0.95rem] lg:gap-x-6">
     {/*homepage hidden on mobile */}
-    <Link
-      onClick={onItemClick}
-      href="/"
-      className="flex w-full grow items-center justify-between border-b border-border py-3 sm:hidden sm:h-full sm:border-none sm:py-0"
-    >
-      <p className="w-max">{'Homepage'}</p>
-      <ChevronRight size={25} strokeWidth={1} className="sm:hidden" />
-    </Link>
-    <Link
-      onClick={onItemClick}
-      href="/currencies"
-      className="flex w-full grow items-center justify-between border-b border-border py-3 sm:h-full sm:border-none sm:py-0"
-    >
-      <p className="w-max">{'Exchange rates'}</p>
-      <ChevronRight size={25} strokeWidth={1} className="sm:hidden" />
-    </Link>
-    <Link
-      onClick={onItemClick}
-      href="/multi-currencies"
-      className="flex w-full grow items-center justify-between border-b border-border py-3 sm:h-full sm:border-none sm:py-0"
-    >
-      <p className="w-max">{'Rates comparisons'}</p>
-      <ChevronRight size={25} strokeWidth={1} className="sm:hidden" />
-    </Link>
+    <NavbarLink {...props} title="Homepage" href="/" className="sm:hidden" />
+    <NavbarLink {...props} title="Exchange rates" href="/currencies" />
+    <NavbarLink {...props} title="Rates comparisons" href="/multi-currencies" />
+    {/* to prevent hydration error  */}
+    <NavbarWalletLink {...props} />
   </div>
 );
 

@@ -4,26 +4,21 @@ import { DateTime } from 'luxon';
 import PageMaxWidth from '@components/misc/PageMaxWidth';
 import PagePadding from '@components/misc/PagePadding';
 import PageTitle from '@components/misc/PageTitle';
-import { CHART_TIMESPANS } from '@constants/chart';
+import {
+  DEFAULT_BASE_CURRENCIES,
+  DEFAULT_QUOTE_CURRENCY,
+} from '@constants/currencies';
 import { SERVER_DATE } from '@constants/dateTime';
+import { DEFAULT_TIMESPAN, TIMESPANS } from '@constants/timespans';
 import MultiCurrenciesHydrated from '@features/multi-currencies/components/MultiCurrenciesHydrated';
 import MultiCurrenciesPairSelectors from '@features/multi-currencies/components/MultiCurrenciesPairSelectors';
-import { ChartTimespan } from '@interfaces/ICharts';
 import { Currency } from '@interfaces/ICurrency';
-import { prefetchDailyCurrencyRatesQuery } from '@src/api/CurrencyRateApi';
+import { prefetchDailyCurrencyRatesOverYearQuery } from '@src/api/CurrencyRateApi';
 import {
   DailyCurrencyRatesRequest,
   PrefetchDailyCurrencyRatesRequest,
 } from '@src/api/interfaces/ICurrencyRateApi';
-
-const DATA_TIMESPAN = '1Y' satisfies ChartTimespan;
-const DEFAULT_QUOTE_CURRENCY = 'PLN' satisfies Currency;
-const DEFAULT_BASE_CURRENCIES = [
-  'USD',
-  'EUR',
-  'GBP',
-  'CHF',
-] satisfies Currency[];
+import { baseCurrenciesFromQuery } from '@utils/misc';
 
 export type MultiCurrenciesPageProps = {
   quote?: Currency;
@@ -36,14 +31,8 @@ const MultiCurrenciesPage = async ({
   searchParams: MultiCurrenciesPageProps;
 }) => {
   const { quote, base } = searchParams;
-  const quoteCurrency = (quote ?? DEFAULT_QUOTE_CURRENCY) satisfies Currency;
-  const baseCurrenciesFromString =
-    base && base.length > 0
-      ? (base
-          .split(',')
-          .filter((c) => c !== quoteCurrency) //remove quote currency from results
-          .map((c) => c.trim()) as Currency[])
-      : undefined;
+  const quoteCurrency = quote ?? DEFAULT_QUOTE_CURRENCY;
+  const baseCurrenciesFromString = baseCurrenciesFromQuery(base, quoteCurrency);
 
   const baseCurrencies = (baseCurrenciesFromString ??
     DEFAULT_BASE_CURRENCIES) satisfies Currency[];
@@ -52,14 +41,14 @@ const MultiCurrenciesPage = async ({
     queryParams: {
       quote_currency: quoteCurrency,
       base_currencies: baseCurrencies,
-      start_date: CHART_TIMESPANS[DATA_TIMESPAN],
+      start_date: TIMESPANS[DEFAULT_TIMESPAN],
       end_date: DateTime.now().toFormat(SERVER_DATE),
     } satisfies DailyCurrencyRatesRequest,
     queryOptions: {
       staleTime: 1000 * 60 * 30, //30minutes
     },
   } satisfies PrefetchDailyCurrencyRatesRequest;
-  const hydratedState = await prefetchDailyCurrencyRatesQuery(QUERY_PROPS);
+  const hydratedState = await prefetchDailyCurrencyRatesOverYearQuery(QUERY_PROPS);
 
   return (
     <Hydrate state={hydratedState}>
@@ -77,7 +66,7 @@ const MultiCurrenciesPage = async ({
             <MultiCurrenciesHydrated
               queryProps={QUERY_PROPS}
               quoteCurrency={quoteCurrency}
-              dataTimespan={DATA_TIMESPAN}
+              dataTimespan={DEFAULT_TIMESPAN}
             />
           </div>
         </PagePadding>

@@ -10,7 +10,7 @@
 // eslint-disable-next-line arrow-body-style
 const UserFavouriteCurrencyRate = () => {
   // const quoteCurrency = 'PLN';
-  // const baseCurrency = 'USD';
+  // const baseCurrency = 'usd';
   // const { data, isError, isLoading } = useDailyCurrencyRatesQuery({
   //   quote_currency: quoteCurrency,
   //   base_currencies: [baseCurrency],

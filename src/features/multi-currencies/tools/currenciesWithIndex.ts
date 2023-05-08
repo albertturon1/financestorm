@@ -1,10 +1,5 @@
 import { CURRENCIES } from '@constants/currencies';
-import { Currency } from '@interfaces/ICurrency';
-
-export interface IndexCurrency {
-  name: Currency;
-  id: number;
-}
+import { Currency, IndexCurrency } from '@interfaces/ICurrency';
 
 const currenciesWithIndex = (currencies: readonly Currency[]) =>
   CURRENCIES.reduce((acc, item, index) => {

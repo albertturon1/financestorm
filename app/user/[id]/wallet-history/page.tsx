@@ -35,7 +35,7 @@ const WalletHistoryPage = async () => {
 
   return (
     <WorkInProgress />
-    // <div className={`${PADDING_TAILWIND} flex h-full w-full flex-col pb-4`}>
+    // <div className={` flex h-full w-full flex-col pb-4`}>
     //   <PageTitle className="pb-3">
     //     {'Wartość portfela walutowego w czasie'}
     //   </PageTitle>

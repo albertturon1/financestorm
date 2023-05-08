@@ -4,11 +4,11 @@ import { cn } from '@utils/misc';
 import NavbarItems from './NavbarItems';
 
 const NavbarItemsMobile = ({
-  onItemClick,
+  onClick,
   open,
 }: {
   open: boolean;
-  onItemClick: () => void;
+  onClick: () => void;
 }) => (
   <div
     className={cn(
@@ -21,7 +21,7 @@ const NavbarItemsMobile = ({
     <PagePadding>
       <div className="flex flex-col gap-y-2 py-10">
         <h1 className="font-semibold text-xl">{'Tools'}</h1>
-        <NavbarItems onItemClick={onItemClick} />
+        <NavbarItems onClick={onClick} />
       </div>
     </PagePadding>
   </div>

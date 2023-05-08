@@ -18,7 +18,7 @@ const User = async () => {
 
   return (
     <WorkInProgress />
-    // <div className={`${PADDING_TAILWIND} flex h-full w-full flex-col pb-6`}>
+    // <div className={`flex h-full w-full flex-col pb-6`}>
     //   {/*Header */}
     //   <div className="flex items-center">
     //     <PageTitle className="mr-3">{`Witaj, ${user.name}`}</PageTitle>

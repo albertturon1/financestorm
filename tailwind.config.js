@@ -4,8 +4,8 @@ const defaultTheme = require('tailwindcss/defaultTheme');
 module.exports = {
   content: [
     './app/**/*.{js,ts,jsx,tsx}',
-    './page/**/*.{js,ts,jsx,tsx}',
-    './src/**/*.{tsx,tsx,js,ts,jsx}',
+    './src/components/**/*.{js,ts,jsx,tsx}',
+    './src/features/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
     screens: {
@@ -34,8 +34,8 @@ module.exports = {
         10: '10px',
       },
       fontFamily: {
-        bebas_neue: ['Bebas Neue', 'sans-serif']
-      }
+        bebas_neue: ['Bebas Neue', 'sans-serif'],
+      },
     },
   },
 };

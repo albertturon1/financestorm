@@ -36,11 +36,10 @@ export type ExchangeRateTimeseriesRatesArray = {
 
 export type ExchangeRateTimeseries = Omit<
   ExchangeRateTimeseriesResponse,
-  'base' | 'motd' | 'success'
+  'base' | 'motd' | 'success' | 'timeseries'
 > & {
   quote_currency: Currency;
   base_currencies: Currency[];
-  rates_array: ExchangeRateTimeseriesRatesArray[];
 };
 
 export interface ExchangeRateTimeseriesNormalized {

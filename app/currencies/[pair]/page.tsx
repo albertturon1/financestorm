@@ -4,32 +4,30 @@ import dynamic from 'next/dynamic';
 
 import PageMaxWidth from '@components/misc/PageMaxWidth';
 import PagePadding from '@components/misc/PagePadding';
-import { CHART_TIMESPANS } from '@constants/chart';
 import { SERVER_DATE } from '@constants/dateTime';
+import { DEFAULT_TIMESPAN, TIMESPANS } from '@constants/timespans';
 import CurrenciesPairHydrated from '@features/currencies-pair/components/CurrenciesPairHydrated';
-const CurrenciesPairSelectors = dynamic(
-  () => import('@features/currencies-pair/components/CurrenciesPairSelectors'),
-);
-import { ChartTimespan } from '@interfaces/ICharts';
 import { Currency, CurrenciesPair } from '@interfaces/ICurrency';
-import { prefetchDailyCurrencyRatesQuery } from '@src/api/CurrencyRateApi';
+import { prefetchDailyCurrencyRatesOverYearQuery } from '@src/api/CurrencyRateApi';
 import {
   DailyCurrencyRatesRequest,
   PrefetchDailyCurrencyRatesRequest,
 } from '@src/api/interfaces/ICurrencyRateApi';
 
+const CurrenciesPairSelectors = dynamic(
+  () => import('@features/currencies-pair/components/CurrenciesPairSelectors'),
+);
+
 export type CurrenciesPairPageProps = {
   pair: CurrenciesPair;
 };
-
-const CURRENCIES_PAIR_DEFAULT_TIMESPAN = '1Y' satisfies ChartTimespan;
 
 const CurrenciesPairPage = async ({
   params,
 }: {
   params: CurrenciesPairPageProps;
 }) => {
-  const [baseCurrency, quoteCurrency] = (params.pair as string).split('-') as [
+  const [baseCurrency, quoteCurrency] = params.pair.split('-') as [
     Currency,
     Currency,
   ];
@@ -38,7 +36,7 @@ const CurrenciesPairPage = async ({
     queryParams: {
       quote_currency: quoteCurrency,
       base_currencies: [baseCurrency],
-      start_date: CHART_TIMESPANS[CURRENCIES_PAIR_DEFAULT_TIMESPAN],
+      start_date: TIMESPANS[DEFAULT_TIMESPAN],
       end_date: DateTime.now().toFormat(SERVER_DATE),
     } satisfies DailyCurrencyRatesRequest,
     queryOptions: {
@@ -46,7 +44,9 @@ const CurrenciesPairPage = async ({
     },
   } satisfies PrefetchDailyCurrencyRatesRequest;
 
-  const hydratedState = await prefetchDailyCurrencyRatesQuery(QUERY_PROPS);
+  const hydratedState = await prefetchDailyCurrencyRatesOverYearQuery(
+    QUERY_PROPS,
+  );
 
   return (
     <Hydrate state={hydratedState}>
@@ -57,10 +57,10 @@ const CurrenciesPairPage = async ({
               baseCurrency={baseCurrency}
               quoteCurrency={quoteCurrency}
             />
-            <CurrenciesPairHydrated
+          <CurrenciesPairHydrated
               quoteCurrency={quoteCurrency}
               baseCurrency={baseCurrency}
-              defaultChartTimespan={CURRENCIES_PAIR_DEFAULT_TIMESPAN}
+              defaultChartTimespan={DEFAULT_TIMESPAN}
               queryProps={QUERY_PROPS}
             />
           </div>
