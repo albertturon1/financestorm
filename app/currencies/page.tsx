@@ -5,7 +5,7 @@ import PagePadding from '@components/misc/PagePadding';
 import { CURRENCIES, DEFAULT_QUOTE_CURRENCY } from '@constants/currencies';
 import CurrenciesHydrated from '@features/currencies/components/CurrenciesHydrated';
 import { Currency } from '@interfaces/ICurrency';
-import { prefetchTodayCurrencyRatesQuery } from '@src/api/CurrencyRateApi';
+import { prefetchGetTodayCurrencyRatesQuery } from '@src/api/CurrencyRateApi';
 import {
   MultiCurrenciesRate,
   PrefetchTodayCurrencyRatesRequest,
@@ -32,7 +32,7 @@ const CurrenciesPage = async ({
     },
   } satisfies PrefetchTodayCurrencyRatesRequest;
 
-  const hydratedState = await prefetchTodayCurrencyRatesQuery(QUERY_PROPS);
+  const hydratedState = await prefetchGetTodayCurrencyRatesQuery(QUERY_PROPS);
 
   return (
     <Hydrate state={hydratedState}>

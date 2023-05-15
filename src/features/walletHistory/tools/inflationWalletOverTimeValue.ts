@@ -1,12 +1,14 @@
 import { DateTime } from 'luxon';
 
-import { LabelValue } from '@interfaces/ICharts';
+import { DateValue } from '@interfaces/ICharts';
+import { OECDResponse } from '@src/api/interfaces/IOECDApi';
 import { cutNumber } from '@utils/misc';
+import normalizeOECDData from '@utils/normalizeOECDData';
 
 import monthlyCPIData from './monthlyCPIData';
 import { WalletValueOverTime } from './walletValueOverTime';
 
-export interface InflationWalletOverTimeValue extends LabelValue {
+export interface InflationWalletOverTimeValue extends DateValue {
   cumulativeInflation: number;
   monthlyInflation: number;
   inflationLoss: number;
@@ -24,8 +26,9 @@ interface MonthlyInflation {
 const inflationFromCPI = (currentMonthCPI: number, pastMonthCPI: number) =>
   ((currentMonthCPI - pastMonthCPI) / pastMonthCPI) * 100;
 
-const inflationSumPerMonth = (monthlyCPI: LabelValue[]) => {
-  const data: Record<string, MonthlyInflation> = {};
+export const inflationSumPerMonth = (monthlyCPIValue: DateValue[]) => {
+  const monthlyCPI = [...monthlyCPIValue].reverse();
+  const data: Record<string, MonthlyInflation | undefined> = {};
 
   for (let i = 0; i < monthlyCPI.length - 1; i++) {
     const { date: currentLoopMonth, value: currentLoopCPIValue } =
@@ -52,20 +55,13 @@ const inflationSumPerMonth = (monthlyCPI: LabelValue[]) => {
   return data;
 };
 
-const inflationWalletOverTimeValue = async (
+const inflationWalletOverTimeValue = (
   dailyWalletValues: WalletValueOverTime,
+  monthlyCPIValues: OECDResponse | undefined,
 ) => {
-  const [year, month] = (
-    DateTime.fromISO(dailyWalletValues.startDate)
-      .minus({ months: 1 })
-      .toISODate() as string
-  ).split('-');
-  const startPeriod = `${year}-${month}-01`; //data from previous month of start date is needed for calculations
+  if (!monthlyCPIValues) return;
+  const monthlyCPINormalize = normalizeOECDData(monthlyCPIValues);
 
-  const monthlyCPINormalize = await monthlyCPIData({
-    startPeriod,
-    endPeriod: dailyWalletValues.endDate,
-  });
   const monthlyCPI = [...monthlyCPINormalize].reverse(); //reverse to start from most recent month
   if (!monthlyCPI.length) return [];
 

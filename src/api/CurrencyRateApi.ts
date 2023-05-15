@@ -8,7 +8,6 @@ import {
   ExchangeRateTimeseriesResponse,
 } from '@interfaces/models/IExchangerate';
 import api from '@utils/api';
-import { convertLastestRatesToQuoteCurrency } from '@utils/currencyRateApiHelpers';
 import getQueryClient from '@utils/getQueryClient';
 import { genQueryString } from '@utils/misc';
 
@@ -22,7 +21,7 @@ import {
 import { CURRENCY_RATE_KEYS } from './queryKeys/CurrencyRateKeys';
 
 //max range is 1 past year
-export const dailyCurrencyRatesQuery = async ({
+export const getDailyCurrencyRatesQuery = async ({
   base_currencies,
   start_date,
   end_date,
@@ -39,14 +38,14 @@ export const dailyCurrencyRatesQuery = async ({
   return await api.get<ExchangeRateTimeseriesResponse>(`${url}${params}`);
 };
 
-export const prefetchDailyCurrencyRatesQuery = async ({
+export const prefetchGetDailyCurrencyRatesQuery = async ({
   queryParams,
   queryOptions,
 }: PrefetchDailyCurrencyRatesRequest) => {
   const queryClient = getQueryClient();
   await queryClient.prefetchQuery({
     queryKey: CURRENCY_RATE_KEYS.dailyCurrencyRates(queryParams),
-    queryFn: () => dailyCurrencyRatesQuery(queryParams),
+    queryFn: () => getDailyCurrencyRatesQuery(queryParams),
     ...queryOptions,
   });
 
@@ -54,7 +53,7 @@ export const prefetchDailyCurrencyRatesQuery = async ({
 };
 
 //max range is database
-export const dailyCurrencyRatesOverYearQuery = async ({
+export const getDailyCurrencyRatesOverYearQuery = async ({
   base_currencies,
   quote_currency,
   start_date = TIMESPANS[DEFAULT_TIMESPAN],
@@ -88,7 +87,7 @@ export const dailyCurrencyRatesOverYearQuery = async ({
 
   const api_responses = await Promise.all(
     yearsPairs.map(async (dates) => {
-      const data = await dailyCurrencyRatesQuery({
+      const data = await getDailyCurrencyRatesQuery({
         ...dates,
         base_currencies,
         quote_currency,
@@ -115,21 +114,23 @@ export const dailyCurrencyRatesOverYearQuery = async ({
   }, data as ExchangeRateTimeseriesResponse);
 };
 
-export const prefetchDailyCurrencyRatesOverYearQuery = async ({
+export const prefetchGetDailyCurrencyRatesOverYearQuery = async ({
   queryParams,
   queryOptions,
 }: PrefetchDailyCurrencyRatesRequest) => {
   const queryClient = getQueryClient();
   await queryClient.prefetchQuery({
     queryKey: CURRENCY_RATE_KEYS.dailyCurrencyRatesOverYear(queryParams),
-    queryFn: () => dailyCurrencyRatesOverYearQuery(queryParams),
+    queryFn: () => getDailyCurrencyRatesOverYearQuery(queryParams),
     ...queryOptions,
   });
 
   return dehydrate(queryClient);
 };
 
-export const todayCurrencyRatesQuery = async (props: MultiCurrenciesRate) => {
+export const getTodayCurrencyRatesQuery = async (
+  props: MultiCurrenciesRate,
+) => {
   const url = `${process.env.NEXT_PUBLIC_EXCHANGERATE_URL ?? ''}/latest`;
   const params = genQueryString({
     base: props.quote_currency,
@@ -139,31 +140,16 @@ export const todayCurrencyRatesQuery = async (props: MultiCurrenciesRate) => {
   return await api.get<ExchangeRateLatestResponse>(`${url}?${params}`);
 };
 
-export const prefetchTodayCurrencyRatesQuery = async ({
+export const prefetchGetTodayCurrencyRatesQuery = async ({
   queryParams,
   queryOptions,
 }: PrefetchTodayCurrencyRatesRequest) => {
   const queryClient = getQueryClient();
   await queryClient.prefetchQuery({
     queryKey: CURRENCY_RATE_KEYS.todayCurrencyRates(queryParams),
-    queryFn: () => todayCurrencyRatesQuery(queryParams),
+    queryFn: () => getTodayCurrencyRatesQuery(queryParams),
     ...queryOptions,
   });
 
   return dehydrate(queryClient);
-};
-
-//TODO: delete
-export const getTodayCurrencyRatesQuery = async (
-  props: MultiCurrenciesRate,
-) => {
-  const url = `${process.env.NEXT_PUBLIC_EXCHANGERATE_URL ?? ''}/latest?`;
-  const params = genQueryString({
-    base: props.quote_currency,
-    symbols: props.base_currencies?.join(',')?.toUpperCase(), //comma separated values
-  });
-
-  const data = await api.get<ExchangeRateLatestResponse>(`${url}${params}`);
-  if (!data) return;
-  return convertLastestRatesToQuoteCurrency(data);
 };

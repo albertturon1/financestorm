@@ -1,3 +1,5 @@
+import { PrefetchRequest } from '@interfaces/IApi';
+
 interface HeaderSender {
   id: string;
   name: string;
@@ -71,7 +73,7 @@ export interface OECDResponse {
   structure: Structure;
 }
 
-export interface MonthlyInflationRatesRequest {
+export interface MonthlyCPIRequest {
   startPeriod: string;
   endPeriod: string;
 }

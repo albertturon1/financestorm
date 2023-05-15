@@ -4,10 +4,10 @@ import { ValueType } from 'tailwindcss/types/config';
 
 import TooltipWrapper from '@components/tooltip/TooltipWrapper';
 import { CHART_TOOLTIP_DATE_OPTIONS } from '@constants/chart';
-import { CustomTooltipProps, LabelValue } from '@interfaces/ICharts';
+import { CustomTooltipProps, DateValue } from '@interfaces/ICharts';
 import { Currency } from '@interfaces/ICurrency';
 
-type Payload1 = [CustomTooltipProps<LabelValue>];
+type Payload1 = [CustomTooltipProps<DateValue>];
 
 const CurrencyRatePairChartTooltip = ({
   active,

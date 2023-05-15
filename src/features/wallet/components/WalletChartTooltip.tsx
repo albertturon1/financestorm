@@ -1,14 +1,29 @@
-import { DateTime } from 'luxon';
 import { TooltipProps } from 'recharts';
 
-import FlagCountryCode from '@components/misc/FlagCountryCode';
 import TooltipRowWrapper from '@components/tooltip/TooltipRowWrapper';
 import TooltipWrapper from '@components/tooltip/TooltipWrapper';
-import { CHART_THEME } from '@constants/chart';
+import { CHART_TOOLTIP_DATE_OPTIONS } from '@constants/chart';
 import { CustomTooltipProps } from '@interfaces/ICharts';
-import { NormalizedCurrencyExchangeRate } from '@interfaces/models/IExchangerate';
+import { Currency } from '@interfaces/ICurrency';
+import { CurrenciesRates } from '@interfaces/models/IExchangerate';
+import { WalletCurrency } from '@src/zustand/walletStore';
+import { cutNumber } from '@utils/misc';
 
-type TooltipPayload = CustomTooltipProps<NormalizedCurrencyExchangeRate>[];
+type TooltipPayload = CustomTooltipProps<{
+  baseCurrenciesInfo: {
+    convertedPercentage: number;
+    currency: Currency;
+    rate: number;
+    amount: number;
+    convertedToQuoteAmount: number;
+  }[];
+  valueAfterInflation: number;
+  monthCumulativeInflation: number | undefined;
+  quoteCurrencyInfo: WalletCurrency;
+  value: number;
+  date: string;
+  rates: CurrenciesRates;
+}>[];
 
 const WalletChartTooltip = ({
   active,
@@ -17,49 +32,46 @@ const WalletChartTooltip = ({
   if (!active || !payload?.length) return null;
   const data = payload as TooltipPayload;
 
+  const date = new Date(data[0].payload.date);
+  const localDateString = date.toLocaleDateString(
+    'en-US',
+    CHART_TOOLTIP_DATE_OPTIONS,
+  );
+
+  const { quoteCurrencyInfo } = data[0].payload;
+  const { name: quoteCurrency } = quoteCurrencyInfo;
+  const { monthCumulativeInflation } = data[0].payload;
+  const [{ value }] = data;
+  const postInflationValue = data[1].value;
+  const inflationLoss = cutNumber(value - postInflationValue);
+
   return (
-    <TooltipWrapper className="px-0 pb-0">
-      <div className="flex flex-col px-5">
-        <p>{`Dzień: ${DateTime.fromISO(data[0].payload.date).toFormat(
-          'dd MMM, yyyy',
-          { locale: 'pl' },
-        )}`}</p>{' '}
-        {/*TODO: january only - sortowanie danych jest zjebane (są odrwotnie)*/}
-        <div className="flex items-center justify-between gap-x-3 pb-3">
-          <p>{'Waluta kwotowana: '}</p>
-          <p>{data[0].payload.quote_currency}</p>
-        </div>
-      </div>
-      {data
-        .sort((a, b) => (a.value > b.value ? -1 : 1))
-        .map(({ payload: values }, index) => (
-          <TooltipRowWrapper
-            key={`${values.base_currency}${values.quote_currency}`}
-            className={`flex justify-between gap-x-3 px-5 py-1.5 ${
-              index % 2 === 0 ? 'bg-gray-700' : ''
-            }`}
-          >
-            <div
-              className="h-4 w-4"
-              style={{
-                backgroundColor:
-                  CHART_THEME[
-                    data.findIndex(
-                      (c) => c.payload.base_currency === values.base_currency,
-                    ) % CHART_THEME.length
-                  ],
-              }}
-            />
-            <div className="flex flex-1 justify-between">
-              <FlagCountryCode
-                reverse
-                code={values.base_currency}
-                boldName={false}
-              />
-              <p>{values.value.toFixed(values.value < 1 ? 5 : 3)}</p>
-            </div>
-          </TooltipRowWrapper>
-        ))}
+    <TooltipWrapper className="gap-y-2">
+      <p className="font-normal">{localDateString}</p>
+      <TooltipRowWrapper>
+        <p>{'Value:'}</p>
+        <p className='font-medium'>{`${value} ${quoteCurrency.toUpperCase()}`}</p>
+      </TooltipRowWrapper>
+      {monthCumulativeInflation && (
+        <TooltipRowWrapper>
+          <p>{'Post-inflation value:'}</p>
+          <p className='font-medium'>{`${postInflationValue} ${quoteCurrency.toUpperCase()}`}</p>
+        </TooltipRowWrapper>
+      )}
+      <TooltipRowWrapper>
+        <p>{'Accumulated inflation:'}</p>
+        <p className='font-medium'>
+          {monthCumulativeInflation
+            ? `${monthCumulativeInflation}%`
+            : 'No data'}
+        </p>
+      </TooltipRowWrapper>
+      {monthCumulativeInflation && (
+        <TooltipRowWrapper>
+          <p>{'Inflation loss:'}</p>
+          <p className='font-medium'>{`${inflationLoss} ${quoteCurrency.toUpperCase()}`}</p>
+        </TooltipRowWrapper>
+      )}
     </TooltipWrapper>
   );
 };

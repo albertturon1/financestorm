@@ -8,13 +8,16 @@ import {
   useCallback,
 } from 'react';
 
+import { DateTime } from 'luxon';
 import dynamic from 'next/dynamic';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 import TimespanPickerLoader from '@components/misc/timespanPicker/TimespanPickerLoader';
+import { SERVER_DATE, YEAR_MONTH_FORMAT } from '@constants/dateTime';
 import { TIMESPANS } from '@constants/timespans';
 import { Timespan } from '@interfaces/ICharts';
 import { useDailyCurrencyRatesOverYearQuery } from '@src/api/client/CurrenctyRateClientApi';
+import { useMonthlyCPIQuery } from '@src/api/client/OECDClientApi';
 import { PrefetchDailyCurrencyRatesRequest } from '@src/api/interfaces/ICurrencyRateApi';
 import { WalletCurrency, useWalletActions } from '@src/zustand/walletStore';
 import { createQueryString } from '@utils/misc';
@@ -52,10 +55,18 @@ const WalletHydrated = ({
 }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
-
   const { patchWalletTimespan } = useWalletActions();
   const [timespan, setTimespan] = useState<Timespan>(props.timespan); //local state to speed up UI updates
   const [isPending, startCurrenciesTransition] = useTransition();
+
+  const startYearMonth = DateTime.fromISO(TIMESPANS[timespan])
+    .minus({ months: 1 })
+    .toFormat(YEAR_MONTH_FORMAT);
+
+  const monthlyCPIQuery = useMonthlyCPIQuery({
+    startPeriod: `${startYearMonth}-01`, //fetching extra month
+    endPeriod: DateTime.now().toFormat(SERVER_DATE),
+  });
 
   useEffect(() => {
     setTimespan(props.timespan);
@@ -66,7 +77,7 @@ const WalletHydrated = ({
     [props.walletBaseCurrencies],
   );
 
-  const query = useDailyCurrencyRatesOverYearQuery({
+  const dailyCurrencyRatesOverYearQuery = useDailyCurrencyRatesOverYearQuery({
     ...queryProps,
     queryParams: {
       ...queryProps.queryParams,
@@ -104,7 +115,11 @@ const WalletHydrated = ({
         startCurrenciesTransition={startCurrenciesTransition}
       />
       {!isPending ? (
-        <WalletChart {...query} {...props} />
+        <WalletChart
+          dailyCurrencyRatesOverYearQuery={dailyCurrencyRatesOverYearQuery}
+          monthlyCPIQuery={monthlyCPIQuery}
+          {...props}
+        />
       ) : (
         <WalletChartLoader />
       )}

@@ -21,7 +21,7 @@ const convertDayRates = (day: CurrenciesRates, quoteCurrency: Currency) =>
   }, {} as CurrenciesRates);
 
 //rates object to array with infersions of daily rates
-export const dailyCurrencyRatesToArray = (
+export const convertDailyCurrencyRatesToArray = (
   rates: ExchangeRateTimeseriesResponseRates,
   quoteCurrency: Currency,
 ) =>

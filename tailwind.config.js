@@ -15,6 +15,7 @@ module.exports = {
     extend: {
       colors: {
         pale: 'var(--pale)',
+        slate: 'var(--slate)',
         dark_pale: 'var(--dark_pale)',
         electric_blue: 'var(--electric_blue)',
         border: 'var(--border)',

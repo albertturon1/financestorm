@@ -1,12 +1,13 @@
-import { LabelValue } from '@interfaces/ICharts';
-import { MonthlyInflationRatesRequest } from '@src/api/interfaces/IOECDApi';
 import { getMonthlyCPI } from '@src/api/OECDApi';
+
+import { DateValue } from '@interfaces/ICharts';
+import { MonthlyCPIRequest } from '@src/api/interfaces/IOECDApi';
 import normalizeOECDData from '@utils/normalizeOECDData';
 
 const monthlyCPIData = async ({
   startPeriod,
   endPeriod,
-}: MonthlyInflationRatesRequest): Promise<LabelValue[]> => {
+}: MonthlyCPIRequest): Promise<DateValue[]> => {
   const data = await getMonthlyCPI({
     startPeriod,
     endPeriod,

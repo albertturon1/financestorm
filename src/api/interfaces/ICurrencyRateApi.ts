@@ -14,11 +14,10 @@ export interface CurrencyRateRange {
   end_date: string;
 }
 
-export type DailyCurrencyRatesRequest = CurrencyRateRange &
-  MultiCurrenciesRate;
+export type DailyCurrencyRatesRequest = CurrencyRateRange & MultiCurrenciesRate;
 
 export type PrefetchTodayCurrencyRatesRequest =
   PrefetchRequest<MultiCurrenciesRate>;
 
-  export type PrefetchDailyCurrencyRatesRequest =
+export type PrefetchDailyCurrencyRatesRequest =
   PrefetchRequest<DailyCurrencyRatesRequest>;

@@ -15,7 +15,7 @@ import { DEFAULT_TIMESPAN, TIMESPANS } from '@constants/timespans';
 import WalletHydrated from '@features/wallet/components/WalletHydrated';
 import { Timespan } from '@interfaces/ICharts';
 import { Currency } from '@interfaces/ICurrency';
-import { prefetchDailyCurrencyRatesOverYearQuery } from '@src/api/CurrencyRateApi';
+import { prefetchGetDailyCurrencyRatesOverYearQuery } from '@src/api/CurrencyRateApi';
 import {
   DailyCurrencyRatesRequest,
   PrefetchDailyCurrencyRatesRequest,
@@ -90,7 +90,7 @@ const WalletPage = async ({
     },
   } satisfies PrefetchDailyCurrencyRatesRequest;
 
-  const hydratedState = await prefetchDailyCurrencyRatesOverYearQuery(
+  const hydratedState = await prefetchGetDailyCurrencyRatesOverYearQuery(
     QUERY_PROPS,
   );
 

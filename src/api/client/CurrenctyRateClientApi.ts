@@ -3,9 +3,9 @@
 import { useQuery } from '@tanstack/react-query';
 
 import {
-  dailyCurrencyRatesOverYearQuery,
-  dailyCurrencyRatesQuery,
-  todayCurrencyRatesQuery,
+  getDailyCurrencyRatesOverYearQuery,
+  getDailyCurrencyRatesQuery,
+  getTodayCurrencyRatesQuery,
 } from '../CurrencyRateApi';
 import {
   PrefetchDailyCurrencyRatesRequest,
@@ -19,7 +19,7 @@ export const useTodayCurrencyRatesQuery = ({
 }: PrefetchTodayCurrencyRatesRequest) =>
   useQuery({
     queryKey: CURRENCY_RATE_KEYS.todayCurrencyRates(queryParams),
-    queryFn: () => todayCurrencyRatesQuery(queryParams),
+    queryFn: () => getTodayCurrencyRatesQuery(queryParams),
     ...queryOptions,
   });
 
@@ -29,7 +29,7 @@ export const useDailyCurrencyRatesQuery = ({
 }: PrefetchDailyCurrencyRatesRequest) =>
   useQuery({
     queryKey: CURRENCY_RATE_KEYS.dailyCurrencyRates(queryParams),
-    queryFn: () => dailyCurrencyRatesQuery(queryParams),
+    queryFn: () => getDailyCurrencyRatesQuery(queryParams),
     ...queryOptions,
   });
 
@@ -39,6 +39,6 @@ export const useDailyCurrencyRatesOverYearQuery = ({
 }: PrefetchDailyCurrencyRatesRequest) =>
   useQuery({
     queryKey: CURRENCY_RATE_KEYS.dailyCurrencyRatesOverYear(queryParams),
-    queryFn: () => dailyCurrencyRatesOverYearQuery(queryParams),
+    queryFn: () => getDailyCurrencyRatesOverYearQuery(queryParams),
     ...queryOptions,
   });

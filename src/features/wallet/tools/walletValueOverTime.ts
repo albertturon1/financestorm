@@ -1,14 +1,10 @@
-// import { DateTime } from 'luxon';
-
-// import { SERVER_DATE } from '@constants/dateTime';
-// import userCurrenciesAmount from '@features/user/tools/userCurrenciesAmount';
 // import { WalletBaseCurrencyValue, WalletDay } from '@interfaces/ICharts';
 // import { Currency } from '@interfaces/ICurrency';
+// import { ExchangeRateTimeseriesResponseRates } from '@interfaces/models/IExchangerate';
 // import { UserCurrency } from '@interfaces/models/IUser';
 // import { CurrencyRatePair } from '@src/api/interfaces/ICurrencyRateApi';
-// import { cutNumber } from '@utils/misc';
-// import { ExchangeRateTimeseriesResponseRates } from '@interfaces/models/IExchangerate';
 // import { WalletCurrency } from '@src/zustand/walletStore';
+// import { cutNumber } from '@utils/misc';
 
 // export type WalletValueOverTimeProps = Omit<
 //   CurrencyRatePair,
@@ -27,7 +23,7 @@
 //   values: WalletDay[];
 // }
 
-// const walletValueOverTime = async ({
+// const walletValueOverTime = ({
 //   data,
 //   walletQuoteCurrency,
 //   walletBaseCurrencies,
@@ -36,8 +32,6 @@
 //   walletQuoteCurrency: WalletCurrency;
 //   walletBaseCurrencies: WalletCurrency[];
 // }) => {
-
-
 //   const values = currencyRates?.rates_array.reduce((acc, day) => {
 //     let dayValue = currencyAmounts[quote_currency];
 //     const baseCurrencies: WalletBaseCurrencyValue[] = Object.entries(

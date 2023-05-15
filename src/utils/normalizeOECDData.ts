@@ -1,7 +1,10 @@
-import { LabelValue } from '@interfaces/ICharts';
+import { DateValue } from '@interfaces/ICharts';
 import { OECDResponse } from '@src/api/interfaces/IOECDApi';
 
-const normalizeOECDData = (data: OECDResponse): LabelValue[] => {
+function normalizeOECDData(data: undefined): undefined;
+function normalizeOECDData(data: OECDResponse): DateValue[];
+function normalizeOECDData(data: OECDResponse | undefined) {
+  if (!data) return;
   const [{ values }] = data.structure.dimensions.observation.filter(
     (e) => e.id === 'TIME_PERIOD',
   );
@@ -14,6 +17,6 @@ const normalizeOECDData = (data: OECDResponse): LabelValue[] => {
     date: label.id,
     value: series[index],
   }));
-};
+}
 
 export default normalizeOECDData;

@@ -1,11 +1,11 @@
 import { Line, LineChart, ResponsiveContainer, YAxis } from 'recharts';
 
-import { LabelValue } from '@interfaces/ICharts';
+import { DateValue } from '@interfaces/ICharts';
 import { customLineChartYDomain } from '@utils/chartHelpers';
 
 import { chartColor } from './CurrencyRatesListItem';
 
-const CurrencyRatesListItemChart = ({ rates }: { rates: LabelValue[] }) => {
+const CurrencyRatesListItemChart = ({ rates }: { rates: DateValue[] }) => {
   const values = rates.map((r) => r.value);
   const yDomain = customLineChartYDomain(values, 1);
 
