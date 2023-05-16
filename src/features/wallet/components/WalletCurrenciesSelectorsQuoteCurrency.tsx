@@ -56,29 +56,47 @@ const WalletCurrenciesSelectorsQuoteCurrency = ({
         }}
         onCurrencyChange={(newQuoteCurrency) => {
           //searching if newQuoteCurrency is on the list of base currencies
-          const baseCurrencyFutureQuote = walletBaseCurrencies.find(
+          const possibleBaseCurrencyFutureQuote = walletBaseCurrencies.find(
             (c) => c.name === newQuoteCurrency,
           );
 
-          const newQuoteCurrencyParam = `${toQueryString(
+          const params = new URLSearchParams(
+            searchParams as unknown as URLSearchParams,
+          );
+          //setting new quote
+          params.set(
             'quote',
             `${substituePotentialNaNToZero(
               walletQuoteCurrency.amount,
             )}${newQuoteCurrency}`,
-          )}`;
+          );
 
-          if (baseCurrencyFutureQuote) {
-            patchWalletQuoteCurrency(baseCurrencyFutureQuote);
-            deleteWalletBaseCurrency(baseCurrencyFutureQuote.name); //delete currency from baseCurrencies
-          } else
-            patchWalletQuoteCurrency({
-              name: newQuoteCurrency,
-              amount: 1,
+          if (possibleBaseCurrencyFutureQuote) {
+            const newBaseCurrencies = walletBaseCurrencies
+              .filter((c) => c.name !== newQuoteCurrency) //removal of newQuoteCurrency from baseCurrencies
+              .map((c) => `${walletQuoteCurrency.amount}${c.name}`)
+              .join(',');
+
+            params.set('base', newBaseCurrencies);
+            const trimParams = params.toString().replace(/%2C/g, ',');
+
+            void router.replace(`/wallet?${trimParams}`, {
+              forceOptimisticNavigation: true,
             });
 
-          void router.replace(`/wallet?${newQuoteCurrencyParam}`, {
-            forceOptimisticNavigation: true,
-          });
+            patchWalletQuoteCurrency(possibleBaseCurrencyFutureQuote);
+            deleteWalletBaseCurrency(possibleBaseCurrencyFutureQuote.name); //delete currency from baseCurrencies
+          } else {
+            const trimParams = params.toString().replace(/%2C/g, ',');
+            void router.replace(`/wallet?${trimParams}`, {
+              forceOptimisticNavigation: true,
+            });
+
+            patchWalletQuoteCurrency({
+              name: newQuoteCurrency,
+              amount: walletQuoteCurrency.amount,
+            });
+          }
         }}
       />
     </div>
