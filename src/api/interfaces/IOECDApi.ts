@@ -1,4 +1,4 @@
-import { PrefetchRequest } from '@interfaces/IApi';
+import { OECDCountryCode } from '@interfaces/ICurrency';
 
 interface HeaderSender {
   id: string;
@@ -76,4 +76,5 @@ export interface OECDResponse {
 export interface MonthlyCPIRequest {
   startPeriod: string;
   endPeriod: string;
+  country: OECDCountryCode;
 }

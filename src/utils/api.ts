@@ -6,6 +6,7 @@ const request = async <T>(url: string, config?: RequestInit) => {
     return response.json() as Promise<T>;
   } catch (err) {
     console.warn(err);
+    return false; //reacty query doesn't allow for returning undefined
   }
 };
 

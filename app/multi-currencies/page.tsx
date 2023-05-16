@@ -18,7 +18,7 @@ import {
   DailyCurrencyRatesRequest,
   PrefetchDailyCurrencyRatesRequest,
 } from '@src/api/interfaces/ICurrencyRateApi';
-import { baseCurrenciesFromQuery } from '@utils/misc';
+import { baseCurrenciesWithAmountFromQuery } from '@utils/misc';
 
 export type MultiCurrenciesPageProps = {
   quote?: Currency;
@@ -32,7 +32,7 @@ const MultiCurrenciesPage = async ({
 }) => {
   const { quote, base } = searchParams;
   const quoteCurrency = quote ?? DEFAULT_QUOTE_CURRENCY;
-  const baseCurrenciesFromString = baseCurrenciesFromQuery(base, quoteCurrency);
+  const baseCurrenciesFromString = baseCurrenciesWithAmountFromQuery(base, quoteCurrency);
 
   const baseCurrencies = (baseCurrenciesFromString ??
     DEFAULT_BASE_CURRENCIES) satisfies Currency[];

@@ -4,7 +4,14 @@ import { OECDResponse } from '@src/api/interfaces/IOECDApi';
 function normalizeOECDData(data: undefined): undefined;
 function normalizeOECDData(data: OECDResponse): DateValue[];
 function normalizeOECDData(data: OECDResponse | undefined) {
-  if (!data) return;
+  if (
+    !data ||
+    data.structure.dimensions.observation.length === 0 ||
+    data.structure.dimensions.observation.filter((e) => e.id === 'TIME_PERIOD')
+      .length === 0
+  )
+    return;
+
   const [{ values }] = data.structure.dimensions.observation.filter(
     (e) => e.id === 'TIME_PERIOD',
   );

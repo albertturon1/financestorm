@@ -21,7 +21,7 @@ import {
   PrefetchDailyCurrencyRatesRequest,
 } from '@src/api/interfaces/ICurrencyRateApi';
 import { WalletCurrency } from '@src/zustand/walletStore';
-import { baseCurrenciesFromQuery } from '@utils/misc';
+import { baseCurrenciesWithAmountFromQuery } from '@utils/misc';
 
 function walletCurrencyFromString(param: string | undefined) {
   if (!param) return;
@@ -56,7 +56,7 @@ const WalletPage = async ({
     amount: DEFAULT_CURRENCY_AMOUNT,
   }) satisfies WalletCurrency;
 
-  const baseCurrenciesFromString = baseCurrenciesFromQuery(
+  const baseCurrenciesFromString = baseCurrenciesWithAmountFromQuery(
     base,
     walletQuoteCurrency.name,
   );

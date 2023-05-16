@@ -13,6 +13,7 @@ import dynamic from 'next/dynamic';
 import { useRouter, useSearchParams } from 'next/navigation';
 
 import TimespanPickerLoader from '@components/misc/timespanPicker/TimespanPickerLoader';
+import { OECD_COUNTRIES } from '@constants/currencies';
 import { SERVER_DATE, YEAR_MONTH_FORMAT } from '@constants/dateTime';
 import { TIMESPANS } from '@constants/timespans';
 import { Timespan } from '@interfaces/ICharts';
@@ -66,6 +67,7 @@ const WalletHydrated = ({
   const monthlyCPIQuery = useMonthlyCPIQuery({
     startPeriod: `${startYearMonth}-01`, //fetching extra month
     endPeriod: DateTime.now().toFormat(SERVER_DATE),
+    country: OECD_COUNTRIES[props.walletQuoteCurrency.name],
   });
 
   useEffect(() => {

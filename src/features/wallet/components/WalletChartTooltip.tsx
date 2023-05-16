@@ -4,26 +4,16 @@ import TooltipRowWrapper from '@components/tooltip/TooltipRowWrapper';
 import TooltipWrapper from '@components/tooltip/TooltipWrapper';
 import { CHART_TOOLTIP_DATE_OPTIONS } from '@constants/chart';
 import { CustomTooltipProps } from '@interfaces/ICharts';
-import { Currency } from '@interfaces/ICurrency';
-import { CurrenciesRates } from '@interfaces/models/IExchangerate';
-import { WalletCurrency } from '@src/zustand/walletStore';
 import { cutNumber } from '@utils/misc';
 
-type TooltipPayload = CustomTooltipProps<{
-  baseCurrenciesInfo: {
-    convertedPercentage: number;
-    currency: Currency;
-    rate: number;
-    amount: number;
-    convertedToQuoteAmount: number;
-  }[];
-  valueAfterInflation: number;
-  monthCumulativeInflation: number | undefined;
-  quoteCurrencyInfo: WalletCurrency;
-  value: number;
-  date: string;
-  rates: CurrenciesRates;
-}>[];
+import { WalletValuesInTimespan } from '../tools/walletValueOverTime';
+
+type Item = WalletValuesInTimespan[number];
+
+//depends on availability of OECD data
+type TooltipPayload =
+  | [CustomTooltipProps<Item>, CustomTooltipProps<Item>]
+  | [CustomTooltipProps<Item>];
 
 const WalletChartTooltip = ({
   active,
@@ -42,34 +32,40 @@ const WalletChartTooltip = ({
   const { name: quoteCurrency } = quoteCurrencyInfo;
   const { monthCumulativeInflation } = data[0].payload;
   const [{ value }] = data;
-  const postInflationValue = data[1].value;
-  const inflationLoss = cutNumber(value - postInflationValue);
+
+  //inflation data might not be available
+  const inflationAvailable = data.length === 2;
+  const postInflationValue = inflationAvailable && data[1].value;
+  const inflationLoss =
+    postInflationValue && cutNumber(value - postInflationValue);
 
   return (
     <TooltipWrapper className="gap-y-2">
       <p className="font-normal">{localDateString}</p>
       <TooltipRowWrapper>
         <p>{'Value:'}</p>
-        <p className='font-medium'>{`${value} ${quoteCurrency.toUpperCase()}`}</p>
+        <p className="font-medium">{`${value} ${quoteCurrency.toUpperCase()}`}</p>
       </TooltipRowWrapper>
-      {monthCumulativeInflation && (
+      {inflationAvailable && (
         <TooltipRowWrapper>
           <p>{'Post-inflation value:'}</p>
-          <p className='font-medium'>{`${postInflationValue} ${quoteCurrency.toUpperCase()}`}</p>
+          <p className="font-medium">{`${postInflationValue} ${quoteCurrency.toUpperCase()}`}</p>
         </TooltipRowWrapper>
       )}
-      <TooltipRowWrapper>
-        <p>{'Accumulated inflation:'}</p>
-        <p className='font-medium'>
-          {monthCumulativeInflation
-            ? `${monthCumulativeInflation}%`
-            : 'No data'}
-        </p>
-      </TooltipRowWrapper>
-      {monthCumulativeInflation && (
+      {inflationAvailable && (
+        <TooltipRowWrapper>
+          <p>{'Accumulated inflation:'}</p>
+          <p className="font-medium">
+            {monthCumulativeInflation
+              ? `${monthCumulativeInflation}%`
+              : 'No data'}
+          </p>
+        </TooltipRowWrapper>
+      )}
+      {inflationAvailable && (
         <TooltipRowWrapper>
           <p>{'Inflation loss:'}</p>
-          <p className='font-medium'>{`${inflationLoss} ${quoteCurrency.toUpperCase()}`}</p>
+          <p className="font-medium">{`${inflationLoss} ${quoteCurrency.toUpperCase()}`}</p>
         </TooltipRowWrapper>
       )}
     </TooltipWrapper>

@@ -13,7 +13,7 @@ export type DataLoaderQueryProps<T> = {
   isLoading: boolean;
   isFetching?: boolean;
   data: T;
-  error?: unknown;
+  error: unknown;
 };
 
 const DataLoader = <T,>({
