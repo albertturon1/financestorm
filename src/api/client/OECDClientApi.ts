@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
+import { OECDCountryCode } from '@interfaces/ICurrency';
 import { OECDResponse, MonthlyCPIRequest } from '@src/api/interfaces/IOECDApi';
 import api from '@utils/api';
 import { genQueryString } from '@utils/misc';
@@ -18,9 +19,21 @@ export const getMonthlyCPI = async ({
   return await api.get<OECDResponse>(`${url}&${args}`);
 };
 
-export const useMonthlyCPIQuery = (props: MonthlyCPIRequest) =>
+export const useMonthlyCPIQuery = (
+  props: Omit<MonthlyCPIRequest, 'country'> & {
+    country: OECDCountryCode | undefined;
+  },
+) =>
   useQuery({
-    queryKey: OECD_KEYS.monthlyCPI(props),
-    queryFn: () => getMonthlyCPI(props),
+    queryKey: OECD_KEYS.monthlyCPI({
+      ...props,
+      country: props.country as OECDCountryCode, //assertion because of "enabled"
+    }),
+    queryFn: () =>
+      getMonthlyCPI({
+        ...props,
+        country: props.country as OECDCountryCode,
+      }),
     staleTime: 1000 * 60 * 30,
+    enabled: !!props.country,
   });

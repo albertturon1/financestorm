@@ -25,6 +25,7 @@ import { createQueryString } from '@utils/misc';
 
 import WalletChartLoader from './loaders/WalletChartLoader';
 import WalletCurrenciesSelectorsLoader from './loaders/WalletCurrenciesSelectorsLoader';
+import useReplaceInvalidQuoteCurrency from '../hooks/useReplaceInvalidQuoteCurrency';
 
 const TimespanPicker = dynamic(
   () => import('@components/misc/timespanPicker'),
@@ -53,6 +54,7 @@ const WalletHydrated = ({
   walletQuoteCurrency: WalletCurrency;
   walletBaseCurrencies: WalletCurrency[];
   queryProps: PrefetchDailyCurrencyRatesRequest;
+  isValidQuoteCurrency: boolean;
 }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -64,10 +66,14 @@ const WalletHydrated = ({
     .minus({ months: 1 })
     .toFormat(YEAR_MONTH_FORMAT);
 
+  const curerencyCountry = Object.entries(OECD_COUNTRIES).find(
+    ([currency]) => currency === props.walletQuoteCurrency.name,
+  );
+
   const monthlyCPIQuery = useMonthlyCPIQuery({
     startPeriod: `${startYearMonth}-01`, //fetching extra month
     endPeriod: DateTime.now().toFormat(SERVER_DATE),
-    country: OECD_COUNTRIES[props.walletQuoteCurrency.name],
+    country: curerencyCountry?.[1], //possible undefined - not every currency has OECD data
   });
 
   useEffect(() => {
@@ -95,6 +101,7 @@ const WalletHydrated = ({
     [searchParams],
   );
 
+  useReplaceInvalidQuoteCurrency(props);
   return (
     <div className="flex w-full flex-col gap-y-6 lg:gap-y-8">
       <TimespanPicker
