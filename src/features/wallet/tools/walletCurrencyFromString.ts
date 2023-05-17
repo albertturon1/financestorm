@@ -2,9 +2,12 @@ import { CURRENCIES } from '@constants/currencies';
 import { Currency } from '@interfaces/ICurrency';
 import { WalletCurrency } from '@src/zustand/walletStore';
 
+export function splitAmountFromCurrency(amountCurrency: string) {
+  return amountCurrency.match(/\d+|[^0-9]+/g);
+}
 export function getWalletCurrencyFromString(param: string | undefined) {
   if (!param) return;
-  const currencyCodeMatch = param.match(/\d+|[^0-9]+/g); //[number, string]
+  const currencyCodeMatch = splitAmountFromCurrency(param); //[number, string]
 
   const matchingCurrency =
     currencyCodeMatch &&
