@@ -6,7 +6,7 @@ import { CHART_TOOLTIP_DATE_OPTIONS } from '@constants/chart';
 import { CustomTooltipProps } from '@interfaces/ICharts';
 import { cutNumber } from '@utils/misc';
 
-import { WalletValuesInTimespan } from '../tools/walletValueOverTime';
+import { WalletValuesInTimespan } from '../tools/walletValuesInTimespan';
 
 type Item = WalletValuesInTimespan[number];
 

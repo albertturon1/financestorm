@@ -24,8 +24,9 @@ import { yAxisDomainFormatter } from '@utils/chartHelpers';
 import { convertDailyCurrencyRatesToArray } from '@utils/currencyRateApiHelpers';
 import normalizeOECDData from '@utils/normalizeOECDData';
 
+import WalletChartLoader from './loaders/WalletChartLoader';
 import WalletChartTooltip from './WalletChartTooltip';
-import { calculateWalletValuesInTimespan } from '../tools/walletValueOverTime';
+import { calculateWalletValuesInTimespan } from '../tools/walletValuesInTimespan';
 
 const WalletChart = ({
   dailyCurrencyRatesOverYearQuery,
@@ -44,8 +45,10 @@ const WalletChart = ({
   //data loader makes sense when data is being refetch on client - best thing you can do is to handle errors and show fallback when loading --- dont forget to set ssr: false
   return (
     <DataLoader
-      isLoading={
-        dailyCurrencyRatesOverYearQuery.isLoading || monthlyCPIQuery.isLoading
+      customLoader={<WalletChartLoader />}
+      isInitialLoading={
+        dailyCurrencyRatesOverYearQuery.isInitialLoading ||
+        monthlyCPIQuery.isInitialLoading
       }
       isFetching={
         dailyCurrencyRatesOverYearQuery.isFetching || monthlyCPIQuery.isFetching

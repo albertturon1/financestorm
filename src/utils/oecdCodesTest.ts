@@ -21,5 +21,6 @@ const promises = Object.entries(OECD_COUNTRIES).map(([key, value]) => {
 
 void Promise.all(promises).then((results) => {
   const rejectedPairs = results.filter((result) => result.length === 3);
+  // eslint-disable-next-line no-console
   console.log(rejectedPairs);
 });

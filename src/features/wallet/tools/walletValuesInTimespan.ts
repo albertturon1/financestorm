@@ -1,11 +1,12 @@
 import { DateTime } from 'luxon';
 
-import { inflationSumPerMonth } from '@features/walletHistory/tools/inflationWalletOverTimeValue';
 import { DateValue } from '@interfaces/ICharts';
 import { Currency } from '@interfaces/ICurrency';
 import { ExchangeRateTimeseriesRatesArray } from '@interfaces/models/IExchangerate';
 import { WalletCurrency } from '@src/zustand/walletStore';
 import { cutNumber, substituePotentialNaNToZero } from '@utils/misc';
+
+import { getInflationStatsPerMonth } from './inflationStatsPerMonth';
 
 type WalletDayCurrency = {
   currency: Currency;
@@ -68,7 +69,7 @@ export function calculateWalletValuesInTimespan({
   }) satisfies WalletDayRates[];
 
   const inflationStats = monthlyCPIValues
-    ? inflationSumPerMonth(monthlyCPIValues)
+    ? getInflationStatsPerMonth(monthlyCPIValues)
     : {};
 
   return a.map((day) => {
@@ -96,4 +97,6 @@ export function calculateWalletValuesInTimespan({
   });
 }
 
-export type WalletValuesInTimespan = ReturnType<typeof calculateWalletValuesInTimespan>;
+export type WalletValuesInTimespan = ReturnType<
+  typeof calculateWalletValuesInTimespan
+>;
