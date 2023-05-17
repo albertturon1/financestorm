@@ -1,5 +1,5 @@
+import { OECDResponse } from '@api/interfaces/IOECDApi';
 import { DateValue } from '@interfaces/ICharts';
-import { OECDResponse } from '@src/api/interfaces/IOECDApi';
 
 function normalizeOECDData(data: undefined): undefined;
 function normalizeOECDData(data: OECDResponse): DateValue[];

@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
+import { OECDResponse, MonthlyCPIRequest } from '@api/interfaces/IOECDApi';
 import { OECDCountryCode } from '@interfaces/ICurrency';
-import { OECDResponse, MonthlyCPIRequest } from '@src/api/interfaces/IOECDApi';
 import api from '@utils/api';
 import { genQueryString } from '@utils/misc';
 

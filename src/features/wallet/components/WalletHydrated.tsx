@@ -12,14 +12,14 @@ import { DateTime } from 'luxon';
 import dynamic from 'next/dynamic';
 import { useRouter, useSearchParams } from 'next/navigation';
 
-import TimespanPickerLoader from '@components/misc/timespanPicker/TimespanPickerLoader';
+import { useDailyCurrencyRatesOverYearQuery } from '@api/client/CurrenctyRateClientApi';
+import { useMonthlyCPIQuery } from '@api/client/OECDClientApi';
+import { PrefetchDailyCurrencyRatesRequest } from '@api/interfaces/ICurrencyRateApi';
+import TimespanPickerLoader from '@components/timespanPicker/TimespanPickerLoader';
 import { OECD_COUNTRIES } from '@constants/currencies';
 import { SERVER_DATE, YEAR_MONTH_FORMAT } from '@constants/dateTime';
 import { TIMESPANS } from '@constants/timespans';
 import { Timespan } from '@interfaces/ICharts';
-import { useDailyCurrencyRatesOverYearQuery } from '@src/api/client/CurrenctyRateClientApi';
-import { useMonthlyCPIQuery } from '@src/api/client/OECDClientApi';
-import { PrefetchDailyCurrencyRatesRequest } from '@src/api/interfaces/ICurrencyRateApi';
 import { WalletCurrency, useWalletActions } from '@src/zustand/walletStore';
 import { createQueryString } from '@utils/misc';
 
@@ -27,12 +27,9 @@ import WalletChartLoader from './loaders/WalletChartLoader';
 import WalletCurrenciesSelectorsLoader from './loaders/WalletCurrenciesSelectorsLoader';
 import useReplaceInvalidQuoteCurrency from '../hooks/useReplaceInvalidQuoteCurrency';
 
-const TimespanPicker = dynamic(
-  () => import('@components/misc/timespanPicker'),
-  {
-    loading: () => <TimespanPickerLoader />,
-  },
-);
+const TimespanPicker = dynamic(() => import('@components/timespanPicker'), {
+  loading: () => <TimespanPickerLoader />,
+});
 
 const WalletCurrenciesSelectors = dynamic(
   () => import('./WalletCurrenciesSelectors'),

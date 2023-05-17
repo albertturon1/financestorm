@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 import PageMaxWidth from '@components/misc/PageMaxWidth';
 import PagePadding from '@components/misc/PagePadding';
-import useScrollDirection from '@features/multi-currencies/hooks/useScrollDirection';
+import useScrollDirection from '@components/navbar/hooks/useScrollDirection';
 import useWindowSize from '@hooks/useWindowSize';
 
 import NavbarItems from './NavbarItems';

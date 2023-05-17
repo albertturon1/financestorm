@@ -2,17 +2,17 @@ import { Hydrate } from '@tanstack/react-query';
 import { DateTime } from 'luxon';
 import dynamic from 'next/dynamic';
 
+import { prefetchGetDailyCurrencyRatesOverYearQuery } from '@api/CurrencyRateApi';
+import {
+  DailyCurrencyRatesRequest,
+  PrefetchDailyCurrencyRatesRequest,
+} from '@api/interfaces/ICurrencyRateApi';
 import PageMaxWidth from '@components/misc/PageMaxWidth';
 import PagePadding from '@components/misc/PagePadding';
 import { SERVER_DATE } from '@constants/dateTime';
 import { DEFAULT_TIMESPAN, TIMESPANS } from '@constants/timespans';
 import CurrenciesPairHydrated from '@features/currencies-pair/components/CurrenciesPairHydrated';
 import { Currency, CurrenciesPair } from '@interfaces/ICurrency';
-import { prefetchGetDailyCurrencyRatesOverYearQuery } from '@src/api/CurrencyRateApi';
-import {
-  DailyCurrencyRatesRequest,
-  PrefetchDailyCurrencyRatesRequest,
-} from '@src/api/interfaces/ICurrencyRateApi';
 
 const CurrenciesPairSelectors = dynamic(
   () => import('@features/currencies-pair/components/CurrenciesPairSelectors'),

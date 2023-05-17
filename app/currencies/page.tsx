@@ -1,15 +1,15 @@
 import { Hydrate } from '@tanstack/react-query';
 
+import { prefetchGetTodayCurrencyRatesQuery } from '@api/CurrencyRateApi';
+import {
+  MultiCurrenciesRate,
+  PrefetchTodayCurrencyRatesRequest,
+} from '@api/interfaces/ICurrencyRateApi';
 import PageMaxWidth from '@components/misc/PageMaxWidth';
 import PagePadding from '@components/misc/PagePadding';
 import { CURRENCIES, DEFAULT_QUOTE_CURRENCY } from '@constants/currencies';
 import CurrenciesHydrated from '@features/currencies/components/CurrenciesHydrated';
 import { Currency } from '@interfaces/ICurrency';
-import { prefetchGetTodayCurrencyRatesQuery } from '@src/api/CurrencyRateApi';
-import {
-  MultiCurrenciesRate,
-  PrefetchTodayCurrencyRatesRequest,
-} from '@src/api/interfaces/ICurrencyRateApi';
 
 export type CurrenciesPageProps = { default_currency?: Currency };
 

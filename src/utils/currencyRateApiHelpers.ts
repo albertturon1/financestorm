@@ -1,10 +1,8 @@
 import { Currency } from '@interfaces/ICurrency';
 import {
   CurrenciesRates,
-  ExchangeRateLatestResponse,
   ExchangeRateTimeseriesRatesArray,
   ExchangeRateTimeseriesResponse,
-  ExchangeRateTimeseries,
   SeparateDailyCurrencyRates,
   ExchangeRateTimeseriesResponseRates,
 } from '@interfaces/models/IExchangerate';
@@ -81,48 +79,4 @@ export const separateDailyCurrencyRates = (
     base_currencies,
     rates_array: rates,
   };
-};
-
-//TODO: delete
-export const convertLastestRatesToQuoteCurrency = (
-  data: ExchangeRateLatestResponse,
-): ExchangeRateLatestResponse => {
-  const rates = convertDayRates(data.rates, data.base);
-  return { ...data, rates };
-};
-
-export const convertDailyCurrencyTimeseriesToChartData = (
-  data: ExchangeRateTimeseries | undefined,
-) => {
-  if (!data) return [];
-  // return data.rates_array.reduce((acc, day) => {
-  //   const { date, rates } = day;
-  //   Object.entries(rates).forEach(([currency, value]) => {
-  //     const currencyIndexInAcc = acc.findIndex((c) => c.name === currency);
-  //     const obj: NormalizedCurrencyExchangeRate = {
-  //       base_currency: currency as Currency,
-  //       quote_currency: data.quote_currency,
-  //       value,
-  //       date,
-  //     };
-
-  //     if (currencyIndexInAcc === -1)
-  //       acc.push({
-  //         name: currency,
-  //         //minValue: value,
-  //         //maxValue: value,
-  //         data: [obj],
-  //       });
-  //     else {
-  //       ////set minValue
-  //       //if (value > acc[currencyIndexInAcc].maxValue)
-  //       //  acc[currencyIndexInAcc].maxValue = value;
-  //       ////set maxValue
-  //       //if (value < acc[currencyIndexInAcc].minValue)
-  //       //  acc[currencyIndexInAcc].minValue = value;
-  //       acc[currencyIndexInAcc].data = [...acc[currencyIndexInAcc].data, obj];
-  //     }
-  //   });
-  //   return acc;
-  // }, [] as ChartMultiData<NormalizedCurrencyExchangeRate>[]);
 };

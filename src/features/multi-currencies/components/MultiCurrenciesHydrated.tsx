@@ -4,13 +4,13 @@ import { useState } from 'react';
 
 import dynamic from 'next/dynamic';
 
-import TimespanPicker from '@components/misc/timespanPicker';
+import { useDailyCurrencyRatesOverYearQuery } from '@api/client/CurrenctyRateClientApi';
+import { PrefetchDailyCurrencyRatesRequest } from '@api/interfaces/ICurrencyRateApi';
+import TimespanPicker from '@components/timespanPicker';
 import SkeletonLoader from '@components/ui/SkeletonLoader';
 import { TIMESPANS } from '@constants/timespans';
 import { Timespan } from '@interfaces/ICharts';
 import { Currency } from '@interfaces/ICurrency';
-import { useDailyCurrencyRatesOverYearQuery } from '@src/api/client/CurrenctyRateClientApi';
-import { PrefetchDailyCurrencyRatesRequest } from '@src/api/interfaces/ICurrencyRateApi';
 
 const MultiCurrenciesChart = dynamic(
   () => import('@components/multiCurrenciesChart'),

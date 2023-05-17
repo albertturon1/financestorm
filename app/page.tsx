@@ -1,6 +1,11 @@
 import { Hydrate } from '@tanstack/react-query';
 import { DateTime } from 'luxon';
 
+import { prefetchGetDailyCurrencyRatesQuery } from '@api/CurrencyRateApi';
+import {
+  DailyCurrencyRatesRequest,
+  PrefetchDailyCurrencyRatesRequest,
+} from '@api/interfaces/ICurrencyRateApi';
 import PageMaxWidth from '@components/misc/PageMaxWidth';
 import PagePadding from '@components/misc/PagePadding';
 import {
@@ -10,11 +15,6 @@ import {
 import { SERVER_DATE } from '@constants/dateTime';
 import HomepageHydrated from '@features/main/components/HomepageHydrated';
 import LandingHeader from '@features/main/components/landingHeader';
-import { prefetchGetDailyCurrencyRatesQuery } from '@src/api/CurrencyRateApi';
-import {
-  DailyCurrencyRatesRequest,
-  PrefetchDailyCurrencyRatesRequest,
-} from '@src/api/interfaces/ICurrencyRateApi';
 
 const DATA_TIMESPAN = 30;
 const QUERY_PROPS = {
