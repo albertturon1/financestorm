@@ -19,7 +19,7 @@ const CurrenciesSelectList = ({
   showTriggerFocus,
   ...props
 }: {
-  value: Currency;
+  value: Currency | undefined;
   currencies: readonly Currency[];
   onValueChange: (currency: Currency) => void;
   triggerClassName?: string;
