@@ -14,9 +14,9 @@ import {
 import { NameType } from 'recharts/types/component/DefaultTooltipContent';
 import { ValueType } from 'tailwindcss/types/config';
 
-import CurrencyRatePairChartTooltip from '@components/misc/CurrencyRatePairChartTooltip';
 import DataLoader, { DataLoaderQueryProps } from '@components/ui/DataLoader';
 import { CHART_X_AXIS_TICK_FORMATTER_OPTIONS } from '@constants/chart';
+import CurrencyRatePairChartTooltip from '@features/currencies-pair/components/CurrencyRatePairChartTooltip';
 import useWindowSize from '@hooks/useWindowSize';
 import { Currency } from '@interfaces/ICurrency';
 import { ExchangeRateTimeseriesResponse } from '@interfaces/models/IExchangerate';

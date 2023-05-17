@@ -1,10 +1,6 @@
 import { PrefetchRequest } from '@interfaces/IApi';
 import { Currency } from '@interfaces/ICurrency';
 
-export interface CurrencyRatePair {
-  base_currency: Currency;
-  quote_currency: Currency;
-}
 export interface MultiCurrenciesRate {
   base_currencies: Currency[];
   quote_currency: Currency;

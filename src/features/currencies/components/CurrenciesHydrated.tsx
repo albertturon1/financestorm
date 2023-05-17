@@ -5,6 +5,8 @@ import { useState, ChangeEvent } from 'react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 
+import { useTodayCurrencyRatesQuery } from '@api/client/CurrenctyRateClientApi';
+import { PrefetchTodayCurrencyRatesRequest } from '@api/interfaces/ICurrencyRateApi';
 import CurrenciesSelectList from '@components/misc/CurrenciesSelectList';
 import PageTitle from '@components/misc/PageTitle';
 import { Input } from '@components/ui/Input';
@@ -12,8 +14,6 @@ import SkeletonLoader from '@components/ui/SkeletonLoader';
 import { CURRENCIES, DEFAULT_QUOTE_CURRENCY } from '@constants/currencies';
 import { Currency } from '@interfaces/ICurrency';
 import { CurrenciesRates } from '@interfaces/models/IExchangerate';
-import { useTodayCurrencyRatesQuery } from '@src/api/client/CurrenctyRateClientApi';
-import { PrefetchTodayCurrencyRatesRequest } from '@src/api/interfaces/ICurrencyRateApi';
 
 const CurrenciesRatesTiles = dynamic(() => import('./CurrenciesRatesTiles'), {
   ssr: false,

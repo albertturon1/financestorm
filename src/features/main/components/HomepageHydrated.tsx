@@ -1,18 +1,21 @@
 'use client';
 
-
 import dynamic from 'next/dynamic';
 
+import { useDailyCurrencyRatesQuery } from '@api/client/CurrenctyRateClientApi';
+import { PrefetchDailyCurrencyRatesRequest } from '@api/interfaces/ICurrencyRateApi';
+import CurrencyRatesListSkeletonLoader from '@components/currencyRatesList/CurrencyRatesListSkeletonLoader';
 import NavigationButton from '@components/misc/NavigationButton';
 import PagePadding from '@components/misc/PagePadding';
 import PageTitle from '@components/misc/PageTitle';
 import SkeletonLoader from '@components/ui/SkeletonLoader';
 import { Currency } from '@interfaces/ICurrency';
-import { useDailyCurrencyRatesQuery } from '@src/api/client/CurrenctyRateClientApi';
-import { PrefetchDailyCurrencyRatesRequest } from '@src/api/interfaces/ICurrencyRateApi';
 
 const CurrencyRatesList = dynamic(
   () => import('@components/currencyRatesList'),
+  {
+    loading: () => <CurrencyRatesListSkeletonLoader />,
+  },
 );
 
 const MultiCurrenciesChart = dynamic(

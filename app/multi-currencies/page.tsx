@@ -1,6 +1,11 @@
 import { Hydrate } from '@tanstack/react-query';
 import { DateTime } from 'luxon';
 
+import { prefetchGetDailyCurrencyRatesOverYearQuery } from '@api/CurrencyRateApi';
+import {
+  DailyCurrencyRatesRequest,
+  PrefetchDailyCurrencyRatesRequest,
+} from '@api/interfaces/ICurrencyRateApi';
 import PageMaxWidth from '@components/misc/PageMaxWidth';
 import PagePadding from '@components/misc/PagePadding';
 import PageTitle from '@components/misc/PageTitle';
@@ -13,11 +18,6 @@ import { DEFAULT_TIMESPAN, TIMESPANS } from '@constants/timespans';
 import MultiCurrenciesHydrated from '@features/multi-currencies/components/MultiCurrenciesHydrated';
 import MultiCurrenciesPairSelectors from '@features/multi-currencies/components/MultiCurrenciesPairSelectors';
 import { Currency } from '@interfaces/ICurrency';
-import { prefetchGetDailyCurrencyRatesOverYearQuery } from '@src/api/CurrencyRateApi';
-import {
-  DailyCurrencyRatesRequest,
-  PrefetchDailyCurrencyRatesRequest,
-} from '@src/api/interfaces/ICurrencyRateApi';
 import { baseCurrenciesWithAmountFromQuery } from '@utils/misc';
 
 export type MultiCurrenciesPageProps = {

@@ -13,11 +13,11 @@ import {
   TooltipProps,
 } from 'recharts';
 
+import { OECDResponse } from '@api/interfaces/IOECDApi';
 import DataLoader, { DataLoaderQueryProps } from '@components/ui/DataLoader';
 import { CHART_X_AXIS_TICK_FORMATTER_OPTIONS } from '@constants/chart';
 import useWindowSize from '@hooks/useWindowSize';
 import { ExchangeRateTimeseriesResponse } from '@interfaces/models/IExchangerate';
-import { OECDResponse } from '@src/api/interfaces/IOECDApi';
 import Theme from '@src/Theme';
 import { WalletCurrency } from '@src/zustand/walletStore';
 import { yAxisDomainFormatter } from '@utils/chartHelpers';

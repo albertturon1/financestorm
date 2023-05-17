@@ -23,6 +23,7 @@
       "@interfaces/*": ["./src/interfaces/*"],
       "@utils/*": ["./src/utils/*"],
       "@styles/*": ["./styles/*"],
+      "@api/*": ["./src/api/*"],
       "@app/*": ["./app/*"],
       "@src/*": ["./src/*"]
     },

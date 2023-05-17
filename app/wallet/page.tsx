@@ -1,6 +1,11 @@
 import { Hydrate } from '@tanstack/react-query';
 import { DateTime } from 'luxon';
 
+import { prefetchGetDailyCurrencyRatesOverYearQuery } from '@api/CurrencyRateApi';
+import {
+  DailyCurrencyRatesRequest,
+  PrefetchDailyCurrencyRatesRequest,
+} from '@api/interfaces/ICurrencyRateApi';
 import PageMaxWidth from '@components/misc/PageMaxWidth';
 import PagePadding from '@components/misc/PagePadding';
 import PageTitle from '@components/misc/PageTitle';
@@ -15,11 +20,6 @@ import WalletHydrated from '@features/wallet/components/WalletHydrated';
 import { getWalletCurrencyFromString } from '@features/wallet/tools/walletCurrencyFromString';
 import { Timespan } from '@interfaces/ICharts';
 import { Currency } from '@interfaces/ICurrency';
-import { prefetchGetDailyCurrencyRatesOverYearQuery } from '@src/api/CurrencyRateApi';
-import {
-  DailyCurrencyRatesRequest,
-  PrefetchDailyCurrencyRatesRequest,
-} from '@src/api/interfaces/ICurrencyRateApi';
 import { WalletCurrency } from '@src/zustand/walletStore';
 import { baseCurrenciesWithAmountFromQuery } from '@utils/misc';
 

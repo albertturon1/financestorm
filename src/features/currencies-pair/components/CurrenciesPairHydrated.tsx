@@ -4,18 +4,18 @@ import { useState } from 'react';
 
 import dynamic from 'next/dynamic';
 
+import { useDailyCurrencyRatesOverYearQuery } from '@api/client/CurrenctyRateClientApi';
+import { PrefetchDailyCurrencyRatesRequest } from '@api/interfaces/ICurrencyRateApi';
 import SkeletonLoader from '@components/ui/SkeletonLoader';
 import { TIMESPANS } from '@constants/timespans';
 import { Timespan } from '@interfaces/ICharts';
 import { Currency } from '@interfaces/ICurrency';
-import { useDailyCurrencyRatesOverYearQuery } from '@src/api/client/CurrenctyRateClientApi';
-import { PrefetchDailyCurrencyRatesRequest } from '@src/api/interfaces/ICurrencyRateApi';
 
 const CurrenciesPairChart = dynamic(() => import('./CurrenciesPairChart'), {
   loading: () => <SkeletonLoader className="h-[45vh] w-full" />,
   ssr: false,
 });
-const TimespanPicker = dynamic(() => import('@components/misc/timespanPicker'));
+const TimespanPicker = dynamic(() => import('@components/timespanPicker'));
 
 import CurrenciesPairConverter from './CurrenciesPairConverter';
 
