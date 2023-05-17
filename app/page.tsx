@@ -10,7 +10,7 @@ import {
 import { SERVER_DATE } from '@constants/dateTime';
 import HomepageHydrated from '@features/main/components/HomepageHydrated';
 import LandingHeader from '@features/main/components/landingHeader';
-import { prefetchDailyCurrencyRatesQuery } from '@src/api/CurrencyRateApi';
+import { prefetchGetDailyCurrencyRatesQuery } from '@src/api/CurrencyRateApi';
 import {
   DailyCurrencyRatesRequest,
   PrefetchDailyCurrencyRatesRequest,
@@ -32,7 +32,7 @@ const QUERY_PROPS = {
 } satisfies PrefetchDailyCurrencyRatesRequest;
 
 const HomePage = async () => {
-  const hydratedState = await prefetchDailyCurrencyRatesQuery(QUERY_PROPS);
+  const hydratedState = await prefetchGetDailyCurrencyRatesQuery(QUERY_PROPS);
 
   return (
     <Hydrate state={hydratedState}>

@@ -4,13 +4,13 @@ import FlagCountryCode from '@components/misc/FlagCountryCode';
 import TooltipRowWrapper from '@components/tooltip/TooltipRowWrapper';
 import TooltipWrapper from '@components/tooltip/TooltipWrapper';
 import { CHART_THEME, CHART_TOOLTIP_DATE_OPTIONS } from '@constants/chart';
-import { CustomTooltipProps, LabelValue } from '@interfaces/ICharts';
+import { CustomTooltipProps, DateValue } from '@interfaces/ICharts';
 import { Currency } from '@interfaces/ICurrency';
 import { cn, cutNumber } from '@utils/misc';
 
 import { CurrencyNameAndArrayIndex } from './MultiCurrenciesChart';
 
-type TooltipPayload = CustomTooltipProps<LabelValue>[];
+type TooltipPayload = CustomTooltipProps<DateValue>[];
 
 const MultiCurrenciesChartTooltip = ({
   active,

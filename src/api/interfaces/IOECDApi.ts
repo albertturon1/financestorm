@@ -1,3 +1,5 @@
+import { OECDCountryCode } from '@interfaces/ICurrency';
+
 interface HeaderSender {
   id: string;
   name: string;
@@ -71,7 +73,8 @@ export interface OECDResponse {
   structure: Structure;
 }
 
-export interface MonthlyInflationRatesRequest {
+export interface MonthlyCPIRequest {
   startPeriod: string;
   endPeriod: string;
+  country: OECDCountryCode;
 }

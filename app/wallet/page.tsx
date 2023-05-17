@@ -5,7 +5,6 @@ import PageMaxWidth from '@components/misc/PageMaxWidth';
 import PagePadding from '@components/misc/PagePadding';
 import PageTitle from '@components/misc/PageTitle';
 import {
-  CURRENCIES,
   DEFAULT_BASE_CURRENCIES,
   DEFAULT_CURRENCY_AMOUNT,
   DEFAULT_QUOTE_CURRENCY,
@@ -13,31 +12,16 @@ import {
 import { SERVER_DATE } from '@constants/dateTime';
 import { DEFAULT_TIMESPAN, TIMESPANS } from '@constants/timespans';
 import WalletHydrated from '@features/wallet/components/WalletHydrated';
+import { getWalletCurrencyFromString } from '@features/wallet/tools/walletCurrencyFromString';
 import { Timespan } from '@interfaces/ICharts';
 import { Currency } from '@interfaces/ICurrency';
-import { prefetchDailyCurrencyRatesOverYearQuery } from '@src/api/CurrencyRateApi';
+import { prefetchGetDailyCurrencyRatesOverYearQuery } from '@src/api/CurrencyRateApi';
 import {
   DailyCurrencyRatesRequest,
   PrefetchDailyCurrencyRatesRequest,
 } from '@src/api/interfaces/ICurrencyRateApi';
 import { WalletCurrency } from '@src/zustand/walletStore';
-import { baseCurrenciesFromQuery } from '@utils/misc';
-
-function walletCurrencyFromString(param: string | undefined) {
-  if (!param) return;
-  const matches = param.match(/^(\d+)(\D+)$/);
-  if (CURRENCIES.includes(param))
-    return {
-      amount: 0,
-      name: param as Currency,
-    } satisfies WalletCurrency;
-  if (!matches) return;
-  const [_, amount, currency] = matches;
-  return {
-    amount: Number(amount),
-    name: currency as Currency,
-  } satisfies WalletCurrency;
-}
+import { baseCurrenciesWithAmountFromQuery } from '@utils/misc';
 
 export type WalletPageProps = {
   quote?: Currency;
@@ -51,20 +35,22 @@ const WalletPage = async ({
   searchParams: WalletPageProps;
 }) => {
   const { quote, base, timespan: queryTimespan } = searchParams;
-  const walletQuoteCurrency = (walletCurrencyFromString(quote) ?? {
+
+  const walletQuoteCurrency = (getWalletCurrencyFromString(quote) ?? {
     name: DEFAULT_QUOTE_CURRENCY,
     amount: DEFAULT_CURRENCY_AMOUNT,
   }) satisfies WalletCurrency;
 
-  const baseCurrenciesFromString = baseCurrenciesFromQuery(
+  const baseCurrenciesFromString = baseCurrenciesWithAmountFromQuery(
     base,
     walletQuoteCurrency.name,
   );
+  const isValidQuoteCurrency = !!getWalletCurrencyFromString(quote);
 
   const walletBaseCurrencies =
     baseCurrenciesFromString && baseCurrenciesFromString.length
       ? baseCurrenciesFromString
-          .map((c) => walletCurrencyFromString(c))
+          .map((c) => getWalletCurrencyFromString(c))
           .filter(Boolean)
       : DEFAULT_BASE_CURRENCIES.map((c) => ({
           name: c,
@@ -90,7 +76,7 @@ const WalletPage = async ({
     },
   } satisfies PrefetchDailyCurrencyRatesRequest;
 
-  const hydratedState = await prefetchDailyCurrencyRatesOverYearQuery(
+  const hydratedState = await prefetchGetDailyCurrencyRatesOverYearQuery(
     QUERY_PROPS,
   );
 
@@ -108,6 +94,7 @@ const WalletPage = async ({
               timespan={timespan}
               walletQuoteCurrency={walletQuoteCurrency}
               walletBaseCurrencies={walletBaseCurrencies}
+              isValidQuoteCurrency={isValidQuoteCurrency}
             />
           </div>
         </PagePadding>

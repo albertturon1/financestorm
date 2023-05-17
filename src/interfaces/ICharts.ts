@@ -10,7 +10,7 @@ export interface RechartsData {
   baseValue: number;
 }
 
-export interface LabelValue {
+export interface DateValue {
   date: string;
   value: number;
 }
@@ -25,7 +25,7 @@ export type WalletBaseCurrencyValue = {
   rate: number;
 } & WalletQuoteCurrencyValue;
 
-export interface WalletDay extends LabelValue {
+export interface WalletDay extends DateValue {
   baseCurrencies: WalletBaseCurrencyValue[];
   quoteCurrency: WalletQuoteCurrencyValue;
 }

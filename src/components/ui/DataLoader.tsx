@@ -10,14 +10,14 @@ export type DataLoaderProps<T> = {
 } & DataLoaderQueryProps<T>;
 
 export type DataLoaderQueryProps<T> = {
-  isLoading: boolean;
+  isInitialLoading: boolean;
   isFetching?: boolean;
   data: T;
-  error?: unknown;
+  error: unknown;
 };
 
 const DataLoader = <T,>({
-  isLoading,
+  isInitialLoading,
   data,
   children,
   error,
@@ -29,7 +29,7 @@ const DataLoader = <T,>({
       ? children(data as NonNullable<T>)
       : children;
 
-  if (isFetching || isLoading) return customLoader ?? <Loader />;
+  if (isFetching || isInitialLoading) return customLoader ?? <Loader />;
   if (error) {
     return <ErrorMessage />;
   }

@@ -13,12 +13,12 @@ import { DEFAULT_TIMESPAN, TIMESPANS } from '@constants/timespans';
 import MultiCurrenciesHydrated from '@features/multi-currencies/components/MultiCurrenciesHydrated';
 import MultiCurrenciesPairSelectors from '@features/multi-currencies/components/MultiCurrenciesPairSelectors';
 import { Currency } from '@interfaces/ICurrency';
-import { prefetchDailyCurrencyRatesOverYearQuery } from '@src/api/CurrencyRateApi';
+import { prefetchGetDailyCurrencyRatesOverYearQuery } from '@src/api/CurrencyRateApi';
 import {
   DailyCurrencyRatesRequest,
   PrefetchDailyCurrencyRatesRequest,
 } from '@src/api/interfaces/ICurrencyRateApi';
-import { baseCurrenciesFromQuery } from '@utils/misc';
+import { baseCurrenciesWithAmountFromQuery } from '@utils/misc';
 
 export type MultiCurrenciesPageProps = {
   quote?: Currency;
@@ -32,7 +32,7 @@ const MultiCurrenciesPage = async ({
 }) => {
   const { quote, base } = searchParams;
   const quoteCurrency = quote ?? DEFAULT_QUOTE_CURRENCY;
-  const baseCurrenciesFromString = baseCurrenciesFromQuery(base, quoteCurrency);
+  const baseCurrenciesFromString = baseCurrenciesWithAmountFromQuery(base, quoteCurrency);
 
   const baseCurrencies = (baseCurrenciesFromString ??
     DEFAULT_BASE_CURRENCIES) satisfies Currency[];
@@ -48,7 +48,7 @@ const MultiCurrenciesPage = async ({
       staleTime: 1000 * 60 * 30, //30minutes
     },
   } satisfies PrefetchDailyCurrencyRatesRequest;
-  const hydratedState = await prefetchDailyCurrencyRatesOverYearQuery(QUERY_PROPS);
+  const hydratedState = await prefetchGetDailyCurrencyRatesOverYearQuery(QUERY_PROPS);
 
   return (
     <Hydrate state={hydratedState}>

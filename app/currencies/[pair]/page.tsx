@@ -8,7 +8,7 @@ import { SERVER_DATE } from '@constants/dateTime';
 import { DEFAULT_TIMESPAN, TIMESPANS } from '@constants/timespans';
 import CurrenciesPairHydrated from '@features/currencies-pair/components/CurrenciesPairHydrated';
 import { Currency, CurrenciesPair } from '@interfaces/ICurrency';
-import { prefetchDailyCurrencyRatesOverYearQuery } from '@src/api/CurrencyRateApi';
+import { prefetchGetDailyCurrencyRatesOverYearQuery } from '@src/api/CurrencyRateApi';
 import {
   DailyCurrencyRatesRequest,
   PrefetchDailyCurrencyRatesRequest,
@@ -44,7 +44,7 @@ const CurrenciesPairPage = async ({
     },
   } satisfies PrefetchDailyCurrencyRatesRequest;
 
-  const hydratedState = await prefetchDailyCurrencyRatesOverYearQuery(
+  const hydratedState = await prefetchGetDailyCurrencyRatesOverYearQuery(
     QUERY_PROPS,
   );
 

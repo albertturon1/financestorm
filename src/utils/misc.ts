@@ -8,6 +8,7 @@ import QueryString from 'query-string';
 import { twMerge } from 'tailwind-merge';
 import { ClassNameValue } from 'tailwind-merge/dist/lib/tw-join';
 
+import { APIError, QueryError } from '@interfaces/IApi';
 import { Currency } from '@interfaces/ICurrency';
 import { AnyObject } from '@interfaces/IUtility';
 
@@ -112,14 +113,14 @@ export function inverseCurrecyRate(rate: number) {
   return cutNumber(newValue, newValue < 1 ? 5 : 3);
 }
 
-export function baseCurrenciesFromQuery(
+export function baseCurrenciesWithAmountFromQuery(
   base: string | undefined,
   quoteCurrency: Currency,
 ) {
   if (!base || !base.length || typeof base !== 'string') return;
   return base
     .split(',')
-    .filter((c) => c !== quoteCurrency) //remove quote currency from results
+    .filter((c) => !c.includes(quoteCurrency)) //remove quote currency from results
     .map((c) => c.trim()) as Currency[];
 }
 
@@ -132,7 +133,9 @@ export function createQueryString({
   value: string;
   searchParams: ReadonlyURLSearchParams;
 }) {
-  const params = new URLSearchParams(searchParams);
+  const params = new URLSearchParams(
+    searchParams as unknown as URLSearchParams,
+  );
   params.set(param, value);
 
   return params.toString().replace(/%2C/g, ','); //replacing %2C from ,
@@ -141,4 +144,8 @@ export function createQueryString({
 export function substituePotentialNaNToZero(value: number) {
   if (isNaN(value)) return 0;
   return value;
+}
+
+export function isAPIError(e: QueryError): e is APIError {
+  return !!e && e.status !== undefined;
 }

@@ -9,90 +9,64 @@ import {
   YAxis,
   Brush,
   AreaChart,
+  Legend,
+  TooltipProps,
 } from 'recharts';
 
 import DataLoader, { DataLoaderQueryProps } from '@components/ui/DataLoader';
 import { CHART_X_AXIS_TICK_FORMATTER_OPTIONS } from '@constants/chart';
 import useWindowSize from '@hooks/useWindowSize';
-import { LabelValue } from '@interfaces/ICharts';
-import { Currency } from '@interfaces/ICurrency';
-import {
-  ExchangeRateTimeseriesRatesArray,
-  ExchangeRateTimeseriesResponse,
-} from '@interfaces/models/IExchangerate';
+import { ExchangeRateTimeseriesResponse } from '@interfaces/models/IExchangerate';
+import { OECDResponse } from '@src/api/interfaces/IOECDApi';
 import Theme from '@src/Theme';
 import { WalletCurrency } from '@src/zustand/walletStore';
 import { yAxisDomainFormatter } from '@utils/chartHelpers';
-import { dailyCurrencyRatesToArray } from '@utils/currencyRateApiHelpers';
-import { cutNumber, substituePotentialNaNToZero } from '@utils/misc';
+import { convertDailyCurrencyRatesToArray } from '@utils/currencyRateApiHelpers';
+import normalizeOECDData from '@utils/normalizeOECDData';
 
+import WalletChartLoader from './loaders/WalletChartLoader';
+import WalletChartTooltip from './WalletChartTooltip';
+import { calculateWalletValuesInTimespan } from '../tools/walletValuesInTimespan';
 
-type WalletDayCurrency = {
-  currency: Currency;
-  rate: number;
-  amount: number;
-  converted_amount: number;
-};
-
-type WalletDayRates = { baseCurrenciesInfo: WalletDayCurrency[] } & LabelValue;
-
-function getData({
-  ratesArray,
-  walletQuoteCurrency,
-  walletBaseCurrencies,
+const WalletChart = ({
+  dailyCurrencyRatesOverYearQuery,
+  monthlyCPIQuery,
+  ...props
 }: {
-  ratesArray: ExchangeRateTimeseriesRatesArray[];
-  walletQuoteCurrency: WalletCurrency;
   walletBaseCurrencies: WalletCurrency[];
-}) {
-  return ratesArray.map((day) => {
-    const a = Object.entries(day.rates).reduce(
-      (acc, [currency, rate]) => {
-        const currencyItem = walletBaseCurrencies.find(
-          (c) =>
-            // console.log('c.name: ', c.name);
-            c.name === (currency.toLowerCase() as Currency), //currency is uppercase
-        );
-        if (!currencyItem) return acc;
-        const converted_amount = cutNumber(currencyItem.amount * rate);
-        // eslint-disable-next-line no-param-reassign
-        acc.value += converted_amount;
-        acc.baseCurrenciesInfo.push({
-          amount: currencyItem.amount,
-          converted_amount,
-          rate,
-          currency: currency as Currency,
-        });
-        return acc;
-      },
-      {
-        value: substituePotentialNaNToZero(walletQuoteCurrency.amount),
-        baseCurrenciesInfo: [],
-      } as Omit<WalletDayRates, 'date'>,
-    );
-
-    return { ...day, ...a, value: cutNumber(a.value) };
-  }) satisfies WalletDayRates[];
-}
-
-const WalletChart = (
-  props: {
-    walletBaseCurrencies: WalletCurrency[];
-    walletQuoteCurrency: WalletCurrency;
-  } & DataLoaderQueryProps<ExchangeRateTimeseriesResponse | undefined>,
-) => {
+  walletQuoteCurrency: WalletCurrency;
+  dailyCurrencyRatesOverYearQuery: DataLoaderQueryProps<
+    ExchangeRateTimeseriesResponse | undefined
+  >;
+  monthlyCPIQuery: DataLoaderQueryProps<OECDResponse | undefined>;
+}) => {
   const { screenWidth } = useWindowSize();
 
   //data loader makes sense when data is being refetch on client - best thing you can do is to handle errors and show fallback when loading --- dont forget to set ssr: false
   return (
-    <DataLoader {...props}>
-      {(data) => {
-        const dailyCurrencyRatesArray = dailyCurrencyRatesToArray(
-          data.rates,
+    <DataLoader
+      customLoader={<WalletChartLoader />}
+      isInitialLoading={
+        dailyCurrencyRatesOverYearQuery.isInitialLoading ||
+        monthlyCPIQuery.isInitialLoading
+      }
+      isFetching={
+        dailyCurrencyRatesOverYearQuery.isFetching || monthlyCPIQuery.isFetching
+      }
+      data={dailyCurrencyRatesOverYearQuery.data}
+      error={dailyCurrencyRatesOverYearQuery.error}
+    >
+      {(dailyCurrencyRatesOverYear) => {
+        const dailyCurrencyRatesArray = convertDailyCurrencyRatesToArray(
+          dailyCurrencyRatesOverYear.rates,
           props.walletQuoteCurrency.name,
         );
-        const chartRates = getData({
+        const monthlyCPIValues =
+          monthlyCPIQuery.data && normalizeOECDData(monthlyCPIQuery.data);
+
+        const chartRates = calculateWalletValuesInTimespan({
           ratesArray: dailyCurrencyRatesArray,
+          monthlyCPIValues,
           ...props,
         });
 
@@ -114,6 +88,7 @@ const WalletChart = (
                       )
                     }
                   />
+                  <Legend verticalAlign="top" height={36} />
                   <YAxis
                     domain={yAxisDomainFormatter}
                     tickCount={5}
@@ -124,28 +99,30 @@ const WalletChart = (
                   <Area
                     type="monotone"
                     dataKey="value"
-                    stroke={Theme.colors.navy}
-                    fill={Theme.colors.dark_navy}
+                    stroke={Theme.colors.slate}
+                    fill={Theme.colors.slate}
                   />
+                  {monthlyCPIValues && (
+                    // show when inflation data available
+                    <Area
+                      type="monotone"
+                      dataKey="valueAfterInflation"
+                      stroke={Theme.colors.navy}
+                      fill={Theme.colors.navy}
+                    />
+                  )}
                   <Brush
                     dataKey="date"
                     height={40}
                     stroke={Theme.colors.dark_navy}
                     travellerWidth={screenWidth < 768 ? 20 : 15} //easier to handle on mobile when value is higher
                   />
-                  <Tooltip />
-                  {/* <Tooltip
-                    content={(
-                      tooltipProps: TooltipProps<ValueType, NameType>,
-                    ) => (
-                      <WalletChartTooltip
-                        {...props}
-                        {...tooltipProps}
-                        quoteCurrency={props.walletQuoteCurrency.name}
-                      />
+                  <Tooltip
+                    content={(tooltipProps: TooltipProps<number, string>) => (
+                      <WalletChartTooltip {...tooltipProps} />
                     )}
                     cursor={false}
-                  /> */}
+                  />
                 </AreaChart>
               </ResponsiveContainer>
             </div>
