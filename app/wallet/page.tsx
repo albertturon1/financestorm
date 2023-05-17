@@ -41,22 +41,31 @@ const WalletPage = async ({
     amount: DEFAULT_CURRENCY_AMOUNT,
   }) satisfies WalletCurrency;
 
+  const isValidQuoteCurrency = !!getWalletCurrencyFromString(quote);
+
   const baseCurrenciesFromString = baseCurrenciesWithAmountFromQuery(
     base,
     walletQuoteCurrency.name,
   );
-  const isValidQuoteCurrency = !!getWalletCurrencyFromString(quote);
+  const currenciesFromQuery: Currency[] = [];
+  const walletBaseCurrenciesFromQuery = baseCurrenciesFromString
+    ?.map((c) => getWalletCurrencyFromString(c))
+    .filter(Boolean) //might return undefined
+    .reduce((acc, item) => {
+      if (currenciesFromQuery.includes(item.name)) return acc; //checking if the currency is not repeated
+      acc.push(item);
+      currenciesFromQuery.push(item.name);
+      return acc;
+    }, [] as WalletCurrency[]);
 
+  const defaultWalletCurrencies = DEFAULT_BASE_CURRENCIES.map((c) => ({
+    name: c,
+    amount: DEFAULT_CURRENCY_AMOUNT,
+  }));
   const walletBaseCurrencies =
-    baseCurrenciesFromString && baseCurrenciesFromString.length
-      ? baseCurrenciesFromString
-          .map((c) => getWalletCurrencyFromString(c))
-          .filter(Boolean)
-      : DEFAULT_BASE_CURRENCIES.map((c) => ({
-          name: c,
-          amount: DEFAULT_CURRENCY_AMOUNT,
-        }));
-
+    walletBaseCurrenciesFromQuery && walletBaseCurrenciesFromQuery.length
+      ? walletBaseCurrenciesFromQuery
+      : defaultWalletCurrencies;
   const walletBaseCurrenciesNames = walletBaseCurrencies.map((c) => c.name);
 
   const timespan =
