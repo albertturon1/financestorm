@@ -5,12 +5,13 @@ import dynamic from 'next/dynamic';
 import { useDailyCurrencyRatesQuery } from '@api/client/CurrenctyRateClientApi';
 import { PrefetchDailyCurrencyRatesRequest } from '@api/interfaces/ICurrencyRateApi';
 import CurrencyRatesListSkeletonLoader from '@components/currencyRatesList/CurrencyRatesListSkeletonLoader';
-import NavigationButton from '@components/misc/NavigationButton';
 import PagePadding from '@components/misc/PagePadding';
 import PageTitle from '@components/misc/PageTitle';
-import SkeletonLoader from '@components/ui/SkeletonLoader';
-import { Currency } from '@interfaces/ICurrency';
+import { WalletCurrency } from '@src/zustand/walletStore';
 
+import HomepageMultiCurrencies from './HomepageMultiCurrencies';
+
+const HomepageWallet = dynamic(() => import('./HomepageWallet'));
 const CurrencyRatesList = dynamic(
   () => import('@components/currencyRatesList'),
   {
@@ -18,50 +19,42 @@ const CurrencyRatesList = dynamic(
   },
 );
 
-const MultiCurrenciesChart = dynamic(
-  () => import('@components/multiCurrenciesChart'),
-  {
-    ssr: false,
-    loading: () => (
-      <div className="mt-4 flex h-[350px] max-h-[37vh] w-full items-center">
-        <SkeletonLoader className="h-full w-full" />
-      </div>
-    ),
-  },
-);
-
 const HomepageHydrated = ({
   queryProps,
-  quoteCurrency,
   dataTimespan,
+  ...props
 }: {
   queryProps: PrefetchDailyCurrencyRatesRequest;
-  quoteCurrency: Currency;
+  walletQuoteCurrency: WalletCurrency;
+  walletBaseCurrencies: WalletCurrency[];
   dataTimespan: number;
 }) => {
-  const query = useDailyCurrencyRatesQuery(queryProps);
+  const dailyCurrencyRatesQuery = useDailyCurrencyRatesQuery(queryProps);
 
   return (
-    <div className="flex flex-col gap-y-10 lg:gap-y-20">
+    <div className="flex flex-col gap-y-10 lg:gap-y-16">
       <div className="flex flex-col gap-y-1">
         <PagePadding>
           <PageTitle title="Popular exchange rates" />
         </PagePadding>
         <CurrencyRatesList
           showGoToAllButton
-          {...query}
+          dailyCurrencyRatesQuery={dailyCurrencyRatesQuery}
           dataTimespan={dataTimespan}
         />
       </div>
       <PagePadding>
-        <div className="flex h-[400px] max-h-[40vh] flex-col gap-y-1">
-          <div className="flex h-min w-full flex-wrap items-center justify-between">
-            <PageTitle title="Exchange rates comparisons" />
-            <NavigationButton href={'/multi-currencies'} className="mt-0.5">
-              {'More'}
-            </NavigationButton>
-          </div>
-          <MultiCurrenciesChart {...query} quoteCurrency={quoteCurrency} />
+        <div className="flex flex-col gap-y-10 lg:gap-y-16">
+          <HomepageWallet
+            queryProps={queryProps}
+            {...props}
+            walletBaseCurrencies={props.walletBaseCurrencies.slice(0, 2)}
+          />
+          <HomepageMultiCurrencies
+            dailyCurrencyRatesQuery={dailyCurrencyRatesQuery}
+            {...props}
+            quoteCurrency={props.walletQuoteCurrency.name}
+          />
         </div>
       </PagePadding>
     </div>

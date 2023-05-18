@@ -9,18 +9,21 @@ import {
 import PageMaxWidth from '@components/misc/PageMaxWidth';
 import PagePadding from '@components/misc/PagePadding';
 import {
-  DEFAULT_BASE_CURRENCIES,
-  DEFAULT_QUOTE_CURRENCY,
+  DEFAULT_WALLET_BASE_CURRENCIES,
+  DEFAULT_WALLET_QUOTE_CURRENCY,
 } from '@constants/currencies';
 import { SERVER_DATE } from '@constants/dateTime';
 import HomepageHydrated from '@features/main/components/HomepageHydrated';
 import LandingHeader from '@features/main/components/landingHeader';
 
+const WALLET_BASE_CURRENCIES = DEFAULT_WALLET_BASE_CURRENCIES;
+const baseCurrenciesNames = WALLET_BASE_CURRENCIES.map((c) => c.name);
+
 const DATA_TIMESPAN = 30;
 const QUERY_PROPS = {
   queryParams: {
-    quote_currency: DEFAULT_QUOTE_CURRENCY,
-    base_currencies: DEFAULT_BASE_CURRENCIES,
+    quote_currency: DEFAULT_WALLET_QUOTE_CURRENCY.name,
+    base_currencies: baseCurrenciesNames,
     start_date: DateTime.now()
       .minus({ days: DATA_TIMESPAN - 1 })
       .toFormat(SERVER_DATE),
@@ -41,7 +44,8 @@ const HomePage = async () => {
         <PagePadding flex vertical horizontal={false}>
           <HomepageHydrated
             queryProps={QUERY_PROPS}
-            quoteCurrency={DEFAULT_QUOTE_CURRENCY}
+            walletQuoteCurrency={DEFAULT_WALLET_QUOTE_CURRENCY}
+            walletBaseCurrencies={WALLET_BASE_CURRENCIES}
             dataTimespan={DATA_TIMESPAN}
           />
         </PagePadding>

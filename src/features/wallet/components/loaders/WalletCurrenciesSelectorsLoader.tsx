@@ -3,7 +3,7 @@ import SkeletonLoader from '@components/ui/SkeletonLoader';
 const WalletCurrenciesSelectorsLoader = () => (
   <div className="flex w-full max-w-[300px] flex-col gap-y-2 self-center lg:text-lg mt-4 pb-2">
     <SkeletonLoader
-      className="mx-auto h-5 w-[250px]"
+      className="mx-auto h-5 w-[210px]"
       style={{
         animationDelay: `${0.05}s`,
         animationDuration: '1s',
