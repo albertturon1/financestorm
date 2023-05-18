@@ -9,8 +9,8 @@ import LandingPhone from 'public/assets/images/landing-phone.webp';
 import LandingHeaderTextsAndArrow from './LandingHeaderTextsAndArrow';
 
 export const LandingHeader = () => (
-  <div className="landing-header relative mb-10 flex w-full items-stretch lg:mb-20">
-    <div className="flex flex-1 bg-black/40 pt-8 pb-6 sm:py-10">
+  <div className="landing-header relative flex w-full items-stretch">
+    <div className="flex flex-1 bg-black/40 pb-6 pt-8 sm:py-10">
       <PageMaxWidth flex>
         <PagePadding flex>
           <div className="flex h-full w-full flex-col justify-between gap-x-1 gap-y-6 sm:flex-row sm:gap-x-3 lg:pr-[10%]">
@@ -20,7 +20,7 @@ export const LandingHeader = () => (
                 src={LandingPhone}
                 alt="LandingPhone"
                 fill
-                sizes=''
+                sizes=""
                 className="h-full w-full object-contain"
               />
             </div>
