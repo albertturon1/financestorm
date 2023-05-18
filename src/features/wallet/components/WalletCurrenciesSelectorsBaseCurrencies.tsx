@@ -29,7 +29,7 @@ const WalletCurrenciesSelectorsBaseCurrencies = ({
 
   return (
     <ScrollArea
-      className="flex h-[120px] max-w-full flex-col gap-y-2 overflow-hidden pr-[15px] lg:h-[140px]"
+      className="flex h-[130px] max-w-full flex-col gap-y-2 overflow-hidden pr-[15px]"
       type="always"
     >
       <div className="flex w-full flex-col justify-center gap-y-2 self-end lg:text-lg">

@@ -17,6 +17,7 @@ import { OECDResponse } from '@api/interfaces/IOECDApi';
 import DataLoader, { DataLoaderQueryProps } from '@components/ui/DataLoader';
 import { CHART_X_AXIS_TICK_FORMATTER_OPTIONS } from '@constants/chart';
 import useWindowSize from '@hooks/useWindowSize';
+import { Timespan } from '@interfaces/ICharts';
 import { ExchangeRateTimeseriesResponse } from '@interfaces/models/IExchangerate';
 import Theme from '@src/Theme';
 import { WalletCurrency } from '@src/zustand/walletStore';
@@ -31,6 +32,7 @@ import { calculateWalletValuesInTimespan } from '../tools/walletValuesInTimespan
 const WalletChart = ({
   dailyCurrencyRatesOverYearQuery,
   monthlyCPIQuery,
+  timespan,
   ...props
 }: {
   walletBaseCurrencies: WalletCurrency[];
@@ -39,8 +41,10 @@ const WalletChart = ({
     ExchangeRateTimeseriesResponse | undefined
   >;
   monthlyCPIQuery: DataLoaderQueryProps<OECDResponse | undefined>;
+  timespan: Timespan;
 }) => {
   const { screenWidth } = useWindowSize();
+  const showBrush = timespan === '1w' || timespan === '1m' || timespan === '1y'; //hiding over 1y due to performance
 
   //data loader makes sense when data is being refetch on client - best thing you can do is to handle errors and show fallback when loading --- dont forget to set ssr: false
   return (
@@ -70,9 +74,12 @@ const WalletChart = ({
           ...props,
         });
 
+        const showInflationChart =
+          monthlyCPIValues && timespan !== '1w' && timespan !== '1m'; //hiding due to performance and and because it doesn't make sense to inflation show data under a month (no data)
+
         return (
           <div className="flex flex-col gap-y-10">
-            <div className="h-[40vh] w-full">
+            <div className="h-[40vh] min-h-[400px] w-full">
               <ResponsiveContainer width={'100%'} height={'100%'}>
                 <AreaChart data={chartRates} margin={{ top: 20 }}>
                   <XAxis
@@ -102,7 +109,7 @@ const WalletChart = ({
                     stroke={Theme.colors.slate}
                     fill={Theme.colors.slate}
                   />
-                  {monthlyCPIValues && (
+                  {showInflationChart && (
                     // show when inflation data available
                     <Area
                       type="monotone"
@@ -111,12 +118,14 @@ const WalletChart = ({
                       fill={Theme.colors.navy}
                     />
                   )}
-                  <Brush
-                    dataKey="date"
-                    height={40}
-                    stroke={Theme.colors.dark_navy}
-                    travellerWidth={screenWidth < 768 ? 20 : 15} //easier to handle on mobile when value is higher
-                  />
+                  {showBrush && (
+                    <Brush
+                      dataKey="date"
+                      height={40}
+                      stroke={Theme.colors.dark_navy}
+                      travellerWidth={screenWidth < 768 ? 20 : 15} //easier to handle on mobile when value is higher
+                    />
+                  )}
                   <Tooltip
                     content={(tooltipProps: TooltipProps<number, string>) => (
                       <WalletChartTooltip {...tooltipProps} />
