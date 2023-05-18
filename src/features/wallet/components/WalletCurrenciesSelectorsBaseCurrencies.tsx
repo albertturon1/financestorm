@@ -8,7 +8,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import FlagInput from '@components/misc/FlagInput';
 import { Button } from '@components/ui/Button';
 import { ScrollBar, ScrollArea } from '@components/ui/ScrollArea';
-import { WalletCurrency, useWalletActions } from '@src/zustand/walletStore';
+import { WalletCurrency } from '@src/zustand/walletStore';
 import { createQueryString, substituePotentialNaNToZero } from '@utils/misc';
 
 const WalletCurrenciesSelectorsBaseCurrencies = ({
@@ -21,9 +21,6 @@ const WalletCurrenciesSelectorsBaseCurrencies = ({
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const { patchWalletBaseCurrency, deleteWalletBaseCurrency } =
-    useWalletActions();
-
   const toQueryString = useCallback(
     (param: string, value: string) =>
       createQueryString({ param, value, searchParams }),
@@ -32,7 +29,7 @@ const WalletCurrenciesSelectorsBaseCurrencies = ({
 
   return (
     <ScrollArea
-      className="flex h-[120px] sm:h-[160px] lg:h-[200px] max-w-full flex-col gap-y-2 pr-[15px] overflow-hidden"
+      className="flex h-[120px] max-w-full flex-col gap-y-2 overflow-hidden pr-[15px] lg:h-[140px]"
       type="always"
     >
       <div className="flex w-full flex-col justify-center gap-y-2 self-end lg:text-lg">
@@ -60,17 +57,10 @@ const WalletCurrenciesSelectorsBaseCurrencies = ({
                     `/wallet?${toQueryString('base', newBaseCurrencyParam)}`,
                     { forceOptimisticNavigation: true },
                   );
-
-                  //PATCH
-                  patchWalletBaseCurrency({
-                    currency: walletBaseCurrency,
-                    newValue: target.valueAsNumber,
-                  });
                 });
               }}
             />
             <Button
-              disabled
               variant="outline"
               className="aspect-square rounded-xl px-0"
               onClick={() => {
@@ -85,9 +75,6 @@ const WalletCurrenciesSelectorsBaseCurrencies = ({
                   `/wallet?${toQueryString('base', newBaseCurrencyParam)}`,
                   { forceOptimisticNavigation: true },
                 );
-
-                //remove baseCurrency from list
-                deleteWalletBaseCurrency(walletBaseCurrency.name);
               }}
             >
               <X strokeWidth={1} size={25} />
