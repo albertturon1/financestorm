@@ -13,11 +13,14 @@ import CurrencyRatesListLegend from './CurrencyRatesListLegend';
 export const CurrencyRatesList = ({
   showGoToAllButton = false,
   dataTimespan,
-  ...props
+  dailyCurrencyRatesQuery,
 }: {
   showGoToAllButton?: boolean;
   dataTimespan: number;
-} & DataLoaderQueryProps<ExchangeRateTimeseriesResponse | undefined>) => {
+  dailyCurrencyRatesQuery: DataLoaderQueryProps<
+    ExchangeRateTimeseriesResponse | undefined
+  >;
+}) => {
   //everything besides button takes 2 cols, button takes 1
   const styles = {
     rowStyle:
@@ -29,7 +32,7 @@ export const CurrencyRatesList = ({
   };
 
   return (
-    <DataLoader {...props}>
+    <DataLoader {...dailyCurrencyRatesQuery}>
       {(data) => {
         const dailyCurrencyRates = separateDailyCurrencyRates(data);
         return (
@@ -48,9 +51,7 @@ export const CurrencyRatesList = ({
               )}
             >
               <div className={styles.currencyStyle}>
-                <FlagCountryCode
-                  code={dailyCurrencyRates.quote_currency}
-                />
+                <FlagCountryCode code={dailyCurrencyRates.quote_currency} />
               </div>
               <p className={styles.amountStyle}>{'1'}</p>
             </div>

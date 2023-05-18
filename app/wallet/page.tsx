@@ -90,8 +90,8 @@ const WalletPage = async ({
         <PagePadding vertical>
           <div className="flex w-full flex-1 flex-col gap-y-6 lg:gap-y-8">
             <PageTitle
-              title="Multicurrency wallet (WORK IN PROGRESS)"
-              subtitle="Track wallet value fluctuations with virtual wallet."
+              title="Multicurrency wallet"
+              subtitle="Track multicurrency wallet value fluctuations with accumulated inflation."
             />
             <WalletHydrated
               queryProps={QUERY_PROPS}

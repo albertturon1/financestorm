@@ -122,11 +122,13 @@ const WalletHydrated = ({
         startCurrenciesTransition={startCurrenciesTransition}
       />
       {!isPending ? (
-        <WalletChart
-          dailyCurrencyRatesOverYearQuery={dailyCurrencyRatesOverYearQuery}
-          monthlyCPIQuery={monthlyCPIQuery}
-          {...props}
-        />
+        <div className="h-[40vh] min-h-[400px] w-full">
+          <WalletChart
+            dailyCurrencyRatesOverYearQuery={dailyCurrencyRatesOverYearQuery}
+            monthlyCPIQuery={monthlyCPIQuery}
+            {...props}
+          />
+        </div>
       ) : (
         <WalletChartLoader />
       )}
