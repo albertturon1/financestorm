@@ -4,8 +4,8 @@ import {
   useMemo,
   useTransition,
   useState,
-  useEffect,
   useCallback,
+  useEffect,
 } from 'react';
 
 import { DateTime } from 'luxon';
@@ -20,12 +20,13 @@ import { OECD_COUNTRIES } from '@constants/currencies';
 import { SERVER_DATE, YEAR_MONTH_FORMAT } from '@constants/dateTime';
 import { TIMESPANS } from '@constants/timespans';
 import { Timespan } from '@interfaces/ICharts';
-import { WalletCurrency, useWalletActions } from '@src/zustand/walletStore';
+import { WalletCurrency } from '@src/zustand/walletStore';
 import { createQueryString } from '@utils/misc';
 
 import WalletChartLoader from './loaders/WalletChartLoader';
 import WalletCurrenciesSelectorsLoader from './loaders/WalletCurrenciesSelectorsLoader';
-import useReplaceInvalidQuoteCurrency from '../hooks/useReplaceInvalidQuoteCurrency';
+import useReplaceInvalidWalletParams from '../hooks/useReplaceInvalidWalletParams';
+import useUpdateWalletStore from '../hooks/useUpdateWalletStore';
 
 const TimespanPicker = dynamic(() => import('@components/timespanPicker'), {
   loading: () => <TimespanPickerLoader />,
@@ -52,10 +53,11 @@ const WalletHydrated = ({
   walletBaseCurrencies: WalletCurrency[];
   queryProps: PrefetchDailyCurrencyRatesRequest;
   isValidQuoteCurrency: boolean;
+  isValidTimespan: boolean;
+  isValidBaseCurrencies: boolean;
 }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { patchWalletTimespan } = useWalletActions();
   const [timespan, setTimespan] = useState<Timespan>(props.timespan); //local state to speed up UI updates
   const [isPending, startCurrenciesTransition] = useTransition();
 
@@ -98,21 +100,20 @@ const WalletHydrated = ({
     [searchParams],
   );
 
-  useReplaceInvalidQuoteCurrency(props);
+  useUpdateWalletStore(props);
+  useReplaceInvalidWalletParams(props);
   return (
-    <div className="flex w-full flex-col gap-y-6 lg:gap-y-8">
+    <div className="flex w-full flex-col gap-y-2">
       <TimespanPicker
         active={timespan}
         onSelect={(newTimespan) => {
           setTimespan(newTimespan);
-          const newTimespanParam = `${toQueryString('timespan', newTimespan)}`;
+          const newTimespanParam = toQueryString('timespan', newTimespan);
 
           startCurrenciesTransition(() => {
             void router.replace(`/wallet?${newTimespanParam}`, {
               forceOptimisticNavigation: true,
             });
-
-            patchWalletTimespan(newTimespan);
           });
         }}
       />

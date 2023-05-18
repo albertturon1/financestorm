@@ -1,4 +1,5 @@
 import { Currency, CurrencyExceptDefault } from '@interfaces/ICurrency';
+import { WalletCurrency } from '@src/zustand/walletStore';
 
 // https://api.exchangerate.host/symbols
 export const CURRENCIES = <const>[
@@ -309,3 +310,14 @@ export const DEFAULT_BASE_CURRENCIES = [
   'gbp',
   'chf',
 ] satisfies CurrencyExceptDefault[];
+
+export const DEFAULT_WALLET_QUOTE_CURRENCY: WalletCurrency = {
+  name: DEFAULT_QUOTE_CURRENCY,
+  amount: DEFAULT_CURRENCY_AMOUNT,
+};
+
+export const DEFAULT_WALLET_BASE_CURRENCIES: WalletCurrency[] =
+  DEFAULT_BASE_CURRENCIES.map((c) => ({
+    name: c,
+    amount: DEFAULT_CURRENCY_AMOUNT,
+  }));

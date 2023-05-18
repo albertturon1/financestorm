@@ -58,15 +58,6 @@ const useWalletStore = create<WalletStoreState>()(
         resetBaseCurrencies: () => {
           set(() => ({ baseCurrencies: DEFAULT_WALLET_BASE_CURRENCIES }));
         },
-        // patchWalletBaseCurrency: (payload) =>
-        //   set((state) => {
-        //     const currencies = [...state.baseCurrencies]; //https://github.com/pmndrs/zustand/discussions/713
-        //     const currencyIndex = currencies.findIndex(
-        //       (c) => c.name === payload.name,
-        //     );
-        //     currencies[currencyIndex] = payload;
-        //     return { baseCurrencies: currencies };
-        //   }),
         patchWalletBaseCurrency: ({ currency, newValue }) =>
           set((state) => ({
             baseCurrencies: state.baseCurrencies.map((c) => {
