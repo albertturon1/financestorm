@@ -34,7 +34,8 @@ const WalletChartTooltip = ({
   const [{ value }] = data;
 
   //inflation data might not be available
-  const inflationAvailable = data.length === 2;
+  const inflationAvailable =
+    data.length === 2 && !!data[1].payload.monthCumulativeInflation;
   const postInflationValue = inflationAvailable && data[1].value;
   const inflationLoss =
     postInflationValue && cutNumber(value - postInflationValue);
@@ -52,17 +53,16 @@ const WalletChartTooltip = ({
           <p className="font-medium">{`${postInflationValue} ${quoteCurrency.toUpperCase()}`}</p>
         </TooltipRowWrapper>
       )}
-      {inflationAvailable && (
-        <TooltipRowWrapper>
-          <p>{'Accumulated inflation:'}</p>
-          <p className="font-medium">
-            {monthCumulativeInflation
-              ? `${monthCumulativeInflation}%`
-              : 'No data'}
-          </p>
-        </TooltipRowWrapper>
-      )}
-      {inflationAvailable && (
+
+      <TooltipRowWrapper>
+        <p>{'Accumulated inflation:'}</p>
+        <p className="font-medium">
+          {monthCumulativeInflation
+            ? `${monthCumulativeInflation}%`
+            : 'No data'}
+        </p>
+      </TooltipRowWrapper>
+      {inflationAvailable && inflationLoss && (
         <TooltipRowWrapper>
           <p>{'Inflation loss:'}</p>
           <p className="font-medium">{`${inflationLoss} ${quoteCurrency.toUpperCase()}`}</p>
