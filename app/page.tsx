@@ -39,17 +39,19 @@ const HomePage = async () => {
 
   return (
     <Hydrate state={hydratedState}>
-      <LandingHeader />
-      <PageMaxWidth flex>
-        <PagePadding flex vertical horizontal={false}>
-          <HomepageHydrated
-            queryProps={QUERY_PROPS}
-            walletQuoteCurrency={DEFAULT_WALLET_QUOTE_CURRENCY}
-            walletBaseCurrencies={WALLET_BASE_CURRENCIES}
-            dataTimespan={DATA_TIMESPAN}
-          />
-        </PagePadding>
-      </PageMaxWidth>
+      <div className="flex flex-col gap-y-6">
+        <LandingHeader />
+        <PageMaxWidth flex>
+          <PagePadding flex vertical horizontal={false}>
+            <HomepageHydrated
+              queryProps={QUERY_PROPS}
+              walletQuoteCurrency={DEFAULT_WALLET_QUOTE_CURRENCY}
+              walletBaseCurrencies={WALLET_BASE_CURRENCIES}
+              dataTimespan={DATA_TIMESPAN}
+            />
+          </PagePadding>
+        </PageMaxWidth>
+      </div>
     </Hydrate>
   );
 };
