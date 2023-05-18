@@ -37,7 +37,7 @@ const CurrenciesPage = async ({
   return (
     <Hydrate state={hydratedState}>
       <PageMaxWidth>
-        <PagePadding flex vertical>
+        <PagePadding flex vertical className="min-h-[95.1vh]">
           <CurrenciesHydrated
             queryProps={QUERY_PROPS}
             defaultCurrency={defaultQuoteCurrency}

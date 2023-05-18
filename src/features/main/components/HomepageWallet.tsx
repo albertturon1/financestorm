@@ -81,7 +81,7 @@ const HomepageWallet = ({
           walletCurrencies={[walletQuoteCurrency, ...walletBaseCurrencies]}
         />
       </div>
-      <div className="h-[400px] max-h-[40vh]">
+      <div className="h-[40vh] min-h-[400px]">
         <WalletChart
           showBrush={false}
           dailyCurrencyRatesOverYearQuery={dailyCurrencyRatesOverYearQuery}
