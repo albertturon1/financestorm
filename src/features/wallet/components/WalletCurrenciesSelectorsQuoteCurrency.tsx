@@ -1,13 +1,14 @@
 'use client';
 
-import { TransitionStartFunction, useCallback } from 'react';
+import { TransitionStartFunction, useCallback, useMemo } from 'react';
 
 import { useRouter, useSearchParams } from 'next/navigation';
 
-import { WalletCurrency, useWalletActions } from '@src/zustand/walletStore';
+import { CURRENCIES } from '@constants/currencies';
+import { WalletCurrency } from '@src/zustand/walletStore';
 import { createQueryString, substituePotentialNaNToZero } from '@utils/misc';
 
-import WalletQuoteCurrencyInputSelect from './WalletQuoteCurrencyInputSelect';
+import WalletCurrencyInputSelect from './WalletCurrencyInputSelect';
 
 const WalletCurrenciesSelectorsQuoteCurrency = ({
   walletBaseCurrencies,
@@ -21,20 +22,22 @@ const WalletCurrenciesSelectorsQuoteCurrency = ({
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const { patchWalletQuoteCurrency, deleteWalletBaseCurrency } =
-    useWalletActions();
-
   const toQueryString = useCallback(
     (param: string, value: string) =>
       createQueryString({ param, value, searchParams }),
     [searchParams],
   );
+  const availableCurrencies = useMemo(
+    () => CURRENCIES.filter((c) => c !== walletQuoteCurrency.name),
+    [walletQuoteCurrency.name],
+  );
 
   return (
     <div className="w-full pr-[59px]">
-      <WalletQuoteCurrencyInputSelect
+      <WalletCurrencyInputSelect
         defaultValue={walletQuoteCurrency.amount}
-        currency={walletQuoteCurrency.name}
+        currentCurrency={walletQuoteCurrency.name}
+        currencies={availableCurrencies}
         onInputChange={({ target }) => {
           const newQuoteCurrencyParam = `${toQueryString(
             'quote',
@@ -43,12 +46,7 @@ const WalletCurrenciesSelectorsQuoteCurrency = ({
             }`,
           )}`;
 
-          //change url and state after UI change
           startCurrenciesTransition(() => {
-            patchWalletQuoteCurrency({
-              ...walletQuoteCurrency,
-              amount: substituePotentialNaNToZero(target.valueAsNumber),
-            });
             void router.replace(`/wallet?${newQuoteCurrencyParam}`, {
               forceOptimisticNavigation: true,
             });
@@ -83,18 +81,10 @@ const WalletCurrenciesSelectorsQuoteCurrency = ({
             void router.replace(`/wallet?${trimParams}`, {
               forceOptimisticNavigation: true,
             });
-
-            patchWalletQuoteCurrency(possibleBaseCurrencyFutureQuote);
-            deleteWalletBaseCurrency(possibleBaseCurrencyFutureQuote.name); //delete currency from baseCurrencies
           } else {
             const trimParams = params.toString().replace(/%2C/g, ',');
             void router.replace(`/wallet?${trimParams}`, {
               forceOptimisticNavigation: true,
-            });
-
-            patchWalletQuoteCurrency({
-              name: newQuoteCurrency,
-              amount: walletQuoteCurrency.amount,
             });
           }
         }}
