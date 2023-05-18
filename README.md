@@ -1,17 +1,21 @@
 # FinanceStorm
 
-Harness the potential of numerous currencies, historical data, and a sleek UI/UX to make informed financial decisions and perform various currency-related operations and provides valuable insights. 
+Harness the potential of numerous currencies, historical data, and a sleek UI/UX to make informed financial decisions and perform various currency-related operations and provides valuable insights. Get access to multicurrencies comparisons and inflation statistics.
+
+Feel free to explore the different subpages and leverage the functionalities provided by My Web App. If you have any questions or need assistance, please refer to the documentation or reach out to our support team.
 
 It is built using Next.js 13 with /app directory, TypeScript, React Query, Zustand, Recharts, Radix UI, and Tailwind CSS.
 
-![Homepage preview](https://github.com/albertturon1/financestorm/blob/main/screenshots/homepage-preview.png?raw=true)
+Enjoy using FinanceStorm!
 
 #### Check version online 
 https://financestorm-albertturon1.vercel.app/
 
-Feel free to explore the different subpages and leverage the functionalities provided by My Web App. If you have any questions or need assistance, please refer to the documentation or reach out to our support team.
+### Homepage
+![Homepage preview](https://github.com/albertturon1/financestorm/blob/main/screenshots/homepage-preview.png?raw=true)
 
-Enjoy using FinanceStorm!
+### Virtual wallet
+![Virtual wallet preview](https://github.com/albertturon1/financestorm/blob/main/screenshots/wallet-preview.png?raw=true)
 
 ### Subpages
 
