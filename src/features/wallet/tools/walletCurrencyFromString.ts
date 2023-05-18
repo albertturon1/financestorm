@@ -15,8 +15,9 @@ export function getWalletCurrencyFromString(param: string | undefined) {
     CURRENCIES.find((currency) => currency === currencyCodeMatch[1]);
 
   if (!matchingCurrency) return;
-  return {
+  const waletCurrency: WalletCurrency = {
     amount: Number(currencyCodeMatch[0]),
     name: currencyCodeMatch[1] as Currency,
-  } satisfies WalletCurrency;
+  };
+  return waletCurrency;
 }

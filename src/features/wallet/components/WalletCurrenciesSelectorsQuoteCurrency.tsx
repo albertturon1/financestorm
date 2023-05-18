@@ -39,12 +39,12 @@ const WalletCurrenciesSelectorsQuoteCurrency = ({
         currentCurrency={walletQuoteCurrency.name}
         currencies={availableCurrencies}
         onInputChange={({ target }) => {
-          const newQuoteCurrencyParam = `${toQueryString(
+          const newQuoteCurrencyParam = toQueryString(
             'quote',
             `${substituePotentialNaNToZero(target.valueAsNumber)}${
               walletQuoteCurrency.name
             }`,
-          )}`;
+          );
 
           startCurrenciesTransition(() => {
             void router.replace(`/wallet?${newQuoteCurrencyParam}`, {

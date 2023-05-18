@@ -10,9 +10,8 @@ import PageMaxWidth from '@components/misc/PageMaxWidth';
 import PagePadding from '@components/misc/PagePadding';
 import PageTitle from '@components/misc/PageTitle';
 import {
-  DEFAULT_BASE_CURRENCIES,
-  DEFAULT_CURRENCY_AMOUNT,
-  DEFAULT_QUOTE_CURRENCY,
+  DEFAULT_WALLET_BASE_CURRENCIES,
+  DEFAULT_WALLET_QUOTE_CURRENCY,
 } from '@constants/currencies';
 import { SERVER_DATE } from '@constants/dateTime';
 import { DEFAULT_TIMESPAN, TIMESPANS } from '@constants/timespans';
@@ -36,12 +35,10 @@ const WalletPage = async ({
 }) => {
   const { quote, base, timespan: queryTimespan } = searchParams;
 
-  const walletQuoteCurrency = (getWalletCurrencyFromString(quote) ?? {
-    name: DEFAULT_QUOTE_CURRENCY,
-    amount: DEFAULT_CURRENCY_AMOUNT,
-  }) satisfies WalletCurrency;
-
   const isValidQuoteCurrency = !!getWalletCurrencyFromString(quote);
+  const walletCurrencyFromString = getWalletCurrencyFromString(quote);
+  const walletQuoteCurrency =
+    walletCurrencyFromString ?? DEFAULT_WALLET_QUOTE_CURRENCY;
 
   const baseCurrenciesFromString = baseCurrenciesWithAmountFromQuery(
     base,
@@ -58,20 +55,18 @@ const WalletPage = async ({
       return acc;
     }, [] as WalletCurrency[]);
 
-  const defaultWalletCurrencies = DEFAULT_BASE_CURRENCIES.map((c) => ({
-    name: c,
-    amount: DEFAULT_CURRENCY_AMOUNT,
-  }));
-  const walletBaseCurrencies =
-    walletBaseCurrenciesFromQuery && walletBaseCurrenciesFromQuery.length
-      ? walletBaseCurrenciesFromQuery
-      : defaultWalletCurrencies;
+  const isValidBaseCurrencies =
+    !!walletBaseCurrenciesFromQuery && !!walletBaseCurrenciesFromQuery.length;
+
+  const walletBaseCurrencies = isValidBaseCurrencies
+    ? walletBaseCurrenciesFromQuery
+    : DEFAULT_WALLET_BASE_CURRENCIES;
   const walletBaseCurrenciesNames = walletBaseCurrencies.map((c) => c.name);
 
-  const timespan =
-    queryTimespan && Object.keys(TIMESPANS).includes(queryTimespan)
-      ? queryTimespan
-      : DEFAULT_TIMESPAN;
+  const isValidTimespan =
+    !!queryTimespan && !!Object.keys(TIMESPANS).includes(queryTimespan);
+
+  const timespan = isValidTimespan ? queryTimespan : DEFAULT_TIMESPAN;
 
   const QUERY_PROPS = {
     queryParams: {
@@ -104,6 +99,8 @@ const WalletPage = async ({
               walletQuoteCurrency={walletQuoteCurrency}
               walletBaseCurrencies={walletBaseCurrencies}
               isValidQuoteCurrency={isValidQuoteCurrency}
+              isValidTimespan={isValidTimespan}
+              isValidBaseCurrencies={isValidBaseCurrencies}
             />
           </div>
         </PagePadding>
