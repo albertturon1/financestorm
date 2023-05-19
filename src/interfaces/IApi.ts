@@ -16,16 +16,18 @@ export interface APIError {
 
 export type QueryError = APIError | undefined;
 
+export type ApiQueryOptions = Omit<
+  FetchQueryOptions,
+  | 'initialData'
+  | 'queryKey'
+  | 'queryFn'
+  | 'isDataEqual'
+  | 'behavior'
+  | 'queryHash'
+  | 'structuralSharing'
+>;
+
 export type PrefetchRequest<T extends AnyObject<T>> = {
   queryParams: T;
-  queryOptions?: Omit<
-    FetchQueryOptions,
-    | 'initialData'
-    | 'queryKey'
-    | 'queryFn'
-    | 'isDataEqual'
-    | 'behavior'
-    | 'queryHash'
-    | 'structuralSharing'
-  >;
+  queryOptions?: ApiQueryOptions;
 };
