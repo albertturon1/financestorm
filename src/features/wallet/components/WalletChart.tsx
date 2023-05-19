@@ -53,7 +53,7 @@ const WalletChart = ({
   const { screenWidth } = useWindowSize();
 
   const isBrushVisible =
-    showBrush && checkIsOECDFetchEnabledByTimespan(timespan); //hiding over 1y due to performance
+    showBrush && !checkIsOECDFetchEnabledByTimespan(timespan); //hiding over 1y due to performance
 
   //data loader makes sense when data is being refetch on client - best thing you can do is to handle errors and show fallback when loading --- dont forget to set ssr: false
   return (
