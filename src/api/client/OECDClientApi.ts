@@ -1,6 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { OECDResponse, MonthlyCPIRequest } from '@api/interfaces/IOECDApi';
+import { checkIsOECDFetchEnabledByTimespan } from '@features/wallet/components/WalletChart';
+import { Timespan } from '@interfaces/ICharts';
 import { OECDCountryCode } from '@interfaces/ICurrency';
 import api from '@utils/api';
 import { genQueryString } from '@utils/misc';
@@ -22,6 +24,7 @@ export const getMonthlyCPI = async ({
 export const useMonthlyCPIQuery = (
   props: Omit<MonthlyCPIRequest, 'country'> & {
     country: OECDCountryCode | undefined;
+    timespan: Timespan;
   },
 ) =>
   useQuery({
@@ -34,6 +37,6 @@ export const useMonthlyCPIQuery = (
         ...props,
         country: props.country as OECDCountryCode,
       }),
-    staleTime: 1000 * 60 * 30,
-    enabled: !!props.country,
+    staleTime: 1000 * 60 * 60 * 24, //24 hours
+    enabled: !!props.country && checkIsOECDFetchEnabledByTimespan(props.timespan),
   });

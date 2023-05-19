@@ -19,6 +19,7 @@ export const TimespanPicker = ({
         )}
         key={timespan}
         onClick={() => {
+          if (timespan === active) return; //blocking setting active timespan option
           onSelect(timespan as Timespan);
         }}
       >

@@ -65,14 +65,15 @@ const WalletHydrated = ({
     .minus({ months: 1 })
     .toFormat(YEAR_MONTH_FORMAT);
 
-  const curerencyCountry = Object.entries(OECD_COUNTRIES).find(
+  const currencyCountry = Object.entries(OECD_COUNTRIES).find(
     ([currency]) => currency === props.walletQuoteCurrency.name,
   );
 
   const monthlyCPIQuery = useMonthlyCPIQuery({
     startPeriod: `${startYearMonth}-01`, //fetching extra month
     endPeriod: DateTime.now().toFormat(SERVER_DATE),
-    country: curerencyCountry?.[1], //possible undefined - not every currency has OECD data
+    country: currencyCountry?.[1], //possible undefined - not every currency has OECD data
+    timespan,
   });
 
   useEffect(() => {
@@ -121,17 +122,19 @@ const WalletHydrated = ({
         {...props}
         startCurrenciesTransition={startCurrenciesTransition}
       />
-      {!isPending ? (
-        <div className="h-[40vh] min-h-[400px] w-full">
-          <WalletChart
-            dailyCurrencyRatesOverYearQuery={dailyCurrencyRatesOverYearQuery}
-            monthlyCPIQuery={monthlyCPIQuery}
-            {...props}
-          />
-        </div>
-      ) : (
-        <WalletChartLoader />
-      )}
+      <div className="mt-5">
+        {!isPending ? (
+          <div className="h-[40vh] min-h-[400px] w-full">
+            <WalletChart
+              dailyCurrencyRatesOverYearQuery={dailyCurrencyRatesOverYearQuery}
+              monthlyCPIQuery={monthlyCPIQuery}
+              {...props}
+            />
+          </div>
+        ) : (
+          <WalletChartLoader />
+        )}
+      </div>
     </div>
   );
 };

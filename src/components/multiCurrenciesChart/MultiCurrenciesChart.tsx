@@ -9,6 +9,7 @@ import {
   XAxis,
   Tooltip,
   TooltipProps,
+  CartesianGrid,
 } from 'recharts';
 
 import DataLoader, { DataLoaderQueryProps } from '@components/ui/DataLoader';
@@ -59,12 +60,16 @@ export const MultiCurrenciesChart = ({
                 )
               }
             />
+            <CartesianGrid vertical={false} />
             <YAxis
               domain={yAxisDomainFormatter}
-              type="number"
               tickCount={5}
               mirror
-              tick={{ fill: Theme.colors.dark_navy }}
+              tick={{
+                fill: Theme.colors.dark_navy,
+                dy: -11,
+                fontSize: 14,
+              }}
             />
             <Legend verticalAlign="top" wrapperStyle={{ lineHeight: '40px' }} />
             {dailyCurrencyRates.rates_array.map((currencyRates) => (

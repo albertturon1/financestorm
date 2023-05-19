@@ -40,14 +40,15 @@ const HomepageWallet = ({
     .minus({ months: 1 })
     .toFormat(YEAR_MONTH_FORMAT);
 
-  const curerencyCountry = Object.entries(OECD_COUNTRIES).find(
+  const currencyCountry = Object.entries(OECD_COUNTRIES).find(
     ([currency]) => currency === walletQuoteCurrency.name,
   );
 
   const monthlyCPIQuery = useMonthlyCPIQuery({
     startPeriod: `${startYearMonth}-01`, //fetching extra month
     endPeriod: DateTime.now().toFormat(SERVER_DATE),
-    country: curerencyCountry?.[1], //possible undefined - not every currency has OECD data
+    country: currencyCountry?.[1], //possible undefined - not every currency has OECD data
+    timespan: TIMESPAN,
   });
 
   const baseCurrenciesNames = useMemo(
