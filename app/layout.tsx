@@ -1,22 +1,23 @@
 import '@styles/global.css';
-import '@fontsource/bebas-neue/400.css';
 
 import { ReactNode } from 'react';
 
 import { Analytics } from '@vercel/analytics/react';
+import { Metadata } from 'next';
 
 import Navbar from '@components/navbar';
 
 import ReactQueryProvider from '../src/components/providers/ReactQueryProvider';
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'FinanceStorm',
-  description: `Albert Turoń's engineers thesis refactored`,
+  description: `Harness the potential of numerous currencies, historical data, and a sleek UI/UX to make informed financial decisions and perform various currency-related operations and provides valuable insights. Get access to multicurrencies comparisons and inflation statistics.`,
+  
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html>
+    <html lang="en">
       <head>
         <title>{'FinanceStorm'}</title>
       </head>
