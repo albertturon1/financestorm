@@ -12,10 +12,8 @@ const useReplaceInvalidWalletParams = ({
   isValidTimespan,
   timespan,
   isValidBaseCurrencies,
-  walletBaseCurrencies,
 }: {
   walletQuoteCurrency: WalletCurrency;
-  walletBaseCurrencies: WalletCurrency[];
   isValidQuoteCurrency: boolean;
   isValidTimespan: boolean;
   isValidBaseCurrencies: boolean;
@@ -30,6 +28,7 @@ const useReplaceInvalidWalletParams = ({
     [searchParams],
   );
 
+  //quote
   useEffect(() => {
     if (!isValidQuoteCurrency) {
       const newQuoteCurrencyParam = toQueryString(
@@ -61,18 +60,19 @@ const useReplaceInvalidWalletParams = ({
     }
   }, [isValidTimespan, router, timespan, toQueryString]);
 
+  //base
   useEffect(() => {
     if (!isValidBaseCurrencies) {
-      const baseCurrenciesString = walletBaseCurrencies
-        .map((wb) => `${wb.amount}${wb.name}`)
-        .join(',');
-      const newBaseCurrencyParam = toQueryString('base', baseCurrenciesString);
+      const params = new URLSearchParams(
+        searchParams as unknown as URLSearchParams,
+      );
+      params.delete('base'); //delete base from params
 
-      void router.replace(`/wallet?${newBaseCurrencyParam}`, {
+      void router.replace(`/wallet?${params.toString()}`, {
         forceOptimisticNavigation: true,
       });
     }
-  }, [isValidBaseCurrencies, router, toQueryString, walletBaseCurrencies]);
+  }, [isValidBaseCurrencies, router, searchParams]);
 };
 
 export default useReplaceInvalidWalletParams;

@@ -39,3 +39,8 @@ yarn-error.log*
 .turbo
 .vscode
 styles/dist.css
+
+#yarn
+.yarn/*
+!.yarn/releases
+!.yarn/plugins
