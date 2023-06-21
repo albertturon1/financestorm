@@ -28,9 +28,6 @@ module.exports = {
         secondaryBlack: 'var(--secondaryBlack)',
         tertiaryBlack: 'var(--tertiaryBlack)',
       },
-      fontFamily: {
-        bebas_neue: ['Bebas Neue', 'sans-serif'],
-      },
     },
   },
 };
