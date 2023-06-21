@@ -20,8 +20,8 @@ export const Navbar = () => {
 
   //hide menu when screen resizes over sm
   useEffect(() => {
-    if (screenWidth >= 640) setOpen(false);
-  }, [screenWidth]);
+    if (screenWidth >= 640 && open !== false) setOpen(false);
+  }, [open, screenWidth]);
 
   return (
     <div
