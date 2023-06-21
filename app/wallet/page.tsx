@@ -10,7 +10,6 @@ import PageMaxWidth from '@components/misc/PageMaxWidth';
 import PagePadding from '@components/misc/PagePadding';
 import PageTitle from '@components/misc/PageTitle';
 import {
-  DEFAULT_WALLET_BASE_CURRENCIES,
   DEFAULT_WALLET_QUOTE_CURRENCY,
 } from '@constants/currencies';
 import { SERVER_DATE } from '@constants/dateTime';
@@ -45,8 +44,9 @@ const WalletPage = async ({
     walletQuoteCurrency.name,
   );
   const currenciesFromQuery: Currency[] = [];
-  const walletBaseCurrenciesFromQuery = baseCurrenciesFromString
-    ?.map((c) => getWalletCurrencyFromString(c))
+
+  //might have length 0
+  const walletBaseCurrencies = baseCurrenciesFromString.map((c) => getWalletCurrencyFromString(c))
     .filter(Boolean) //might return undefined
     .reduce((acc, item) => {
       if (currenciesFromQuery.includes(item.name)) return acc; //checking if the currency is not repeated
@@ -55,12 +55,8 @@ const WalletPage = async ({
       return acc;
     }, [] as WalletCurrency[]);
 
-  const isValidBaseCurrencies =
-    !!walletBaseCurrenciesFromQuery && !!walletBaseCurrenciesFromQuery.length;
-
-  const walletBaseCurrencies = isValidBaseCurrencies
-    ? walletBaseCurrenciesFromQuery
-    : DEFAULT_WALLET_BASE_CURRENCIES;
+  const isValidBaseCurrencies = !!walletBaseCurrencies.length
+ 
   const walletBaseCurrenciesNames = walletBaseCurrencies.map((c) => c.name);
 
   const isValidTimespan =

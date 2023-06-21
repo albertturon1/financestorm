@@ -36,7 +36,7 @@ export function baseCurrenciesWithAmountFromQuery(
   base: string | undefined,
   quoteCurrency: Currency,
 ) {
-  if (!base || !base.length || typeof base !== 'string') return;
+  if (!base || !base.length || typeof base !== 'string') return [];
   return base
     .split(',')
     .filter((c) => !c.includes(quoteCurrency)) //remove quote currency from results
