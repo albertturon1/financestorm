@@ -23,9 +23,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <body>
         <ReactQueryProvider>
           <main
-            className={
+            className=
               'min-w-screen relative flex min-h-screen flex-col bg-background'
-            }
           >
             <Navbar />
             <div className="flex flex-1 flex-col">{children}</div>
