@@ -1,10 +1,11 @@
-import { useEffect, useCallback } from 'react';
+import { useEffect } from 'react';
 
 import { useRouter, useSearchParams } from 'next/navigation';
 
+import { useModifySearchParams } from '@hooks/useModifySearchParams';
 import { Timespan } from '@interfaces/ICharts';
 import { WalletCurrency } from '@src/zustand/walletStore';
-import { createQueryString, substituePotentialNaNToZero } from '@utils/misc';
+import { substituePotentialNaNToZero } from '@utils/misc';
 
 export const useReplaceInvalidWalletParams = ({
   isValidQuoteCurrency,
@@ -22,11 +23,7 @@ export const useReplaceInvalidWalletParams = ({
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const toQueryString = useCallback(
-    (param: string, value: string) =>
-      createQueryString({ param, value, searchParams }),
-    [searchParams],
-  );
+  const toQueryString = useModifySearchParams();
 
   //quote
   useEffect(() => {

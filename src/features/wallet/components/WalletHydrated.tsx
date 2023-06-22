@@ -1,16 +1,10 @@
 'use client';
 
-import {
-  useMemo,
-  useTransition,
-  useState,
-  useCallback,
-  useEffect,
-} from 'react';
+import { useMemo, useTransition, useState, useEffect } from 'react';
 
 import { DateTime } from 'luxon';
 import dynamic from 'next/dynamic';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 import { useDailyCurrencyRatesOverYearQuery } from '@api/client/CurrenctyRateClientApi';
 import { useMonthlyCPIQuery } from '@api/client/OECDClientApi';
@@ -19,9 +13,9 @@ import TimespanPickerLoader from '@components/timespanPicker/TimespanPickerLoade
 import { OECD_COUNTRIES } from '@constants/currencies';
 import { SERVER_DATE, YEAR_MONTH_FORMAT } from '@constants/dateTime';
 import { TIMESPANS } from '@constants/timespans';
+import { useModifySearchParams } from '@hooks/useModifySearchParams';
 import { Timespan } from '@interfaces/ICharts';
 import { WalletCurrency } from '@src/zustand/walletStore';
-import { createQueryString } from '@utils/misc';
 
 import WalletChartLoader from './loaders/WalletChartLoader';
 import WalletCurrenciesSelectorsLoader from './loaders/WalletCurrenciesSelectorsLoader';
@@ -57,7 +51,6 @@ const WalletHydrated = ({
   isValidBaseCurrencies: boolean;
 }) => {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const [timespan, setTimespan] = useState<Timespan>(props.timespan); //local state to speed up UI updates
   const [isPending, startCurrenciesTransition] = useTransition();
 
@@ -95,11 +88,7 @@ const WalletHydrated = ({
     },
   });
 
-  const toQueryString = useCallback(
-    (param: string, value: string) =>
-      createQueryString({ param, value, searchParams }),
-    [searchParams],
-  );
+  const toQueryString = useModifySearchParams();
 
   useUpdateWalletStore(props);
   useReplaceInvalidWalletParams(props);

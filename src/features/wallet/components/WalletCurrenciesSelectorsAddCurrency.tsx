@@ -1,15 +1,16 @@
 'use client';
 
-import { useCallback, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { Plus } from 'lucide-react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 import { Button } from '@components/ui/Button';
 import { CURRENCIES } from '@constants/currencies';
+import { useModifySearchParams } from '@hooks/useModifySearchParams';
 import { Currency } from '@interfaces/ICurrency';
 import { WalletCurrency } from '@src/zustand/walletStore';
-import { createQueryString, substituePotentialNaNToZero } from '@utils/misc';
+import { substituePotentialNaNToZero } from '@utils/misc';
 
 import WalletCurrencyInputSelect from './WalletCurrencyInputSelect';
 
@@ -32,13 +33,8 @@ const WalletCurrenciesSelectorsAddCurrency = ({
   const [newWalletCurrency, setNewWalletCurrency] =
     useState<NewWalletCurrency>(initialState);
   const router = useRouter();
-  const searchParams = useSearchParams();
 
-  const toQueryString = useCallback(
-    (param: string, value: string) =>
-      createQueryString({ param, value, searchParams }),
-    [searchParams],
-  );
+  const toQueryString = useModifySearchParams();
   const availableCurrencies = useMemo(() => {
     const baseCurrenciesNames = walletBaseCurrencies.map((wc) => wc.name);
     return CURRENCIES.filter(

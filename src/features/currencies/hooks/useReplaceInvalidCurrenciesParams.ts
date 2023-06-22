@@ -1,9 +1,9 @@
-import { useEffect, useCallback } from 'react';
+import { useEffect } from 'react';
 
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
+import { useModifySearchParams } from '@hooks/useModifySearchParams';
 import { Currency } from '@interfaces/ICurrency';
-import { createQueryString } from '@utils/misc';
 
 export const useReplaceInvalidCurrenciesParams = ({
   isValidQuoteCurrency,
@@ -13,13 +13,8 @@ export const useReplaceInvalidCurrenciesParams = ({
   quoteCurrency: Currency;
 }) => {
   const router = useRouter();
-  const searchParams = useSearchParams();
 
-  const toQueryString = useCallback(
-    (param: string, value: string) =>
-      createQueryString({ param, value, searchParams }),
-    [searchParams],
-  );
+  const toQueryString = useModifySearchParams();
 
   useEffect(() => {
     if (!isValidQuoteCurrency) {

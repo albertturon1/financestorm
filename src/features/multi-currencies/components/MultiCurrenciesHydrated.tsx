@@ -1,18 +1,18 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import dynamic from 'next/dynamic';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 import { useDailyCurrencyRatesOverYearQuery } from '@api/client/CurrenctyRateClientApi';
 import { PrefetchDailyCurrencyRatesRequest } from '@api/interfaces/ICurrencyRateApi';
 import TimespanPicker from '@components/timespanPicker';
 import SkeletonLoader from '@components/ui/SkeletonLoader';
 import { TIMESPANS } from '@constants/timespans';
+import { useModifySearchParams } from '@hooks/useModifySearchParams';
 import { Timespan } from '@interfaces/ICharts';
 import { Currency } from '@interfaces/ICurrency';
-import { createQueryString } from '@utils/misc';
 
 import { useReplaceInvalidMultiCurrenciesParams } from '../hooks/useReplaceInvalidMultiCurrenciesParams';
 
@@ -37,7 +37,6 @@ const MultiCurrenciesHydrated = ({
   timespan: Timespan;
 }) => {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const [timespan, setTimespan] = useState<Timespan>(props.timespan);
 
   //useState for faster UI transition of TimespanPicker
@@ -53,11 +52,7 @@ const MultiCurrenciesHydrated = ({
     },
   });
 
-  const toQueryString = useCallback(
-    (param: string, value: string) =>
-      createQueryString({ param, value, searchParams }),
-    [searchParams],
-  );
+  const toQueryString = useModifySearchParams();
 
   useReplaceInvalidMultiCurrenciesParams(props);
   return (

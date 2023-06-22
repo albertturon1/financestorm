@@ -1,12 +1,13 @@
 'use client';
 
-import { TransitionStartFunction, useCallback, useMemo } from 'react';
+import { TransitionStartFunction, useMemo } from 'react';
 
 import { useRouter, useSearchParams } from 'next/navigation';
 
 import { CURRENCIES } from '@constants/currencies';
+import { useModifySearchParams } from '@hooks/useModifySearchParams';
 import { WalletCurrency } from '@src/zustand/walletStore';
-import { createQueryString, substituePotentialNaNToZero } from '@utils/misc';
+import { substituePotentialNaNToZero } from '@utils/misc';
 
 import WalletCurrencyInputSelect from './WalletCurrencyInputSelect';
 
@@ -22,11 +23,7 @@ const WalletCurrenciesSelectorsQuoteCurrency = ({
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const toQueryString = useCallback(
-    (param: string, value: string) =>
-      createQueryString({ param, value, searchParams }),
-    [searchParams],
-  );
+  const toQueryString = useModifySearchParams();
   const availableCurrencies = useMemo(
     () => CURRENCIES.filter((c) => c !== walletQuoteCurrency.name),
     [walletQuoteCurrency.name],
@@ -57,7 +54,7 @@ const WalletCurrenciesSelectorsQuoteCurrency = ({
           const possibleBaseCurrencyFutureQuote = walletBaseCurrencies.find(
             (c) => c.name === newQuoteCurrency,
           );
-
+          //TODO: remove redundancy
           const params = new URLSearchParams(
             searchParams as unknown as URLSearchParams,
           );

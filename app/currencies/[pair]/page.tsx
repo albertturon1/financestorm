@@ -1,6 +1,7 @@
 import { Hydrate } from '@tanstack/react-query';
 import { DateTime } from 'luxon';
 import dynamic from 'next/dynamic';
+import { notFound } from 'next/navigation';
 
 import { prefetchGetDailyCurrencyRatesOverYearQuery } from '@api/CurrencyRateApi';
 import {
@@ -9,6 +10,7 @@ import {
 } from '@api/interfaces/ICurrencyRateApi';
 import PageMaxWidth from '@components/misc/PageMaxWidth';
 import PagePadding from '@components/misc/PagePadding';
+import { CURRENCIES } from '@constants/currencies';
 import { SERVER_DATE } from '@constants/dateTime';
 import { DEFAULT_TIMESPAN, TIMESPANS } from '@constants/timespans';
 import CurrenciesPairHydrated from '@features/currencies-pair/components/CurrenciesPairHydrated';
@@ -31,6 +33,9 @@ const CurrenciesPairPage = async ({
     Currency,
     Currency,
   ];
+
+  if (!CURRENCIES.includes(baseCurrency) || !CURRENCIES.includes(quoteCurrency))
+    notFound();
 
   const QUERY_PROPS = {
     queryParams: {

@@ -3,14 +3,15 @@
 import { ChangeEvent, TransitionStartFunction, useCallback } from 'react';
 
 import { X } from 'lucide-react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 import FlagInput from '@components/misc/FlagInput';
 import { Button } from '@components/ui/Button';
 import { ScrollBar, ScrollArea } from '@components/ui/ScrollArea';
+import { useModifySearchParams } from '@hooks/useModifySearchParams';
 import { Currency } from '@interfaces/ICurrency';
 import { WalletCurrency } from '@src/zustand/walletStore';
-import { createQueryString, substituePotentialNaNToZero } from '@utils/misc';
+import { substituePotentialNaNToZero } from '@utils/misc';
 
 const WalletCurrenciesSelectorsBaseCurrencies = ({
   walletBaseCurrencies,
@@ -20,13 +21,8 @@ const WalletCurrenciesSelectorsBaseCurrencies = ({
   startCurrenciesTransition: TransitionStartFunction;
 }) => {
   const router = useRouter();
-  const searchParams = useSearchParams();
 
-  const toQueryString = useCallback(
-    (param: string, value: string) =>
-      createQueryString({ param, value, searchParams }),
-    [searchParams],
-  );
+  const toQueryString = useModifySearchParams();
 
   const onInputChange = useCallback(
     (
