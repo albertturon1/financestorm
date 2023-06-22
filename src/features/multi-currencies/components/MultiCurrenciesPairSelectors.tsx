@@ -1,14 +1,14 @@
 'use client';
 
-import { useMemo, useCallback } from 'react';
+import { useMemo } from 'react';
 
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 import CurrenciesSelectList from '@components/misc/CurrenciesSelectList';
 import MultiCurrenciesSelectList from '@components/misc/MultiCurrenciesSelectList';
 import { CURRENCIES } from '@constants/currencies';
+import { useModifySearchParams } from '@hooks/useModifySearchParams';
 import { Currency } from '@interfaces/ICurrency';
-import { createQueryString } from '@utils/misc';
 
 const MultiCurrenciesPairSelectors = ({
   baseCurrencies,
@@ -18,7 +18,6 @@ const MultiCurrenciesPairSelectors = ({
   quoteCurrency: Currency;
 }) => {
   const router = useRouter();
-  const searchParams = useSearchParams();
 
   const baseCurrenciesAvailable = useMemo(
     () => CURRENCIES.filter((currency) => currency !== quoteCurrency),
@@ -29,11 +28,7 @@ const MultiCurrenciesPairSelectors = ({
     [quoteCurrency],
   );
 
-  const toQueryString = useCallback(
-    (param: string, value: string) =>
-      createQueryString({ param, value, searchParams }),
-    [searchParams],
-  );
+  const toQueryString = useModifySearchParams();
 
   return (
     <div className="flex w-full items-end gap-x-1 xs:gap-x-3 sm:gap-x-5 lg:gap-x-10">

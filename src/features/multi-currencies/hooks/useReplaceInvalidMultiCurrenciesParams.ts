@@ -1,13 +1,13 @@
-import { useEffect, useCallback } from 'react';
+import { useEffect } from 'react';
 
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 import {
   DEFAULT_BASE_CURRENCIES,
   DEFAULT_QUOTE_CURRENCY,
 } from '@constants/currencies';
+import { useModifySearchParams } from '@hooks/useModifySearchParams';
 import { Timespan } from '@interfaces/ICharts';
-import { createQueryString } from '@utils/misc';
 
 export const useReplaceInvalidMultiCurrenciesParams = ({
   isValidQuoteCurrencyFromParams,
@@ -21,13 +21,8 @@ export const useReplaceInvalidMultiCurrenciesParams = ({
   timespan: Timespan;
 }) => {
   const router = useRouter();
-  const searchParams = useSearchParams();
 
-  const toQueryString = useCallback(
-    (param: string, value: string) =>
-      createQueryString({ param, value, searchParams }),
-    [searchParams],
-  );
+  const toQueryString = useModifySearchParams();
 
   //quote
   useEffect(() => {
