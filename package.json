@@ -6,7 +6,8 @@
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write \"**/*.{js,ts,tsx,md}\"",
-    "analyze": "cross-env ANALYZE=true next build"
+    "analyze": "cross-env ANALYZE=true next build",
+    "prettier": "npx prettier --write \"**/*.tsx\""
   },
   "prettier": {
     "arrowParens": "always",
