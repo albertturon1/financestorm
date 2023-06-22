@@ -20,9 +20,9 @@ import { WalletCurrency } from '@src/zustand/walletStore';
 import { baseCurrenciesFromCommaString } from '@utils/misc';
 
 export type WalletPageProps = {
-  quote?: Currency;
-  base?: string;
-  timespan?: Timespan;
+  quote: Currency | undefined;
+  base: string | undefined;
+  timespan: Timespan | undefined;
 };
 
 const WalletPage = async ({

@@ -23,9 +23,9 @@ import { Currency } from '@interfaces/ICurrency';
 import { baseCurrenciesFromCommaString } from '@utils/misc';
 
 export type MultiCurrenciesPageProps = {
-  quote?: Currency;
-  base?: string;
-  timespan?: Timespan;
+  quote: Currency | undefined;
+  base: string | undefined;
+  timespan: Timespan | undefined;
 };
 
 const MultiCurrenciesPage = async ({
