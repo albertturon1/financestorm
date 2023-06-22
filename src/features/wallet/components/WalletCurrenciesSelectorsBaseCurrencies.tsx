@@ -1,6 +1,6 @@
 'use client';
 
-import { TransitionStartFunction, useCallback } from 'react';
+import { ChangeEvent, TransitionStartFunction, useCallback } from 'react';
 
 import { X } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -8,6 +8,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import FlagInput from '@components/misc/FlagInput';
 import { Button } from '@components/ui/Button';
 import { ScrollBar, ScrollArea } from '@components/ui/ScrollArea';
+import { Currency } from '@interfaces/ICurrency';
 import { WalletCurrency } from '@src/zustand/walletStore';
 import { createQueryString, substituePotentialNaNToZero } from '@utils/misc';
 
@@ -27,9 +28,34 @@ const WalletCurrenciesSelectorsBaseCurrencies = ({
     [searchParams],
   );
 
+  const onInputChange = useCallback(
+    (
+      event: ChangeEvent<HTMLInputElement>,
+      walletBaseCurrencyName: Currency,
+    ) => {
+      const newBaseCurrencyParam = walletBaseCurrencies
+        .map((c) => {
+          if (c.name !== walletBaseCurrencyName)
+            return `${substituePotentialNaNToZero(c.amount)}${c.name}`;
+          return `${substituePotentialNaNToZero(event.target.valueAsNumber)}${
+            c.name
+          }`;
+        })
+        .join(',');
+
+      startCurrenciesTransition(() => {
+        void router.replace(
+          `/wallet?${toQueryString('base', newBaseCurrencyParam)}`,
+          { forceOptimisticNavigation: true },
+        );
+      });
+    },
+    [router, startCurrenciesTransition, toQueryString, walletBaseCurrencies],
+  );
+
   return (
     <ScrollArea
-      className="flex h-[130px] max-w-full flex-col gap-y-2 overflow-hidden pr-[15px]"
+      className="flex h-[90px] max-w-full flex-col gap-y-2 overflow-hidden pr-[15px] tall:h-max tall:max-h-[140px]"
       type="always"
     >
       <div className="flex w-full flex-col justify-center gap-y-2 self-end lg:text-lg">
@@ -39,26 +65,7 @@ const WalletCurrenciesSelectorsBaseCurrencies = ({
               className="lg:mr-1 lg:pr-4"
               defaultValue={walletBaseCurrency.amount}
               currency={walletBaseCurrency.name}
-              onChange={({ target }) => {
-                const newBaseCurrencyParam = walletBaseCurrencies
-                  .map((c) => {
-                    if (c.name !== walletBaseCurrency.name)
-                      return `${substituePotentialNaNToZero(c.amount)}${
-                        c.name
-                      }`;
-                    return `${substituePotentialNaNToZero(
-                      target.valueAsNumber,
-                    )}${c.name}`;
-                  })
-                  .join(',');
-
-                startCurrenciesTransition(() => {
-                  void router.replace(
-                    `/wallet?${toQueryString('base', newBaseCurrencyParam)}`,
-                    { forceOptimisticNavigation: true },
-                  );
-                });
-              }}
+              onChange={(v) => onInputChange(v, walletBaseCurrency.name)}
             />
             <Button
               variant="outline"
