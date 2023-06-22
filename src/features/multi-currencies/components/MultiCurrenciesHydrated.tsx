@@ -12,6 +12,8 @@ import { TIMESPANS } from '@constants/timespans';
 import { Timespan } from '@interfaces/ICharts';
 import { Currency } from '@interfaces/ICurrency';
 
+import { useReplaceInvalidMultiCurrenciesParams } from '../hooks/useReplaceInvalidMultiCurrenciesParams';
+
 const MultiCurrenciesChart = dynamic(
   () => import('@components/multiCurrenciesChart'),
   {
@@ -24,10 +26,13 @@ const MultiCurrenciesHydrated = ({
   queryProps,
   quoteCurrency,
   dataTimespan,
+  ...props
 }: {
   queryProps: PrefetchDailyCurrencyRatesRequest;
   quoteCurrency: Currency;
   dataTimespan: Timespan;
+  isValidQuoteCurrencyFromParams: boolean;
+  isValidBaseCurrenciesFromParams: boolean;
 }) => {
   const [timespan, setTimespan] = useState<Timespan>(dataTimespan);
   const query = useDailyCurrencyRatesOverYearQuery({
@@ -38,6 +43,7 @@ const MultiCurrenciesHydrated = ({
     },
   });
 
+  useReplaceInvalidMultiCurrenciesParams(props);
   return (
     <div className="flex h-[65vh] w-full flex-col gap-y-2">
       <TimespanPicker active={timespan} onSelect={setTimespan} />

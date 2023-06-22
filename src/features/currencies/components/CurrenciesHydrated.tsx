@@ -53,7 +53,7 @@ const CurrenciesHydrated = ({
   );
 
   const filterCurencies = (e: ChangeEvent<HTMLInputElement>) => {
-    const search = e.target.value.toUpperCase();
+    const search = e.target.value;
     if (!query.data) return;
 
     const filteredRates = Object.keys(query.data.rates)

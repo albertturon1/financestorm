@@ -10,6 +10,7 @@ import PageMaxWidth from '@components/misc/PageMaxWidth';
 import PagePadding from '@components/misc/PagePadding';
 import PageTitle from '@components/misc/PageTitle';
 import {
+  CURRENCIES,
   DEFAULT_BASE_CURRENCIES,
   DEFAULT_QUOTE_CURRENCY,
 } from '@constants/currencies';
@@ -31,11 +32,30 @@ const MultiCurrenciesPage = async ({
   searchParams: MultiCurrenciesPageProps;
 }) => {
   const { quote, base } = searchParams;
-  const quoteCurrency = quote ?? DEFAULT_QUOTE_CURRENCY;
-  const baseCurrenciesFromString = baseCurrenciesWithAmountFromQuery(base, quoteCurrency);
 
-  const baseCurrencies = (baseCurrenciesFromString ??
-    DEFAULT_BASE_CURRENCIES) satisfies Currency[];
+  const isValidQuoteCurrencyFromParams =
+    !!quote && CURRENCIES.includes(quote.toLocaleLowerCase());
+
+  const quoteCurrency = isValidQuoteCurrencyFromParams
+    ? quote
+    : DEFAULT_QUOTE_CURRENCY;
+
+  const validBaseCurrenciesFromString = baseCurrenciesWithAmountFromQuery(
+    base,
+    quoteCurrency,
+  ).filter(
+    (currency) =>
+      CURRENCIES.includes(currency.toLowerCase()) && currency !== quoteCurrency,
+  );
+
+  const isValidBaseCurrenciesFromParams =
+    !!validBaseCurrenciesFromString.length;
+
+  const baseCurrencies = (
+    isValidBaseCurrenciesFromParams
+      ? validBaseCurrenciesFromString
+      : DEFAULT_BASE_CURRENCIES
+  ) satisfies Currency[];
 
   const QUERY_PROPS = {
     queryParams: {
@@ -48,7 +68,10 @@ const MultiCurrenciesPage = async ({
       staleTime: 1000 * 60 * 30, //30minutes
     },
   } satisfies PrefetchDailyCurrencyRatesRequest;
-  const hydratedState = await prefetchGetDailyCurrencyRatesOverYearQuery(QUERY_PROPS);
+
+  const hydratedState = await prefetchGetDailyCurrencyRatesOverYearQuery(
+    QUERY_PROPS,
+  );
 
   return (
     <Hydrate state={hydratedState}>
@@ -67,6 +90,8 @@ const MultiCurrenciesPage = async ({
               queryProps={QUERY_PROPS}
               quoteCurrency={quoteCurrency}
               dataTimespan={DEFAULT_TIMESPAN}
+              isValidQuoteCurrencyFromParams={isValidQuoteCurrencyFromParams}
+              isValidBaseCurrenciesFromParams={isValidBaseCurrenciesFromParams}
             />
           </div>
         </PagePadding>

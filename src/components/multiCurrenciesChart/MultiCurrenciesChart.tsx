@@ -71,7 +71,11 @@ export const MultiCurrenciesChart = ({
                 fontSize: 14,
               }}
             />
-            <Legend verticalAlign="top" wrapperStyle={{ lineHeight: '40px' }} />
+            <Legend
+              verticalAlign="top"
+              wrapperStyle={{ lineHeight: '40px' }}
+              formatter={(z: string) => z.toUpperCase()}
+            />
             {dailyCurrencyRates.rates_array.map((currencyRates) => (
               <Line
                 strokeWidth={2}

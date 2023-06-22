@@ -59,7 +59,7 @@ const MultiCurrenciesPairSelectors = ({
                 { forceOptimisticNavigation: true },
               );
           }}
-          values={baseCurrencies.map((c) => c.toUpperCase()) as Currency[]}
+          values={baseCurrencies}
           currencies={baseCurrenciesAvailable}
           selectedCurrencies={baseCurrencies}
         />
@@ -82,7 +82,7 @@ const MultiCurrenciesPairSelectors = ({
                 { forceOptimisticNavigation: true },
               );
           }}
-          value={quoteCurrency.toUpperCase() as Currency}
+          value={quoteCurrency}
           currencies={quoteCurrenciesAvailable}
         />
       </div>
