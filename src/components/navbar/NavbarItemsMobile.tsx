@@ -20,7 +20,7 @@ const NavbarItemsMobile = ({
   >
     <PagePadding>
       <div className="flex flex-col gap-y-2 py-10">
-        <h1 className="font-semibold text-xl">{'Tools'}</h1>
+        <h1 className="text-xl font-semibold">{'Tools'}</h1>
         <NavbarItems onClick={onClick} />
       </div>
     </PagePadding>

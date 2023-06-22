@@ -38,10 +38,10 @@ interface WalletStoreState {
 
 const DEFAULT_AMOUNT = 100;
 
-const DEFAULT_WALLET_BASE_CURRENCIES = DEFAULT_BASE_CURRENCIES.map((acc) => ({
-  name: acc,
+const DEFAULT_WALLET_BASE_CURRENCIES = [{
+  name: DEFAULT_BASE_CURRENCIES[0],
   amount: DEFAULT_AMOUNT,
-})) satisfies WalletCurrency[];
+}] satisfies WalletCurrency[];
 
 const DEFAULT_WALLET_QUOTE_CURRENCY = {
   name: DEFAULT_QUOTE_CURRENCY,

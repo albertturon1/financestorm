@@ -21,10 +21,8 @@ const CurrencyRatesListLegend = ({
     <p className={changeStyle}>{`Change (${dataTimespan}d)`}</p>
     <p className={chartStyle}>{`Chart (${dataTimespan}d)`}</p>
     {showGoToAllButton && (
-      <div className='flex flex-1 h-full justify-end'>
-        <NavigationButton href="/currencies">
-          {'All'}
-        </NavigationButton>
+      <div className="flex h-full flex-1 justify-end">
+        <NavigationButton href="/currencies">{'All'}</NavigationButton>
       </div>
     )}
   </div>

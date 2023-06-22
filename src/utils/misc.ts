@@ -5,6 +5,7 @@ import { twMerge } from 'tailwind-merge';
 import { ClassNameValue } from 'tailwind-merge/dist/lib/tw-join';
 
 import { Currency } from '@interfaces/ICurrency';
+import { AnyObject, ObjectEntries } from '@interfaces/IUtility';
 
 export const genQueryString = (params: object | undefined): string => {
   if (!params || !Object.keys(params).length) return '';
@@ -63,4 +64,13 @@ export function createQueryString({
 export function substituePotentialNaNToZero(value: number) {
   if (isNaN(value)) return 0;
   return value;
+}
+
+export function objectKeys<T extends AnyObject<T>>(obj: T): (keyof T)[] {
+  return Object.keys(obj) as (keyof T)[];
+}
+export function objectEntries<T extends AnyObject<T>>(
+  obj: T,
+): ObjectEntries<T> {
+  return Object.entries(obj) as ObjectEntries<T>;
 }

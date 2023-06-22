@@ -1,19 +1,17 @@
 import { ChevronRight } from 'lucide-react';
-import { Route } from 'next';
 import Link from 'next/link';
 
 import { cn } from '@utils/misc';
 
-const NavbarLink = <T extends string>({
+const NavbarLink = ({
   title,
   className,
   ...props
 }: {
   title: string;
   className?: string;
-  href: Route<T>;
   onClick?: () => void;
-}) => (
+} & React.ComponentProps<typeof Link>) => (
   <Link
     {...props}
     className={cn(

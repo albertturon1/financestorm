@@ -4,10 +4,10 @@ const SkeletonLoader = ({
   className,
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) => (
-    <div
-      className={twMerge('bg-muted animate-pulse rounded-md', className)}
-      {...props}
-    />
-  );
+  <div
+    className={twMerge('animate-pulse rounded-md bg-muted', className)}
+    {...props}
+  />
+);
 
 export default SkeletonLoader;

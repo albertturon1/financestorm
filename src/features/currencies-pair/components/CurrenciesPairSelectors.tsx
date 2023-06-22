@@ -39,7 +39,7 @@ const CurrenciesPairSelectors = ({
               { forceOptimisticNavigation: true },
             );
           }}
-          value={baseCurrency.toUpperCase() as Currency}
+          value={baseCurrency}
           currencies={currenciesAvailable}
         />
       </div>
@@ -62,7 +62,7 @@ const CurrenciesPairSelectors = ({
               { forceOptimisticNavigation: true },
             );
           }}
-          value={quoteCurrency.toUpperCase() as Currency}
+          value={quoteCurrency}
           currencies={currenciesAvailable}
         />
       </div>

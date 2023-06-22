@@ -10,6 +10,7 @@ import PageMaxWidth from '@components/misc/PageMaxWidth';
 import PagePadding from '@components/misc/PagePadding';
 import PageTitle from '@components/misc/PageTitle';
 import {
+  CURRENCIES,
   DEFAULT_BASE_CURRENCIES,
   DEFAULT_QUOTE_CURRENCY,
 } from '@constants/currencies';
@@ -17,12 +18,14 @@ import { SERVER_DATE } from '@constants/dateTime';
 import { DEFAULT_TIMESPAN, TIMESPANS } from '@constants/timespans';
 import MultiCurrenciesHydrated from '@features/multi-currencies/components/MultiCurrenciesHydrated';
 import MultiCurrenciesPairSelectors from '@features/multi-currencies/components/MultiCurrenciesPairSelectors';
+import { Timespan } from '@interfaces/ICharts';
 import { Currency } from '@interfaces/ICurrency';
 import { baseCurrenciesWithAmountFromQuery } from '@utils/misc';
 
 export type MultiCurrenciesPageProps = {
   quote?: Currency;
   base?: string;
+  timespan?: Timespan;
 };
 
 const MultiCurrenciesPage = async ({
@@ -30,25 +33,51 @@ const MultiCurrenciesPage = async ({
 }: {
   searchParams: MultiCurrenciesPageProps;
 }) => {
-  const { quote, base } = searchParams;
-  const quoteCurrency = quote ?? DEFAULT_QUOTE_CURRENCY;
-  const baseCurrenciesFromString = baseCurrenciesWithAmountFromQuery(base, quoteCurrency);
+  const { quote, base, timespan: queryTimespan } = searchParams;
 
-  const baseCurrencies = (baseCurrenciesFromString ??
-    DEFAULT_BASE_CURRENCIES) satisfies Currency[];
+  const isValidQuoteCurrencyFromParams =
+    !!quote && CURRENCIES.includes(quote.toLocaleLowerCase());
+
+  const quoteCurrency = isValidQuoteCurrencyFromParams
+    ? quote
+    : DEFAULT_QUOTE_CURRENCY;
+
+  const validBaseCurrenciesFromString = baseCurrenciesWithAmountFromQuery(
+    base,
+    quoteCurrency,
+  ).filter(
+    (currency) =>
+      CURRENCIES.includes(currency.toLowerCase()) && currency !== quoteCurrency,
+  );
+
+  const isValidBaseCurrenciesFromParams =
+    !!validBaseCurrenciesFromString.length;
+
+  const baseCurrencies = (
+    isValidBaseCurrenciesFromParams
+      ? validBaseCurrenciesFromString
+      : DEFAULT_BASE_CURRENCIES
+  ) satisfies Currency[];
+
+  const isValidTimespan =
+    !!queryTimespan && !!Object.keys(TIMESPANS).includes(queryTimespan);
+  const timespan = isValidTimespan ? queryTimespan : DEFAULT_TIMESPAN;
 
   const QUERY_PROPS = {
     queryParams: {
       quote_currency: quoteCurrency,
       base_currencies: baseCurrencies,
-      start_date: TIMESPANS[DEFAULT_TIMESPAN],
+      start_date: TIMESPANS[timespan],
       end_date: DateTime.now().toFormat(SERVER_DATE),
     } satisfies DailyCurrencyRatesRequest,
     queryOptions: {
       staleTime: 1000 * 60 * 30, //30minutes
     },
   } satisfies PrefetchDailyCurrencyRatesRequest;
-  const hydratedState = await prefetchGetDailyCurrencyRatesOverYearQuery(QUERY_PROPS);
+
+  const hydratedState = await prefetchGetDailyCurrencyRatesOverYearQuery(
+    QUERY_PROPS,
+  );
 
   return (
     <Hydrate state={hydratedState}>
@@ -66,7 +95,10 @@ const MultiCurrenciesPage = async ({
             <MultiCurrenciesHydrated
               queryProps={QUERY_PROPS}
               quoteCurrency={quoteCurrency}
-              dataTimespan={DEFAULT_TIMESPAN}
+              isValidQuoteCurrencyFromParams={isValidQuoteCurrencyFromParams}
+              isValidBaseCurrenciesFromParams={isValidBaseCurrenciesFromParams}
+              timespan={timespan}
+              isValidTimespan={isValidTimespan}
             />
           </div>
         </PagePadding>

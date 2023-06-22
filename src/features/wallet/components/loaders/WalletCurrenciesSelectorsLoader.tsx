@@ -1,7 +1,7 @@
 import SkeletonLoader from '@components/ui/SkeletonLoader';
 
 const WalletCurrenciesSelectorsLoader = () => (
-  <div className="flex w-full max-w-[300px] flex-col gap-y-2 self-center lg:text-lg mt-4 pb-2">
+  <div className="mt-4 flex w-full max-w-[300px] flex-col gap-y-2 self-center pb-2 lg:text-lg">
     <SkeletonLoader
       className="mx-auto h-5 w-[210px]"
       style={{

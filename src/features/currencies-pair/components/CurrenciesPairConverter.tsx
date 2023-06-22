@@ -19,10 +19,8 @@ function getLatestDayRate(
   if (!rates) return undefined;
   let latestDayWithRate: number | undefined = undefined;
   for (const [_, dayRates] of Object.entries(rates)) {
-    if (baseCurrency.toUpperCase() in dayRates) {
-      latestDayWithRate = inverseCurrecyRate(
-        dayRates[baseCurrency.toUpperCase() as Currency],
-      );
+    if (baseCurrency in dayRates) {
+      latestDayWithRate = inverseCurrecyRate(dayRates[baseCurrency]);
     }
   }
   return latestDayWithRate;
@@ -36,12 +34,11 @@ const CurrenciesPairConverter = ({
 } & CurrenciesPairConverterProps) => {
   const currencyRate = getLatestDayRate(rates, props.baseCurrency);
 
+  if (!currencyRate) return null;
   return (
     <div className="flex w-full max-w-[300px] flex-col gap-y-5 self-center lg:text-lg">
       <h1 className="self-center font-medium">{'Converter'}</h1>
-      {currencyRate !== undefined && (
-        <Rows {...props} currencyRate={currencyRate} />
-      )}
+      <Rows {...props} currencyRate={currencyRate} />
     </div>
   );
 };

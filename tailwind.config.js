@@ -28,6 +28,9 @@ module.exports = {
         secondaryBlack: 'var(--secondaryBlack)',
         tertiaryBlack: 'var(--tertiaryBlack)',
       },
+      screens: {
+        tall: { raw: '(min-height: 1000px)' },
+      },
     },
   },
 };

@@ -25,7 +25,12 @@ const MultiCurrenciesSelectList = ({
 }) => (
   <Select {...props}>
     <SelectTrigger className="w-full justify-between">
-      <p className="h-full overflow-hidden">{props.values.sort().join(', ')}</p>
+      <p className="h-full overflow-hidden">
+        {props.values
+          .map((c) => c.toUpperCase())
+          .sort()
+          .join(', ')}
+      </p>
     </SelectTrigger>
     <SelectContent>
       <ScrollArea

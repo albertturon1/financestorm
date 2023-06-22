@@ -2,12 +2,15 @@ import { dehydrate } from '@tanstack/react-query';
 import { DateTime } from 'luxon';
 
 import { SERVER_DATE } from '@constants/dateTime';
-import { TIMESPANS, DEFAULT_TIMESPAN } from '@constants/timespans';
 import {
   ExchangeRateLatestResponse,
   ExchangeRateTimeseriesResponse,
 } from '@interfaces/models/IExchangerate';
 import api from '@utils/api';
+import {
+  filterDayCurrencyRates,
+  filterTimeseriesResponseRates,
+} from '@utils/filterCurrencyRates';
 import getQueryClient from '@utils/getQueryClient';
 import { genQueryString } from '@utils/misc';
 
@@ -32,10 +35,15 @@ export const getDailyCurrencyRatesQuery = async ({
     start_date,
     end_date,
     base: quote_currency,
-    symbols: base_currencies.join(',').toUpperCase(), //comma separated values
   });
 
-  return await api.get<ExchangeRateTimeseriesResponse>(`${url}${params}`);
+  const data = await api.get<ExchangeRateTimeseriesResponse>(`${url}${params}`);
+
+  //using reduce instead of symbols: base_currencies to prevent refetching data with param change
+  const rates = filterTimeseriesResponseRates(data?.rates, base_currencies);
+
+  const baseLowerCase = data?.base.toLowerCase();
+  return { ...data, rates, base: baseLowerCase } as typeof data;
 };
 
 export const prefetchGetDailyCurrencyRatesQuery = async ({
@@ -56,8 +64,8 @@ export const prefetchGetDailyCurrencyRatesQuery = async ({
 export const getDailyCurrencyRatesOverYearQuery = async ({
   base_currencies,
   quote_currency,
-  start_date = TIMESPANS[DEFAULT_TIMESPAN],
-  end_date = DateTime.now().toFormat(SERVER_DATE),
+  start_date,
+  end_date,
 }: DailyCurrencyRatesRequest) => {
   const startDateLuxon = DateTime.fromISO(start_date);
   const endDateLuxon = DateTime.fromISO(end_date);
@@ -107,7 +115,8 @@ export const getDailyCurrencyRatesOverYearQuery = async ({
   } satisfies Omit<ExchangeRateTimeseriesResponse, 'rates'>;
 
   return currencyRatesSorted.reduce((acc, item) => {
-    acc.start_date = item.start_date;
+    //start_date instead of item.start_date because item is only 1 year of data
+    acc.start_date = start_date;
     Object.assign(acc.rates, item.rates);
 
     return acc;
@@ -134,10 +143,14 @@ export const getTodayCurrencyRatesQuery = async (
   const url = `${process.env.NEXT_PUBLIC_EXCHANGERATE_URL ?? ''}/latest`;
   const params = genQueryString({
     base: props.quote_currency,
-    symbols: props.base_currencies?.join(',')?.toUpperCase(), //comma separated values
   });
 
-  return await api.get<ExchangeRateLatestResponse>(`${url}?${params}`);
+  const data = await api.get<ExchangeRateLatestResponse>(`${url}?${params}`);
+
+  const rates = filterDayCurrencyRates(data?.rates, props.base_currencies);
+
+  const baseLowerCase = data?.base.toLowerCase();
+  return { ...data, rates, base: baseLowerCase } as typeof data;
 };
 
 export const prefetchGetTodayCurrencyRatesQuery = async ({
