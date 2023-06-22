@@ -20,12 +20,12 @@ import MultiCurrenciesHydrated from '@features/multi-currencies/components/Multi
 import MultiCurrenciesPairSelectors from '@features/multi-currencies/components/MultiCurrenciesPairSelectors';
 import { Timespan } from '@interfaces/ICharts';
 import { Currency } from '@interfaces/ICurrency';
-import { baseCurrenciesWithAmountFromQuery } from '@utils/misc';
+import { baseCurrenciesFromCommaString } from '@utils/misc';
 
 export type MultiCurrenciesPageProps = {
-  quote?: Currency;
-  base?: string;
-  timespan?: Timespan;
+  quote: Currency | undefined;
+  base: string | undefined;
+  timespan: Timespan | undefined;
 };
 
 const MultiCurrenciesPage = async ({
@@ -42,7 +42,7 @@ const MultiCurrenciesPage = async ({
     ? quote
     : DEFAULT_QUOTE_CURRENCY;
 
-  const validBaseCurrenciesFromString = baseCurrenciesWithAmountFromQuery(
+  const validBaseCurrenciesFromString = baseCurrenciesFromCommaString(
     base,
     quoteCurrency,
   ).filter(

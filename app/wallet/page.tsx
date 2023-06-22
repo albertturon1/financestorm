@@ -17,12 +17,12 @@ import { getWalletCurrencyFromString } from '@features/wallet/tools/walletCurren
 import { Timespan } from '@interfaces/ICharts';
 import { Currency } from '@interfaces/ICurrency';
 import { WalletCurrency } from '@src/zustand/walletStore';
-import { baseCurrenciesWithAmountFromQuery } from '@utils/misc';
+import { baseCurrenciesFromCommaString } from '@utils/misc';
 
 export type WalletPageProps = {
-  quote?: Currency;
-  base?: string;
-  timespan?: Timespan;
+  quote: Currency | undefined;
+  base: string | undefined;
+  timespan: Timespan | undefined;
 };
 
 const WalletPage = async ({
@@ -37,7 +37,7 @@ const WalletPage = async ({
   const walletQuoteCurrency =
     walletCurrencyFromString ?? DEFAULT_WALLET_QUOTE_CURRENCY;
 
-  const baseCurrenciesFromString = baseCurrenciesWithAmountFromQuery(
+  const baseCurrenciesFromString = baseCurrenciesFromCommaString(
     base,
     walletQuoteCurrency.name,
   );

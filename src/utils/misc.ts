@@ -28,12 +28,12 @@ export function cn(...inputs: ClassNameValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function inverseCurrecyRate(rate: number) {
+export function inverseCurrencyRate(rate: number) {
   const newValue = rate ** -1;
   return cutNumber(newValue, newValue < 1 ? 5 : 3);
 }
 
-export function baseCurrenciesWithAmountFromQuery(
+export function baseCurrenciesFromCommaString(
   base: string | undefined,
   quoteCurrency: Currency,
 ) {

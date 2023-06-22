@@ -6,7 +6,7 @@ import { twMerge } from 'tailwind-merge';
 
 import FlagCountryCode from '@components/misc/FlagCountryCode';
 import { Currency } from '@interfaces/ICurrency';
-import { cutNumber, inverseCurrecyRate } from '@utils/misc';
+import { cutNumber, inverseCurrencyRate } from '@utils/misc';
 
 const CurrencyTile = ({
   quoteCurrency,
@@ -28,8 +28,8 @@ const CurrencyTile = ({
     >
       <FlagCountryCode code={baseCurrency} />
       <div className="flex">
-        <p>{`${cutNumber(
-          inverseCurrecyRate(rate),
+        <p className="text-[15px]">{`${cutNumber(
+          inverseCurrencyRate(rate),
           4,
         )} ${quoteCurrency.toUpperCase()}`}</p>
         <ChevronRight size={25} strokeWidth={1} className="-mr-2" />

@@ -6,7 +6,7 @@ import { Timespan } from '@interfaces/ICharts';
 import { WalletCurrency } from '@src/zustand/walletStore';
 import { createQueryString, substituePotentialNaNToZero } from '@utils/misc';
 
-const useReplaceInvalidWalletParams = ({
+export const useReplaceInvalidWalletParams = ({
   isValidQuoteCurrency,
   walletQuoteCurrency,
   isValidTimespan,
@@ -74,5 +74,3 @@ const useReplaceInvalidWalletParams = ({
     }
   }, [isValidBaseCurrencies, router, searchParams]);
 };
-
-export default useReplaceInvalidWalletParams;

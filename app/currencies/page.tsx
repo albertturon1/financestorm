@@ -11,20 +11,27 @@ import { CURRENCIES, DEFAULT_QUOTE_CURRENCY } from '@constants/currencies';
 import CurrenciesHydrated from '@features/currencies/components/CurrenciesHydrated';
 import { Currency } from '@interfaces/ICurrency';
 
-export type CurrenciesPageProps = { default_currency?: Currency };
+export type CurrenciesPageProps = { currency: Currency | undefined };
 
 const CurrenciesPage = async ({
   searchParams,
 }: {
   searchParams: CurrenciesPageProps;
 }) => {
-  const defaultQuoteCurrency =
-    searchParams.default_currency ?? DEFAULT_QUOTE_CURRENCY;
-  const baseCurrencies = CURRENCIES.filter((c) => c !== defaultQuoteCurrency);
+  const { currency } = searchParams;
+  const queryCurrencyLowerCase = currency
+    ? (currency.toLowerCase() as Currency)
+    : '';
+  const isValidQuoteCurrency =
+    !!currency && CURRENCIES.includes(queryCurrencyLowerCase);
+  const quote_currency = isValidQuoteCurrency
+    ? (currency.toLowerCase() as Currency)
+    : DEFAULT_QUOTE_CURRENCY;
+  const baseCurrencies = CURRENCIES.filter((c) => c !== quote_currency);
 
   const QUERY_PROPS = {
     queryParams: {
-      quote_currency: defaultQuoteCurrency,
+      quote_currency,
       base_currencies: baseCurrencies,
     } satisfies MultiCurrenciesRate,
     queryOptions: {
@@ -40,8 +47,9 @@ const CurrenciesPage = async ({
         <PagePadding flex vertical className="min-h-[95.1vh]">
           <CurrenciesHydrated
             queryProps={QUERY_PROPS}
-            defaultCurrency={defaultQuoteCurrency}
+            quoteCurrency={quote_currency}
             baseCurrencies={baseCurrencies}
+            isValidQuoteCurrency={isValidQuoteCurrency}
           />
         </PagePadding>
       </PageMaxWidth>

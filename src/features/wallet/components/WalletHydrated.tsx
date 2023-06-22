@@ -25,7 +25,7 @@ import { createQueryString } from '@utils/misc';
 
 import WalletChartLoader from './loaders/WalletChartLoader';
 import WalletCurrenciesSelectorsLoader from './loaders/WalletCurrenciesSelectorsLoader';
-import useReplaceInvalidWalletParams from '../hooks/useReplaceInvalidWalletParams';
+import { useReplaceInvalidWalletParams } from '../hooks/useReplaceInvalidWalletParams';
 import useUpdateWalletStore from '../hooks/useUpdateWalletStore';
 
 const TimespanPicker = dynamic(() => import('@components/timespanPicker'), {
