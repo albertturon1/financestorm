@@ -3,11 +3,11 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "prestart": "yarn build",
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write \"**/*.{js,ts,tsx,md}\"",
-    "analyze": "cross-env ANALYZE=true next build",
-    "prettier": "npx prettier --write \"**/*.tsx\""
+    "analyze": "cross-env ANALYZE=true next build"
   },
   "prettier": {
     "arrowParens": "always",

@@ -98,6 +98,7 @@ const CurrenciesHydrated = ({
             currencies={baseCurrencies}
             value={defaultCurrency}
             onValueChange={(newDefaultCurrency) => {
+              //TODO: fix
               newDefaultCurrency === DEFAULT_QUOTE_CURRENCY
                 ? void router.push(`/currencies`, {
                     forceOptimisticNavigation: true,

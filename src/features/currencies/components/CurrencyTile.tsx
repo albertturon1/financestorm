@@ -28,7 +28,7 @@ const CurrencyTile = ({
     >
       <FlagCountryCode code={baseCurrency} />
       <div className="flex">
-        <p>{`${cutNumber(
+        <p className="text-[15px]">{`${cutNumber(
           inverseCurrecyRate(rate),
           4,
         )} ${quoteCurrency.toUpperCase()}`}</p>
