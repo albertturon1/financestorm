@@ -25,10 +25,10 @@ export const convertDailyCurrencyRatesToArray = (
 ) =>
   Object.entries(rates).reduce((acc, day) => {
     const [dayLabel, dayRates] = day;
-    if (!Object.keys(dayRates).length) return acc; //return when there's no data for the day
+
     acc.push({
       date: dayLabel,
-      rates: convertDayRates(dayRates, quoteCurrency),
+      rates: convertDayRates(dayRates, quoteCurrency), //might be empty object when no rates are passed
     });
     return acc;
   }, [] as ExchangeRateTimeseriesRatesArray[]);

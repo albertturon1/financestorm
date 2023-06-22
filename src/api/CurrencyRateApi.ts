@@ -8,6 +8,10 @@ import {
   ExchangeRateTimeseriesResponse,
 } from '@interfaces/models/IExchangerate';
 import api from '@utils/api';
+import {
+  filterDayCurrencyRates,
+  filterTimeseriesResponseRates,
+} from '@utils/filterCurrencyRates';
 import getQueryClient from '@utils/getQueryClient';
 import { genQueryString } from '@utils/misc';
 
@@ -32,10 +36,15 @@ export const getDailyCurrencyRatesQuery = async ({
     start_date,
     end_date,
     base: quote_currency,
-    symbols: base_currencies.join(',').toUpperCase(), //comma separated values
   });
 
-  return await api.get<ExchangeRateTimeseriesResponse>(`${url}${params}`);
+  const data = await api.get<ExchangeRateTimeseriesResponse>(`${url}${params}`);
+
+  //using reduce instead of symbols: base_currencies to prevent refetching data with param change
+  const rates = filterTimeseriesResponseRates(data?.rates, base_currencies);
+
+  const baseLowerCase = data?.base.toLowerCase();
+  return { ...data, rates, base: baseLowerCase } as typeof data;
 };
 
 export const prefetchGetDailyCurrencyRatesQuery = async ({
@@ -134,10 +143,14 @@ export const getTodayCurrencyRatesQuery = async (
   const url = `${process.env.NEXT_PUBLIC_EXCHANGERATE_URL ?? ''}/latest`;
   const params = genQueryString({
     base: props.quote_currency,
-    symbols: props.base_currencies?.join(',')?.toUpperCase(), //comma separated values
   });
 
-  return await api.get<ExchangeRateLatestResponse>(`${url}?${params}`);
+  const data = await api.get<ExchangeRateLatestResponse>(`${url}?${params}`);
+
+  const rates = filterDayCurrencyRates(data?.rates, props.base_currencies);
+
+  const baseLowerCase = data?.base.toLowerCase();
+  return { ...data, rates, base: baseLowerCase } as typeof data;
 };
 
 export const prefetchGetTodayCurrencyRatesQuery = async ({
