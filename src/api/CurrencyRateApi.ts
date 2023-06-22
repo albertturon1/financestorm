@@ -2,7 +2,6 @@ import { dehydrate } from '@tanstack/react-query';
 import { DateTime } from 'luxon';
 
 import { SERVER_DATE } from '@constants/dateTime';
-import { TIMESPANS, DEFAULT_TIMESPAN } from '@constants/timespans';
 import {
   ExchangeRateLatestResponse,
   ExchangeRateTimeseriesResponse,
@@ -65,8 +64,8 @@ export const prefetchGetDailyCurrencyRatesQuery = async ({
 export const getDailyCurrencyRatesOverYearQuery = async ({
   base_currencies,
   quote_currency,
-  start_date = TIMESPANS[DEFAULT_TIMESPAN],
-  end_date = DateTime.now().toFormat(SERVER_DATE),
+  start_date,
+  end_date,
 }: DailyCurrencyRatesRequest) => {
   const startDateLuxon = DateTime.fromISO(start_date);
   const endDateLuxon = DateTime.fromISO(end_date);
@@ -116,7 +115,8 @@ export const getDailyCurrencyRatesOverYearQuery = async ({
   } satisfies Omit<ExchangeRateTimeseriesResponse, 'rates'>;
 
   return currencyRatesSorted.reduce((acc, item) => {
-    acc.start_date = item.start_date;
+    //start_date instead of item.start_date because item is only 1 year of data
+    acc.start_date = start_date;
     Object.assign(acc.rates, item.rates);
 
     return acc;
