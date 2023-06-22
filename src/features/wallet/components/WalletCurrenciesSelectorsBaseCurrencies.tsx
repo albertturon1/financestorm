@@ -55,14 +55,14 @@ const WalletCurrenciesSelectorsBaseCurrencies = ({
 
   return (
     <ScrollArea
-      className="flex h-[90px] max-w-full flex-col gap-y-2 overflow-hidden pr-[15px] tall:h-max tall:max-h-[140px]"
+      className="flex h-[84px] max-w-full flex-col gap-y-2 overflow-hidden pr-[15px] tall:h-max tall:max-h-[144px]"
       type="always"
     >
       <div className="flex w-full flex-col justify-center gap-y-2 self-end lg:text-lg">
         {walletBaseCurrencies.map((walletBaseCurrency) => (
-          <div className="flex gap-x-1" key={walletBaseCurrency.name}>
+          <div className="flex gap-x-1 " key={walletBaseCurrency.name}>
             <FlagInput
-              className="lg:mr-1 lg:pr-4"
+              className="py-1 lg:mr-1 lg:pr-4"
               defaultValue={walletBaseCurrency.amount}
               currency={walletBaseCurrency.name}
               onChange={(v) => onInputChange(v, walletBaseCurrency.name)}
