@@ -15,6 +15,8 @@ import { CURRENCIES, DEFAULT_QUOTE_CURRENCY } from '@constants/currencies';
 import { Currency } from '@interfaces/ICurrency';
 import { CurrenciesRates } from '@interfaces/models/IExchangerate';
 
+import { useReplaceInvalidCurrenciesParams } from '../hooks/useReplaceInvalidCurrenciesParams';
+
 const CurrenciesRatesTiles = dynamic(() => import('./CurrenciesRatesTiles'), {
   ssr: false,
   loading: () => (
@@ -32,12 +34,14 @@ const CurrenciesRatesTiles = dynamic(() => import('./CurrenciesRatesTiles'), {
 
 const CurrenciesHydrated = ({
   queryProps,
-  defaultCurrency,
+  quoteCurrency,
   baseCurrencies,
+  isValidQuoteCurrency,
 }: {
-  defaultCurrency: Currency;
+  quoteCurrency: Currency;
   baseCurrencies: Currency[];
   queryProps: PrefetchTodayCurrencyRatesRequest;
+  isValidQuoteCurrency: boolean;
 }) => {
   const router = useRouter();
   const query = useTodayCurrencyRatesQuery({
@@ -85,6 +89,10 @@ const CurrenciesHydrated = ({
 
   const dataFrom = query.data?.date;
 
+  useReplaceInvalidCurrenciesParams({
+    quoteCurrency,
+    isValidQuoteCurrency,
+  });
   return (
     <div className="flex flex-1 flex-col gap-y-6 lg:gap-y-10">
       <PageTitle
@@ -96,7 +104,7 @@ const CurrenciesHydrated = ({
           <h1 className="pl-0.5 font-medium">{'To'}</h1>
           <CurrenciesSelectList
             currencies={baseCurrencies}
-            value={defaultCurrency}
+            value={quoteCurrency}
             onValueChange={(newDefaultCurrency) => {
               //TODO: fix
               newDefaultCurrency === DEFAULT_QUOTE_CURRENCY
@@ -104,7 +112,7 @@ const CurrenciesHydrated = ({
                     forceOptimisticNavigation: true,
                   })
                 : void router.push(
-                    `/currencies?default_currency=${newDefaultCurrency}`,
+                    `/currencies?currency=${newDefaultCurrency}`,
                     { forceOptimisticNavigation: true },
                   );
             }}
@@ -123,7 +131,7 @@ const CurrenciesHydrated = ({
         <CurrenciesRatesTiles
           {...query}
           currenciesRates={filteredCurrenciesRates}
-          quoteCurrency={defaultCurrency}
+          quoteCurrency={quoteCurrency}
         />
       </div>
     </div>
