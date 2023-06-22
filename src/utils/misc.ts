@@ -33,7 +33,7 @@ export function inverseCurrencyRate(rate: number) {
   return cutNumber(newValue, newValue < 1 ? 5 : 3);
 }
 
-export function baseCurrenciesWithAmountFromQuery(
+export function baseCurrenciesFromCommaString(
   base: string | undefined,
   quoteCurrency: Currency,
 ) {
