@@ -28,7 +28,7 @@ const FlagCountryCode = ({
       className,
     )}
   >
-    <div className={twMerge('flex h-5 mb-0.5', flagClassName)}>
+    <div className={twMerge('mb-0.5 flex h-5', flagClassName)}>
       <Flag
         alt={`${code} flag`}
         code={code.slice(0, 2).toUpperCase()}

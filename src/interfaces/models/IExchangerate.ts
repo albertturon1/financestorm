@@ -16,6 +16,7 @@ export type ExchangeRateLatestResponse = {
 };
 
 export type ExchangeRateTimeseriesResponseRates = {
+  //key is date
   [key: string]: CurrenciesRates;
 };
 

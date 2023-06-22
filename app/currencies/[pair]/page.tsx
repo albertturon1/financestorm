@@ -57,7 +57,7 @@ const CurrenciesPairPage = async ({
               baseCurrency={baseCurrency}
               quoteCurrency={quoteCurrency}
             />
-          <CurrenciesPairHydrated
+            <CurrenciesPairHydrated
               quoteCurrency={quoteCurrency}
               baseCurrency={baseCurrency}
               defaultChartTimespan={DEFAULT_TIMESPAN}

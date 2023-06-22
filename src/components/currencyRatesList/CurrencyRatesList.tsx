@@ -35,6 +35,7 @@ export const CurrencyRatesList = ({
     <DataLoader {...dailyCurrencyRatesQuery}>
       {(data) => {
         const dailyCurrencyRates = separateDailyCurrencyRates(data);
+
         return (
           <div className="flex flex-1 flex-col px-1 xs:px-1.5 sm:px-4 lg:px-8">
             <CurrencyRatesListLegend

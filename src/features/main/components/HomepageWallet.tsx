@@ -75,7 +75,7 @@ const HomepageWallet = ({
             {'More'}
           </NavigationButton>
         </div>
-        <h1 className="max-w-full text-center text-sm font-medium">
+        <h1 className="max-w-full text-center text-sm">
           {'Currencies included in the wallet'}
         </h1>
         <HomepageWalletCurrencies
