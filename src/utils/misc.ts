@@ -28,7 +28,7 @@ export function cn(...inputs: ClassNameValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function inverseCurrecyRate(rate: number) {
+export function inverseCurrencyRate(rate: number) {
   const newValue = rate ** -1;
   return cutNumber(newValue, newValue < 1 ? 5 : 3);
 }

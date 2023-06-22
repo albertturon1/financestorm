@@ -7,13 +7,13 @@ import {
   ExchangeRateTimeseriesResponseRates,
 } from '@interfaces/models/IExchangerate';
 
-import { inverseCurrecyRate } from './misc';
+import { inverseCurrencyRate } from './misc';
 
 const convertDayRates = (day: CurrenciesRates, quoteCurrency: Currency) =>
   Object.entries(day).reduce((acc, rate) => {
     const [key, value] = rate;
     if (key !== quoteCurrency) {
-      acc[key as keyof CurrenciesRates] = inverseCurrecyRate(value);
+      acc[key as keyof CurrenciesRates] = inverseCurrencyRate(value);
     }
     return acc;
   }, {} as CurrenciesRates);
@@ -41,7 +41,7 @@ export const separateDailyCurrencyRates = (
     ([currency, rate]) => ({
       quote_currency: data.base,
       base_currency: currency as Currency,
-      rates: [{ date: data.start_date, value: inverseCurrecyRate(rate) }],
+      rates: [{ date: data.start_date, value: inverseCurrencyRate(rate) }],
     }),
   ) satisfies SeparateDailyCurrencyRates[];
 
@@ -64,7 +64,7 @@ export const separateDailyCurrencyRates = (
         const currencyIndexInAcc = currencyIndexes[currency as Currency];
         rates[currencyIndexInAcc].rates.push({
           date: dayLabel,
-          value: inverseCurrecyRate(rate),
+          value: inverseCurrencyRate(rate),
         });
       });
     });
