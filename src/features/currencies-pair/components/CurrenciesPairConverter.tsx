@@ -56,30 +56,33 @@ const Rows = ({
   );
 
   function handleBaseCurrencyChange({ target }: ChangeEvent<HTMLInputElement>) {
-    const { valueAsNumber } = target;
-    setBaseCurrencyAmount(valueAsNumber);
-    setQuoteCurrencyAmount(valueAsNumber * currencyRate);
+    const { value } = target;
+    const parsedValue = parseFloat(value);
+
+    setBaseCurrencyAmount(parsedValue);
+    setQuoteCurrencyAmount(parsedValue * currencyRate);
   }
 
   function handleQuoteCurrencyChange({
     target,
   }: ChangeEvent<HTMLInputElement>) {
-    const { valueAsNumber } = target;
-    setQuoteCurrencyAmount(valueAsNumber);
-    setBaseCurrencyAmount(valueAsNumber / currencyRate);
-  }
+    const { value } = target;
+    const parsedValue = parseFloat(value);
 
+    setQuoteCurrencyAmount(parsedValue);
+    setBaseCurrencyAmount(parsedValue / currencyRate);
+  }
   return (
     <div className="flex w-full flex-col justify-center gap-y-4">
       <FlagInput
-        defaultValue={cutNumber(baseCurrencyAmount, 3)}
         currency={baseCurrency.toUpperCase() as Currency}
         onChange={handleBaseCurrencyChange}
+        value={cutNumber(baseCurrencyAmount).toString()} //.toString() to remove leading 0 from value displayed in input
       />
       <FlagInput
-        defaultValue={cutNumber(quoteCurrencyAmount, 3)}
         currency={quoteCurrency.toUpperCase() as Currency}
         onChange={handleQuoteCurrencyChange}
+        value={cutNumber(quoteCurrencyAmount, 3).toString()}
       />
     </div>
   );
