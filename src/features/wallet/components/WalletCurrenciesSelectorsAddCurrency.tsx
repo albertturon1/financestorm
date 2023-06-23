@@ -12,6 +12,7 @@ import { Currency } from '@interfaces/ICurrency';
 import { WalletCurrency } from '@src/zustand/walletStore';
 import { substituePotentialNaNToZero } from '@utils/misc';
 
+import { WALLET_SELECTORS_INPUT_MAX_WIDTH } from './WalletCurrenciesSelectors';
 import WalletCurrencyInputSelect from './WalletCurrencyInputSelect';
 
 type NewWalletCurrency = Omit<WalletCurrency, 'name'> & {
@@ -46,8 +47,8 @@ const WalletCurrenciesSelectorsAddCurrency = ({
     !isNaN(newWalletCurrency.amount) && newWalletCurrency.name;
 
   return (
-    <div className="max-w-full pr-[15px]">
-      <div className="flex gap-x-1">
+    <div className="flex gap-x-1">
+      <div style={{ width: WALLET_SELECTORS_INPUT_MAX_WIDTH }}>
         <WalletCurrencyInputSelect
           value={`${newWalletCurrency.amount}`} //template literal to prevent error "The specified value "NaN" cannot be parsed, or is out of range."
           currencies={availableCurrencies}
@@ -65,36 +66,36 @@ const WalletCurrenciesSelectorsAddCurrency = ({
             }));
           }}
         />
-        <Button
-          disabled={!buttonEnabled}
-          variant="outline"
-          className="aspect-square rounded-xl px-0"
-          onClick={() => {
-            if (!isNaN(newWalletCurrency.amount) && newWalletCurrency.name) {
-              const newBaseCurrencies = [
-                {
-                  name: newWalletCurrency.name,
-                  amount: newWalletCurrency.amount,
-                },
-                ...walletBaseCurrencies,
-              ];
-
-              const newBaseCurrencyParam = newBaseCurrencies
-                .map((c) => `${substituePotentialNaNToZero(c.amount)}${c.name}`)
-                .join(',');
-
-              void router.replace(
-                `/wallet?${toQueryString('base', newBaseCurrencyParam)}`,
-                { forceOptimisticNavigation: true },
-              );
-
-              setNewWalletCurrency(initialState); //reset to inital state
-            }
-          }}
-        >
-          <Plus strokeWidth={1} size={25} />
-        </Button>
       </div>
+      <Button
+        disabled={!buttonEnabled}
+        variant="outline"
+        className="aspect-square rounded-xl px-0"
+        onClick={() => {
+          if (!isNaN(newWalletCurrency.amount) && newWalletCurrency.name) {
+            const newBaseCurrencies = [
+              {
+                name: newWalletCurrency.name,
+                amount: newWalletCurrency.amount,
+              },
+              ...walletBaseCurrencies,
+            ];
+
+            const newBaseCurrencyParam = newBaseCurrencies
+              .map((c) => `${substituePotentialNaNToZero(c.amount)}${c.name}`)
+              .join(',');
+
+            void router.replace(
+              `/wallet?${toQueryString('base', newBaseCurrencyParam)}`,
+              { forceOptimisticNavigation: true },
+            );
+
+            setNewWalletCurrency(initialState); //reset to inital state
+          }
+        }}
+      >
+        <Plus strokeWidth={1} size={25} />
+      </Button>
     </div>
   );
 };

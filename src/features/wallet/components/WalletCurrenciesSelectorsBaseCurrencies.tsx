@@ -13,6 +13,8 @@ import { Currency } from '@interfaces/ICurrency';
 import { WalletCurrency } from '@src/zustand/walletStore';
 import { substituePotentialNaNToZero } from '@utils/misc';
 
+import { WALLET_SELECTORS_INPUT_MAX_WIDTH } from './WalletCurrenciesSelectors';
+
 const WalletCurrenciesSelectorsBaseCurrencies = ({
   walletBaseCurrencies,
   startCurrenciesTransition,
@@ -51,18 +53,19 @@ const WalletCurrenciesSelectorsBaseCurrencies = ({
 
   return (
     <ScrollArea
-      className="flex h-[84px] max-w-full flex-col gap-y-2 overflow-hidden pr-[15px] tall:h-max tall:max-h-[144px]"
+      className="flex h-[88px] max-w-max flex-col gap-y-2 overflow-hidden pr-3 tall:h-max tall:max-h-[144px]"
       type="always"
     >
-      <div className="flex w-full flex-col justify-center gap-y-2 self-end lg:text-lg">
+      <div className="self-endlg:text-lg flex w-full flex-col justify-center gap-y-2">
         {walletBaseCurrencies.map((walletBaseCurrency) => (
-          <div className="flex gap-x-1 " key={walletBaseCurrency.name}>
-            <FlagInput
-              className="py-1 lg:mr-1 lg:pr-4"
-              defaultValue={walletBaseCurrency.amount}
-              currency={walletBaseCurrency.name}
-              onChange={(v) => onInputChange(v, walletBaseCurrency.name)}
-            />
+          <div className="flex gap-x-1" key={walletBaseCurrency.name}>
+            <div style={{ width: WALLET_SELECTORS_INPUT_MAX_WIDTH }}>
+              <FlagInput
+                defaultValue={walletBaseCurrency.amount}
+                currency={walletBaseCurrency.name}
+                onChange={(v) => onInputChange(v, walletBaseCurrency.name)}
+              />
+            </div>
             <Button
               variant="outline"
               className="aspect-square rounded-xl px-0"

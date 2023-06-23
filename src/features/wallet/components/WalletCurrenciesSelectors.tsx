@@ -8,6 +8,8 @@ import WalletCurrenciesSelectorsAddCurrency from './WalletCurrenciesSelectorsAdd
 import WalletCurrenciesSelectorsBaseCurrencies from './WalletCurrenciesSelectorsBaseCurrencies';
 import { WalletQuoteCurrencySelector } from './WalletQuoteCurrencySelector';
 
+export const WALLET_SELECTORS_INPUT_MAX_WIDTH = 230;
+
 const WalletCurrenciesSelectors = ({
   ...props
 }: {
@@ -15,7 +17,7 @@ const WalletCurrenciesSelectors = ({
   walletQuoteCurrency: WalletCurrency;
   startCurrenciesTransition: TransitionStartFunction;
 }) => (
-  <div className="flex h-max w-full max-w-[315px] flex-col justify-center gap-y-2 self-center rounded-xl border-b border-border p-3 py-1.5 lg:text-lg tall:py-3">
+  <div className="flex h-max flex-col justify-center gap-y-2 self-center rounded-xl border-b border-border py-1.5 pl-3 lg:text-lg tall:py-3">
     <h1 className="max-w-full text-center text-sm">
       {'Currencies included in the wallet'}
     </h1>

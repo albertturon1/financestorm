@@ -22,7 +22,7 @@ const WalletCurrencyInputSelect = ({
     <CurrenciesSelectList
       {...props}
       showTriggerFocus={false}
-      triggerClassName="border-0 pr-0 w-full pl-10 self-end justify-end"
+      triggerClassName="border-0 pr-0 w-full self-end justify-end"
       value={currentCurrency}
       currencies={currencies}
       onValueChange={onCurrencyChange}
