@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import { useTodayCurrencyRatesQuery } from '@api/client/CurrenctyRateClientApi';
 import { PrefetchTodayCurrencyRatesRequest } from '@api/interfaces/ICurrencyRateApi';
 import CurrenciesSelectList from '@components/misc/CurrenciesSelectList';
+import { LabelOverSelectInput } from '@components/misc/LabelOverSelectInput';
 import PageTitle from '@components/misc/PageTitle';
 import { Input } from '@components/ui/Input';
 import SkeletonLoader from '@components/ui/SkeletonLoader';
@@ -112,7 +113,7 @@ const CurrenciesHydrated = ({
       />
       <div className="grid grid-cols-1 gap-x-10 gap-y-3 sm:grid-cols-2">
         <div className="flex flex-col gap-y-1">
-          <h1 className="pl-0.5 font-medium">{'To'}</h1>
+          <LabelOverSelectInput>{'Quote currency'}</LabelOverSelectInput>
           <CurrenciesSelectList
             currencies={baseCurrencies}
             value={quoteCurrency}
@@ -124,7 +125,7 @@ const CurrenciesHydrated = ({
           />
         </div>
         <div className="flex flex-col gap-y-1">
-          <h1 className="pl-0.5 font-medium">{'Search From'}</h1>
+          <LabelOverSelectInput>{'Search base currency'}</LabelOverSelectInput>
           <Input
             disabled={!filteredCurrenciesRates}
             onChange={filterCurrencies}
@@ -133,7 +134,7 @@ const CurrenciesHydrated = ({
         </div>
       </div>
       <div className="flex flex-col gap-y-2 pl-0.5">
-        <p className="font-medium">{'From'}</p>
+        <LabelOverSelectInput>{'From'}</LabelOverSelectInput>
         <CurrenciesRatesTiles
           {...query}
           currenciesRates={filteredCurrenciesRates}

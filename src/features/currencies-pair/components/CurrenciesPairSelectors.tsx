@@ -6,6 +6,7 @@ import { ArrowLeftRight } from 'lucide-react';
 import { useRouter, usePathname } from 'next/navigation';
 
 import CurrenciesSelectList from '@components/misc/CurrenciesSelectList';
+import { LabelOverSelectInput } from '@components/misc/LabelOverSelectInput';
 import { CURRENCIES } from '@constants/currencies';
 import { Currency } from '@interfaces/ICurrency';
 import Theme from '@src/Theme';
@@ -31,7 +32,7 @@ const CurrenciesPairSelectors = ({
   return (
     <div className="flex w-full items-end gap-x-1 xs:gap-x-3 sm:gap-x-5 lg:gap-x-10">
       <div className="flex flex-1 flex-col gap-y-1">
-        <p className="font-medium">{'From'}</p>
+        <LabelOverSelectInput>{'From'}</LabelOverSelectInput>
         <CurrenciesSelectList
           onValueChange={(newBaseCurrency) => {
             void router.push(
@@ -54,7 +55,7 @@ const CurrenciesPairSelectors = ({
         <ArrowLeftRight size={20} color={Theme.colors.electric_blue} />
       </button>
       <div className="flex flex-1 flex-col gap-y-1">
-        <p className="font-medium">{'To'}</p>
+        <LabelOverSelectInput>{'To'}</LabelOverSelectInput>
         <CurrenciesSelectList
           onValueChange={(newQuoteCurrency) => {
             void router.push(
