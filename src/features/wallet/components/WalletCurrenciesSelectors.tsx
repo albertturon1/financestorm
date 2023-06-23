@@ -4,7 +4,7 @@ import { TransitionStartFunction } from 'react';
 
 import { WalletCurrency } from '@src/zustand/walletStore';
 
-import { WalletAddCurrency } from './WalletAddCurrency';
+import { WalletAddBaseCurrency } from './WalletAddBaseCurrency';
 import { WalletBaseCurrenciesList } from './WalletBaseCurrenciesList';
 import { WalletQuoteCurrencySelector } from './WalletQuoteCurrencySelector';
 
@@ -22,7 +22,7 @@ const WalletCurrenciesSelectors = ({
       {'Currencies included in the wallet'}
     </h1>
     <WalletQuoteCurrencySelector {...props} />
-    <WalletAddCurrency {...props} />
+    <WalletAddBaseCurrency {...props} />
     <WalletBaseCurrenciesList {...props} />
   </div>
 );
