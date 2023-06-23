@@ -24,7 +24,7 @@ const initialState: NewWalletCurrency = {
   name: undefined,
 };
 
-const WalletCurrenciesSelectorsAddCurrency = ({
+export const WalletAddCurrency = ({
   walletBaseCurrencies,
   walletQuoteCurrency,
 }: {
@@ -99,5 +99,3 @@ const WalletCurrenciesSelectorsAddCurrency = ({
     </div>
   );
 };
-
-export default WalletCurrenciesSelectorsAddCurrency;

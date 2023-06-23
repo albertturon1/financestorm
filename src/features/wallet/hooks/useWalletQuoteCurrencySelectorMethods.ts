@@ -7,7 +7,7 @@ import { Currency } from '@interfaces/ICurrency';
 import { WalletCurrency } from '@src/zustand/walletStore';
 import { substituePotentialNaNToZero } from '@utils/misc';
 
-export const useWalletQuoteCurrencySelectorInputMethods = ({
+export const useWalletQuoteCurrencySelectorMethods = ({
   walletBaseCurrencies,
   walletQuoteCurrency,
   startCurrenciesTransition,

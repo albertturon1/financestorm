@@ -7,7 +7,7 @@ import { WalletCurrency } from '@src/zustand/walletStore';
 
 import { WALLET_SELECTORS_INPUT_MAX_WIDTH } from './WalletCurrenciesSelectors';
 import WalletCurrencyInputSelect from './WalletCurrencyInputSelect';
-import { useWalletQuoteCurrencySelectorInputMethods } from '../hooks/useWalletQuoteCurrencyOnChange';
+import { useWalletQuoteCurrencySelectorMethods } from '../hooks/useWalletQuoteCurrencySelectorMethods';
 
 export const WalletQuoteCurrencySelector = ({
   walletQuoteCurrency,
@@ -22,7 +22,7 @@ export const WalletQuoteCurrencySelector = ({
     [walletQuoteCurrency.name],
   );
 
-  const methods = useWalletQuoteCurrencySelectorInputMethods({
+  const methods = useWalletQuoteCurrencySelectorMethods({
     ...props,
     walletQuoteCurrency,
   });
