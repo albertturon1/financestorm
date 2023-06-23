@@ -1,6 +1,7 @@
 import { OECD_COUNTRIES } from '@constants/currencies';
 import { Timespan } from '@interfaces/ICharts';
 import { Currency } from '@interfaces/ICurrency';
+import { objectEntries } from '@utils/misc';
 
 import { checkIsOECDFetchEnabledByTimespan } from './WalletChart';
 
@@ -15,7 +16,7 @@ const WalletChartInflationFetchStatus = ({
   quoteCurrency: Currency;
   timespan: Timespan;
 }) => {
-  const currencyCountry = Object.entries(OECD_COUNTRIES).find(
+  const currencyCountry = objectEntries(OECD_COUNTRIES).find(
     ([currency]) => currency === quoteCurrency,
   );
   const isOECDDEnabled = checkIsOECDFetchEnabledByTimespan(timespan);

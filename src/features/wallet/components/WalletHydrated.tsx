@@ -16,6 +16,7 @@ import { TIMESPANS } from '@constants/timespans';
 import { useModifySearchParams } from '@hooks/useModifySearchParams';
 import { Timespan } from '@interfaces/ICharts';
 import { WalletCurrency } from '@src/zustand/walletStore';
+import { objectEntries } from '@utils/misc';
 
 import WalletChartLoader from './loaders/WalletChartLoader';
 import WalletCurrenciesSelectorsLoader from './loaders/WalletCurrenciesSelectorsLoader';
@@ -58,7 +59,7 @@ const WalletHydrated = ({
     .minus({ months: 1 })
     .toFormat(YEAR_MONTH_FORMAT);
 
-  const currencyCountry = Object.entries(OECD_COUNTRIES).find(
+  const currencyCountry = objectEntries(OECD_COUNTRIES).find(
     ([currency]) => currency === props.walletQuoteCurrency.name,
   );
 

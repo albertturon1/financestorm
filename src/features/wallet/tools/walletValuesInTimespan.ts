@@ -4,7 +4,11 @@ import { DateValue } from '@interfaces/ICharts';
 import { Currency } from '@interfaces/ICurrency';
 import { ExchangeRateTimeseriesRatesArray } from '@interfaces/models/IExchangerate';
 import { WalletCurrency } from '@src/zustand/walletStore';
-import { cutNumber, substituePotentialNaNToZero } from '@utils/misc';
+import {
+  cutNumber,
+  objectEntries,
+  substituePotentialNaNToZero,
+} from '@utils/misc';
 
 import { getInflationStatsPerMonth } from './inflationStatsPerMonth';
 
@@ -38,7 +42,7 @@ export function calculateWalletValuesInTimespan({
   monthlyCPIValues: DateValue[] | undefined;
 }) {
   const a = ratesArray.map((day) => {
-    const dayValueAndBaseCurrenciesValues = Object.entries(day.rates).reduce(
+    const dayValueAndBaseCurrenciesValues = objectEntries(day.rates).reduce(
       (acc, [currency, rate]) => {
         const currencyItem = walletBaseCurrencies.find(
           (c) => c.name === (currency.toLowerCase() as Currency), //currency is uppercase
@@ -51,7 +55,7 @@ export function calculateWalletValuesInTimespan({
           amount: currencyItem.amount,
           convertedToQuoteAmount,
           rate,
-          currency: currency as Currency,
+          currency,
         });
         return acc;
       },

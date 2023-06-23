@@ -14,6 +14,7 @@ import { TIMESPANS } from '@constants/timespans';
 import WalletChartLoader from '@features/wallet/components/loaders/WalletChartLoader';
 import { Timespan } from '@interfaces/ICharts';
 import { WalletCurrency } from '@src/zustand/walletStore';
+import { objectEntries } from '@utils/misc';
 
 import HomepageWalletCurrencies from './HomepageWalletCurrencies';
 
@@ -40,7 +41,7 @@ const HomepageWallet = ({
     .minus({ months: 1 })
     .toFormat(YEAR_MONTH_FORMAT);
 
-  const currencyCountry = Object.entries(OECD_COUNTRIES).find(
+  const currencyCountry = objectEntries(OECD_COUNTRIES).find(
     ([currency]) => currency === walletQuoteCurrency.name,
   );
 
