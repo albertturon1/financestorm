@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, ChangeEvent } from 'react';
+import { useState, ChangeEvent, useEffect } from 'react';
 
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
@@ -11,9 +11,10 @@ import CurrenciesSelectList from '@components/misc/CurrenciesSelectList';
 import PageTitle from '@components/misc/PageTitle';
 import { Input } from '@components/ui/Input';
 import SkeletonLoader from '@components/ui/SkeletonLoader';
-import { CURRENCIES, DEFAULT_QUOTE_CURRENCY } from '@constants/currencies';
+import { CURRENCIES } from '@constants/currencies';
 import { Currency } from '@interfaces/ICurrency';
 import { CurrenciesRates } from '@interfaces/models/IExchangerate';
+import { objectKeys } from '@utils/misc';
 
 import { useReplaceInvalidCurrenciesParams } from '../hooks/useReplaceInvalidCurrenciesParams';
 
@@ -55,12 +56,22 @@ const CurrenciesHydrated = ({
   const [filteredCurrenciesRates, setFilteredCurrenciesRates] = useState(
     query.data,
   );
+  const [input, setInput] = useState('');
 
-  const filterCurencies = (e: ChangeEvent<HTMLInputElement>) => {
+  //effect to refresh state when data changes
+  useEffect(() => {
+    setFilteredCurrenciesRates(query.data);
+    setInput('');
+  }, [query.data]);
+
+  const filterCurrencies = (e: ChangeEvent<HTMLInputElement>) => {
     const search = e.target.value;
+
     if (!query.data) return;
 
-    const filteredRates = Object.keys(query.data.rates)
+    setInput(search);
+
+    const filteredRates = objectKeys(query.data.rates)
       .filter((currency) => currency.includes(search))
       .sort((a, b) => {
         //prioritize by first letter from input
@@ -75,7 +86,7 @@ const CurrenciesHydrated = ({
       .reduce(
         (acc, key) =>
           Object.assign(acc, {
-            [key]: query.data?.rates[key as Currency],
+            [key]: query.data?.rates[key],
           }),
         {} as CurrenciesRates,
       );
@@ -106,15 +117,9 @@ const CurrenciesHydrated = ({
             currencies={baseCurrencies}
             value={quoteCurrency}
             onValueChange={(newDefaultCurrency) => {
-              //TODO: fix
-              newDefaultCurrency === DEFAULT_QUOTE_CURRENCY
-                ? void router.push(`/currencies`, {
-                    forceOptimisticNavigation: true,
-                  })
-                : void router.push(
-                    `/currencies?currency=${newDefaultCurrency}`,
-                    { forceOptimisticNavigation: true },
-                  );
+              void router.push(`/currencies?currency=${newDefaultCurrency}`, {
+                forceOptimisticNavigation: true,
+              });
             }}
           />
         </div>
@@ -122,7 +127,8 @@ const CurrenciesHydrated = ({
           <h1 className="pl-0.5 font-medium">{'Search From'}</h1>
           <Input
             disabled={!filteredCurrenciesRates}
-            onChange={filterCurencies}
+            onChange={filterCurrencies}
+            value={input}
           />
         </div>
       </div>
