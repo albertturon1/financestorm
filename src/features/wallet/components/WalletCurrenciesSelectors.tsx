@@ -6,7 +6,7 @@ import { WalletCurrency } from '@src/zustand/walletStore';
 
 import WalletCurrenciesSelectorsAddCurrency from './WalletCurrenciesSelectorsAddCurrency';
 import WalletCurrenciesSelectorsBaseCurrencies from './WalletCurrenciesSelectorsBaseCurrencies';
-import WalletCurrenciesSelectorsQuote from './WalletCurrenciesSelectorsQuoteCurrency';
+import { WalletQuoteCurrencySelector } from './WalletQuoteCurrencySelector';
 
 const WalletCurrenciesSelectors = ({
   ...props
@@ -19,7 +19,7 @@ const WalletCurrenciesSelectors = ({
     <h1 className="max-w-full text-center text-sm">
       {'Currencies included in the wallet'}
     </h1>
-    <WalletCurrenciesSelectorsQuote {...props} />
+    <WalletQuoteCurrencySelector {...props} />
     <WalletCurrenciesSelectorsAddCurrency {...props} />
     <WalletCurrenciesSelectorsBaseCurrencies {...props} />
   </div>
