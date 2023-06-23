@@ -17,7 +17,7 @@ import { getWalletCurrencyFromString } from '@features/wallet/tools/walletCurren
 import { Timespan } from '@interfaces/ICharts';
 import { Currency } from '@interfaces/ICurrency';
 import { WalletCurrency } from '@src/zustand/walletStore';
-import { baseCurrenciesFromCommaString } from '@utils/misc';
+import { baseCurrenciesFromCommaString, objectKeys } from '@utils/misc';
 
 export type WalletPageProps = {
   quote: Currency | undefined;
@@ -59,7 +59,7 @@ const WalletPage = async ({
   const walletBaseCurrenciesNames = walletBaseCurrencies.map((c) => c.name);
 
   const isValidTimespan =
-    !!queryTimespan && !!Object.keys(TIMESPANS).includes(queryTimespan);
+    !!queryTimespan && !!objectKeys(TIMESPANS).includes(queryTimespan);
 
   const timespan = isValidTimespan ? queryTimespan : DEFAULT_TIMESPAN;
 

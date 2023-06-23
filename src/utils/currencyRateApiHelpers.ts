@@ -7,7 +7,7 @@ import {
   ExchangeRateTimeseriesResponseRates,
 } from '@interfaces/models/IExchangerate';
 
-import { inverseCurrencyRate, objectEntries } from './misc';
+import { inverseCurrencyRate, objectEntries, objectKeys } from './misc';
 
 const convertDayRates = (day: CurrenciesRates, quoteCurrency: Currency) =>
   objectEntries(day).reduce((acc, rate) => {
@@ -58,7 +58,7 @@ export const separateDailyCurrencyRates = (
     .slice(1) //first one has already been used
     .forEach((day) => {
       const [dayLabel, dayRates] = day;
-      if (!Object.keys(dayRates).length) return; //return when there's no data for the day
+      if (!objectKeys(dayRates).length) return; //return when there's no data for the day
 
       objectEntries(dayRates).forEach(([currency, rate]) => {
         const currencyIndexInAcc = currencyIndexes[currency];
@@ -69,7 +69,7 @@ export const separateDailyCurrencyRates = (
       });
     });
 
-  const base_currencies = Object.keys(currencyIndexes) as Currency[];
+  const base_currencies = objectKeys(currencyIndexes);
 
   const { base, motd, success, ...rest } = data;
 

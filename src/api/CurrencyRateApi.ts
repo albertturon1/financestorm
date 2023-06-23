@@ -12,7 +12,7 @@ import {
   filterTimeseriesResponseRates,
 } from '@utils/filterCurrencyRates';
 import getQueryClient from '@utils/getQueryClient';
-import { genQueryString } from '@utils/misc';
+import { genQueryString, objectKeys } from '@utils/misc';
 
 import {
   CurrencyRateRange,
@@ -100,7 +100,7 @@ export const getDailyCurrencyRatesOverYearQuery = async ({
         base_currencies,
         quote_currency,
       });
-      if (!data || !Object.keys(data.rates).length) return;
+      if (!data || !objectKeys(data.rates).length) return;
       return data;
     }),
   );

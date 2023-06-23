@@ -20,7 +20,7 @@ import MultiCurrenciesHydrated from '@features/multi-currencies/components/Multi
 import MultiCurrenciesPairSelectors from '@features/multi-currencies/components/MultiCurrenciesPairSelectors';
 import { Timespan } from '@interfaces/ICharts';
 import { Currency } from '@interfaces/ICurrency';
-import { baseCurrenciesFromCommaString } from '@utils/misc';
+import { baseCurrenciesFromCommaString, objectKeys } from '@utils/misc';
 
 export type MultiCurrenciesPageProps = {
   quote: Currency | undefined;
@@ -60,7 +60,7 @@ const MultiCurrenciesPage = async ({
   ) satisfies Currency[];
 
   const isValidTimespan =
-    !!queryTimespan && !!Object.keys(TIMESPANS).includes(queryTimespan);
+    !!queryTimespan && !!objectKeys(TIMESPANS).includes(queryTimespan);
   const timespan = isValidTimespan ? queryTimespan : DEFAULT_TIMESPAN;
 
   const QUERY_PROPS = {
