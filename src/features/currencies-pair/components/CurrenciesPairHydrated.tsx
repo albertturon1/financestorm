@@ -3,7 +3,7 @@
 import { useState, useTransition, useEffect, useRef } from 'react';
 
 import dynamic from 'next/dynamic';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 import { useDailyCurrencyRatesOverYearQuery } from '@api/client/CurrenctyRateClientApi';
 import { PrefetchDailyCurrencyRatesRequest } from '@api/interfaces/ICurrencyRateApi';
@@ -35,6 +35,8 @@ const CurrenciesPairHydrated = ({
   timespan: Timespan;
 }) => {
   const router = useRouter();
+  const pathname = usePathname();
+  const [_, _url, pair] = pathname.split('/');
   const [timespan, setTimespan] = useState<Timespan>(props.timespan);
   const [isPending, startCurrenciesTransition] = useTransition();
 
@@ -55,6 +57,7 @@ const CurrenciesPairHydrated = ({
   );
 
   const toQueryString = useModifySearchParams();
+
   useReplaceInvalidCurrenciesPairParams(props);
   return (
     <div className="flex flex-1 flex-col gap-y-6 lg:gap-y-10">
@@ -66,7 +69,7 @@ const CurrenciesPairHydrated = ({
             const newTimespanParam = toQueryString('timespan', newTimespan);
 
             startCurrenciesTransition(() => {
-              void router.replace(`/wallet?${newTimespanParam}`, {
+              void router.replace(`/currencies/${pair}?${newTimespanParam}`, {
                 forceOptimisticNavigation: true,
               });
             });

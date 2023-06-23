@@ -3,23 +3,26 @@
 import { useMemo } from 'react';
 
 import { ArrowLeftRight } from 'lucide-react';
-import { useRouter, usePathname } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 
 import CurrenciesSelectList from '@components/misc/CurrenciesSelectList';
 import { LabelOverSelectInput } from '@components/misc/LabelOverSelectInput';
 import { CURRENCIES } from '@constants/currencies';
+import { Timespan } from '@interfaces/ICharts';
 import { Currency } from '@interfaces/ICurrency';
 import Theme from '@src/Theme';
 
 const CurrenciesPairSelectors = ({
   baseCurrency,
   quoteCurrency,
+  timespan,
 }: {
   baseCurrency: Currency;
   quoteCurrency: Currency;
+  timespan: Timespan;
 }) => {
   const router = useRouter();
-  const pathname = usePathname();
+  const params = useParams();
 
   const currenciesAvailable = useMemo(
     () =>
@@ -28,6 +31,7 @@ const CurrenciesPairSelectors = ({
       ),
     [baseCurrency, quoteCurrency],
   );
+  const reversedPair = params.pair?.split('-').reverse().join('-');
 
   return (
     <div className="flex w-full items-end gap-x-1 xs:gap-x-3 sm:gap-x-5 lg:gap-x-10">
@@ -35,10 +39,11 @@ const CurrenciesPairSelectors = ({
         <LabelOverSelectInput>{'From'}</LabelOverSelectInput>
         <CurrenciesSelectList
           onValueChange={(newBaseCurrency) => {
-            void router.push(
-              `/currencies/${newBaseCurrency}-${quoteCurrency}`,
-              { forceOptimisticNavigation: true },
-            );
+            const pair = `${newBaseCurrency}-${quoteCurrency}`;
+
+            void router.push(`/currencies/${pair}?timespan=${timespan}`, {
+              forceOptimisticNavigation: true,
+            });
           }}
           value={baseCurrency}
           currencies={currenciesAvailable}
@@ -46,9 +51,12 @@ const CurrenciesPairSelectors = ({
       </div>
       <button
         onClick={() => {
-          const [_, _url, pair] = pathname.split('/');
-          const reversedPair = pair.split('-').reverse().join('-');
-          void router.replace(`/currencies/${reversedPair}`);
+          void router.replace(
+            `/currencies/${reversedPair}?timespan=${timespan}`,
+            {
+              forceOptimisticNavigation: true,
+            },
+          );
         }}
         className="flex rounded-full border p-2"
       >
@@ -58,10 +66,11 @@ const CurrenciesPairSelectors = ({
         <LabelOverSelectInput>{'To'}</LabelOverSelectInput>
         <CurrenciesSelectList
           onValueChange={(newQuoteCurrency) => {
-            void router.push(
-              `/currencies/${baseCurrency}-${newQuoteCurrency}`,
-              { forceOptimisticNavigation: true },
-            );
+            const pair = `${baseCurrency}-${newQuoteCurrency}`;
+
+            void router.push(`/currencies/${pair}?timespan=${timespan}`, {
+              forceOptimisticNavigation: true,
+            });
           }}
           value={quoteCurrency}
           currencies={currenciesAvailable}

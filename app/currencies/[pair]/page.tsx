@@ -74,6 +74,7 @@ const CurrenciesPairPage = async ({
             <CurrenciesPairSelectors
               baseCurrency={baseCurrency}
               quoteCurrency={quoteCurrency}
+              timespan={timespan}
             />
             <CurrenciesPairHydrated
               quoteCurrency={quoteCurrency}
