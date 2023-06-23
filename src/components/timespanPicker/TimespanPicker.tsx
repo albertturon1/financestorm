@@ -1,7 +1,7 @@
 import { Button } from '@components/ui/Button';
 import { TIMESPANS } from '@constants/timespans';
 import { Timespan } from '@interfaces/ICharts';
-import { cn } from '@utils/misc';
+import { cn, objectKeys } from '@utils/misc';
 
 export const TimespanPicker = ({
   active,
@@ -11,7 +11,7 @@ export const TimespanPicker = ({
   onSelect: (newTimespan: Timespan) => void;
 }) => (
   <div className="flex w-full items-center justify-center gap-x-0.5 xs:gap-x-2 sm:gap-x-3">
-    {Object.keys(TIMESPANS).map((timespan) => (
+    {objectKeys(TIMESPANS).map((timespan) => (
       <Button
         className={cn(
           'rounded-full ',
@@ -20,7 +20,7 @@ export const TimespanPicker = ({
         key={timespan}
         onClick={() => {
           if (timespan === active) return; //blocking setting active timespan option
-          onSelect(timespan as Timespan);
+          onSelect(timespan);
         }}
       >
         {timespan.toUpperCase()}

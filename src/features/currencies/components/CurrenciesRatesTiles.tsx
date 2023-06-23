@@ -1,7 +1,7 @@
 import DataLoader, { DataLoaderQueryProps } from '@components/ui/DataLoader';
 import { Currency } from '@interfaces/ICurrency';
 import { ExchangeRateLatestResponse } from '@interfaces/models/IExchangerate';
-import { objectKeys } from '@utils/misc';
+import { objectEntries, objectKeys } from '@utils/misc';
 
 import CurrencyTile from './CurrencyTile';
 
@@ -18,10 +18,10 @@ const CurrenciesRatesTiles = ({
       <div className="flex flex-col gap-y-2 ">
         {objectKeys(data.rates).length ? (
           <div className="grid auto-cols-max grid-cols-1 sm:grid-cols-2 sm:gap-x-10 lg:grid-cols-3">
-            {Object.entries(data.rates).map(
+            {objectEntries(data.rates).map(
               ([baseCurrency, rate], index, array) => (
                 <CurrencyTile
-                  baseCurrency={baseCurrency.toLowerCase() as Currency}
+                  baseCurrency={baseCurrency}
                   quoteCurrency={quoteCurrency}
                   rate={rate}
                   key={baseCurrency}

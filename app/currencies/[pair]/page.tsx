@@ -16,6 +16,7 @@ import { DEFAULT_TIMESPAN, TIMESPANS } from '@constants/timespans';
 import CurrenciesPairHydrated from '@features/currencies-pair/components/CurrenciesPairHydrated';
 import { Timespan } from '@interfaces/ICharts';
 import { Currency, CurrenciesPair } from '@interfaces/ICurrency';
+import { objectKeys } from '@utils/misc';
 
 const CurrenciesPairSelectors = dynamic(
   () => import('@features/currencies-pair/components/CurrenciesPairSelectors'),
@@ -43,7 +44,7 @@ const CurrenciesPairPage = async ({
   ];
 
   const isValidTimespan =
-    !!queryTimespan && !!Object.keys(TIMESPANS).includes(queryTimespan);
+    !!queryTimespan && !!objectKeys(TIMESPANS).includes(queryTimespan);
 
   const timespan = isValidTimespan ? queryTimespan : DEFAULT_TIMESPAN;
 
@@ -74,6 +75,7 @@ const CurrenciesPairPage = async ({
             <CurrenciesPairSelectors
               baseCurrency={baseCurrency}
               quoteCurrency={quoteCurrency}
+              timespan={timespan}
             />
             <CurrenciesPairHydrated
               quoteCurrency={quoteCurrency}

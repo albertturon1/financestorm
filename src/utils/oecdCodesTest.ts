@@ -1,7 +1,9 @@
 import { OECD_COUNTRIES } from '@constants/currencies';
 
+import { objectEntries } from './misc';
+
 // code for testing OECD_COUNTRIES
-const promises = Object.entries(OECD_COUNTRIES).map(([key, value]) => {
+const promises = objectEntries(OECD_COUNTRIES).map(([key, value]) => {
   const currency = value.toUpperCase();
   const url = `https://stats.oecd.org/sdmx-json/data/DP_LIVE/${currency}.CPI.TOT.IDX2015.M/OECD?dimensionAtObservation=allDimensions&endPeriod=2023-05-16&startPeriod=2022-04-01`;
 

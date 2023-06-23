@@ -7,13 +7,13 @@ import {
   ExchangeRateTimeseriesResponseRates,
 } from '@interfaces/models/IExchangerate';
 
-import { inverseCurrencyRate } from './misc';
+import { inverseCurrencyRate, objectEntries, objectKeys } from './misc';
 
 const convertDayRates = (day: CurrenciesRates, quoteCurrency: Currency) =>
-  Object.entries(day).reduce((acc, rate) => {
+  objectEntries(day).reduce((acc, rate) => {
     const [key, value] = rate;
     if (key !== quoteCurrency) {
-      acc[key as keyof CurrenciesRates] = inverseCurrencyRate(value);
+      acc[key] = inverseCurrencyRate(value);
     }
     return acc;
   }, {} as CurrenciesRates);
@@ -23,7 +23,7 @@ export const convertDailyCurrencyRatesToArray = (
   rates: ExchangeRateTimeseriesResponseRates,
   quoteCurrency: Currency,
 ) =>
-  Object.entries(rates).reduce((acc, day) => {
+  objectEntries(rates).reduce((acc, day) => {
     const [dayLabel, dayRates] = day;
 
     acc.push({
@@ -37,10 +37,10 @@ export const convertDailyCurrencyRatesToArray = (
 export const separateDailyCurrencyRates = (
   data: ExchangeRateTimeseriesResponse,
 ) => {
-  const rates = Object.entries(data.rates[data.start_date]).map(
+  const rates = objectEntries(data.rates[data.start_date]).map(
     ([currency, rate]) => ({
       quote_currency: data.base,
-      base_currency: currency as Currency,
+      base_currency: currency,
       rates: [{ date: data.start_date, value: inverseCurrencyRate(rate) }],
     }),
   ) satisfies SeparateDailyCurrencyRates[];
@@ -54,14 +54,14 @@ export const separateDailyCurrencyRates = (
     }
   }, {} as Record<Currency, number>);
 
-  Object.entries(data.rates)
+  objectEntries(data.rates)
     .slice(1) //first one has already been used
     .forEach((day) => {
       const [dayLabel, dayRates] = day;
-      if (!Object.keys(dayRates).length) return; //return when there's no data for the day
+      if (!objectKeys(dayRates).length) return; //return when there's no data for the day
 
-      Object.entries(dayRates).forEach(([currency, rate]) => {
-        const currencyIndexInAcc = currencyIndexes[currency as Currency];
+      objectEntries(dayRates).forEach(([currency, rate]) => {
+        const currencyIndexInAcc = currencyIndexes[currency];
         rates[currencyIndexInAcc].rates.push({
           date: dayLabel,
           value: inverseCurrencyRate(rate),
@@ -69,7 +69,7 @@ export const separateDailyCurrencyRates = (
       });
     });
 
-  const base_currencies = Object.keys(currencyIndexes) as Currency[];
+  const base_currencies = objectKeys(currencyIndexes);
 
   const { base, motd, success, ...rest } = data;
 

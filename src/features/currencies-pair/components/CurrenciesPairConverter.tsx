@@ -5,7 +5,7 @@ import { useState, ChangeEvent } from 'react';
 import FlagInput from '@components/misc/FlagInput';
 import { Currency } from '@interfaces/ICurrency';
 import { ExchangeRateTimeseriesResponseRates } from '@interfaces/models/IExchangerate';
-import { cutNumber, inverseCurrencyRate } from '@utils/misc';
+import { cutNumber, inverseCurrencyRate, objectEntries } from '@utils/misc';
 
 type CurrenciesPairConverterProps = {
   baseCurrency: Currency;
@@ -18,7 +18,7 @@ function getLatestDayRate(
 ) {
   if (!rates) return undefined;
   let latestDayWithRate: number | undefined = undefined;
-  for (const [_, dayRates] of Object.entries(rates)) {
+  for (const [_, dayRates] of objectEntries(rates)) {
     if (baseCurrency in dayRates) {
       latestDayWithRate = inverseCurrencyRate(dayRates[baseCurrency]);
     }
