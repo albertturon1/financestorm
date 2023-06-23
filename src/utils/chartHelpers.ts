@@ -18,7 +18,7 @@ export function yAxisDomainFormatter(domain: [number, number]) {
 
   const z = t.find((s) => dataMin < s.size)?.limiter ?? 2;
   return [
-    cutNumber(dataMin * 0.98, z),
+    Math.max(0, cutNumber(dataMin * 0.98, z)),
     cutNumber(dataMax * 1.02, z),
   ] satisfies [number, number];
 }
