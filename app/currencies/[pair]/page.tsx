@@ -14,6 +14,7 @@ import { CURRENCIES } from '@constants/currencies';
 import { SERVER_DATE } from '@constants/dateTime';
 import { DEFAULT_TIMESPAN, TIMESPANS } from '@constants/timespans';
 import CurrenciesPairHydrated from '@features/currencies-pair/components/CurrenciesPairHydrated';
+import { Timespan } from '@interfaces/ICharts';
 import { Currency, CurrenciesPair } from '@interfaces/ICurrency';
 
 const CurrenciesPairSelectors = dynamic(
@@ -24,15 +25,27 @@ export type CurrenciesPairPageProps = {
   pair: CurrenciesPair;
 };
 
+export type CurrenciesPageSearchParams = {
+  timespan: Timespan | undefined;
+};
+
 const CurrenciesPairPage = async ({
   params,
+  searchParams,
 }: {
   params: CurrenciesPairPageProps;
+  searchParams: CurrenciesPageSearchParams;
 }) => {
+  const { timespan: queryTimespan } = searchParams;
   const [baseCurrency, quoteCurrency] = params.pair.split('-') as [
     Currency,
     Currency,
   ];
+
+  const isValidTimespan =
+    !!queryTimespan && !!Object.keys(TIMESPANS).includes(queryTimespan);
+
+  const timespan = isValidTimespan ? queryTimespan : DEFAULT_TIMESPAN;
 
   if (!CURRENCIES.includes(baseCurrency) || !CURRENCIES.includes(quoteCurrency))
     notFound();
@@ -65,8 +78,9 @@ const CurrenciesPairPage = async ({
             <CurrenciesPairHydrated
               quoteCurrency={quoteCurrency}
               baseCurrency={baseCurrency}
-              defaultChartTimespan={DEFAULT_TIMESPAN}
               queryProps={QUERY_PROPS}
+              timespan={timespan}
+              isValidTimespan={isValidTimespan}
             />
           </div>
         </PagePadding>
