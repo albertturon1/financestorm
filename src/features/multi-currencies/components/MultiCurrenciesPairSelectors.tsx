@@ -5,6 +5,7 @@ import { useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 
 import CurrenciesSelectList from '@components/misc/CurrenciesSelectList';
+import { LabelOverSelectInput } from '@components/misc/LabelOverSelectInput';
 import MultiCurrenciesSelectList from '@components/misc/MultiCurrenciesSelectList';
 import { CURRENCIES } from '@constants/currencies';
 import { useModifySearchParams } from '@hooks/useModifySearchParams';
@@ -33,7 +34,7 @@ const MultiCurrenciesPairSelectors = ({
   return (
     <div className="flex w-full items-end gap-x-1 xs:gap-x-3 sm:gap-x-5 lg:gap-x-10">
       <div className="flex flex-1 flex-col gap-y-1">
-        <p className="font-medium">{'From'}</p>
+        <LabelOverSelectInput>{'From'}</LabelOverSelectInput>
         <MultiCurrenciesSelectList
           onValueChange={(baseCurrency) => {
             //remove from params list
@@ -60,7 +61,7 @@ const MultiCurrenciesPairSelectors = ({
         />
       </div>
       <div className="flex flex-1 flex-col gap-y-1">
-        <p className="font-medium">{'To'}</p>
+        <LabelOverSelectInput>{'To'}</LabelOverSelectInput>
         <CurrenciesSelectList
           onValueChange={(newQuoteCurrency) => {
             //when new quote currency has already been on the list of base currencies

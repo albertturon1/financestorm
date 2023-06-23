@@ -22,7 +22,7 @@ const CurrencyTile = ({
   <Link href={`/currencies/${baseCurrency}-${quoteCurrency}`}>
     <div
       className={twMerge(
-        'flex items-center justify-between gap-x-4 px-4 py-4',
+        'flex items-center justify-between gap-x-4 px-4 py-3',
         className,
       )}
     >
