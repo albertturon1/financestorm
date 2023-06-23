@@ -16,10 +16,11 @@ const InputWithSeparator = ({
   ...props
 }: InputWithSeparatorProps) => {
   const [focused, setFocused] = useState(false);
+
   return (
     <div
       className={cn(
-        'focus-visible:ring-ring flex h-full w-full items-center rounded-xl border-[1.5px] pr-3 font-medium hover:border-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
+        'focus-visible:ring-ring flex h-full min-h-[40px] w-full items-center rounded-xl border-[1.5px] pr-3 font-medium hover:border-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2',
         focused && 'ring-2 ring-offset-2 hover:border-transparent',
         className,
       )}
@@ -28,14 +29,16 @@ const InputWithSeparator = ({
         type="number"
         {...props}
         numberHideArrows
-        onFocus={() => {
+        onFocus={(event) => {
           setFocused(true);
+          props.onFocus?.(event);
         }}
-        onBlur={() => {
+        onBlur={(event) => {
           setFocused(false);
+          props.onBlur?.(event);
         }}
         showFocus={false}
-        className="w-[10%] min-w-[100px] max-w-[150px] border-0 pl-3 focus:outline-none"
+        className="w-[10%] min-w-[130px] max-w-[170px] border-0 pl-3 focus:outline-none"
       />
       <div className="h-6 w-[1.2px] bg-border" />
       {children}
