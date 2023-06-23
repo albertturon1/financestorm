@@ -8,6 +8,7 @@ import { useRouter, useParams } from 'next/navigation';
 import CurrenciesSelectList from '@components/misc/CurrenciesSelectList';
 import { LabelOverSelectInput } from '@components/misc/LabelOverSelectInput';
 import { CURRENCIES } from '@constants/currencies';
+import { useModifySearchParams } from '@hooks/useModifySearchParams';
 import { Timespan } from '@interfaces/ICharts';
 import { Currency } from '@interfaces/ICurrency';
 import Theme from '@src/Theme';
@@ -33,6 +34,8 @@ const CurrenciesPairSelectors = ({
   );
   const reversedPair = params.pair?.split('-').reverse().join('-');
 
+  const toQueryString = useModifySearchParams();
+
   return (
     <div className="flex w-full items-end gap-x-1 xs:gap-x-3 sm:gap-x-5 lg:gap-x-10">
       <div className="flex flex-1 flex-col gap-y-1">
@@ -40,8 +43,9 @@ const CurrenciesPairSelectors = ({
         <CurrenciesSelectList
           onValueChange={(newBaseCurrency) => {
             const pair = `${newBaseCurrency}-${quoteCurrency}`;
+            const newTimespanParam = toQueryString('timespan', timespan);
 
-            void router.push(`/currencies/${pair}?timespan=${timespan}`, {
+            void router.push(`/currencies/${pair}?${newTimespanParam}`, {
               forceOptimisticNavigation: true,
             });
           }}
@@ -51,8 +55,10 @@ const CurrenciesPairSelectors = ({
       </div>
       <button
         onClick={() => {
+          const newTimespanParam = toQueryString('timespan', timespan);
+
           void router.replace(
-            `/currencies/${reversedPair}?timespan=${timespan}`,
+            `/currencies/${reversedPair}?${newTimespanParam}`,
             {
               forceOptimisticNavigation: true,
             },
@@ -67,8 +73,9 @@ const CurrenciesPairSelectors = ({
         <CurrenciesSelectList
           onValueChange={(newQuoteCurrency) => {
             const pair = `${baseCurrency}-${newQuoteCurrency}`;
+            const newTimespanParam = toQueryString('timespan', timespan);
 
-            void router.push(`/currencies/${pair}?timespan=${timespan}`, {
+            void router.push(`/currencies/${pair}?${newTimespanParam}`, {
               forceOptimisticNavigation: true,
             });
           }}
