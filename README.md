@@ -9,7 +9,7 @@ It is built using Next.js 13 with /app directory, TypeScript, React Query, Zusta
 Enjoy using FinanceStorm!
 
 #### Check version online 
-https://financestorm-albertturon1.vercel.app/
+https://financestorm.vercel.app
 
 ### Homepage
 ![Homepage preview](https://github.com/albertturon1/financestorm/blob/main/screenshots/homepage-preview.png?raw=true)
