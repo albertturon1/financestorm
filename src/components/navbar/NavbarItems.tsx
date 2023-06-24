@@ -5,7 +5,6 @@ import {
   DEFAULT_BASE_CURRENCIES,
   DEFAULT_QUOTE_CURRENCY,
 } from '@constants/currencies';
-import { DataTestID } from '@interfaces/IUtility';
 
 import NavbarLink from './NavbarLink';
 
@@ -18,15 +17,9 @@ const NavbarWalletLink = dynamic(() => import('./NavbarWalletLink'), {
   ),
 });
 
-const NavbarItems = <T extends string>({
-  dataTestID,
-  ...props
-}: {
-  onClick?: () => void;
-  dataTestID?: DataTestID<'NavbarItems', T>;
-}) => (
+const NavbarItems = (props: { onClick?: () => void }) => (
   <div
-    data-testid={dataTestID}
+    data-testid="NavbarItems"
     className="flex max-h-full flex-col sm:flex-row sm:gap-x-5 sm:text-[0.95rem] lg:gap-x-6"
   >
     {/*homepage hidden on mobile */}
