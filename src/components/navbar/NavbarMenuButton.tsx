@@ -6,6 +6,7 @@ const NavbarMenuButton = ({
   onClick: () => void;
 }) => (
   <button
+    data-testid="NavbarMenuButton"
     type="button"
     onClick={onClick}
     className="flex flex-col items-center justify-center rounded-md p-2 py-4 focus:outline-none sm:hidden"

@@ -47,7 +47,10 @@ export const Navbar = () => {
               }}
             />
             {/* items hidden on mobile */}
-            <div className="hidden h-full sm:flex">
+            <div
+              data-testid="NavbarItemsDesktopWrapper"
+              className="hidden h-full sm:flex"
+            >
               <NavbarItems dataTestID="NavbarItemsDesktop" />
             </div>
           </div>

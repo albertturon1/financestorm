@@ -11,6 +11,7 @@ const NavbarItemsMobile = ({
   onClick: () => void;
 }) => (
   <div
+    data-testid="NavbarItemsMobile"
     className={cn(
       'fixed sm:hidden',
       open
