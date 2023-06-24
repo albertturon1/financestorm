@@ -6,11 +6,12 @@ import { Analytics } from '@vercel/analytics/react';
 import { Metadata } from 'next';
 
 import Navbar from '@components/navbar';
+import { APP_TITLE } from '@constants/global';
 
 import ReactQueryProvider from '../src/components/providers/ReactQueryProvider';
 
 export const metadata: Metadata = {
-  title: 'FinanceStorm',
+  title: APP_TITLE,
   description: `Harness the potential of numerous currencies, historical data, and a sleek UI/UX to make informed financial decisions and perform various currency-related operations and provides valuable insights. Get access to multicurrencies comparisons and inflation statistics.`,
 };
 
@@ -18,7 +19,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <head>
-        <title>{'FinanceStorm'}</title>
+        <title>{APP_TITLE}</title>
       </head>
       <body>
         <ReactQueryProvider>
