@@ -2,6 +2,8 @@ import { Dispatch, SetStateAction, useEffect } from 'react';
 
 import useWindowSize from '@hooks/useWindowSize';
 
+export const MOBILE_NAVBAR_BREAKPOINT = 640;
+
 export const useCloseNavbar = (
   open: boolean,
   setOpen: Dispatch<SetStateAction<boolean>>,
@@ -10,6 +12,7 @@ export const useCloseNavbar = (
 
   //hide menu when screen resizes over sm
   useEffect(() => {
-    if (screenWidth >= 640 && open !== false) setOpen(false);
+    if (screenWidth >= MOBILE_NAVBAR_BREAKPOINT && open !== false)
+      setOpen(false);
   }, [open, screenWidth, setOpen]);
 };
