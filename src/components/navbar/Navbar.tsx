@@ -29,7 +29,7 @@ export const Navbar = () => {
       <PageMaxWidth>
         <PagePadding flex>
           <div className="flex flex-1 items-center justify-between">
-            <Link href="/">
+            <Link href="/" data-testid="NavbarLogoLink">
               <h1 className="mt-1 h-full cursor-pointer font-bebas text-[1.75rem] font-bold tracking-wide">
                 {APP_TITLE}
               </h1>
@@ -51,7 +51,7 @@ export const Navbar = () => {
               data-testid="NavbarItemsDesktopWrapper"
               className="hidden h-full sm:flex"
             >
-              <NavbarItems dataTestID="NavbarItemsDesktop" />
+              <NavbarItems />
             </div>
           </div>
         </PagePadding>
