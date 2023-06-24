@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { Bebas_Neue } from 'next/font/google';
 import Link from 'next/link';
@@ -8,8 +8,8 @@ import Link from 'next/link';
 import PageMaxWidth from '@components/misc/PageMaxWidth';
 import PagePadding from '@components/misc/PagePadding';
 import useScrollDirection from '@components/navbar/hooks/useScrollDirection';
-import useWindowSize from '@hooks/useWindowSize';
 
+import { useCloseNavbar } from './hooks/useCloseNavbar';
 import NavbarItems from './NavbarItems';
 import NavbarItemsMobile from './NavbarItemsMobile';
 import NavbarMenuButton from './NavbarMenuButton';
@@ -23,13 +23,9 @@ export const bebas_neue = Bebas_Neue({
 export const Navbar = () => {
   const scrollDirection = useScrollDirection();
   const [open, setOpen] = useState(false);
-  const { screenWidth } = useWindowSize();
 
   //hide menu when screen resizes over sm
-  useEffect(() => {
-    if (screenWidth >= 640 && open !== false) setOpen(false);
-  }, [open, screenWidth]);
-
+  useCloseNavbar(open, setOpen);
   return (
     <div
       className={`sticky top-0 z-50 flex h-16 w-full border-b bg-background transition-all duration-500 lg:h-[4.75rem] ${
