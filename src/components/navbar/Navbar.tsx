@@ -1,35 +1,25 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-import { Bebas_Neue } from 'next/font/google';
 import Link from 'next/link';
 
 import PageMaxWidth from '@components/misc/PageMaxWidth';
 import PagePadding from '@components/misc/PagePadding';
 import useScrollDirection from '@components/navbar/hooks/useScrollDirection';
-import useWindowSize from '@hooks/useWindowSize';
+import { APP_TITLE } from '@constants/global';
 
+import { useCloseNavbar } from './hooks/useCloseNavbar';
 import NavbarItems from './NavbarItems';
 import NavbarItemsMobile from './NavbarItemsMobile';
 import NavbarMenuButton from './NavbarMenuButton';
 
-export const bebas_neue = Bebas_Neue({
-  weight: '400',
-  subsets: ['latin-ext'],
-  preload: true,
-});
-
 export const Navbar = () => {
   const scrollDirection = useScrollDirection();
   const [open, setOpen] = useState(false);
-  const { screenWidth } = useWindowSize();
 
   //hide menu when screen resizes over sm
-  useEffect(() => {
-    if (screenWidth >= 640 && open !== false) setOpen(false);
-  }, [open, screenWidth]);
-
+  useCloseNavbar(open, setOpen);
   return (
     <div
       className={`sticky top-0 z-50 flex h-16 w-full border-b bg-background transition-all duration-500 lg:h-[4.75rem] ${
@@ -39,11 +29,9 @@ export const Navbar = () => {
       <PageMaxWidth>
         <PagePadding flex>
           <div className="flex flex-1 items-center justify-between">
-            <Link href="/">
-              <h1
-                className={`mt-1 h-full cursor-pointer text-[1.75rem] font-bold tracking-wide ${bebas_neue.className}`}
-              >
-                {'FinanceStorm'}
+            <Link href="/" data-testid="NavbarLogoLink">
+              <h1 className="mt-1 h-full cursor-pointer font-bebas text-[1.75rem] font-bold tracking-wide">
+                {APP_TITLE}
               </h1>
             </Link>
             <NavbarMenuButton
@@ -59,7 +47,10 @@ export const Navbar = () => {
               }}
             />
             {/* items hidden on mobile */}
-            <div className="hidden h-full sm:flex">
+            <div
+              data-testid="NavbarItemsDesktopWrapper"
+              className="hidden h-full sm:flex"
+            >
               <NavbarItems />
             </div>
           </div>

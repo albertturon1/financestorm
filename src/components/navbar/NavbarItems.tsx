@@ -7,6 +7,7 @@ import {
 } from '@constants/currencies';
 
 import NavbarLink from './NavbarLink';
+
 const NavbarWalletLink = dynamic(() => import('./NavbarWalletLink'), {
   ssr: false,
   loading: () => (
@@ -17,7 +18,10 @@ const NavbarWalletLink = dynamic(() => import('./NavbarWalletLink'), {
 });
 
 const NavbarItems = (props: { onClick?: () => void }) => (
-  <div className="flex max-h-full flex-col sm:flex-row sm:gap-x-5 sm:text-[0.95rem] lg:gap-x-6">
+  <div
+    data-testid="NavbarItems"
+    className="flex max-h-full flex-col sm:flex-row sm:gap-x-5 sm:text-[0.95rem] lg:gap-x-6"
+  >
     {/*homepage hidden on mobile */}
     <NavbarLink {...props} title="Homepage" href="/" className="sm:hidden" />
     <NavbarLink {...props} title="Exchange rates" href="/currencies" />
